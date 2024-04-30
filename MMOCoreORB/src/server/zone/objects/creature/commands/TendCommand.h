@@ -125,8 +125,9 @@ public:
 	}
 
 	void awardXp(CreatureObject* creature, const String& type, int power) const {
-		if (!creature->isPlayerCreature())
-			return;
+		//Ethan edit 4-30-24: Allows for xp when healing oneself
+		//if (!creature->isPlayerCreature())
+		//	return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -269,7 +270,9 @@ public:
 
 			sendWoundMessage(creature, creatureTarget, attribute, healedWounds);
 
-			if (creatureTarget != creature && healedWounds > 0) {
+			//Ethan edit 4-30-24: Allows for xp when healing oneself
+			//if (creatureTarget != creature && healedWounds > 0) {
+			if (healedWounds > 0) {
 				awardXp(creature, "medical", round(healedWounds * 2.5f));
 				creature->notifyObservers(ObserverEventType::ABILITYUSED, creatureTarget, STRING_HASHCODE("tendwound"));
 			}

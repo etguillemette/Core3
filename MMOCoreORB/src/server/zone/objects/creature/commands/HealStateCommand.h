@@ -53,9 +53,10 @@ public:
 		creature->addPendingTask("stateTreatment", task, delay * 1000);
 	}
 
+	//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
 	void awardXp(CreatureObject* creature, String type, int power) const {
-		if (!creature->isPlayerCreature())
-			return;
+		//if (!creature->isPlayerCreature())
+		//	return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -299,7 +300,9 @@ public:
 			statePack->decreaseUseCount();
 		}
 
-		if (creatureTarget != creature && !creatureTarget->isPet())
+		//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
+		//if (creatureTarget != creature && !creatureTarget->isPet())
+		if (true)
 			awardXp(creature, "medical", 50); //No experience for healing yourself or pets.
 
 		doAnimations(creature, creatureTarget);

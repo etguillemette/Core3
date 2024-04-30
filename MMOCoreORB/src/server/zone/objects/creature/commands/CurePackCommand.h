@@ -143,9 +143,10 @@ public:
 		creature->addPendingTask("conditionTreatment", task, delay * 1000);
 	}
 
+	//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
 	void awardXp(CreatureObject* creature, const String& type, int power) const {
-		if (!creature->isPlayerCreature())
-			return;
+		//if (!creature->isPlayerCreature())
+		//	return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -259,7 +260,9 @@ public:
 
 		sendCureMessage(creature, creatureTarget);
 
-		if (creatureTarget != creature && !creatureTarget->isPet())
+		//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
+		//if (creatureTarget != creature && !creatureTarget->isPet())
+		if (true)
 			awardXp(creature, "medical", 50); //No experience for healing yourself or pets.
 
 		checkForTef(creature, creatureTarget);
@@ -412,7 +415,9 @@ public:
 			curePack->decreaseUseCount();
 		}
 
-		if (targetCreature != creature && !targetCreature->isPet())
+		//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
+		//if (targetCreature != creature && !targetCreature->isPet())
+		if (true)
 			awardXp(creature, "medical", 50); //No experience for healing yourself or pets.
 
 		if (curePack->isArea()) {

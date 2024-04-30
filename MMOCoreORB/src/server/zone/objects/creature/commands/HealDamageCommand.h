@@ -243,8 +243,9 @@ public:
 	}
 
 	void awardXp(CreatureObject* creature, const String& type, int power) const {
-		if (!creature->isPlayerCreature())
-			return;
+		//Ethan edit 4-30-24: Allows for xp when healing oneself
+		//if (!creature->isPlayerCreature())
+		//	return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -300,7 +301,9 @@ public:
 
 			sendHealMessage(creature, targetCreature, healthHealed, actionHealed, mindHealed);
 
-			if (targetCreature != creature && !targetCreature->isPet())
+			//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
+			//if (targetCreature != creature && !targetCreature->isPet())
+			if (true)
 				awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself or pets.
 
 			checkForTef(creature, targetCreature);
@@ -493,7 +496,9 @@ public:
 		Locker locker(stimPack);
 		stimPack->decreaseUseCount();
 
-		if (targetCreature != creature && !targetCreature->isPet())
+		//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
+		//if (targetCreature != creature && !targetCreature->isPet())
+		if (true)
 			awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself.
 
 		if (targetCreature != creature)

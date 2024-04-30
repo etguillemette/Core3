@@ -223,9 +223,11 @@ public:
 		return 0;
 	}
 
+	
 	void awardXp(CreatureObject* creature, const String& type, int power) const {
-		if (!creature->isPlayerCreature())
-			return;
+		//Ethan edit 4-30-24: Allows for xp when enhancing oneself
+		//if (!creature->isPlayerCreature())
+		//	return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -420,7 +422,9 @@ public:
 			enhancePack->decreaseUseCount();
 		}
 
-		if (patient->getObjectID() != enhancer->getObjectID())
+		//Ethan edit 4-30-24: Allows for xp when enhancing oneself
+		//if (patient->getObjectID() != enhancer->getObjectID())
+		if (true)
 			awardXp(enhancer, "medical", amountEnhanced); // No experience for healing yourself.
 
 		doAnimations(enhancer, patient);
