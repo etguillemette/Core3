@@ -7,6 +7,7 @@
 #include "server/zone/objects/tangible/misc/CustomIngredient.h"
 #include "server/zone/objects/manufactureschematic/ingredientslots/ComponentSlot.h"
 #include "server/zone/objects/manufactureschematic/ingredientslots/ResourceSlot.h"
+#include "server/zone/managers/crafting/labratories/ResourceLabratory.h" //Ethan addition 5-1-24 (JUNK DEALER BUYER) - Adding functionality to sell crafted goods to a junk dealer
 #include "templates/SharedTangibleObjectTemplate.h" //Ethan addition 5-1-24 (JUNK DEALER BUYER) - Adding functionality to sell crafted goods to a junk dealer
 
 SharedLabratory::SharedLabratory() : Logger("SharedLabratory"){
