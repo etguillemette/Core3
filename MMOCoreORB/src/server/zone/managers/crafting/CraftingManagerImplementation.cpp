@@ -184,3 +184,26 @@ void CraftingManagerImplementation::setInitialCraftingValues(TangibleObject* pro
 	SharedLabratory* lab = labs.get(labratory);
 	lab->setInitialCraftingValues(prototype,manufactureSchematic,assemblySuccess);
 }
+
+//Ethan edits 5-1-24 (JUNK DEALER BUYER): Adding functionality for junk dealers to purchase player crafted goods
+int CraftingManagerImplementation::calculateFinalJunkValue(CreatureObject* player, ManufactureSchematic* manufactureSchematic)
+{
+	SharedLabratory* lab = labs.get(manufactureSchematic->getLabratory());
+	float junkValue = lab->getJunkValue(manufactureSchematic);
+	
+	//calculate luck based on experimentation skill
+	String expSkill = manufactureSchematic->getDraftSchematic()->getExperimentationSkill();
+	float playerSkill = float(player->getSkillMod(expSkill)) / 800.0f + 1.0f;
+
+	if(playerSkill > 120.0f)
+	{
+		playerSkill = 120.0f;
+	}
+
+	float luck = (float(System::random(49)) + 1.0f) / 1000.0f + 1.0f;
+
+	float finalValue = junkValue * playerSkill * luck;
+
+	return int(finalValue);
+}
+//End Ethan edits 5-1-24 (JUNK DEALER BUYER)

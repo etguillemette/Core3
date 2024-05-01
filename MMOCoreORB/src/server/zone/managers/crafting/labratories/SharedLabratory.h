@@ -35,6 +35,10 @@ protected:
 	float calculateExperimentationValueModifier(int experimentationResult, int pointsAttempted);
 	float calculateAssemblyValueModifier(int assemblyResult);
 	float getAssemblyPercentage(float value);
+
+	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): Adding functionality so that junk dealers will purchase crafted goods
+	virtual float getJunkValue(ManufactureSchematic* manufactureSchematic);
+	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): end edits
 };
 
 }

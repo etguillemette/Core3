@@ -86,4 +86,8 @@ class CraftingManager extends ZoneManager {
 	
 	public native void setInitialCraftingValues(TangibleObject prototype, ManufactureSchematic manufactureSchematic, int assemblySuccess);
 	public native int getCreationCount(ManufactureSchematic manufactureSchematic);
+
+	// Ethan edit 5-1-24 (JUNK DEALER BUYER): Adding functionality so that junk dealers can buy crafted goods
+	public native int calculateFinalJunkValue(CreatureObject player, ManufactureSchematic manufactureSchematic);
+	//End Ethan edit 5-1-24 (JUNK DEALER BUYER)
 }

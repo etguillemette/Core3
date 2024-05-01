@@ -7,6 +7,7 @@
 #include "server/zone/objects/tangible/misc/CustomIngredient.h"
 #include "server/zone/objects/manufactureschematic/ingredientslots/ComponentSlot.h"
 #include "server/zone/objects/manufactureschematic/ingredientslots/ResourceSlot.h"
+#include "templates/SharedTangibleObjectTemplate.h" //Ethan addition 5-1-24 (JUNK DEALER BUYER) - Adding functionality to sell crafted goods to a junk dealer
 
 SharedLabratory::SharedLabratory() : Logger("SharedLabratory"){
 }
@@ -100,7 +101,7 @@ float SharedLabratory::getWeightedValue(ManufactureSchematic* manufactureSchemat
 
 			n = draftslot->getQuantity();
 			stat = component->getValueOf(type);
-
+			
 			if (stat != 0) {
 				nsum += n;
 				weightedAverage += (stat * n);
@@ -207,3 +208,62 @@ int SharedLabratory::calculateAssemblySuccess(CreatureObject* player,DraftSchema
 	return CraftingManager::BARELYSUCCESSFUL;
 }
 
+//Ethan addition 5-1-24 (JUNK DEALER BUYER) - Adding functionality to sell crafted goods to a junk dealer
+float SharedLabratory::getJunkValue(ManufactureSchematic* manufactureSchematic) 
+{
+    float junkValue = 1.0f;
+    int resQuant = 0;
+
+    for (int i = 0; i < manufactureSchematic->getSlotCount(); ++i) 
+    {
+
+        Reference<IngredientSlot* > ingredientslot = manufactureSchematic->getSlot(i);
+        Reference<DraftSlot* > draftslot = manufactureSchematic->getDraftSchematic()->getDraftSlot(i);
+
+        /// If resource slot, continue
+        if(!ingredientslot->isResourceSlot())
+        {
+            if(ingredientslot->isComponentSlot() && ingredientslot->isFull())
+            {
+				int compQuant = ingredientslot.get()->getQuantityNeeded();
+				ComponentSlot* compSlot = cast<ComponentSlot*>(ingredientslot.get());
+				ManagedReference<TangibleObject*> tano = compSlot->getPrototype();
+
+				int compVal = tano.get()->getJunkValue();
+				//ManagedReference<CustomIngredient*> component = cast<CustomIngredient*>( tano.get());
+				//Reference<ManufactureSchematic*> compSchem = cast<ManufactureSchematic*>(tano.get());
+				//float compVal = getJunkValue(compSchem);
+				//Need to continue this here later
+				
+				junkValue += (compQuant * compVal);
+            continue;
+            }
+        }
+
+        ResourceSlot* resSlot = cast<ResourceSlot*>(ingredientslot.get());
+
+        if(resSlot == nullptr)
+        {
+            continue;
+        }
+
+        ManagedReference<ResourceSpawn* > spawn = resSlot->getCurrentSpawn();
+    
+        if (spawn == nullptr) 
+        {
+            error("Spawn object is null when running getJunkValue");
+            return 0.0f;
+        }
+
+        resQuant += draftslot->getQuantity();
+    }
+    
+
+    if (junkValue != 0)
+    {
+        junkValue += resQuant;
+    }
+
+    return junkValue;
+}
+//End Ethan edits 5-1-24 (JUNK DEALER BUYER)

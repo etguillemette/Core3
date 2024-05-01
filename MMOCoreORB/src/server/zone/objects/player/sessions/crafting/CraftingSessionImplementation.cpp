@@ -882,6 +882,27 @@ void CraftingSessionImplementation::initialAssembly(int clientCounter) {
 
 	prototype->setComplexity(manufactureSchematic->getComplexity());
 
+
+	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): Adding functionality so that junk dealers will buy crafted goods
+    prototype->setJunkDealerNeeded(1); // JUNKGENERIC
+    
+    // Add a value to the item, based on 1 Credit per unit, OQ, DR, and crafter skill
+    // CraftingManagerImplementation::calculateFinalJunkValue calculates final price and calls...
+    // SharedLabratory::getJunkValue which calculates quality/quantity of resources used
+    int junkPrice = craftingManager.get()->calculateFinalJunkValue(crafter,manufactureSchematic);
+
+	if(junkPrice > 0)
+	{
+		prototype->setJunkValue(junkPrice);
+	}
+	else
+	{
+		prototype->setJunkValue(1);
+	}
+	//Ethan edit 5-1-24 (JUNK DEALER BUYERS) end: 
+
+
+
 	// Start DMSCO3 ***********************************************************
 	// Sends the updated values to the crafting screen
 	ManufactureSchematicObjectDeltaMessage3* dMsco3 = new ManufactureSchematicObjectDeltaMessage3(manufactureSchematic);
@@ -1061,6 +1082,52 @@ void CraftingSessionImplementation::experiment(int rowsAttempted, const String& 
 			cancelSession();
 			return;
 		}
+
+		//Ethan 5-1-24 edit (JUNK DEALER BUYERS): Adding functionality for junk dealers to purchase crafted goods
+        float valueAdjustment = 1.0;
+
+		float results;
+		switch (experimentationResult) {
+		case CraftingManager::AMAZINGSUCCESS:
+			results = 0.08f;
+			break;
+		case CraftingManager::GREATSUCCESS:
+			results = 0.07f;
+			break;
+		case CraftingManager::GOODSUCCESS:
+			results = 0.055f;
+			break;
+		case CraftingManager::MODERATESUCCESS:
+			results = 0.015f;
+			break;
+		case CraftingManager::SUCCESS:
+			results = 0.01f;
+			break;
+		case CraftingManager::MARGINALSUCCESS:
+			results = 0.00f;
+			break;
+		case CraftingManager::OK:
+			results = -0.04f;
+			break;
+		case CraftingManager::BARELYSUCCESSFUL:
+			results = -0.07f;
+			break;
+		case CraftingManager::CRITICALFAILURE:
+			results = -0.08f;
+			break;
+		default:
+			results = 0;
+			break;
+		}
+		results *= pointsAttempted;
+	
+		valueAdjustment += results;
+        
+        prototype->setJunkValue( prototype->getJunkValue() * valueAdjustment);
+        //Ethan edit 5-1-24 end
+
+
+
 
 		// Make sure to store the lowest roll to display (Effect the multiline rolls
 		if (lowestExpSuccess < experimentationResult)
