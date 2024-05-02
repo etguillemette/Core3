@@ -30,7 +30,7 @@ public:
 	virtual float getWeightedValue(ManufactureSchematic* manufactureSchematic, int type);
 	virtual int getCreationCount(ManufactureSchematic* manufactureSchematic) = 0;
 	virtual int calculateAssemblySuccess(CreatureObject* player,DraftSchematic* draftSchematic, float effectiveness);
-protected:
+//protected: //Ethan edit 5-2-24: (TEST) Testing to see if this is what is triggering the failure to compile
 	ManagedReference<ZoneServer*> zoneServer;
 	float calculateExperimentationValueModifier(int experimentationResult, int pointsAttempted);
 	float calculateAssemblyValueModifier(int assemblyResult);
