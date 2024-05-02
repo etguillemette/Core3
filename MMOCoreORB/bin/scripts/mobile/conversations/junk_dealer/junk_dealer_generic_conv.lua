@@ -17,6 +17,52 @@ ask_for_loot = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(ask_for_loot);
 
+
+------------------------------------------------------------------------------
+--Ethan Edit 5/2/24 (JUNK DEALER VENDOR): Adding branching dialogue for various junk dealer wares
+wares_start = ConvoScreen:new {
+	id = "wares_start",
+	leftDialog = "What sort of items were you interested in?", -- 
+	stopConversation = "false",
+	options = {
+		{"I'm looking for a weapon.","wares_weapon"},
+		{"I'm looking for armor.","wares_armor"},
+		{"I'm looking for a mercenary contract.","wares_hireling"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_start);
+
+
+wares_weapon = ConvoScreen:new {
+	id = "wares_weapon",
+	leftDialog = "Here are the weapons I have available.",
+	stopConversation = "true",
+	options = { }
+}
+junkDealerGenericConvoTemplate:addScreen(wares_weapon);
+
+
+wares_armor = ConvoScreen:new {
+	id = "wares_armor",
+	leftDialog = "Here is the armor I have available.",
+	stopConversation = "true",
+	options = { }
+}
+junkDealerGenericConvoTemplate:addScreen(wares_armor);
+
+
+wares_hireling = ConvoScreen:new {
+	id = "wares_hireling",
+	leftDialog = "Here is the list of mercenary contracts I have available.",
+	stopConversation = "true",
+	options = { }
+}
+junkDealerGenericConvoTemplate:addScreen(wares_hireling);
+--End Ethan edit 5-2-24 (JUNK DEALER VENDOR)
+------------------------------------------------------------------------------
+
+
+
 start_sale = ConvoScreen:new {
 	id = "start_sale",
 	leftDialog = "@conversation/junk_dealer_generic:s_84a67771", -- Alright, let me see what you are offering.
