@@ -30,15 +30,14 @@ public:
 	virtual float getWeightedValue(ManufactureSchematic* manufactureSchematic, int type);
 	virtual int getCreationCount(ManufactureSchematic* manufactureSchematic) = 0;
 	virtual int calculateAssemblySuccess(CreatureObject* player,DraftSchematic* draftSchematic, float effectiveness);
-//protected: //Ethan edit 5-2-24: (TEST) Testing to see if this is what is triggering the failure to compile
+	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): Adding functionality so that junk dealers will purchase crafted goods (TESTING 5-2-24 moved this from Protected to Public)
+	virtual float getJunkValue(ManufactureSchematic* manufactureSchematic);
+	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): end edits
+protected:
 	ManagedReference<ZoneServer*> zoneServer;
 	float calculateExperimentationValueModifier(int experimentationResult, int pointsAttempted);
 	float calculateAssemblyValueModifier(int assemblyResult);
 	float getAssemblyPercentage(float value);
-
-	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): Adding functionality so that junk dealers will purchase crafted goods
-	virtual float getJunkValue(ManufactureSchematic* manufactureSchematic);
-	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): end edits
 };
 
 }
