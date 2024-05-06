@@ -82,10 +82,9 @@ public:
 			objectId = 0;
 	}
 
-	//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet (though not sure how the fuck that'd work with revive...)
 	void awardXp(CreatureObject* creature, const String& type, int power) const {
-		//if (!creature->isPlayerCreature())
-		//	return;
+		if (!creature->isPlayerCreature())
+			return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 

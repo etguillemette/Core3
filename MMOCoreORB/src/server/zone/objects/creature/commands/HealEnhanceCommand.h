@@ -15,6 +15,8 @@
 #include "server/zone/objects/creature/buffs/DelayedBuff.h"
 #include "server/zone/managers/collision/CollisionManager.h"
 
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+
 class HealEnhanceCommand : public QueueCommand {
 	float mindCost;
 	float range;
@@ -225,9 +227,8 @@ public:
 
 	
 	void awardXp(CreatureObject* creature, const String& type, int power) const {
-		//Ethan edit 4-30-24: Allows for xp when enhancing oneself
-		//if (!creature->isPlayerCreature())
-		//	return;
+		if (!creature->isPlayerCreature())
+			return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -422,9 +423,14 @@ public:
 			enhancePack->decreaseUseCount();
 		}
 
-		//Ethan edit 4-30-24: Allows for xp when enhancing oneself
-		//if (patient->getObjectID() != enhancer->getObjectID())
-		if (true)
+		//Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		Lua* lua = new Lua();
+		lua->init();
+
+		lua->runFile("scripts/managers/player_manager.lua");
+		int selfHealEnabled = lua->getGlobalBoolean("selfHealEnabled"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		if ((patient->getObjectID() != enhancer->getObjectID()) || selfHealEnabled == true)
 			awardXp(enhancer, "medical", amountEnhanced); // No experience for healing yourself.
 
 		doAnimations(enhancer, patient);

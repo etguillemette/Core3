@@ -14,6 +14,8 @@
 #include "server/zone/objects/creature/buffs/DelayedBuff.h"
 #include "server/zone/managers/collision/CollisionManager.h"
 
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+
 class HealStateCommand : public QueueCommand {
 	float mindCost;
 	float range;
@@ -53,10 +55,9 @@ public:
 		creature->addPendingTask("stateTreatment", task, delay * 1000);
 	}
 
-	//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
 	void awardXp(CreatureObject* creature, String type, int power) const {
-		//if (!creature->isPlayerCreature())
-		//	return;
+		if (!creature->isPlayerCreature())
+			return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -300,9 +301,14 @@ public:
 			statePack->decreaseUseCount();
 		}
 
-		//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
-		//if (creatureTarget != creature && !creatureTarget->isPet())
-		if (true)
+		//Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		Lua* lua = new Lua();
+		lua->init();
+
+		lua->runFile("scripts/managers/player_manager.lua");
+		int selfHealEnabled = lua->getGlobalBoolean("selfHealEnabled"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		if ((creatureTarget != creature && !creatureTarget->isPet()) || selfHealEnabled == true)
 			awardXp(creature, "medical", 50); //No experience for healing yourself or pets.
 
 		doAnimations(creature, creatureTarget);

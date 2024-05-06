@@ -15,6 +15,14 @@
 #include "server/zone/packets/object/CombatAction.h"
 #include "server/zone/managers/collision/CollisionManager.h"
 
+
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+
+
+
+
+
+
 class HealDamageCommand : public QueueCommand {
 	float range;
 	float mindCost;
@@ -199,7 +207,7 @@ public:
 		return true;
 	}
 
-	void sendHealMessage(CreatureObject* creature, CreatureObject* creatureTarget, int healthDamage, int actionDamage, int mindDamage) const {
+	void sendHealMessage(CreatureObject* creature, CreatureObject* creatureTarget, int healthDamage, int actionDamage, int mindDamage) const {		
 		if (!creature->isPlayerCreature())
 			return;
 
@@ -243,9 +251,8 @@ public:
 	}
 
 	void awardXp(CreatureObject* creature, const String& type, int power) const {
-		//Ethan edit 4-30-24: Allows for xp when healing oneself
-		//if (!creature->isPlayerCreature())
-		//	return;
+		if (!creature->isPlayerCreature())
+			return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -301,9 +308,14 @@ public:
 
 			sendHealMessage(creature, targetCreature, healthHealed, actionHealed, mindHealed);
 
-			//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
-			//if (targetCreature != creature && !targetCreature->isPet())
-			if (true)
+			//Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			Lua* lua = new Lua();
+			lua->init();
+
+			lua->runFile("scripts/managers/player_manager.lua");
+			int selfHealEnabled = lua->getGlobalBoolean("selfHealEnabled"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			if ((targetCreature != creature && !targetCreature->isPet()) || selfHealEnabled == true) //End Ethan edit 5-6-24 (XP FOR SELF HEALS)
 				awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself or pets.
 
 			checkForTef(creature, targetCreature);
@@ -496,9 +508,14 @@ public:
 		Locker locker(stimPack);
 		stimPack->decreaseUseCount();
 
-		//Ethan edit 4-30-24: Allows for xp when healing oneself or a pet
-		//if (targetCreature != creature && !targetCreature->isPet())
-		if (true)
+		//Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		Lua* lua = new Lua();
+		lua->init();
+
+		lua->runFile("scripts/managers/player_manager.lua");
+		int selfHealEnabled = lua->getGlobalBoolean("selfHealEnabled"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		if ((targetCreature != creature && !targetCreature->isPet()) || selfHealEnabled == true)
 			awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself.
 
 		if (targetCreature != creature)

@@ -89,6 +89,20 @@ class PlayerManager extends Observer implements Logger {
 	protected boolean allowSameAccountPvpRatingCredit;
 	protected int onlineCharactersPerAccount;
 
+
+	/*
+	-----------------------------------
+	--SINGLE PLAYER CONFIG
+	-----------------------------------
+	*/
+	public boolean selfHealEnabled;//Ethan Edit 5-4-24 (SELF HEAL EXP)
+	public float playerStructureMaintenanceEnabled; //Ethan Edit 5-6-24 (HALT ENTROPY)
+	/*
+	-----------------------------------
+	--END SINGLE PLAYER CONFIG
+	-----------------------------------
+	*/
+
 	protected unsigned int coaWinningFaction;
 
 	@dereferenced

@@ -70,6 +70,21 @@ baseStoredVehicles = 3
 baseStoredShips = 3
 
 -----------------------------------
+--SINGLE PLAYER CONFIG
+-----------------------------------
+--(XP FOR SELF HEALS) Ethan Edit 5-2-24:
+selfHealEnabled = true
+playerStructureMaintenanceRate = 1.0
+--End Ethan Edit 5-2-24 (XP FOR SELF HEALS)
+
+
+-----------------------------------
+--END SINGLE PLAYER CONFIG
+-----------------------------------
+
+
+
+-----------------------------------
 --VETERAN REWARDS CONFIG
 -----------------------------------
 veteranRewardMilestones = {90, 180, 270, 360, 450, 540, 630, 720, 810, 900, 990, 1080} --days, must be sorted low to high

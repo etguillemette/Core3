@@ -13,6 +13,8 @@
 #include "server/zone/managers/player/PlayerManager.h"
 #include "QueueCommand.h"
 
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+
 class TendCommand : public QueueCommand {
 protected:
 	int mindCost;
@@ -125,9 +127,8 @@ public:
 	}
 
 	void awardXp(CreatureObject* creature, const String& type, int power) const {
-		//Ethan edit 4-30-24: Allows for xp when healing oneself
-		//if (!creature->isPlayerCreature())
-		//	return;
+		if (!creature->isPlayerCreature())
+			return;
 
 		CreatureObject* player = cast<CreatureObject*>(creature);
 
@@ -270,9 +271,14 @@ public:
 
 			sendWoundMessage(creature, creatureTarget, attribute, healedWounds);
 
-			//Ethan edit 4-30-24: Allows for xp when healing oneself
-			//if (creatureTarget != creature && healedWounds > 0) {
-			if (healedWounds > 0) {
+			//Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			Lua* lua = new Lua();
+			lua->init();
+
+			lua->runFile("scripts/managers/player_manager.lua");
+			int selfHealEnabled = lua->getGlobalBoolean("selfHealEnabled"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			if (((creatureTarget != creature) || selfHealEnabled == 1) && healedWounds > 0) {
 				awardXp(creature, "medical", round(healedWounds * 2.5f));
 				creature->notifyObservers(ObserverEventType::ABILITYUSED, creatureTarget, STRING_HASHCODE("tendwound"));
 			}
