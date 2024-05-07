@@ -96,7 +96,9 @@ class PlayerManager extends Observer implements Logger {
 	-----------------------------------
 	*/
 	public boolean selfHealEnabled;//Ethan Edit 5-4-24 (SELF HEAL EXP)
-	public float playerStructureMaintenanceEnabled; //Ethan Edit 5-6-24 (HALT ENTROPY)
+	public float playerStructureMaintenanceRate; //Ethan Edit 5-6-24 (HALT ENTROPY)
+	public boolean playerStructureEntropyEnabled; //Ethan Edit 5-6-24 (HALT ENTROPY)
+
 	/*
 	-----------------------------------
 	--END SINGLE PLAYER CONFIG

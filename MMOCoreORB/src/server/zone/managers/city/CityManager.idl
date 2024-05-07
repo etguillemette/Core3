@@ -54,6 +54,7 @@ class CityManager extends ManagedService implements Logger {
 	public transient static int missionTerminalsPerRank;
 	public transient static float maintenanceDiscount;
 
+
 	@dereferenced
 	private transient VectorMap<string, CityRegion> cities;
 
