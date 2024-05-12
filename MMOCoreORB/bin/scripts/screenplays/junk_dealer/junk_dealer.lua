@@ -222,6 +222,44 @@ function JunkDealer:getWaresTable(category)
 		return genericJunkData.waresPistol
 	elseif category == "wares_rifle" then
 		return genericJunkData.waresRifle
+	elseif category == "wares_carbine" then
+		return genericJunkData.waresCarbine
+	elseif category == "wares_oh" then
+		return genericJunkData.waresOneHanded
+	elseif category == "wares_th" then
+		return genericJunkData.waresTwoHanded
+	elseif category == "wares_pole" then
+		return genericJunkData.waresPolearm
+	elseif category == "wares_ua" then
+		return genericJunkData.waresUnarmed
+	elseif category == "wares_heavy" then
+		return genericJunkData.waresHeavyWeapons
+	elseif category == "wares_bone" then
+		return genericJunkData.waresBone
+	elseif category == "wares_chitin" then
+		return genericJunkData.waresChitin
+	elseif category == "wares_mabari" then
+		return genericJunkData.waresMabari
+	elseif category == "wares_tantel" then
+		return genericJunkData.waresTantel
+	elseif category == "wares_ubese" then
+		return genericJunkData.waresUbese
+	elseif category == "wares_padded" then
+		return genericJunkData.waresPadded
+	elseif category == "wares_composite" then
+		return genericJunkData.waresComposite
+	elseif category == "wares_guardian" then
+		return genericJunkData.waresGuardian
+	elseif category == "wares_defender" then
+		return genericJunkData.waresDefender
+	elseif category == "wares_sentinel" then
+		return genericJunkData.waresSentinel
+	elseif category == "wares_ceremonial" then
+		return genericJunkData.waresCeremonial
+	elseif category == "wares_mountain" then
+		return genericJunkData.waresMountain
+	elseif category == "wares_hunting" then
+		return genericJunkData.waresHunting
 	end
 end
 
@@ -253,13 +291,13 @@ function JunkDealer:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 		return
 	end
 
-	if(purchaseCategory == "wares_pistol" or purchaseCategory == "wares_rifle") then
+	--if(purchaseCategory == "wares_pistol" or purchaseCategory == "wares_rifle") then
+	if(string.find(purchaseCategory, "wares_") ~= nil then --Ethan edit 5-11-24 (JUNK DEALER VENDOR) fucked with this in the evening, see if this simplifies things
 		local itemData = waresData[purchaseIndex]
 		deleteStringData(playerID .. ":junk_dealer_purchase")
 		self:giveItem(pPlayer, itemData)
 	end
 end
-
 
 --Ethan edit 5-11-24 (JUNK DEALER VENDOR): Actually awards the item to the player
 function JunkDealer:giveItem(pPlayer, itemData)

@@ -1,7 +1,7 @@
 junkDealerGenericConvoTemplate = ConvoTemplate:new {
 	initialScreen = "ask_for_loot",
-	templateType = "Lua",
-	luaClassHandler = "JunkDealerGenericConvoHandler",
+	templateType = "Lpadded",
+	lpaddedClassHandler = "JunkDealerGenericConvoHandler",
 	screens = {}
 }
 
@@ -36,7 +36,7 @@ junkDealerGenericConvoTemplate:addScreen(no_loot);
 
 inventor = ConvoScreen:new {
 	id = "inventor",
-	leftDialog = "@conversation/junk_dealer_generic:s_d9e6b751", -- An inventor recently sold me and my fellow junk dealers a large quantity of these special kits that were supposed to revolutionize crafting. Unfortunately, they are useless without the special components that they are designed to use.
+	leftDialog = "@conversation/junk_dealer_generic:s_d9e6b751", -- An inventor recently sold me and my fellow junk dealers a large qpaddedntity of these special kits that were supposed to revolutionize crafting. Unfortunately, they are useless without the special components that they are designed to use.
 	stopConversation = "false",
 	options = {
 		{"@conversation/junk_dealer_generic:s_6d53d062", "shipment"}, -- Why don't you just get some of the special components?
@@ -66,7 +66,7 @@ junkDealerGenericConvoTemplate:addScreen(adventerous);
 
 want_them_gone = ConvoScreen:new {
 	id = "want_them_gone",
-	leftDialog = "@conversation/junk_dealer_generic:s_4d65752", -- I just want them gone. They are taking up valuable space in my inventory so I will just give you one of each type if you want.
+	leftDialog = "@conversation/junk_dealer_generic:s_4d65752", -- I just want them gone. They are taking up valpaddedble space in my inventory so I will just give you one of each type if you want.
 	stopConversation = "false",
 	options = {
 		{"@conversation/junk_dealer_generic:s_d347bee3", "kit_types"}, -- Ok sounds good. What sort of kits do you have?
@@ -144,11 +144,11 @@ start_vendor = ConvoScreen:new {
 	stopConversation = "false",
 	options = {
 		{"I am looking for a weapon.", "vendor_weapon"},
-		--{"I am looking for some armor.", "vendor_armor"},
+		{"I am looking for some armor.", "vendor_armor"},
 		--{"I am looking for some medicine.","vendor_medicine"},
 		--{"I am looking for a vehicle.","vendor_medicine"},
 		--{"I am looking for some parts.","vendor_medicine"},
-		{"Actually, I don't need anything right now.","no_loot"}
+		{"Actpaddedlly, I don't need anything right now.","no_loot"}
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(start_vendor);
@@ -159,16 +159,40 @@ vendor_weapon = ConvoScreen:new {
 	stopConversation = "false",
 	options = {
 		{"I was looking for a pistol.", "wares_pistol"},
-		--{"I was looking for a carbine.", "wares_carbine"},
-		--{"I was looking for a rifle.", "wares_rifle"},
-		--{"I was looking for a one-handed weapon.", "wares_oh"},
-		--{"I was looking for a two-handed weapon.", "wares_th"},
-		--{"I was looking for a polearm.", "wares_pole"},
-		--{"I was looking for a knuckler.", "wares_ua"},
-		{"Actually, I don't need anything right now.","no_loot"}
+		{"I was looking for a carbine.", "wares_carbine"},
+		{"I was looking for a rifle.", "wares_rifle"},
+		{"I was looking for a one-handed weapon.", "wares_oh"},
+		{"I was looking for a two-handed weapon.", "wares_th"},
+		{"I was looking for a polearm.", "wares_pole"},
+		{"I was looking for a knuckler.", "wares_padded"},
+		{"I was looking for a heavy weapon.", "wares_heavy"},
+		{"Actpaddedlly, I don't need anything right now.","no_loot"}
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(vendor_weapon);
+
+vendor_armor = ConvoScreen:new {
+	id = "vendor_armor",
+	customDialogText = "What sort of armor were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for some bone armor.", "wares_bone"},
+		{"I was looking for some chitin armor.", "wares_chitin"},
+		{"I was looking for some mabari armor.", "wares_mabari"},
+		{"I was looking for some tantel armor", "wares_tantel"},
+		{"I was looking for some ubese armor", "wares_ubese"},
+		{"I was looking for some padded armor", "wares_padded"},
+		{"I was looking for some composite armor", "wares_composite"},
+		{"I was looking for some Ithorian gpaddedrdian armor", "wares_gpaddedrdian"},
+		{"I was looking for some Ithorian defender armor", "wares_defender"},
+		{"I was looking for some Ithorian sentinel armor", "wares_sentinel"},
+		{"I was looking for some Wookie Ceremonial armor", "wares_ceremonial"},
+		{"I was looking for some Wookie Black Mountain armor.", "wares_mountain"},
+		{"I was looking for some Wookie Hunting armor", "wares_hunting"},
+		{"Actpaddedlly, I don't need anything right now.","no_loot"}		
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_armor);
 
 wares_pistol = ConvoScreen:new {
 	id = "wares_pistol",
@@ -177,6 +201,168 @@ wares_pistol = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(wares_pistol);
+
+wares_rifle = ConvoScreen:new {
+	id = "wares_rifle",
+	customDialogText = "Here are the rifles I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_rifle);
+
+wares_carbine = ConvoScreen:new {
+	id = "wares_carbine",
+	customDialogText = "Here are the carbines I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_carbine);
+
+wares_heavy = ConvoScreen:new {
+	id = "wares_heavy",
+	customDialogText = "Here are the heavy weapons I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_heavy);
+
+wares_oh = ConvoScreen:new {
+	id = "wares_oh",
+	customDialogText = "Here are the one-handed weapons I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_oh);
+
+wares_th = ConvoScreen:new {
+	id = "wares_th",
+	customDialogText = "Here are the two-handed weapons I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_th);
+
+wares_pole = ConvoScreen:new {
+	id = "wares_pole",
+	customDialogText = "Here are the polearms I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_pole);
+
+wares_ua = ConvoScreen:new {
+	id = "wares_ua",
+	customDialogText = "Here are the knucklers I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ua);
+
+wares_bone = ConvoScreen:new {
+	id = "wares_bone",
+	customDialogText = "Here are the bone armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_bone);
+
+wares_chitin = ConvoScreen:new {
+	id = "wares_chitin",
+	customDialogText = "Here are the chitin armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_chitin);
+
+wares_mabari = ConvoScreen:new {
+	id = "wares_mabari",
+	customDialogText = "Here are the mabari armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_mabari);
+
+wares_tantel = ConvoScreen:new {
+	id = "wares_tantel",
+	customDialogText = "Here are the tantel armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_tantel);
+
+wares_ubese = ConvoScreen:new {
+	id = "wares_ubese",
+	customDialogText = "Here are the ubese armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ubese);
+
+wares_padded = ConvoScreen:new {
+	id = "wares_padded",
+	customDialogText = "Here are the padded armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_padded);
+
+wares_composite = ConvoScreen:new {
+	id = "wares_composite",
+	customDialogText = "Here are the composite armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_composite);
+
+wares_guardian = ConvoScreen:new {
+	id = "wares_guardian",
+	customDialogText = "Here are the guardian armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_guardian);
+
+wares_sentinel = ConvoScreen:new {
+	id = "wares_sentinel",
+	customDialogText = "Here are the sentinel armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_sentinel);
+
+wares_defender = ConvoScreen:new {
+	id = "wares_defender",
+	customDialogText = "Here are the defender armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_defender);
+
+wares_ceremonial = ConvoScreen:new {
+	id = "wares_ceremonial",
+	customDialogText = "Here are the ceremonial armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ceremonial);
+
+wares_mountain = ConvoScreen:new {
+	id = "wares_mountain",
+	customDialogText = "Here are the mountain armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_mountain);
+
+wares_hunting = ConvoScreen:new {
+	id = "wares_hunting",
+	customDialogText = "Here are the hunting armors I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_hunting);
+
+
 --End Ethan edit 5-10-24 (JUNK DEALER VENDOR)
 
 addConversationTemplate("junkDealerGenericConvoTemplate", junkDealerGenericConvoTemplate);

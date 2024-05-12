@@ -229,9 +229,4 @@ genericJunkData = {
         { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_bracer_l.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_hunting_bracer_l" },
         { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_bracer_r.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_hunting_bracer_r" },
     },
-
-
-
-
-
 }
