@@ -1,16 +1,14 @@
---Ethan edit 5-2-24 (JUNK DEALER VENDOR)
-includeFile("junk_dealer/junkDealerData.lua") --Ethan edit. Pulling in junk dealer data
-local ObjectManager = require("managers.object.object_manager") -- Ethan edit
+includeFile("junk_dealer/junkDealerData.lua") --Ethan edit 5-11-24 (JUNK DEALER VENDOR): Pulling in junk dealer data 
+local ObjectManager = require("managers.object.object_manager") -- Ethan edit 5-11-24 (JUNK DEALER VENDOR):
 
---These are necessary for some stuff with the ware purchases
+--Ethan edit 5-11-24 (JUNK DEALER VENDOR): These are necessary for some stuff with the ware purchases
 junkDealerScreenplay= ScreenPlay:new {
 	errorCodes =  {
 		SUCCESS = 0, INVENTORYFULL = 1,  NOTENOUGHCREDITS = 2, GENERALERROR = 3, ITEMCOST = 4, INVENTORYERROR = 5,
 		TEMPLATEPATHERROR = 6, GIVEERROR = 7, DATAPADFULL = 8, DATAPADERROR = 9, TOOMANYHIRELINGS = 10, SCHEMATICERROR = 11,
 	}
 }
---End Ethan edit 5-2-24 (JUNK DEALER VENDOR)
-----------------------------------------------------
+--End Ethan edit 5-11-24 (JUNK DEALER VENDOR): 
 
 
 JunkDealer = {
@@ -77,9 +75,10 @@ function JunkDealer:getEligibleJunk(pPlayer, dealerType, skipItem)
 		if pItem ~= nil then
 			local tano = TangibleObject(pItem)
 			local sceno = SceneObject(pItem)
-
 			if sceno:getObjectID() ~= skipItem then
-				if tano:getJunkDealerNeeded() & dealerNum > 0 and tano:getCraftersName() == "" and not tano:isBroken() and not tano:isSliced() and not tano:isNoTrade() and sceno:getContainerObjectsSize() == 0 then
+				--Ethan edit 5-11-24 (JUNK DEALER VENDOR): removing the line "and tano:getCraftersName() == "" below...
+				if tano:getJunkDealerNeeded() & dealerNum > 0 and not tano:isBroken() and not tano:isSliced() and not tano:isNoTrade() and sceno:getContainerObjectsSize() == 0 then
+				--End Ethan edit 5-11-24 (JUNK DEALER VENDOR):
 					local name = sceno:getDisplayedName()
 					local value = tano:getJunkValue()
 					local textTable = {"[" .. value .. "] " .. name, sceno:getObjectID()}
@@ -184,11 +183,10 @@ function JunkDealer:sellItem(pPlayer, pSui, rowIndex, pInventory)
 	self:sendSellJunkSelection(pPlayer, pNpc, dealerType, skipItem)
 end
 
+-----------------------------------------
+--Ethan edit 5-11-24 (JUNK DEALER VENDOR): Multiple new functions
 
-------------------------------
---Ethan edit 5-2-24 (JUNK DEALER VENDOR) - The following is cloned from the eventPromoter.lua screenplay
-
-
+--Ethan edit 5-11-24 (JUNK DEALER VENDOR): Calls up a sale menu
 function JunkDealer:sendSaleSui(pNpc, pPlayer, screenID)
 	
 	printf("calling sendSaleSui and screenID is: ")
@@ -202,32 +200,32 @@ function JunkDealer:sendSaleSui(pNpc, pPlayer, screenID)
 
 	writeStringData(CreatureObject(pPlayer):getObjectID() .. ":junk_dealer_purchase", screenID)
 	local suiManager = LuaSuiManager()
-	local perkData = self:getPerkTable(screenID)
+	local waresData = self:getWaresTable(screenID)
 
 	local options = { }
-	for i = 1, #perkData, 1 do
-		local perk = {getStringId(perkData[i].displayName) .. " (Cost: " .. perkData[i].cost .. ")", 0}
-		table.insert(options, perk)
+	for i = 1, #waresData, 1 do
+		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. waresData[i].cost .. ")", 0}
+		table.insert(options, ware)
 	end
 
 	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "JunkDealer", "handleSuiPurchase", 32, options)
 end
 
-function JunkDealer:getPerkTable(category)
+--Ethan edit 5-11-24 (JUNK DEALER VENDOR): Grabs the ware data tables from junkDealerData.lua
+function JunkDealer:getWaresTable(category)
 	
-	printf("calling getPerkTable and category is: ")
+	printf("calling getWaresTable and category is: ")
 	printf(category)
 	printf("\n")
 
-	if category == "wares_weapon" then
-		return genericJunkData.junkWeapon
-	elseif category == "wares_armor" then
-		return genericJunkData.junkArmor
-	elseif category == "wares_hireling" then
-		return genericJunkData.junkHireling
+	if category == "wares_pistol" then
+		return genericJunkData.waresPistol
+	elseif category == "wares_rifle" then
+		return genericJunkData.waresRifle
 	end
 end
 
+--This functions is called by the conversation screenplay, and sends a list of items to the player for purchase
 function JunkDealer:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	local cancelPressed = (eventIndex == 1)
 
@@ -243,7 +241,7 @@ function JunkDealer:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	local playerID = SceneObject(pPlayer):getObjectID()
 	local purchaseCategory = readStringData(playerID .. ":junk_dealer_purchase")
 	local purchaseIndex = arg0 + 1
-	local perkData = self:getPerkTable(purchaseCategory)
+	local waresData = self:getWaresTable(purchaseCategory)
 
 	printf("purchseCategory is: ")
 	printf(purchaseCategory)
@@ -251,75 +249,29 @@ function JunkDealer:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 
 
 	
-	if (perkData == nil or purchaseIndex < 1 or purchaseIndex > #perkData) then
+	if (waresData == nil or purchaseIndex < 1 or purchaseIndex > #waresData) then
 		return
 	end
 
-	if(purchaseCategory == "wares_weapon" or purchaseCategory == "wares_armor") then
-		local deedData = perkData[purchaseIndex]
+	if(purchaseCategory == "wares_pistol" or purchaseCategory == "wares_rifle") then
+		local itemData = waresData[purchaseIndex]
 		deleteStringData(playerID .. ":junk_dealer_purchase")
-		self:giveItem(pPlayer, deedData)
+		self:giveItem(pPlayer, itemData)
 	end
-	--PROBABLY BROKEN FUCKERY HERE:
-	if(purchaseCategory == "wares_hireling") then
-		local hirelingItem = perkData[purchaseIndex]
-		local hirelingTemplatePath = hirelingItem.template
-		local hirelingDisplayName = hirelingItem.displayName
-		local pDatapad = SceneObject(pPlayer):getSlottedObject("datapad")
-		deleteStringData(playerID .. ":junk_dealer_purchase")
-		self:awardHireling(pPlayer,pDatapad,hirelingItem)
-	end
-	
 end
 
---PROBABLY A BROKEN ASS FUNCTION
-function JunkDealer:awardHireling(pPlayer, pDatapad, hirelingItem)
-	
-	local templatePath = hirelingItem.template
-	local displayName = hirelingItem.displayName
-	local cost = hirelingItem.cost
-	
-	printf("doing transfer data now\n")
-	printf("template path: ")
-	printf(templatePath)
-	printf("\n")
-	printf("display name: ")
-	printf(displayName)
-	printf("\n")
-	
-	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
-
-	if (checkTooManyHirelings(pDatapad)) then
-		return self.errorCodes.TOOMANYHIRELINGS
-	end
-
-	if (CreatureObject(pPlayer):getCashCredits() < cost) then
-		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
-		return
-	end
-
-	CreatureObject(pPlayer):subtractCashCredits(cost)
-
-	local messageString = LuaStringIdChatParameter("You purchase %TT for %DI credits.") -- You sell %TT for %DI credits.
-	messageString:setTT(displayName)
-	messageString:setDI(cost)
-	CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
-
-
-	local pItem
-	pItem = giveControlDevice(pDatapad, "object/intangible/pet/pet_control.iff", templatePath, -1, true)
-	SceneObject(pItem):sendTo(pPlayer)
-
-	printf("giving control device:")
-	printf("\n")
-
-
-	return
-end
-
-function JunkDealer:giveItem(pPlayer, deedData)
+--Ethan edit 5-11-24 (JUNK DEALER VENDOR): Actually awards the item to the player
+function JunkDealer:giveItem(pPlayer, itemData)
 	local pGhost = CreatureObject(pPlayer):getPlayerObject()
+
+
+	printf("Calling giveItem and itemData is: ")
+	printf(itemData.template)
+	printf("\n")
+		printf("Display name is: ")
+	printf(itemData.displayName)
+	printf("\n")
 
 	if (pGhost == nil) then
 		return
@@ -331,7 +283,7 @@ function JunkDealer:giveItem(pPlayer, deedData)
 		return
 	end
 
-	if (CreatureObject(pPlayer):getCashCredits() < deedData.cost) then
+	if (CreatureObject(pPlayer):getCashCredits() < itemData.cost) then
 		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
 		return
 	elseif (SceneObject(pInventory):isContainerFullRecursive()) then
@@ -339,17 +291,17 @@ function JunkDealer:giveItem(pPlayer, deedData)
 		return
 	end
 
-	CreatureObject(pPlayer):subtractCashCredits(deedData.cost)
+	CreatureObject(pPlayer):subtractCashCredits(itemData.cost)
 
-	local messageString = LuaStringIdChatParameter("You purchase %TT for %DI credits.")
-	messageString:setTT(deedData.displayName)
-	messageString:setDI(cost)
+	local messageString = LuaStringIdChatParameter("@bartender:prose_buy_pass")
+	messageString:setTT(itemData.displayName)
+	messageString:setDI(itemData.cost)
 	CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
 
 
 	local templatePath
 
-	templatePath = deedData.template
+	templatePath = itemData.template
 
 	local pItem = giveItem(pInventory, templatePath, -1)
 
@@ -357,8 +309,10 @@ function JunkDealer:giveItem(pPlayer, deedData)
 		PlayerObject(pGhost):addEventPerk(pItem)
 	end
 end
---End Ethan edit 5-2-24 (JUNK DEALER VENDOR)
-------------------------- 
+
+
+
+------------------------- END ETHAN EDIT
 
 
 return JunkDealer

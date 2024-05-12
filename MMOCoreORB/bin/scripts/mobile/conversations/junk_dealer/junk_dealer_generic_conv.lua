@@ -10,58 +10,13 @@ ask_for_loot = ConvoScreen:new {
 	leftDialog = "@conversation/junk_dealer_generic:s_bef51e38", -- Welcome traveler. I am a buyer of goods that most would deem as junk. If you are interested I will look through what you have to offer and set a price for anything that I wish to buy. I also have come across some other items of interest that I am looking to get rid of.
 	stopConversation = "false",
 	options = {
+		{"Do you by chance have any equipment I could purchase?", "start_vendor"}, --Ethan edit 5-11-24 (JUNK DEALER VENDOR)
 		--{"@conversation/junk_dealer_generic:s_54fab04f", "start_sale"}, -- I have some things that you might be interested in.
 		--{"@conversation/junk_dealer_generic:s_cd7a3f41", "no_loot"}, -- I am sorry but I don't think I have anything you would want.
 		--{"@conversation/junk_dealer_generic:s_3aa18b2d", "inventor"}, -- What sort of items do you have that you are looking to get rid of?
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(ask_for_loot);
-
-
-------------------------------------------------------------------------------
---Ethan Edit 5/2/24 (JUNK DEALER VENDOR): Adding branching dialogue for various junk dealer wares
-wares_start = ConvoScreen:new {
-	id = "wares_start",
-	leftDialog = "What sort of items were you interested in?", -- 
-	stopConversation = "false",
-	options = {
-		{"I'm looking for a weapon.","wares_weapon"},
-		{"I'm looking for armor.","wares_armor"},
-		{"I'm looking for a mercenary contract.","wares_hireling"},
-	}
-}
-junkDealerGenericConvoTemplate:addScreen(wares_start);
-
-
-wares_weapon = ConvoScreen:new {
-	id = "wares_weapon",
-	leftDialog = "Here are the weapons I have available.",
-	stopConversation = "true",
-	options = { }
-}
-junkDealerGenericConvoTemplate:addScreen(wares_weapon);
-
-
-wares_armor = ConvoScreen:new {
-	id = "wares_armor",
-	leftDialog = "Here is the armor I have available.",
-	stopConversation = "true",
-	options = { }
-}
-junkDealerGenericConvoTemplate:addScreen(wares_armor);
-
-
-wares_hireling = ConvoScreen:new {
-	id = "wares_hireling",
-	leftDialog = "Here is the list of mercenary contracts I have available.",
-	stopConversation = "true",
-	options = { }
-}
-junkDealerGenericConvoTemplate:addScreen(wares_hireling);
---End Ethan edit 5-2-24 (JUNK DEALER VENDOR)
-------------------------------------------------------------------------------
-
-
 
 start_sale = ConvoScreen:new {
 	id = "start_sale",
@@ -181,5 +136,47 @@ give_sculpture = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(give_sculpture);
+
+--Ethan edit 5-10-24 (JUNK DEALER VENDOR)
+start_vendor = ConvoScreen:new {
+	id = "start_vendor",
+	customDialogText = "Of course! I have plenty of odds and ends for the discerning buyer... What exactly were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I am looking for a weapon.", "vendor_weapon"},
+		--{"I am looking for some armor.", "vendor_armor"},
+		--{"I am looking for some medicine.","vendor_medicine"},
+		--{"I am looking for a vehicle.","vendor_medicine"},
+		--{"I am looking for some parts.","vendor_medicine"},
+		{"Actually, I don't need anything right now.","no_loot"}
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(start_vendor);
+
+vendor_weapon = ConvoScreen:new {
+	id = "vendor_weapon",
+	customDialogText = "What sort of weapon were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a pistol.", "wares_pistol"},
+		--{"I was looking for a carbine.", "wares_carbine"},
+		--{"I was looking for a rifle.", "wares_rifle"},
+		--{"I was looking for a one-handed weapon.", "wares_oh"},
+		--{"I was looking for a two-handed weapon.", "wares_th"},
+		--{"I was looking for a polearm.", "wares_pole"},
+		--{"I was looking for a knuckler.", "wares_ua"},
+		{"Actually, I don't need anything right now.","no_loot"}
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_weapon);
+
+wares_pistol = ConvoScreen:new {
+	id = "wares_pistol",
+	customDialogText = "Here are the pistols I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_pistol);
+--End Ethan edit 5-10-24 (JUNK DEALER VENDOR)
 
 addConversationTemplate("junkDealerGenericConvoTemplate", junkDealerGenericConvoTemplate);

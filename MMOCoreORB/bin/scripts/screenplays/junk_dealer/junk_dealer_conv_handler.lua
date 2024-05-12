@@ -49,12 +49,8 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 	elseif screenID == "start_sale" then
 		writeStringData(SceneObject(pPlayer):getObjectID() .. ":junkDealerType", self.junkType)
 		JunkDealer:sendSellJunkSelection(pPlayer, pNpc, self.junkType)
-		----------------------- 
-		--Ethan edit 5-2-24 (JUNK DEALER VENDOR)
-		elseif screenID == "wares_weapon" or screenID == "wares_armor" or screenID == "wares_hireling" then --Ethan edit 8/10/23
-			JunkDealer:sendSaleSui(pNpc,pPlayer,screenID)
-		--End Ethan edit 5-2-24 (JUNK DEALER VENDOR)
-		----------------------- 
+	elseif string.find(screenID, "wares_") ~= fil then --Ethan edit 5-10-24 (JUNK DEALER VENDOR) 	--Checks to see if we're on a "wares" screen
+		JunkDealer:sendSaleSui(pNpc, pPlayer, screenID) --End Ethan edit 5-10-24 (JUNK DEALER VENDOR)
 	elseif string.find(screenID, "give_") ~= nil then
 		local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
@@ -82,7 +78,7 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 			end
 		end
 	end
-
+	
 	return pConvScreen
 end
 
