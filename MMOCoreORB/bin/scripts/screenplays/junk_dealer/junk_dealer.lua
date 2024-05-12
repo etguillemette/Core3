@@ -292,7 +292,7 @@ function JunkDealer:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	end
 
 	--if(purchaseCategory == "wares_pistol" or purchaseCategory == "wares_rifle") then
-	if(string.find(purchaseCategory, "wares_") ~= nil then --Ethan edit 5-11-24 (JUNK DEALER VENDOR) fucked with this in the evening, see if this simplifies things
+	if(string.find(purchaseCategory, "wares_") ~= nil ) then --Ethan edit 5-11-24 (JUNK DEALER VENDOR) fucked with this in the evening, see if this simplifies things
 		local itemData = waresData[purchaseIndex]
 		deleteStringData(playerID .. ":junk_dealer_purchase")
 		self:giveItem(pPlayer, itemData)
