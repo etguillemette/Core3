@@ -75,6 +75,7 @@ baseStoredShips = 3
 --(XP FOR SELF HEALS) Ethan Edit 5-2-24:
 selfHealEnabled = true
 playerStructureMaintenanceRate = 1.0
+playerStructureEntropyEnabled = false;
 --End Ethan Edit 5-2-24 (XP FOR SELF HEALS)
 
 

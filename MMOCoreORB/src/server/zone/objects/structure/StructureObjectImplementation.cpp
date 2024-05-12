@@ -26,6 +26,8 @@
 #include "server/zone/managers/stringid/StringIdManager.h"
 #include "server/zone/objects/transaction/TransactionLog.h"
 
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (HALT ENTROPY)
+
 void StructureObjectImplementation::loadTemplateData(SharedObjectTemplate* templateData) {
 	TangibleObjectImplementation::loadTemplateData(templateData);
 
@@ -288,6 +290,20 @@ float StructureObjectImplementation::getMaintenanceRate() const {
 	if (maintenanceReduced) {
 		rate *= 0.8f;
 	}
+
+	//Ethan edit 5-6-24 (HALT ENTROPY)
+	Lua* lua = new Lua();
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	int playerStructureMaintenanceRate = lua->getGlobalFloat("playerStructureMaintenanceRate");
+	
+	//If Maintenance Rate global value isn't set to 100%, it will adjust the overall rate
+	if (playerStructureMaintenanceRate != 1.0f)
+	{
+		rate *= playerStructureMaintenanceRate;
+	}
+	//End Ethan edit 5-6-24 (HALT ENTROPY)
 
 	return (float)((int)rate); // Round to nearest int
 }
@@ -612,6 +628,22 @@ int StructureObjectImplementation::getDecayPercentage() {
 			percentage = 0;
 		} else if (percentage > 100) {
 			percentage = 100;
+
+			//Ethan edit 5-6-24 (HALT ENTROPY)
+			Lua* lua = new Lua();
+			lua->init();
+
+			lua->runFile("scripts/managers/player_manager.lua");
+			int playerStructureEntropyEnabled = lua->getGlobalInt("playerStructureEntropyEnabled");
+			
+			//If entropy is disabled, structures will never get past 10% decay
+			if (playerStructureEntropyEnabled == false)
+			{
+				percentage = 10; 
+			}
+
+			//End Ethan edit 5-6-24 (HALT ENTROPY)
+
 		}
 	} else {
 		// Structure has 0 in max condition, i.e. it cannot decay. Condition is therefore always 100 %.
