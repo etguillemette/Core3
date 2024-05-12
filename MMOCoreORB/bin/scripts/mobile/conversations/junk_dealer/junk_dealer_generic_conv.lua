@@ -148,7 +148,7 @@ start_vendor = ConvoScreen:new {
 		--{"I am looking for some medicine.","vendor_medicine"},
 		--{"I am looking for a vehicle.","vendor_medicine"},
 		--{"I am looking for some parts.","vendor_medicine"},
-		{"Actpaddedlly, I don't need anything right now.","no_loot"}
+		{"Actually, I don't need anything right now.","no_loot"}
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(start_vendor);
@@ -166,7 +166,7 @@ vendor_weapon = ConvoScreen:new {
 		{"I was looking for a polearm.", "wares_pole"},
 		{"I was looking for a knuckler.", "wares_padded"},
 		{"I was looking for a heavy weapon.", "wares_heavy"},
-		{"Actpaddedlly, I don't need anything right now.","no_loot"}
+		{"Actually, I don't need anything right now.","no_loot"}
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(vendor_weapon);
@@ -189,7 +189,7 @@ vendor_armor = ConvoScreen:new {
 		{"I was looking for some Wookie Ceremonial armor", "wares_ceremonial"},
 		{"I was looking for some Wookie Black Mountain armor.", "wares_mountain"},
 		{"I was looking for some Wookie Hunting armor", "wares_hunting"},
-		{"Actpaddedlly, I don't need anything right now.","no_loot"}		
+		{"Actually, I don't need anything right now.","no_loot"}		
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(vendor_armor);
