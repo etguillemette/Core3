@@ -189,10 +189,14 @@ end
 --Ethan edit 5-11-24 (JUNK DEALER VENDOR): Calls up a sale menu
 function JunkDealer:sendSaleSui(pNpc, pPlayer, screenID)
 	
-	printf("calling sendSaleSui and screenID is: ")
-	printf(screenID)
-	printf("\n")
+	--printf("calling sendSaleSui and screenID is: ")
+	--printf(screenID)
+	--printf("\n")
 	
+	--CreatureObject(pPlayer):sendSystemMessage("sendSaleSUI screenId:")
+	--CreatureObject(pPlayer):sendSystemMessage(screenID)
+	--CreatureObject(pPlayer):sendSystemMessage("\n")
+
 	if (pPlayer == nil or pNpc == nil) then
 		return
 	end
@@ -214,9 +218,10 @@ end
 --Ethan edit 5-11-24 (JUNK DEALER VENDOR): Grabs the ware data tables from junkDealerData.lua
 function JunkDealer:getWaresTable(category)
 	
-	printf("calling getWaresTable and category is: ")
-	printf(category)
-	printf("\n")
+	--print("calling getWaresTable and category is: ")
+	--print(category)
+	--print("\n")
+
 
 	if category == "wares_pistol" then
 		return genericJunkData.waresPistol
@@ -281,13 +286,16 @@ function JunkDealer:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	local purchaseIndex = arg0 + 1
 	local waresData = self:getWaresTable(purchaseCategory)
 
-	printf("purchseCategory is: ")
-	printf(purchaseCategory)
-	printf("\n")
+	--print("purchseCategory is: ")
+	--print(purchaseCategory)
+	--print("\n")
 
-
+	--CreatureObject(pPlayer):sendSystemMessage("handleSuiPurchase purchaseCategory:")
+	--CreatureObject(pPlayer):sendSystemMessage(purchaseCategory)
+	--CreatureObject(pPlayer):sendSystemMessage("\n")
 	
 	if (waresData == nil or purchaseIndex < 1 or purchaseIndex > #waresData) then
+		--print("wares data is nil \n")
 		return
 	end
 
@@ -304,12 +312,14 @@ function JunkDealer:giveItem(pPlayer, itemData)
 	local pGhost = CreatureObject(pPlayer):getPlayerObject()
 
 
-	printf("Calling giveItem and itemData is: ")
-	printf(itemData.template)
-	printf("\n")
-		printf("Display name is: ")
-	printf(itemData.displayName)
-	printf("\n")
+	--print("Calling giveItem and itemData is: ")
+	--print(itemData.template)
+	--print("\n")
+	--print("Display name is: ")
+	--print(itemData.displayName)
+	--print("\n")
+
+
 
 	if (pGhost == nil) then
 		return

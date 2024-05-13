@@ -1,7 +1,7 @@
 junkDealerGenericConvoTemplate = ConvoTemplate:new {
 	initialScreen = "ask_for_loot",
-	templateType = "Lpadded",
-	lpaddedClassHandler = "JunkDealerGenericConvoHandler",
+	templateType = "Lua",
+	luaClassHandler = "JunkDealerGenericConvoHandler",
 	screens = {}
 }
 
@@ -36,7 +36,7 @@ junkDealerGenericConvoTemplate:addScreen(no_loot);
 
 inventor = ConvoScreen:new {
 	id = "inventor",
-	leftDialog = "@conversation/junk_dealer_generic:s_d9e6b751", -- An inventor recently sold me and my fellow junk dealers a large qpaddedntity of these special kits that were supposed to revolutionize crafting. Unfortunately, they are useless without the special components that they are designed to use.
+	leftDialog = "@conversation/junk_dealer_generic:s_d9e6b751", -- An inventor recently sold me and my fellow junk dealers a large quantity of these special kits that were supposed to revolutionize crafting. Unfortunately, they are useless without the special components that they are designed to use.
 	stopConversation = "false",
 	options = {
 		{"@conversation/junk_dealer_generic:s_6d53d062", "shipment"}, -- Why don't you just get some of the special components?
@@ -66,7 +66,7 @@ junkDealerGenericConvoTemplate:addScreen(adventerous);
 
 want_them_gone = ConvoScreen:new {
 	id = "want_them_gone",
-	leftDialog = "@conversation/junk_dealer_generic:s_4d65752", -- I just want them gone. They are taking up valpaddedble space in my inventory so I will just give you one of each type if you want.
+	leftDialog = "@conversation/junk_dealer_generic:s_4d65752", -- I just want them gone. They are taking up valuable space in my inventory so I will just give you one of each type if you want.
 	stopConversation = "false",
 	options = {
 		{"@conversation/junk_dealer_generic:s_d347bee3", "kit_types"}, -- Ok sounds good. What sort of kits do you have?
@@ -164,7 +164,7 @@ vendor_weapon = ConvoScreen:new {
 		{"I was looking for a one-handed weapon.", "wares_oh"},
 		{"I was looking for a two-handed weapon.", "wares_th"},
 		{"I was looking for a polearm.", "wares_pole"},
-		{"I was looking for a knuckler.", "wares_padded"},
+		{"I was looking for a knuckler.", "wares_ua"},
 		{"I was looking for a heavy weapon.", "wares_heavy"},
 		{"Actually, I don't need anything right now.","no_loot"}
 	}
@@ -183,7 +183,7 @@ vendor_armor = ConvoScreen:new {
 		{"I was looking for some ubese armor", "wares_ubese"},
 		{"I was looking for some padded armor", "wares_padded"},
 		{"I was looking for some composite armor", "wares_composite"},
-		{"I was looking for some Ithorian gpaddedrdian armor", "wares_gpaddedrdian"},
+		{"I was looking for some Ithorian guardian armor", "wares_guardian"},
 		{"I was looking for some Ithorian defender armor", "wares_defender"},
 		{"I was looking for some Ithorian sentinel armor", "wares_sentinel"},
 		{"I was looking for some Wookie Ceremonial armor", "wares_ceremonial"},
