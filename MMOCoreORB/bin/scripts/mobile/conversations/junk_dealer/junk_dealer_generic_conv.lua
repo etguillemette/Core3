@@ -145,8 +145,9 @@ start_vendor = ConvoScreen:new {
 	options = {
 		{"I am looking for a weapon.", "vendor_weapon"},
 		{"I am looking for some armor.", "vendor_armor"},
-		--{"I am looking for some medicine.","vendor_medicine"},
-		--{"I am looking for a vehicle.","vendor_medicine"},
+		{"I am looking for some medicine.","vendor_medicine"},
+		--{"I am looking for some clothing."},
+		--{"I am looking for a vehicle.","vendor_vehicle"},
 		--{"I am looking for some parts.","vendor_medicine"},
 		{"Actually, I don't need anything right now.","no_loot"}
 	}
@@ -193,6 +194,25 @@ vendor_armor = ConvoScreen:new {
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(vendor_armor);
+
+vendor_medicine = ConvoScreen:new {
+	id = "vendor_medicine",
+	customDialogText = "What sort of medicine were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for some stim packs.", "wares_stim"},
+		{"Actually, I don't need anything right now.","no_loot"}
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_medicine);
+
+wares_stim = ConvoScreen:new {
+	id = "wares_stim",
+	customDialogText = "Here are the stims I have available.",
+	stopConversation = true,
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_stim);
 
 wares_pistol = ConvoScreen:new {
 	id = "wares_pistol",

@@ -265,6 +265,8 @@ function JunkDealer:getWaresTable(category)
 		return genericJunkData.waresMountain
 	elseif category == "wares_hunting" then
 		return genericJunkData.waresHunting
+	elseif category == "wares_stim" then
+		return genericJunkData.waresStim
 	end
 end
 

@@ -229,4 +229,12 @@ genericJunkData = {
         { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_bracer_l.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_hunting_bracer_l" },
         { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_bracer_r.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_hunting_bracer_r" },
     },
+
+    waresStim = {
+        { template = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_a.iff", cost = 1000, displayName="@medicine_name:stimpack_sm_s1_a"},
+        { template = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_b.iff", cost = 2000, displayName="@medicine_name:stimpack_sm_s1_b"},
+        { template = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_c.iff", cost = 5000, displayName="@medicine_name:stimpack_sm_s1_c"},
+        { template = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_d.iff", cost = 7500, displayName="@medicine_name:stimpack_sm_s1_d"},
+        { template = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_e.iff", cost = 10000, displayName="@medicine_name:stimpack_sm_s1_e"},
+    },
 }
