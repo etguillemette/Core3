@@ -209,7 +209,7 @@ junkDealerGenericConvoTemplate:addScreen(vendor_medicine);
 wares_stim = ConvoScreen:new {
 	id = "wares_stim",
 	customDialogText = "Here are the stims I have available.",
-	stopConversation = true,
+	stopConversation = "true",
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(wares_stim);

@@ -737,3 +737,7 @@ includeFile("events/ServerEventAutomation.lua")
 
 -- Custom content - Loads last to allow for overrides
 includeFile("../custom_scripts/screenplays/screenplays.lua")
+
+
+-- Ethan edit 5-15-24 (NPC VENDOR)
+includeFile("npcvendor/npc_vendor.lua")
