@@ -519,7 +519,7 @@ genericWaresData = {
     --    { template = "object/tangible/deed/harvester_deed/harvester_ore_s1_deed.lua", generatedObjectTemplate="object/installation/mining_ore/mining_ore_harvester_style_1.lua", cost = 1000, displayName = "@installation_n:small_ore_mine"},
     --},
 
-    deedsInstallations = {
+    deedsHarvester= {
         { template = "object/tangible/deed/harvester_deed/harvester_ore_s1_deed.lua", generatedObjectTemplate="object/installation/mining_ore/mining_ore_harvester_style_1.lua", cost = 1000, displayName = "@installation_n:small_ore_mine"},
     },
 }

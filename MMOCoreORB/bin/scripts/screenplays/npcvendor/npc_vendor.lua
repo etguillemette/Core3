@@ -80,8 +80,8 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.waresHunting
 	elseif category == "wares_stim" then
 		return genericWaresData.waresStim
-	elseif category == "deeds_installation" then
-		return genericWaresData.deedsInstallations
+	elseif category == "deeds_harvester" then
+		return genericWaresData.deedsHarvester
 	end
 end
 
