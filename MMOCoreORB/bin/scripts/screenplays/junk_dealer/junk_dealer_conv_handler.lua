@@ -51,10 +51,9 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 		writeStringData(SceneObject(pPlayer):getObjectID() .. ":junkDealerType", self.junkType)
 		JunkDealer:sendSellJunkSelection(pPlayer, pNpc, self.junkType)
 	elseif string.find(screenID, "wares_") ~= nil then --Ethan edit 5-10-24 (JUNK DEALER VENDOR) 	--Checks to see if we're on a "wares" screen
-		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID) --TESTING. Can I rework this into its own universal function?
-		--JunkDealer:sendSaleSui(pNpc, pPlayer, screenID) --End Ethan edit 5-10-24 (JUNK DEALER VENDOR)
-	elseif string.find(screenID, "deeds_") ~= nil then
-		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID) --Ethan edit 5-15-24 (NPC VENDOR DEEDS) testing
+		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
+	elseif string.find(screenID, "hires_") ~= nil then
+		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID) --Ethan edit 5-15-24 (NPC VENDOR HIRES) testing
 	elseif string.find(screenID, "give_") ~= nil then
 		local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
