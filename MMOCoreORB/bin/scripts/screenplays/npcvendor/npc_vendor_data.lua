@@ -512,14 +512,18 @@ genericWaresData = {
         { template = "object/tangible/scout/camokit/shared_camokit_yavin.iff", cost = 9000, displayName = "@item_n:camokit_yavin"},
         { template = "object/tangible/scout/camokit/shared_camokit_dathomir.iff", cost = 10000, displayName = "@item_n:camokit_dathomir"},        
     },
-    --	hq_s01_pvp_rebel = {type=factionRewardType.installation, display="@deed:hq_s01_pvp_rebel", item="object/tangible/deed/faction_perk/hq/hq_s01_pvp.iff", ="object/building/faction_perk/hq/hq_s01_rebel_pvp.iff", cost=20000, bonus={"hq_s01_rebel","hq_s01_rebel"}, status = OVERT},
-    --generatedObjectTemplate="generatedObjectTemplateobject/building/faction_perk/hq/hq_s01_rebel.iff"
-    --rebel_trooper = { type=factionRewardType.hireling, display="@mob/creature_names:rebel_trooper", item="object/intangible/pet/pet_control.iff", controlledObjectTemplate="rebel_trooper", cost=150},
-    --hiresMercs = {
-    --    { template = "object/tangible/deed/harvester_deed/harvester_ore_s1_deed.lua", generatedObjectTemplate="object/installation/mining_ore/mining_ore_harvester_style_1.lua", cost = 1000, displayName = "@installation_n:small_ore_mine"},
-    --},
 
-    deedsHarvester= {
-        { template = "object/tangible/deed/harvester_deed/harvester_ore_s1_deed.lua", generatedObjectTemplate="object/installation/mining_ore/mining_ore_harvester_style_1.lua", cost = 1000, displayName = "@installation_n:small_ore_mine"},
+    --Ethan Testing NPC Vendor 5-16-24:
+    hiresMercs = {
+        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="rebel_trooper", displayName="@mob/creature_names:rebel_trooper"},
+    }
+
+    waresHarvester = {
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_ore_s1_deed.iff", cost = 1000, displayName = "@installation_n:small_ore_mine"},
     },
+
+    servicesEntertainer = {
+        {actionCRC = "startDance.lua", targetID = "", cost = 100, displayName = "dance"},
+    },
+    --Ethan End testing NPC vendor 5-16-24
 }
