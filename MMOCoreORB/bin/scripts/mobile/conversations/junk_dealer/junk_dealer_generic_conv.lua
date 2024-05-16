@@ -220,7 +220,7 @@ vendor_installation = ConvoScreen:new {
 	customDialogText = "What sort of installation were you looking for?",
 	stopConversation = "false",
 	options = {
-		{"I was looking for a harvester.", "deeds_harvester"},
+		{"I was looking for a harvester.", "deeds_installation"},
 		{"I was looking for a factory.", "deeds_factory"},
 		{"Actually, I don't need anything right now.","no_loot"},
 	}
