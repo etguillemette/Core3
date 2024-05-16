@@ -80,7 +80,7 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.waresHunting
 	elseif category == "wares_stim" then
 		return genericWaresData.waresStim
-	elseif category == "deeds_harvester" then
+	elseif category == "wares_harvester" then
 		return genericWaresData.deedsHarvester
 	end
 end
@@ -113,11 +113,17 @@ function NPCVendor:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 		deleteStringData(playerID .. ":npc_vendor_purchase")
 		self:giveItem(pPlayer, itemData)
 	end
-	--Ethan edit 5-15-24 testing deed additions:
-	if string.find(purchaseCategory, "deeds_") ~= nil then
+
+	if string.find(purchaseCategory, "hires_") ~= nil then
 		deleteStringData(playerID .. ":npc_vendor_purchase")
-		self:transferDeed(pPlayer, itemData)
+		self:awardData(pPlayer,itemData)
 	end
+
+	if string.find(purchaseCategory, "services_") ~= nil then
+		deleteStringData(playerID .. ":npc_vendor_purchase")
+		self:giveService(pPlayer,itemData)
+	end
+
 end
 
 --Handles the actual handoff of the item to the player
@@ -162,17 +168,96 @@ function NPCVendor:giveItem(pPlayer, itemData)
 	end
 end
 
---Ethan edit 5-15-24 testing (NPC VENDOR) Testing to see if I can add functions for awarding schematics and hirelings as well:
-function NPCVendor:transferDeed(pPlayer, itemData)
+--Essentially checks that all the data is valid before creating the control device for a hireling
+function NPCVendor:awardData(pPlayer, itemData)
 	local pGhost = CreatureObject(pPlayer):getPlayerObject()
-	
+
 	if (pGhost == nil) then
+		return self.errorCodes.DATAPADERROR
+	end
+
+	local pDatapad = SceneObject(pPlayer):getSlottedObject("datapad")
+
+	if pDatapad == nil then
+		return self.errorCodes.DATAPADERROR
+	end
+
+	local itemCost = itemData.cost
+
+	if itemCost == nil then
+		return self.errorCodes.ITEMCOST
+	end
+
+	local slotsRemaining = SceneObject(pDatapad):getContainerVolumeLimit() - SceneObject(pDatapad):getCountableObjectsRecursive()
+
+	if (slotsRemaining < 1) then
+		return self.errorCodes.DATAPADFULL
+	end
+
+	local transferResult = self:transferData(pPlayer, pDatapad, itemData)
+
+	if(transferResult ~= self.errorCodes.SUCCESS) then
+		return transferResult
+	end
+
+	if (CreatureObject(pPlayer):getCashCredits() < itemData.cost) then
+		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
+		return
+	elseif (SceneObject(pInventory):isContainerFullRecursive()) then
+		CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
 		return
 	end
-	
-	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
-	if (pInventory == nil) then
+	CreatureObject(pPlayer):subtractCashCredits(itemData.cost)
+
+	local messageString = LuaStringIdChatParameter("@faction_recruiter:hireling_purchase_complete") -- The %TT is now under your command.
+	messageString:setTT(itemData.displayName)
+	CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
+
+	return self.errorCodes.SUCCESS
+end
+
+
+--This function actually gives the data (hireling) to the player. It is called by function awardData()
+function NPCVendor:transferData(pPlayer, pDatapad, itemData)
+	local pItem
+	local templatePath = itemData.template
+
+	if templatePath == nil then
+		return self.errorCodes.TEMPLATEPATHERROR
+	end
+
+	local genPath = itemData.controlledObjectTemplate
+
+	if genPath == nil then
+		return self.errorCodes.TEMPLATEPATHERROR
+	end
+
+	if (self:isHireling(faction, itemString)) then
+		if (checkTooManyHirelings(pDatapad)) then
+			return self.errorCodes.TOOMANYHIRELINGS
+		end
+
+		pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, true)
+	else
+		pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, false)
+	end
+
+	if pItem ~= nil then
+		SceneObject(pItem):sendTo(pPlayer)
+	else
+		return self.errorCodes.GIVEERROR
+	end
+
+	return self.errorCodes.SUCCESS
+end
+
+
+--Handles the actual handoff of the item to the player
+function NPCVendor:giveService(pPlayer, itemData)
+	local pGhost = CreatureObject(pPlayer):getPlayerObject()
+
+	if (pGhost == nil) then
 		return
 	end
 
@@ -184,38 +269,21 @@ function NPCVendor:transferDeed(pPlayer, itemData)
 		return
 	end
 
-
-	local templatePath = itemData.template
-	
-	if templatePath == nil then
-		return self.errorCodes.TEMPLATEPATHERROR
-	end
-
 	CreatureObject(pPlayer):subtractCashCredits(itemData.cost)
 
+	--Ethan testing: will need to edit the below strings to match the context of buying a service:
 	local messageString = LuaStringIdChatParameter("@bartender:prose_buy_pass")
 	messageString:setTT(itemData.displayName)
 	messageString:setDI(itemData.cost)
 	CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
 
-	local pItem = giveItem(pInventory, templatePath, -1)
+	local onPlayer = itemData.onPlayer
 
-	if (pItem == nil) then
-		return self.errorCodes.GIVEERROR
+	if onPlayer == "true" then
+		--DO ACTION HERE TO PLAYER
+	else
+	    --DO ACTION
 	end
-
-
-	SceneObject(pItem):setObjectName("deed", itemData.displayName, true)
-	local deed = LuaDeed(pItem)
-	local genPath = itemData.generatedObjectTemplate
-
-	if genPath == nil then
-		return self.errorCodes.TEMPLATEPATHERROR
-	end
-
-	deed:setGeneratedObjectTemplate(genPath)
-
-	return self.errorCodes.SUCCESS
 end
 
 
