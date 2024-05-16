@@ -80,6 +80,8 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.waresHunting
 	elseif category == "wares_stim" then
 		return genericWaresData.waresStim
+	elseif category == "deeds_installation" then
+		return genericWaresData.deedsInstallations
 	end
 end
 
@@ -105,13 +107,20 @@ function NPCVendor:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 		return
 	end
 
+	local itemData = waresData[purchaseIndex]
+
 	if string.find(purchaseCategory, "wares_") ~= nil  then 
-		local itemData = waresData[purchaseIndex]
 		deleteStringData(playerID .. ":npc_vendor_purchase")
 		self:giveItem(pPlayer, itemData)
 	end
+	--Ethan edit 5-15-24 testing deed additions:
+	if string.find(purchaseCategory, "deeds_") ~= nil then
+		deleteStringData(playerID .. ":npc_vendor_purchase")
+		self:transferDeed(pPlayer, itemData)
+	end
 end
 
+--Handles the actual handoff of the item to the player
 function NPCVendor:giveItem(pPlayer, itemData)
 	local pGhost = CreatureObject(pPlayer):getPlayerObject()
 
@@ -152,6 +161,63 @@ function NPCVendor:giveItem(pPlayer, itemData)
 		PlayerObject(pGhost):addEventPerk(pItem)
 	end
 end
+
+--Ethan edit 5-15-24 testing (NPC VENDOR) Testing to see if I can add functions for awarding schematics and hirelings as well:
+function NPCVendor:transferDeed(pPlayer, itemData)
+	local pGhost = CreatureObject(pPlayer):getPlayerObject()
+	
+	if (pGhost == nil) then
+		return
+	end
+	
+	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
+
+	if (pInventory == nil) then
+		return
+	end
+
+	if (CreatureObject(pPlayer):getCashCredits() < itemData.cost) then
+		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
+		return
+	elseif (SceneObject(pInventory):isContainerFullRecursive()) then
+		CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
+		return
+	end
+
+
+	local templatePath = itemData.template
+	
+	if templatePath == nil then
+		return self.errorCodes.TEMPLATEPATHERROR
+	end
+
+	CreatureObject(pPlayer):subtractCashCredits(itemData.cost)
+
+	local messageString = LuaStringIdChatParameter("@bartender:prose_buy_pass")
+	messageString:setTT(itemData.displayName)
+	messageString:setDI(itemData.cost)
+	CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
+
+	local pItem = giveItem(pInventory, templatePath, -1)
+
+	if (pItem == nil) then
+		return self.errorCodes.GIVEERROR
+	end
+
+
+	SceneObject(pItem):setObjectName("deed", itemData.displayName, true)
+	local deed = LuaDeed(pItem)
+	local genPath = itemData.generatedObjectTemplate
+
+	if genPath == nil then
+		return self.errorCodes.TEMPLATEPATHERROR
+	end
+
+	deed:setGeneratedObjectTemplate(genPath)
+
+	return self.errorCodes.SUCCESS
+end
+
 
 
 return NPCVendor
