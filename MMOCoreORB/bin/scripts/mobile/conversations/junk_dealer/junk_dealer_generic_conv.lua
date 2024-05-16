@@ -146,6 +146,7 @@ start_vendor = ConvoScreen:new {
 		{"I am looking for a weapon.", "vendor_weapon"},
 		{"I am looking for some armor.", "vendor_armor"},
 		{"I am looking for some medicine.","vendor_medicine"},
+		{"I am looking for some installations.","vendor_installation"},
 		--{"I am looking for some clothing."},
 		--{"I am looking for a vehicle.","vendor_vehicle"},
 		--{"I am looking for some parts.","vendor_medicine"},
@@ -213,6 +214,19 @@ wares_stim = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(wares_stim);
+
+vendor_installation = ConvoScreen:new {
+	id = "vendor_installation",
+	customDialogText = "What sort of installation were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a harvester.", "deeds_installation"},
+		{"I was looking for a factory.", "deeds_factory"},
+		{"Actually, I don't need anything right now.","no_loot"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_installation)
+
 
 wares_pistol = ConvoScreen:new {
 	id = "wares_pistol",
@@ -382,6 +396,13 @@ wares_hunting = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(wares_hunting);
 
+deeds_harvester = ConvoScreen:new {
+	id = "deeds_harvester",
+	customDialogText = "Here are the harvesters I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(deeds_harvester);
 
 --End Ethan edit 5-10-24 (JUNK DEALER VENDOR)
 
