@@ -237,15 +237,15 @@ function NPCVendor:transferData(pPlayer, pDatapad, itemData)
 		return self.errorCodes.TEMPLATEPATHERROR
 	end
 
-
+	--if (self:isHireling(faction, itemString)) then
 	if (checkTooManyHirelings(pDatapad)) then
 		return self.errorCodes.TOOMANYHIRELINGS
 	end
 
-		pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, true)
-	else
-		pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, false)
-	end
+	pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, true)
+	--else
+	--	pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, false)
+	--end
 
 	if pItem ~= nil then
 		SceneObject(pItem):sendTo(pPlayer)
