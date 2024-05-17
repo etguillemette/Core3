@@ -81,7 +81,7 @@ function NPCVendor:getWaresTable(category)
 	elseif category == "wares_stim" then
 		return genericWaresData.waresStim
 	elseif category == "wares_harvester" then
-		return genericWaresData.deedsHarvester
+		return genericWaresData.waresHarvester
 	elseif category == "hires_marksman" then
 		return genericWaresData.hiresMarksman
 	elseif category == "hires_brawler" then
@@ -237,10 +237,10 @@ function NPCVendor:transferData(pPlayer, pDatapad, itemData)
 		return self.errorCodes.TEMPLATEPATHERROR
 	end
 
-	if (self:isHireling(faction, itemString)) then
-		if (checkTooManyHirelings(pDatapad)) then
-			return self.errorCodes.TOOMANYHIRELINGS
-		end
+
+	if (checkTooManyHirelings(pDatapad)) then
+		return self.errorCodes.TOOMANYHIRELINGS
+	end
 
 		pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, true)
 	else
