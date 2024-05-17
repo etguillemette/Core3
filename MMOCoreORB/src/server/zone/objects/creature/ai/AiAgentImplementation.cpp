@@ -4171,7 +4171,9 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 	if (isPet() && !isMindTricked()) {
 		ManagedReference<PetControlDevice*> pcd = getControlDevice().get().castTo<PetControlDevice*>();
 		if (pcd != nullptr && pcd->getPetType() == PetManager::FACTIONPET && creature->isNeutral()) {
-			return false;
+			//Ethan edit 5-16-24 (HIRELING)
+			return true;
+			//return false;
 		}
 
 		ManagedReference<CreatureObject*> owner = getLinkedCreature().get();
@@ -4190,7 +4192,9 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 		ManagedReference<PetControlDevice*> controlDevice = creature->getControlDevice().get().castTo<PetControlDevice*>();
 
 		if (controlDevice != nullptr && controlDevice->getPetType() == PetManager::FACTIONPET && isNeutral())
-			return false;
+			//Ethan edit 5-16-24 (HIRELING)
+			return true;
+			//return false;
 
 		ManagedReference<CreatureObject*> owner = creature->getLinkedCreature().get();
 
@@ -4238,7 +4242,9 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 
 		// Attacking creature has no faction
 		if (creatureFaction == 0)
-			return false;
+			//Ethan edit 5-16-24 (HIRELING)
+			return true;
+			//return false;
 
 		// This faction and attacking creature are same faction
 		if (thisFaction == creatureFaction)
@@ -4255,8 +4261,10 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 			return false;
 
 		// Faction check stricly for AI vs AI. Faction AI attamepting to attack non-faction AI
+		//Ethan edit 5-16-24 (HIRELING)
 		if (thisFaction == 0 && creatureFaction > 0)
-			return false;
+			return true;
+			//return false;
 
 		AiAgent* creatureAgent = creature->asAiAgent();
 
