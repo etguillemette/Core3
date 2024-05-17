@@ -515,15 +515,15 @@ genericWaresData = {
 
     --Ethan Testing NPC Vendor 5-16-24:
     hiresMercs = {
-        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="rebel_trooper", displayName="@mob/creature_names:rebel_trooper"},
-    }
+        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="rebel_trooper", displayName = "@mob/creature_names:rebel_trooper"},
+    },
 
     waresHarvester = {
         { template = "object/tangible/deed/harvester_deed/shared_harvester_ore_s1_deed.iff", cost = 1000, displayName = "@installation_n:small_ore_mine"},
     },
 
     servicesEntertainer = {
-        {actionCRC = "startDance.lua", targetID = "", cost = 100, displayName = "dance"},
+        { actionCRC = "startDance.lua", targetID = "", cost = 100, displayName = "dance"},
     },
     --Ethan End testing NPC vendor 5-16-24
 }
