@@ -80,8 +80,36 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.waresHunting
 	elseif category == "wares_stim" then
 		return genericWaresData.waresStim
+	elseif category == "wares_medpack" then
+		return genericWaresData.waresMedpack
+	elseif category == "wares_status" then
+		return genericWaresData.waresStatusMedpack
+	elseif category == "wares_wound" then
+		return genericWaresData.waresWoundPack
+	elseif category == "wares_enhancement" then
+		return genericWaresData.waresEnhacement
+	elseif category == "wares_camo" then
+		return genericWaresData.waresCamo
+	elseif category == "wares_trap" then
+		return genericWaresData.waresTrap
+	elseif category == "wares_camp" then
+		return genericWaresData.waresCamp
+	elseif category == "wares_food" then
+		return genericWaresData.waresFood
+	elseif category == "wares_drink" then
+		return genericWaresData.waresDrink
+	elseif category == "wares_dessert" then
+		return genericWaresData.waresDessert
 	elseif category == "wares_harvester" then
 		return genericWaresData.waresHarvester
+	elseif category == "wares_factory" then
+		return genericWaresData.waresFactory
+	elseif category == "wares_generator" then
+		return genericWaresData.waresGenerator
+	elseif category == "wares_guild" then
+		return genericWaresData.waresGuild
+	elseif category == "wares_house" then
+		return genericWaresData.waresHouse
 	elseif category == "hires_marksman" then
 		return genericWaresData.hiresMarksman
 	elseif category == "hires_brawler" then

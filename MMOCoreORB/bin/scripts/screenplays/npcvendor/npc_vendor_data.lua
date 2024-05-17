@@ -226,7 +226,7 @@ genericWaresData = {
         { template = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_e.iff", cost = 10000, displayName="@medicine_name:stimpack_sm_s1_e"},
     },
 
-    waresMedpacks = {
+    waresMedpack = {
         { template = "object/tangible/medicine/crafted/shared_medpack_damage_a.iff", cost = 6000, displayName = "@medicine_name:medpack_damage_a"},
         { template = "object/tangible/medicine/crafted/shared_medpack_damage_b.iff", cost = 7000, displayName = "@medicine_name:medpack_damage_b"},
         { template = "object/tangible/medicine/crafted/shared_medpack_damage_c.iff", cost = 8000, displayName = "@medicine_name:medpack_damage_c"},
@@ -243,7 +243,7 @@ genericWaresData = {
         { template = "object/tangible/medicine/crafted/shared_medpack_revive.iff", cost = 20000, displayName = "@medicine_name:medpack_revive"},
     },
 
-    waresStatusMedpacks = {
+    waresStatusMedpack = {
         { template = "object/tangible/medicine/crafted/shared_medic_fire_blanket.iff", cost = 6000, displayName = "@medicine_name:medic_fire_blanket"},
         { template = "object/tangible/medicine/crafted/shared_medpack_blinded_a.iff", cost = 6000, displayName = "@medicine_name:medic_blinded_a"},
         { template = "object/tangible/medicine/crafted/shared_medpack_blinded_b.iff", cost = 7000, displayName = "@medicine_name:medic_blinded_b"},
@@ -339,7 +339,7 @@ genericWaresData = {
         { template = "object/tangible/medicine/crafted/shared_medpack_stunned_b.iff", cost = 7000, displayName = "@medicine_name:medic_stunned_b"},
     },
 
-    waresWoundPacks = {
+    waresWoundPack = {
         { template = "object/tangible/medicine/crafted/shared_medpack_wound_action_a.iff", cost = 6000, displayName = "@medicine_name:medpack_wound_action_a"},
         { template = "object/tangible/medicine/crafted/shared_medpack_wound_action_b.iff", cost = 7000, displayName = "@medicine_name:medpack_wound_action_b"},
         { template = "object/tangible/medicine/crafted/shared_medpack_wound_action_c.iff", cost = 8000, displayName = "@medicine_name:medpack_wound_action_c"},
@@ -372,7 +372,7 @@ genericWaresData = {
         { template = "object/tangible/medicine/crafted/shared_medpack_wound_strength_e.iff", cost = 10000, displayName = "@medicine_name:medpack_wound_strength_e"},
     },
 
-    waresEnhacements = {
+    waresEnhacement = {
         { template = "object/tangible/medicine/crafted/shared_medpack_enhance_action_a.iff", cost = 6000, displayName = "@medicine_name:medpack_enhance_action_a"},
         { template = "object/tangible/medicine/crafted/shared_medpack_enhance_action_b.iff", cost = 7000, displayName = "@medicine_name:medpack_enhance_action_b"},
         { template = "object/tangible/medicine/crafted/shared_medpack_enhance_action_c.iff", cost = 8000, displayName = "@medicine_name:medpack_enhance_action_c"},
@@ -513,13 +513,84 @@ genericWaresData = {
         { template = "object/tangible/scout/camokit/shared_camokit_dathomir.iff", cost = 10000, displayName = "@item_n:camokit_dathomir"},        
     },
 
+    waresCamp = {     
+    },
+
     --Ethan Testing NPC Vendor 5-16-24:
     hiresMarksman = {
         { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="sharpshooter", displayName = "@mob/creature_names:sharpshooter"},
     },
 
     waresHarvester = {
-        { template = "object/tangible/deed/harvester_deed/harvester_ore_s1_deed.iff", cost = 1000, displayName = "@installation_n:small_ore_mine"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_creature_deed.iff", cost = 10000, displayName = "@deed:creature_harvester_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_flora_deed.iff", cost = 10000, displayName = "@deed:flora_harvester_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_gas_deed.iff", cost = 10000, displayName = "@deed:gas_harvester_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_liquid_deed.iff", cost = 10000, displayName = "@deed:liquid_harvester_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_moisture_deed.iff", cost = 10000, displayName = "@deed:moisture_harvester_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_ore_s1_deed.iff", cost = 10000, displayName = "@deed:ore_s1_harvester_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_flora_deed_medium.iff", cost = 50000, displayName = "@deed:flora_harvester_medium_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_gas_deed_medium.iff", cost = 50000, displayName = "@deed:gas_harvester_medium_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_liquid_deed_medium.iff", cost = 50000, displayName = "@deed:liquid_harvester_medium_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_moisture_deed_medium.iff", cost = 50000, displayName = "@deed:moisture_harvester_medium_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_ore_s2_deed.iff", cost = 50000, displayName = "@deed:ore_s2_harvester_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_flora_deed_heavy.iff", cost = 100000, displayName = "@deed:flora_harvester_heavy_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_gas_deed_heavy.iff", cost = 100000, displayName = "@deed:gas_harvester_heavy_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_liquid_deed_heavy.iff", cost = 100000, displayName = "@deed:liquid_harvester_heavy_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_moisture_deed_heavy.iff", cost = 100000, displayName = "@deed:moisture_harvester_heavy_deed_name"},
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_ore_heavy_deed.iff", cost = , displayName = "@deed:ore_heavy_harvester_deed_name"},   
+    },
+
+    waresFactory = {
+        { template = "object/tangible/deed/factory_deed/shared_factory_clothing_deed.iff", cost = 50000, displayName = "@deed:clothing_factory"},
+        { template = "object/tangible/deed/factory_deed/shared_factory_food_deed.iff", cost = 50000, displayName = "@deed:food_factory"},
+        { template = "object/tangible/deed/factory_deed/shared_factory_item_deed.iff", cost = 50000, displayName = "@deed:item_factory"},
+        { template = "object/tangible/deed/factory_deed/shared_factory_structure_deed.iff", cost = 50000, displayName = "@deed:structure_factory"},        
+    },
+
+    waresGenerator = {
+        { template = "object/tangible/deed/generator_deed/shared_generator_wind_deed.iff", cost = 5000, displayName = "@deed:wind_generator_deed_name"},
+        { template = "object/tangible/deed/generator_deed/shared_generator_photo_bio_deed.iff", cost = 15000, displayName = "@deed:photo_bio_generator_deed_name"},
+        { template = "object/tangible/deed/generator_deed/shared_generator_solar_deed.iff", cost = 15000, displayName = "@deed:solar_generator_deed_name"},
+        { template = "object/tangible/deed/generator_deed/shared_generator_fusion_deed.iff", cost = 50000, displayName = "@deed:fusion_generator_deed_name"},
+    },
+
+    waresGuild = {
+        { template = "object/tangible/deed/guild_deed/shared_corellia_guild_deed.iff", cost = 100000, displayName = "@deed:corellia_guild_deed"},
+        { template = "object/tangible/deed/guild_deed/shared_generic_guild_deed.iff", cost = 100000, displayName = "@deed:generic_guild_deed"},
+        { template = "object/tangible/deed/guild_deed/shared_naboo_guild_deed.iff", cost = 100000, displayName = "@deed:naboo_guild_deed"},
+        { template = "object/tangible/deed/guild_deed/shared_tatooine_guild_deed.iff", cost = 100000, displayName = "@deed:tatooine_guild_deed"},
+        { template = "object/tangible/deed/guild_deed/shared_tatooine_guild_style_02_deed.iff", cost = 100000, displayName = "@deed:tatooine_guild_2_deed"},
+    },
+
+    waresHouse = {
+        { template = "object/tangible/deed/player_house_deed/shared_merchant_tent_style_01_deed.iff", cost = 10000, displayName = "@deed:merchant_tent"},
+        { template = "object/tangible/deed/player_house_deed/shared_merchant_tent_style_02_deed.iff", cost = 10000, displayName = "@deed:merchant_tent_2"},
+        { template = "object/tangible/deed/player_house_deed/shared_merchant_tent_style_03_deed.iff", cost = 10000, displayName = "@deed:merchant_tent_3"},
+        { template = "object/tangible/deed/player_house_deed/shared_corellia_house_small_deed.iff", cost = 20000, displayName = "@deed:corellia_house_small_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_corellia_house_small_floor_02_deed.iff", cost = 20000, displayName = "@deed:corellia_house_small_floor_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_corellia_house_small_style_02_deed.iff", cost = 20000, displayName = "@deed:corellia_house_small_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_corellia_house_small_style_02_floor_02_deed.iff", cost = 20000, displayName = "@deed:corellia_house_small_style_2_floor_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_generic_house_small_deed.iff", cost = 20000, displayName = "@deed:generic_house_small_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_generic_house_small_floor_02_deed.iff", cost = 20000, displayName = "@deed:generic_house_small_floor_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_generic_house_small_style_02_deed.iff", cost = 20000, displayName = "@deed:generic_house_small_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_generic_house_small_style_02_floor_02_deed.iff", cost = 20000, displayName = "@deed:generic_house_small_style_2_floor_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_naboo_house_small_deed.iff", cost = 20000, displayName = "@deed:naboo_house_small_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_naboo_house_small_style_02_deed.iff", cost = 20000, displayName = "@deed:naboo_house_small_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_tatooine_house_small_deed.iff", cost = 20000, displayName = "@deed:tatooine_house_small_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_tatooine_house_small_style_02_deed.iff", cost = 20000, displayName = "@deed:tatooine_house_small_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_corellia_house_medium_deed.iff", cost = 50000, displayName = "@deed:corellia_house_medium_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_corellia_house_medium_style_02_deed.iff", cost = 50000, displayName = "@deed:corellia_house_medium_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_generic_house_medium_deed.iff", cost = 50000, displayName = "@deed:generic_house_medium_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_generic_house_medium_style_02_deed.iff", cost = 50000, displayName = "@deed:generic_house_medium_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_naboo_house_medium_deed.iff", cost = 50000, displayName = "@deed:naboo_house_medium_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_naboo_house_medium_style_02_deed.iff", cost = 50000, displayName = "@deed:naboo_house_medium_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_tatooine_house_medium_deed.iff", cost = 50000, displayName = "@deed:tatooine_house_medium_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_corellia_house_large_deed.iff", cost = 100000, displayName = "@deed:corellia_house_large_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_corellia_house_large_style_02_deed.iff", cost = 100000, displayName = "@deed:corellia_house_large_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_generic_house_large_deed.iff", cost = 100000, displayName = "@deed:generic_house_large_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_generic_house_large_style_02_deed.iff", cost = 100000, displayName = "@deed:generic_house_large_style_2_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_naboo_house_large_deed.iff", cost = 100000, displayName = "@deed:naboo_house_large_deed"},
+        { template = "object/tangible/deed/player_house_deed/shared_tatooine_house_large_deed.iff", cost = 100000, displayName = "@deed:tatooine_house_large_deed"},
     },
 
     servicesEntertainer = {

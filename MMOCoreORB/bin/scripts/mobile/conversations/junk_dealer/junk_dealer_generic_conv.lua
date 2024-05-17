@@ -137,6 +137,9 @@ give_sculpture = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(give_sculpture);
 
+--VENDOR------------------------------------
+--------------------------------------------
+
 --Ethan edit 5-10-24 (JUNK DEALER VENDOR)
 start_vendor = ConvoScreen:new {
 	id = "start_vendor",
@@ -146,15 +149,21 @@ start_vendor = ConvoScreen:new {
 		{"I am looking for a weapon.", "vendor_weapon"},
 		{"I am looking for some armor.", "vendor_armor"},
 		{"I am looking for some medicine.", "vendor_medicine"},
-		{"I am looking for some installations.", "vendor_installation"},
+		{"I am looking for a building deed.", "vendor_installation"},
 		{"I am looking for a mercenary.", "vendor_hireling"},
+		{"I am looking for some food and drink.", "vendor_chef"},
+		{"I am looking for some scout equipment.", "vendor_scout"},
 		--{"I am looking for some clothing."},
+		--{"I am looking for some entertainer items."},
 		--{"I am looking for a vehicle.","vendor_vehicle"},
 		--{"I am looking for some parts.","vendor_medicine"},
 		{"Actually, I don't need anything right now.", "no_loot"}
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(start_vendor);
+
+--WEAPON----------------------------------
+------------------------------------------
 
 vendor_weapon = ConvoScreen:new {
 	id = "vendor_weapon",
@@ -173,72 +182,6 @@ vendor_weapon = ConvoScreen:new {
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(vendor_weapon);
-
-vendor_armor = ConvoScreen:new {
-	id = "vendor_armor",
-	customDialogText = "What sort of armor were you looking for?",
-	stopConversation = "false",
-	options = {
-		{"I was looking for some bone armor.", "wares_bone"},
-		{"I was looking for some chitin armor.", "wares_chitin"},
-		{"I was looking for some mabari armor.", "wares_mabari"},
-		{"I was looking for some tantel armor", "wares_tantel"},
-		{"I was looking for some ubese armor", "wares_ubese"},
-		{"I was looking for some padded armor", "wares_padded"},
-		{"I was looking for some composite armor", "wares_composite"},
-		{"I was looking for some Ithorian guardian armor", "wares_guardian"},
-		{"I was looking for some Ithorian defender armor", "wares_defender"},
-		{"I was looking for some Ithorian sentinel armor", "wares_sentinel"},
-		{"I was looking for some Wookie Ceremonial armor", "wares_ceremonial"},
-		{"I was looking for some Wookie Black Mountain armor.", "wares_mountain"},
-		{"I was looking for some Wookie Hunting armor", "wares_hunting"},
-		{"Actually, I don't need anything right now.","no_loot"}		
-	}
-}
-junkDealerGenericConvoTemplate:addScreen(vendor_armor);
-
-vendor_medicine = ConvoScreen:new {
-	id = "vendor_medicine",
-	customDialogText = "What sort of medicine were you looking for?",
-	stopConversation = "false",
-	options = {
-		{"I was looking for some stim packs.", "wares_stim"},
-		{"Actually, I don't need anything right now.","no_loot"}
-	}
-}
-junkDealerGenericConvoTemplate:addScreen(vendor_medicine);
-
-wares_stim = ConvoScreen:new {
-	id = "wares_stim",
-	customDialogText = "Here are the stims I have available.",
-	stopConversation = "true",
-	options = {}
-}
-junkDealerGenericConvoTemplate:addScreen(wares_stim);
-
-vendor_installation = ConvoScreen:new {
-	id = "vendor_installation",
-	customDialogText = "What sort of installation were you looking for?",
-	stopConversation = "false",
-	options = {
-		{"I was looking for a harvester.", "wares_harvester"},
-		{"I was looking for a factory.", "deeds_factory"},
-		{"Actually, I don't need anything right now.","no_loot"},
-	}
-}
-junkDealerGenericConvoTemplate:addScreen(vendor_installation);
-
-vendor_hireling = ConvoScreen:new {
-	id = "vendor_hireling",
-	customDialogText = "What kind of a contract were you looking for?",
-	stopConversation = "false",
-	options = {
-		{"I was looking for a marksman.", "hires_marksman"},
-		{"I was looking for a brawler.", "hires_brawler"},
-		{"Actually, I don't need anything right now.","no_loot"},
-	}
-}
-junkDealerGenericConvoTemplate:addScreen(vendor_hireling);
 
 wares_pistol = ConvoScreen:new {
 	id = "wares_pistol",
@@ -303,6 +246,33 @@ wares_ua = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(wares_ua);
+
+--ARMOR----------------------------------------
+-----------------------------------------------
+
+vendor_armor = ConvoScreen:new {
+	id = "vendor_armor",
+	customDialogText = "What sort of armor were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for some bone armor.", "wares_bone"},
+		{"I was looking for some chitin armor.", "wares_chitin"},
+		{"I was looking for some mabari armor.", "wares_mabari"},
+		{"I was looking for some tantel armor", "wares_tantel"},
+		{"I was looking for some ubese armor", "wares_ubese"},
+		{"I was looking for some padded armor", "wares_padded"},
+		{"I was looking for some composite armor", "wares_composite"},
+		{"I was looking for some Ithorian guardian armor", "wares_guardian"},
+		{"I was looking for some Ithorian defender armor", "wares_defender"},
+		{"I was looking for some Ithorian sentinel armor", "wares_sentinel"},
+		{"I was looking for some Wookie Ceremonial armor", "wares_ceremonial"},
+		{"I was looking for some Wookie Black Mountain armor.", "wares_mountain"},
+		{"I was looking for some Wookie Hunting armor", "wares_hunting"},
+		{"Actually, I don't need anything right now.","no_loot"}		
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_armor);
+
 
 wares_bone = ConvoScreen:new {
 	id = "wares_bone",
@@ -408,6 +378,83 @@ wares_hunting = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(wares_hunting);
 
+
+--MEDICINE--------------------------------
+------------------------------------------
+
+vendor_medicine = ConvoScreen:new {
+	id = "vendor_medicine",
+	customDialogText = "What sort of medicine were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for some stim packs.", "wares_stim"},
+		{"I was looking for some damage medpacks.", "wares_medpack"},
+		{"I was looking for some status medpacks.", "wares_status"},
+		{"I was looking for some wound medpacks.", "wares_wound"},
+		{"I was looking for some enhancements.", "wares_enhancement"},
+		{"Actually, I don't need anything right now.","no_loot"}
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_medicine);
+
+wares_stim = ConvoScreen:new {
+	id = "wares_stim",
+	customDialogText = "Here are the stims I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_stim);
+
+wares_medpack = ConvoScreen:new {
+	id = "wares_medpack",
+	customDialogText = "Here are the medpacks I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_medpack);
+
+wares_status = ConvoScreen:new {
+	id = "wares_status",
+	customDialogText = "Here are the status medpacks I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_status);
+
+wares_wound = ConvoScreen:new {
+	id = "wares_wound",
+	customDialogText = "Here are the wound medpacks I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wound);
+
+wares_enhancement = ConvoScreen:new {
+	id = "wares_enhancement",
+	customDialogText = "Here are the enhancements I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_enhancement);
+
+--INSTALLATIONS------------------------------
+---------------------------------------------
+
+vendor_installation = ConvoScreen:new {
+	id = "vendor_installation",
+	customDialogText = "What sort of an installation were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a harvester.", "wares_harvester"},
+		{"I was looking for a factory.", "wares_factory"},
+		{"I was looking for a generator.", "wares_generator"},
+		{"I was looking for a guild hall.", "wares_guild"},
+		{"I was looking for a house.", "wares_house"},
+		{"Actually, I don't need anything right now.","no_loot"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_installation);
+
 wares_harvester = ConvoScreen:new {
 	id = "wares_harvester",
 	customDialogText = "Here are the harvesters I have available.",
@@ -416,13 +463,131 @@ wares_harvester = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(wares_harvester);
 
-wares_facory = ConvoScreen:new {
-	id = "wares_facory",
+wares_factory = ConvoScreen:new {
+	id = "wares_factory",
 	customDialogText = "Here are the harvesters I have available.",
 	stopConversation = "true",
 	options = {}
 }
-junkDealerGenericConvoTemplate:addScreen(wares_facory);
+junkDealerGenericConvoTemplate:addScreen(wares_factory);
+
+wares_generator = ConvoScreen:new {
+	id = "wares_generator",
+	customDialogText = "Here are the harvesters I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_generator);
+
+wares_house = ConvoScreen:new {
+	id = "wares_house",
+	customDialogText = "Here are the harvesters I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_house);
+
+wares_guild = ConvoScreen:new {
+	id = "wares_guild",
+	customDialogText = "Here are the harvesters I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_guild);
+
+--CHEF---------------------------------------
+---------------------------------------------
+
+vendor_chef = ConvoScreen:new {
+	id = "vendor_chef",
+	customDialogText = "I have some food, drink and desserts available. What would you like?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for something to drink.", "wares_drink"},
+		{"I was looking for something to eat.", "wares_food"},
+		{"I was looking for some dessert.", "wares_dessert"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_chef);
+
+wares_drink = ConvoScreen:new {
+	id = "wares_drink",
+	customDialogText = "Here are the drinks on the menu.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_drink);
+
+wares_food = ConvoScreen:new {
+	id = "wares_food",
+	customDialogText = "Here is the food on the menu.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_food);
+
+wares_dessert = ConvoScreen:new {
+	id = "wares_dessert",
+	customDialogText = "Here is our dessert menu.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_dessert);
+
+--SCOUT--------------------------------------
+---------------------------------------------
+
+vendor_scout = ConvoScreen: new {
+	id = "vendor_scout",
+	customDialogText = "What kind of scout equipment were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for some traps.", "wares_trap"},
+		{"I was looking for some camo.", "wares_camo"},
+		{"I was looking for some camps.", "wares_camp"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_scout);
+
+wares_trap = ConvoScreen:new {
+	id = "wares_trap",
+	customDialogText = "Here are the traps I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_trap);
+
+wares_camo = ConvoScreen:new {
+	id = "wares_camo",
+	customDialogText = "Here are the traps I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_camo);
+
+wares_camp = ConvoScreen:new {
+	id = "wares_camp",
+	customDialogText = "Here are the traps I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_camp);
+
+
+--HIRELINGS----------------------------------
+---------------------------------------------
+
+vendor_hireling = ConvoScreen:new {
+	id = "vendor_hireling",
+	customDialogText = "What kind of a contract were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a marksman.", "hires_marksman"},
+		{"I was looking for a brawler.", "hires_brawler"},
+		{"Actually, I don't need anything right now.","no_loot"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_hireling);
 
 hires_marksman = ConvoScreen:new {
 	id = "hires_marksman",
@@ -439,6 +604,8 @@ hires_brawler = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(hires_brawler);
+
+
 
 --End Ethan edit 5-10-24 (JUNK DEALER VENDOR)
 
