@@ -514,8 +514,9 @@ genericWaresData = {
     },
 
     --Ethan Testing NPC Vendor 5-16-24:
-    hiresMercs = {
+    hiresMarksman = {
         { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="rebel_trooper", displayName = "@mob/creature_names:rebel_trooper"},
+        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="sharpshooter", displayName = "mob/creature_names:sharpshooter"},
     },
 
     waresHarvester = {

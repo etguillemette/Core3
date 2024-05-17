@@ -145,12 +145,13 @@ start_vendor = ConvoScreen:new {
 	options = {
 		{"I am looking for a weapon.", "vendor_weapon"},
 		{"I am looking for some armor.", "vendor_armor"},
-		{"I am looking for some medicine.","vendor_medicine"},
-		{"I am looking for some installations.","vendor_installation"},
+		{"I am looking for some medicine.", "vendor_medicine"},
+		{"I am looking for some installations.", "vendor_installation"},
+		{"I am looking for a mercenary.", "vendor_hireling"},
 		--{"I am looking for some clothing."},
 		--{"I am looking for a vehicle.","vendor_vehicle"},
 		--{"I am looking for some parts.","vendor_medicine"},
-		{"Actually, I don't need anything right now.","no_loot"}
+		{"Actually, I don't need anything right now.", "no_loot"}
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(start_vendor);
@@ -220,13 +221,24 @@ vendor_installation = ConvoScreen:new {
 	customDialogText = "What sort of installation were you looking for?",
 	stopConversation = "false",
 	options = {
-		{"I was looking for a harvester.", "deeds_harvester"},
+		{"I was looking for a harvester.", "wares_harvester"},
 		{"I was looking for a factory.", "deeds_factory"},
 		{"Actually, I don't need anything right now.","no_loot"},
 	}
 }
-junkDealerGenericConvoTemplate:addScreen(vendor_installation)
+junkDealerGenericConvoTemplate:addScreen(vendor_installation);
 
+vendor_hireling = ConvoScreen:new {
+	id = "vendor_hireling",
+	customDialogText = "What kind of a contract were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a marksman.", "hires_marksman"},
+		{"I was looking for a brawler.", "hires_brawler"},
+		{"Actually, I don't need anything right now.","no_loot"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_hireling);
 
 wares_pistol = ConvoScreen:new {
 	id = "wares_pistol",
@@ -396,13 +408,37 @@ wares_hunting = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(wares_hunting);
 
-deeds_harvester = ConvoScreen:new {
-	id = "deeds_harvester",
+wares_harvester = ConvoScreen:new {
+	id = "wares_harvester",
 	customDialogText = "Here are the harvesters I have available.",
 	stopConversation = "true",
 	options = {}
 }
-junkDealerGenericConvoTemplate:addScreen(deeds_harvester);
+junkDealerGenericConvoTemplate:addScreen(wares_harvester);
+
+wares_facory = ConvoScreen:new {
+	id = "wares_facory",
+	customDialogText = "Here are the harvesters I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_facory);
+
+hires_marksman = ConvoScreen:new {
+	id = "hires_marksman",
+	customDialogText = "Here are the marksman contracts I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(hires_marksman);
+
+hires_brawler = ConvoScreen:new {
+	id = "hires_brawler",
+	customDialogText = "Here are the brawler contracts I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(hires_brawler);
 
 --End Ethan edit 5-10-24 (JUNK DEALER VENDOR)
 
