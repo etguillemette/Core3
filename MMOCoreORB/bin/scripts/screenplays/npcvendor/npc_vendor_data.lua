@@ -516,11 +516,6 @@ genericWaresData = {
     waresCamp = {     
     },
 
-    --Ethan Testing NPC Vendor 5-16-24:
-    hiresMarksman = {
-        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="sharpshooter", displayName = "@mob/creature_names:sharpshooter"},
-    },
-
     waresHarvester = {
         { template = "object/tangible/deed/harvester_deed/harvester_creature_deed.iff", cost = 10000, displayName = "@deed:creature_harvester_deed_name"},
         { template = "object/tangible/deed/harvester_deed/harvester_flora_deed.iff", cost = 10000, displayName = "@deed:flora_harvester_deed_name"},
@@ -593,6 +588,13 @@ genericWaresData = {
         { template = "object/tangible/deed/player_house_deed/tatooine_house_large_deed.iff", cost = 100000, displayName = "@deed:tatooine_house_large_deed"},
     },
 
+    --Ethan Testing NPC Vendor 5-16-24:
+    hiresMarksman = {
+        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="sharpshooter", displayName = "@mob/creature_names:sharpshooter"},
+        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="marksman_novice", displayName = "@mob/creature_names:marksman_novice"},
+        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="brawler_novice", displayName = "@mob/creature_names:brawler_novice"},
+    },
+   
     servicesEntertainer = {
         { actionCRC = "startDance.lua", targetID = "", cost = 100, displayName = "dance"},
     },
