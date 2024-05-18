@@ -255,23 +255,69 @@ vendor_armor = ConvoScreen:new {
 	customDialogText = "What sort of armor were you looking for?",
 	stopConversation = "false",
 	options = {
-		{"I was looking for some bone armor.", "wares_bone"},
-		{"I was looking for some chitin armor.", "wares_chitin"},
-		{"I was looking for some mabari armor.", "wares_mabari"},
-		{"I was looking for some tantel armor", "wares_tantel"},
-		{"I was looking for some ubese armor", "wares_ubese"},
-		{"I was looking for some padded armor", "wares_padded"},
-		{"I was looking for some composite armor", "wares_composite"},
-		{"I was looking for some Ithorian guardian armor", "wares_guardian"},
-		{"I was looking for some Ithorian defender armor", "wares_defender"},
-		{"I was looking for some Ithorian sentinel armor", "wares_sentinel"},
-		{"I was looking for some Wookie Ceremonial armor", "wares_ceremonial"},
-		{"I was looking for some Wookie Black Mountain armor.", "wares_mountain"},
-		{"I was looking for some Wookie Hunting armor", "wares_hunting"},
+		{"I was looking for a helmet.", "wares_armor_helm"},
+		{"I was looking for a chestpiece.", "wares_armor_chest"},
+		{"I was looking for leg armor.", "wares_armor_leg"},
+		{"I was looking for arm armor.", "wares_armor_arm"},
+		{"I was looking for armor accessories.", "wares_armor_accessory"},
+		--{"I was looking for some bone armor.", "wares_bone"},
+		--{"I was looking for some chitin armor.", "wares_chitin"},
+		--{"I was looking for some mabari armor.", "wares_mabari"},
+		--{"I was looking for some tantel armor", "wares_tantel"},
+		--{"I was looking for some ubese armor", "wares_ubese"},
+		--{"I was looking for some padded armor", "wares_padded"},
+		--{"I was looking for some composite armor", "wares_composite"},
+		--{"I was looking for some Ithorian guardian armor", "wares_guardian"},
+		--{"I was looking for some Ithorian defender armor", "wares_defender"},
+		--{"I was looking for some Ithorian sentinel armor", "wares_sentinel"},
+		--{"I was looking for some Wookie Ceremonial armor", "wares_ceremonial"},
+		--{"I was looking for some Wookie Black Mountain armor.", "wares_mountain"},
+		--{"I was looking for some Wookie Hunting armor", "wares_hunting"},
 		{"Actually, I don't need anything right now.","no_loot"}		
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(vendor_armor);
+
+
+wares_armor_helm = ConvoScreen:new {
+	id = "wares_armor_helm",
+	customDialogText = "Here are the helmet armor pieces I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_armor_helm);
+
+wares_armor_chest = ConvoScreen:new {
+	id = "wares_armor_chest",
+	customDialogText = "Here are the chestplate armor pieces I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_armor_chest);
+
+wares_armor_leg = ConvoScreen:new {
+	id = "wares_armor_leg",
+	customDialogText = "Here are the legging armor pieces I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_armor_leg);
+
+wares_armor_arm = ConvoScreen:new {
+	id = "wares_armor_arm",
+	customDialogText = "Here are the arm armor pieces I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_armor_arm);
+
+wares_armor_accessory = ConvoScreen:new {
+	id = "wares_armor_accessory",
+	customDialogText = "Here are the armor accessory pieces I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_armor_accessory);
 
 
 wares_bone = ConvoScreen:new {

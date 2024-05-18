@@ -65,7 +65,23 @@ function NPCVendor:getWaresTable(category)
 	elseif category == "wares_ua" then
 		return genericWaresData.waresUnarmed
 	elseif category == "wares_heavy" then
-		return genericWaresData.waresHeavyWeapons
+		return genericWaresData.waresHeavyWeapon
+
+	elseif category == "wares_armor_helm" then
+		return genericWaresData.waresArmorHelm
+	elseif category == "wares_armor_chest" then
+		return genericWaresData.waresArmorChest
+	elseif category == "wares_armor_leg" then
+		return genericWaresData.waresArmorLeg
+	elseif category == "wares_armor_arm" then
+		return genericWaresData.waresArmorArm
+	elseif category == "wares_armor_accessory" then
+		return genericWaresData.waresArmorAccessory
+	elseif category == "wares_" then
+		return genericWaresData.waresArmor
+	elseif category == "wares_" then
+		return genericWaresData.waresArmor
+	
 	elseif category == "wares_bone" then
 		return genericWaresData.waresBone
 	elseif category == "wares_chitin" then

@@ -89,7 +89,7 @@ genericWaresData = {
         { template = "object/weapon/melee/special/vibroknuckler.iff", cost = 100000, displayName = "@weapon_name:vibroknuckler"},
     },
 
-    waresHeavyWeapons = {
+    waresHeavyWeapon = {
         { template = "object/weapon/ranged/pistol/pistol_launcher.iff", cost = 100000, displayName = "@weapon_name:pistol_launcher"},
         { template = "object/weapon/ranged/heavy/heavy_rocket_launcher.iff", cost = 100000, displayName = "@weapon_name:rocket_launcher"},
         { template = "object/weapon/ranged/rifle/rifle_flame_thrower.iff", cost = 100000, displayName = "@weapon_name:rifle_flame_thrower"},
@@ -106,136 +106,152 @@ genericWaresData = {
         { template = "object/weapon/ranged/heavy/heavy_lightning_beam.iff", cost = 100000, displayName = "@weapon_name:heavy_lightning_beam"}, --CM3
     },
 
-    waresBone = {
+    waresArmorHelm = {
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_helmet.iff", cost = 7000, displayName = "@wearables_name:armor_bone_s01_helmet" },
+        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_helmet.iff", cost = 25000, displayName = "@wearables_name:armor_zam_wesell_helmet" },
+        { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_helmet.iff", cost = 20000, displayName = "@wearables_name:armor_chitin_s01_helmet" },
+        { template = "object/tangible/wearables/armor/tantel/armor_tantel_skreej_helmet.iff", cost = 90000, displayName = "@wearables_name:armor_tantel_skreej_helmet" },
+        { template = "object/tangible/wearables/armor/ubese/armor_ubese_helmet.iff", cost = 50000, displayName = "@wearables_name:armor_ubese_helmet" },
+        { template = "object/tangible/wearables/armor/padded/armor_padded_s01_helmet.iff", cost = 75000, displayName = "@wearables_name:armor_padded_s01_helmet" },
+        { template = "object/tangible/wearables/armor/composite/armor_composite_helmet.iff", cost = 100000, displayName = "@wearables_name:armor_composite_helmet" },
+        { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_helmet.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s02_helmet" },
+        { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_helmet.iff", cost = 75000, displayName = "@wearables_name:ith_armor_s01_helmet" },
+        { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_helmet.iff", cost = 100000, displayName = "@wearables_name:ith_armor_s02_helmet" },
+    },
+
+    waresArmorChest = {
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_chest_plate.iff", cost = 7000, displayName = "@wearables_name:armor_bone_s01_chest_plate" },
+        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_chest_plate.iff", cost = 25000, displayName = "@wearables_name:armor_zam_wesell_chest_plate" },
+        { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_chest_plate.iff", cost = 20000, displayName = "@wearables_name:armor_chitin_s01_chest_plate" },
+        { template = "object/tangible/wearables/armor/tantel/armor_tantel_skreej_chest_plate.iff", cost = 90000, displayName = "@wearables_name:armor_tantel_skreej_chest_plate" },
+        { template = "object/tangible/wearables/armor/ubese/armor_ubese_jacket.iff", cost = 100000, displayName = "@wearables_name:armor_ubese_jacket" },
+        { template = "object/tangible/wearables/armor/padded/armor_padded_s01_chest_plate.iff", cost = 75000, displayName = "@wearables_name:armor_padded_s01_chest_plate" },
+        { template = "object/tangible/wearables/armor/composite/armor_composite_chest_plate.iff", cost = 100000, displayName = "@wearables_name:armor_composite_chest_plate" },
+        { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_chest_plate.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s02_chest_plate" },
+        { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_chest_plate.iff", cost = 75000, displayName = "@wearables_name:ith_armor_s01_chest_plate" },
+        { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_chest_plate.iff", cost = 100000, displayName = "@wearables_name:ith_armor_s02_chest_plate" },
+        --Ceremonial armor chest?
+        { template = "object/tangible/wearables/armor/kashyyykian_black_mtn/armor_kashyyykian_black_mtn_chest_plate.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_black_mtn_chest_plate" },
+        { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_chest_plate.iff", cost = 150000, displayName = "@wearables_name:armor_kashyyykian_hunting_chest_plate" },
+
+    },
+
+    waresArmorLeg = {
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_leggings.iff", cost = 7000, displayName = "@wearables_name:armor_bone_s01_leggings" },
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_boots.iff", cost = 5000, displayName = "@wearables_name:armor_bone_s01_boots" },
+        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_pants.iff", cost = 25000, displayName = "@wearables_name:armor_zam_wesell_pants" },
+        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_boots.iff", cost = 10000, displayName = "@wearables_name:armor_zam_wesell_boots" },
+        { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_leggings.iff", cost = 20000, displayName = "@wearables_name:armor_chitin_s01_leggings" },
+        { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_boots.iff", cost = 15000, displayName = "@wearables_name:armor_chitin_s01_boots" },
+        { template = "object/tangible/wearables/armor/tantel/armor_tantel_skreej_boots.iff", cost = 20000, displayName = "@wearables_name:armor_tantel_skreej_boots" },
+        { template = "object/tangible/wearables/armor/ubese/armor_ubese_pants.iff", cost = 50000, displayName = "@wearables_name:armor_ubese_pants" },
+        { template = "object/tangible/wearables/armor/ubese/armor_ubese_boots.iff", cost = 10000, displayName = "@wearables_name:armor_ubese_boots" },
+        { template = "object/tangible/wearables/armor/padded/armor_padded_s01_leggings.iff", cost = 75000, displayName = "@wearables_name:armor_padded_s01_leggings" },
+        { template = "object/tangible/wearables/armor/padded/armor_padded_s01_boots.iff", cost = 25000, displayName = "@wearables_name:armor_padded_s01_boots" },
+        { template = "object/tangible/wearables/armor/composite/armor_composite_leggings.iff", cost = 100000, displayName = "@wearables_name:armor_composite_leggings" },
+        { template = "object/tangible/wearables/armor/composite/armor_composite_boots.iff", cost = 50000, displayName = "@wearables_name:armor_composite_boots" },
+        { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_leggings.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s02_leggings" },
+        { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_boots.iff", cost = 15000, displayName = "@wearables_name:ith_armor_s02_boots" },
+        { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_leggings.iff", cost = 75000, displayName = "@wearables_name:ith_armor_s01_leggings" },
+        { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_boots.iff", cost = 25000, displayName = "@wearables_name:ith_armor_s01_boots" },
+        { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_leggings.iff", cost = 100000, displayName = "@wearables_name:ith_armor_s02_leggings" },
+        { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_boots.iff", cost = 50000, displayName = "@wearables_name:ith_armor_s02_boots" },
+        { template = "object/tangible/wearables/armor/kashyyykian_ceremonial/armor_kashyyykian_ceremonial_leggings.iff", cost = 50000, displayName = "@wearables_name:armor_kashyyykian_ceremonial_leggings" },
+        { template = "object/tangible/wearables/armor/kashyyykian_black_mtn/armor_kashyyykian_black_mtn_leggings.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_black_mtn_leggings" },
+        { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_leggings.iff", cost = 150000, displayName = "@wearables_name:armor_kashyyykian_hunting_leggings" },
+    },
+
+    waresArmorArm = {
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_gloves.iff", cost = 4000, displayName = "@wearables_name:armor_bone_s01_gloves" },
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_bicep_l.iff", cost = 5000, displayName = "@wearables_name:armor_bone_s01_bicep_l" },
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_bicep_r.iff", cost = 5000, displayName = "@wearables_name:armor_bone_s01_bicep_r" },
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_bracer_l.iff", cost = 5000, displayName = "@wearables_name:armor_bone_s01_bracer_l" },
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_bracer_r.iff", cost = 5000, displayName = "@wearables_name:armor_bone_s01_bracer_r" },
-    },
-
-    waresMabari = {
-        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_helmet.iff", cost = 25000, displayName = "@wearables_name:armor_zam_wesell_helmet" },
-        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_chest_plate.iff", cost = 25000, displayName = "@wearables_name:armor_zam_wesell_chest_plate" },
-        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_pants.iff", cost = 25000, displayName = "@wearables_name:armor_zam_wesell_pants" },
-        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_boots.iff", cost = 10000, displayName = "@wearables_name:armor_zam_wesell_boots" },
         { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_gloves.iff", cost = 10000, displayName = "@wearables_name:armor_zam_wesell_gloves" },
-        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_belt.iff", cost = 5000, displayName = "@wearables_name:armor_zam_wesell_belt" },
-    },
-
-    waresChitin = {
-        { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_helmet.iff", cost = 20000, displayName = "@wearables_name:armor_chitin_s01_helmet" },
-        { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_chest_plate.iff", cost = 20000, displayName = "@wearables_name:armor_chitin_s01_chest_plate" },
-        { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_leggings.iff", cost = 20000, displayName = "@wearables_name:armor_chitin_s01_leggings" },
-        { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_boots.iff", cost = 15000, displayName = "@wearables_name:armor_chitin_s01_boots" },
         { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_gloves.iff", cost = 15000, displayName = "@wearables_name:armor_chitin_s01_gloves" },
         { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_bicep_l.iff", cost = 15000, displayName = "@wearables_name:armor_chitin_s01_bicep_l" },
         { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_bicep_r.iff", cost = 15000, displayName = "@wearables_name:armor_chitin_s01_bicep_r" },
         { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_bracer_l.iff", cost = 15000, displayName = "@wearables_name:armor_chitin_s01_bracer_l" },
         { template = "object/tangible/wearables/armor/chitin/armor_chitin_s01_bracer_r.iff", cost = 15000, displayName = "@wearables_name:armor_chitin_s01_bracer_r" },
-    },
-
-    waresTantel = {
-        { template = "object/tangible/wearables/armor/tantel/armor_tantel_skreej_helmet.iff", cost = 90000, displayName = "@wearables_name:armor_tantel_skreej_helmet" },
-        { template = "object/tangible/wearables/armor/tantel/armor_tantel_skreej_chest_plate.iff", cost = 90000, displayName = "@wearables_name:armor_tantel_skreej_chest_plate" },
-        { template = "object/tangible/wearables/armor/tantel/armor_tantel_skreej_boots.iff", cost = 20000, displayName = "@wearables_name:armor_tantel_skreej_boots" },
-    },
-
-    waresUbese = {
-        { template = "object/tangible/wearables/armor/ubese/armor_ubese_helmet.iff", cost = 50000, displayName = "@wearables_name:armor_ubese_helmet" },
-        { template = "object/tangible/wearables/armor/ubese/armor_ubese_jacket.iff", cost = 100000, displayName = "@wearables_name:armor_ubese_jacket" },
-        { template = "object/tangible/wearables/armor/ubese/armor_ubese_pants.iff", cost = 50000, displayName = "@wearables_name:armor_ubese_pants" },
-        { template = "object/tangible/wearables/armor/ubese/armor_ubese_boots.iff", cost = 10000, displayName = "@wearables_name:armor_ubese_boots" },
         { template = "object/tangible/wearables/armor/ubese/armor_ubese_gloves.iff", cost = 10000, displayName = "@wearables_name:armor_ubese_gloves" },
         { template = "object/tangible/wearables/armor/ubese/armor_ubese_bracer_l.iff", cost = 10000, displayName = "@wearables_name:armor_ubese_bracer_l" },
         { template = "object/tangible/wearables/armor/ubese/armor_ubese_bracer_r.iff", cost = 10000, displayName = "@wearables_name:armor_ubese_bracer_r" },
-        { template = "object/tangible/wearables/armor/ubese/armor_ubese_shirt.iff", cost = 5000, displayName = "@wearables_name:armor_ubese_shirt" },
-        { template = "object/tangible/wearables/armor/ubese/armor_ubese_bandolier.iff", cost = 5000, displayName = "@wearables_name:armor_ubese_bandolier" },
-    },
-
-    waresPadded = {
-        { template = "object/tangible/wearables/armor/padded/armor_padded_s01_helmet.iff", cost = 75000, displayName = "@wearables_name:armor_padded_s01_helmet" },
-        { template = "object/tangible/wearables/armor/padded/armor_padded_s01_chest_plate.iff", cost = 75000, displayName = "@wearables_name:armor_padded_s01_chest_plate" },
-        { template = "object/tangible/wearables/armor/padded/armor_padded_s01_leggings.iff", cost = 75000, displayName = "@wearables_name:armor_padded_s01_leggings" },
-        { template = "object/tangible/wearables/armor/padded/armor_padded_s01_boots.iff", cost = 25000, displayName = "@wearables_name:armor_padded_s01_boots" },
         { template = "object/tangible/wearables/armor/padded/armor_padded_s01_gloves.iff", cost = 20000, displayName = "@wearables_name:armor_padded_s01_gloves" },
         { template = "object/tangible/wearables/armor/padded/armor_padded_s01_bicep_l.iff", cost = 20000, displayName = "@wearables_name:armor_padded_s01_bicep_l" },
         { template = "object/tangible/wearables/armor/padded/armor_padded_s01_bicep_r.iff", cost = 20000, displayName = "@wearables_name:armor_padded_s01_bicep_r" },
         { template = "object/tangible/wearables/armor/padded/armor_padded_s01_bracer_l.iff", cost = 20000, displayName = "@wearables_name:armor_padded_s01_bracer_l" },
         { template = "object/tangible/wearables/armor/padded/armor_padded_s01_bracer_r.iff", cost = 20000, displayName = "@wearables_name:armor_padded_s01_bracer_r" },
-    },
-
-    waresComposite = {
-        { template = "object/tangible/wearables/armor/composite/armor_composite_helmet.iff", cost = 100000, displayName = "@wearables_name:armor_composite_helmet" },
-        { template = "object/tangible/wearables/armor/composite/armor_composite_chest_plate.iff", cost = 100000, displayName = "@wearables_name:armor_composite_chest_plate" },
-        { template = "object/tangible/wearables/armor/composite/armor_composite_leggings.iff", cost = 100000, displayName = "@wearables_name:armor_composite_leggings" },
-        { template = "object/tangible/wearables/armor/composite/armor_composite_boots.iff", cost = 50000, displayName = "@wearables_name:armor_composite_boots" },
         { template = "object/tangible/wearables/armor/composite/armor_composite_gloves.iff", cost = 50000, displayName = "@wearables_name:armor_composite_gloves" },
         { template = "object/tangible/wearables/armor/composite/armor_composite_bicep_l.iff", cost = 25000, displayName = "@wearables_name:armor_composite_bicep_l" },
         { template = "object/tangible/wearables/armor/composite/armor_composite_bicep_r.iff", cost = 25000, displayName = "@wearables_name:armor_composite_bicep_r" },
         { template = "object/tangible/wearables/armor/composite/armor_composite_bracer_l.iff", cost = 25000, displayName = "@wearables_name:armor_composite_bracer_l" },
         { template = "object/tangible/wearables/armor/composite/armor_composite_bracer_r.iff", cost = 25000, displayName = "@wearables_name:armor_composite_bracer_r" },
-    },
-
-    waresGuardian = {
-        { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_helmet.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s02_helmet" },
-        { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_chest_plate.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s02_chest_plate" },
-        { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_leggings.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s02_leggings" },
-        { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_boots.iff", cost = 15000, displayName = "@wearables_name:ith_armor_s02_boots" },
         { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_gloves.iff", cost = 15000, displayName = "@wearables_name:ith_armor_s02_gloves" },
         { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_bicep_l.iff", cost = 15000, displayName = "@wearables_name:ith_armor_s02_bicep_l" },
         { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_bicep_r.iff", cost = 15000, displayName = "@wearables_name:ith_armor_s02_bicep_r" },
         { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_bracer_l.iff", cost = 15000, displayName = "@wearables_name:ith_armor_s02_bracer_l" },
         { template = "object/tangible/wearables/armor/ithorian_guardian/ith_armor_s02_bracer_r.iff", cost = 15000, displayName = "@wearables_name:ith_armor_s02_bracer_r" },
-    },
-
-    waresDefender = {
-        { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_helmet.iff", cost = 75000, displayName = "@wearables_name:ith_armor_s01_helmet" },
-        { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_chest_plate.iff", cost = 75000, displayName = "@wearables_name:ith_armor_s01_chest_plate" },
-        { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_leggings.iff", cost = 75000, displayName = "@wearables_name:ith_armor_s01_leggings" },
-        { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_boots.iff", cost = 25000, displayName = "@wearables_name:ith_armor_s01_boots" },
         { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_gloves.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s01_gloves" },
         { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_bicep_l.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s01_bicep_l" },
         { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_bicep_r.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s01_bicep_r" },
         { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_bracer_l.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s01_bracer_l" },
         { template = "object/tangible/wearables/armor/ithorian_defender/ith_armor_s01_bracer_r.iff", cost = 20000, displayName = "@wearables_name:ith_armor_s01_bracer_r" },
-    },
-
-    waresSentinel = {
-        { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_helmet.iff", cost = 100000, displayName = "@wearables_name:ith_armor_s02_helmet" },
-        { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_chest_plate.iff", cost = 100000, displayName = "@wearables_name:ith_armor_s02_chest_plate" },
-        { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_leggings.iff", cost = 100000, displayName = "@wearables_name:ith_armor_s02_leggings" },
-        { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_boots.iff", cost = 50000, displayName = "@wearables_name:ith_armor_s02_boots" },
         { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_gloves.iff", cost = 50000, displayName = "@wearables_name:ith_armor_s02_gloves" },
         { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_bicep_l.iff", cost = 25000, displayName = "@wearables_name:ith_armor_s02_bicep_l" },
         { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_bicep_r.iff", cost = 25000, displayName = "@wearables_name:ith_armor_s02_bicep_r" },
         { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_bracer_l.iff", cost = 25000, displayName = "@wearables_name:ith_armor_s02_bracer_l" },
         { template = "object/tangible/wearables/armor/ithorian_sentinel/ith_armor_s02_bracer_r.iff", cost = 25000, displayName = "@wearables_name:ith_armor_s02_bracer_r" },
+        { template = "object/tangible/wearables/armor/kashyyykian_ceremonial/armor_kashyyykian_ceremonial_bracer_l.iff", cost = 25000, displayName = "@wearables_name:armor_kashyyykian_ceremonial_bracer_l" },
+        { template = "object/tangible/wearables/armor/kashyyykian_ceremonial/armor_kashyyykian_ceremonial_bracer_r.iff", cost = 25000, displayName = "@wearables_name:armor_kashyyykian_ceremonial_bracer_r" },
+        { template = "object/tangible/wearables/armor/kashyyykian_black_mtn/armor_kashyyykian_black_mtn_bracer_l.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_black_mtn_bracer_l" },
+        { template = "object/tangible/wearables/armor/kashyyykian_black_mtn/armor_kashyyykian_black_mtn_bracer_r.iff", cost = 25000, displayName = "@wearables_name:armor_kashyyykian_black_mtn_bracer_r" },
+        { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_bracer_l.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_hunting_bracer_l" },
+        { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_bracer_r.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_hunting_bracer_r" },
+    },
+
+    waresArmorAccessory = {
+        { template = "object/tangible/wearables/armor/zam/armor_zam_wesell_belt.iff", cost = 5000, displayName = "@wearables_name:armor_zam_wesell_belt" },
+        { template = "object/tangible/wearables/armor/ubese/armor_ubese_shirt.iff", cost = 5000, displayName = "@wearables_name:armor_ubese_shirt" },
+        { template = "object/tangible/wearables/armor/ubese/armor_ubese_bandolier.iff", cost = 5000, displayName = "@wearables_name:armor_ubese_bandolier" },
+    },
+
+    waresBone = {
+    },
+
+    waresMabari = {
+    },
+
+    waresChitin = {
+    },
+
+    waresTantel = {
+    },
+
+    waresUbese = {
+    },
+
+    waresPadded = {
+    },
+
+    waresComposite = {
+    },
+
+    waresGuardian = {
+    },
+
+    waresDefender = {
+    },
+
+    waresSentinel = {
     },
 
     waresCeremonial = {
-        { template = "object/tangible/wearables/armor/kashyyykian_ceremonial/armor_kashyyykian_ceremonial_chest_plate.iff", cost = 50000, displayName = "@wearables_name:armor_kashyyykian_ceremonial_chest_plate" },
-        { template = "object/tangible/wearables/armor/kashyyykian_ceremonial/armor_kashyyykian_ceremonial_leggings.iff", cost = 50000, displayName = "@wearables_name:armor_kashyyykian_ceremonial_leggings" },
-        { template = "object/tangible/wearables/armor/kashyyykian_ceremonial/armor_kashyyykian_ceremonial_bracer_l.iff", cost = 25000, displayName = "@wearables_name:armor_kashyyykian_ceremonial_bracer_l" },
-        { template = "object/tangible/wearables/armor/kashyyykian_ceremonial/armor_kashyyykian_ceremonial_bracer_r.iff", cost = 25000, displayName = "@wearables_name:armor_kashyyykian_ceremonial_bracer_r" },
     },
 
     waresMountain = {
-        { template = "object/tangible/wearables/armor/kashyyykian_black_mtn/armor_kashyyykian_black_mtn_chest_plate.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_black_mtn_chest_plate" },
-        { template = "object/tangible/wearables/armor/kashyyykian_black_mtn/armor_kashyyykian_black_mtn_leggings.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_black_mtn_leggings" },
-        { template = "object/tangible/wearables/armor/kashyyykian_black_mtn/armor_kashyyykian_black_mtn_bracer_l.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_black_mtn_bracer_l" },
-        { template = "object/tangible/wearables/armor/kashyyykian_black_mtn/armor_kashyyykian_black_mtn_bracer_r.iff", cost = 25000, displayName = "@wearables_name:armor_kashyyykian_black_mtn_bracer_r" },
     },
 
     waresHunting = {
-        { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_chest_plate.iff", cost = 150000, displayName = "@wearables_name:armor_kashyyykian_hunting_chest_plate" },
-        { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_leggings.iff", cost = 150000, displayName = "@wearables_name:armor_kashyyykian_hunting_leggings" },
-        { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_bracer_l.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_hunting_bracer_l" },
-        { template = "object/tangible/wearables/armor/kashyyykian_hunting/armor_kashyyykian_hunting_bracer_r.iff", cost = 100000, displayName = "@wearables_name:armor_kashyyykian_hunting_bracer_r" },
     },
 
     waresStim = {
@@ -326,7 +342,7 @@ genericWaresData = {
         { template = "object/tangible/medicine/crafted/medpack_disease_constitution_a.iff", cost = 10000, displayName = "@medicine_name:medic_disease_constitution_a"},
         { template = "object/tangible/medicine/crafted/medpack_poison_area_action_a.iff", cost = 10000, displayName = "@medicine_name:medic_poison_area_action_a"},
         { template = "object/tangible/medicine/crafted/medpack_poison_area_health_a.iff", cost = 10000, displayName = "@medicine_name:medic_poison_area_health_a"},
-        { template = "object/tangible/medicine/crafted/medpack_poison_area_mind_a.iff", cost = 10000, displayName = "@medicine_name:medic_poison_area_mind_a"},    
+        { template = "object/tangible/medicine/crafted/medpack_poison_area_mind_a.iff", cost = 10000, displayName = "@medicine_name:medic_poison_area_mind_a"},
         { template = "object/tangible/medicine/crafted/medpack_cure_disease_area_b.iff", cost = 15000, displayName = "@medicine_name:medic_cure_disease_area_b"},
         { template = "object/tangible/medicine/crafted/medpack_cure_poison_area_b.iff", cost = 15000, displayName = "@medicine_name:medic_cure_poison_area_b"},
         { template = "object/tangible/medicine/crafted/medpack_disease_area_action_b.iff", cost = 15000, displayName = "@medicine_name:medic_disease_area_action_b"},
