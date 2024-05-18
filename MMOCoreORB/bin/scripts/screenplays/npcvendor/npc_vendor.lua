@@ -1,5 +1,5 @@
 includeFile("npcvendor/npc_vendor_data.lua")
-includeFile("../../managers/resource_manager_spawns.lua")
+includeFile("../managers/resource_manager_spawns.lua")
 local ObjectManager = require("managers.object.object_manager")
 
 NPCVendorScreenplay= ScreenPlay:new {
@@ -49,7 +49,7 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "NPCVendor", "handleSuiPurchase", 32, options)
 end
 
-function NPCVendor:sendResourceSalesSui(nNpc, pPlayer, screenID)
+function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 
 	print("Calling sendResourceSalesSUI")
 	print(screenID)
@@ -62,10 +62,18 @@ function NPCVendor:sendResourceSalesSui(nNpc, pPlayer, screenID)
 	local suiManager = LuaSuiManager()
 	local resourceData = resources
 
+	if resourceData ~= nil then
+		print("resource data is legit")
+	else
+		print("resource data is whack")
+	end
+
 	print("Resource list size:")
 	print(#resourceData)
 	print("First resource:")
 	print(resourceData[1].name)
+
+
 
 	local options = { }
 	for i = 1, 10, 1 do
