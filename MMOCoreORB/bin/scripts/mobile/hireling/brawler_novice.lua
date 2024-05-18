@@ -1,6 +1,7 @@
 brawler_novice = Creature:new {
-	objectName = "@mob/creature_names:mercenary",
-	randomNameType = NAME_GENERIC,
+	--objectName = "@mob/creature_names:mercenary",
+	objectName = "Novice Brawler"
+    randomNameType = NAME_GENERIC,
 	randomNameTag = true,
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",

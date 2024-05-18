@@ -4172,8 +4172,8 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 		ManagedReference<PetControlDevice*> pcd = getControlDevice().get().castTo<PetControlDevice*>();
 		if (pcd != nullptr && pcd->getPetType() == PetManager::FACTIONPET && creature->isNeutral()) {
 			//Ethan edit 5-16-24 (HIRELING)
-			return true;
-			//return false;
+			//return true;
+			return false;
 		}
 
 		ManagedReference<CreatureObject*> owner = getLinkedCreature().get();
@@ -4193,8 +4193,8 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 
 		if (controlDevice != nullptr && controlDevice->getPetType() == PetManager::FACTIONPET && isNeutral())
 			//Ethan edit 5-16-24 (HIRELING)
-			return true;
-			//return false;
+			//return true;
+			return false;
 
 		ManagedReference<CreatureObject*> owner = creature->getLinkedCreature().get();
 
@@ -4243,8 +4243,8 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 		// Attacking creature has no faction
 		if (creatureFaction == 0)
 			//Ethan edit 5-16-24 (HIRELING)
-			return true;
-			//return false;
+			//return true;
+			return false;
 
 		// This faction and attacking creature are same faction
 		if (thisFaction == creatureFaction)
