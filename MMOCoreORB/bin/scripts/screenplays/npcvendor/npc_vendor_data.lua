@@ -537,7 +537,7 @@ genericWaresData = {
         { template = "object/tangible/deed/harvester_deed/shared_harvester_gas_deed_heavy.iff", cost = 100000, displayName = "@deed:gas_harvester_heavy_deed_name"},
         { template = "object/tangible/deed/harvester_deed/shared_harvester_liquid_deed_heavy.iff", cost = 100000, displayName = "@deed:liquid_harvester_heavy_deed_name"},
         { template = "object/tangible/deed/harvester_deed/shared_harvester_moisture_deed_heavy.iff", cost = 100000, displayName = "@deed:moisture_harvester_heavy_deed_name"},
-        { template = "object/tangible/deed/harvester_deed/shared_harvester_ore_heavy_deed.iff", cost = , displayName = "@deed:ore_heavy_harvester_deed_name"},   
+        { template = "object/tangible/deed/harvester_deed/shared_harvester_ore_heavy_deed.iff", cost = 100000, displayName = "@deed:ore_heavy_harvester_deed_name"},   
     },
 
     waresFactory = {
