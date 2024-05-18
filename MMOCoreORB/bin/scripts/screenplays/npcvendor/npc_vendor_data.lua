@@ -15,7 +15,7 @@ genericWaresData = {
         dathomir = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
 
         kashyyyk = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
-        mustafar = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0}.
+        mustafar = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
     }
     
     
