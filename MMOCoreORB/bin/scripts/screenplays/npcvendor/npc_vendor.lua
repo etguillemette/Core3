@@ -1,4 +1,5 @@
 includeFile("npcvendor/npc_vendor_data.lua")
+includeFile("../managers/resource_manager_spawns.lua")
 local ObjectManager = require("managers.object.object_manager")
 
 NPCVendorScreenplay= ScreenPlay:new {
@@ -46,6 +47,24 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 	end
 
 	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "NPCVendor", "handleSuiPurchase", 32, options)
+end
+
+function NPCVendor:sendResourceSalesSui(nNpc, pPlayer, screenID)
+
+	if (pPlayer == nil or pNpc == nil) then
+		return
+	end
+
+	writeStringData(CreatureObject(pPlayer):getObjectID() .. ":npc_vendor_purchase", screenID)
+	local suiManager = LuaSuiManager()
+	local resourceData = resources
+
+	local options = { }
+	for i = 1, 10, 1 do
+		local resource = {getStringId(resourceData[i].name) .. " (Cost: " .. resourceData[i].attributes[1] .. ")", 0}
+		table.insert(options, resource)
+	end
+
 end
 
 function NPCVendor:getWaresTable(category)
@@ -154,6 +173,10 @@ function NPCVendor:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 		self:giveService(pPlayer,itemData)
 	end
 
+	--if string.find(purchaseCategory, "resources_") ~= nil then
+		--deleteStringData(playerID .. ":npc_vendor_purchase")
+		--self:giveResource(pPlayer,itemData)
+	--end
 end
 
 --Handles the actual handoff of the item to the player

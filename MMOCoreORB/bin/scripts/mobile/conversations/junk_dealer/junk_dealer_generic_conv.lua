@@ -153,6 +153,7 @@ start_vendor = ConvoScreen:new {
 		{"I am looking for a mercenary.", "vendor_hireling"},
 		{"I am looking for some food and drink.", "vendor_chef"},
 		{"I am looking for some scout equipment.", "vendor_scout"},
+		{"I am looking for some resources.", "resource_resources"},
 		--{"I am looking for some clothing."},
 		--{"I am looking for some entertainer items."},
 		--{"I am looking for a vehicle.","vendor_vehicle"},
@@ -650,6 +651,17 @@ hires_brawler = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(hires_brawler);
+
+--RESOURCES-----------------------------------
+----------------------------------------------
+
+resource_resources = ConvoScreen:new {
+	id = "resource_resources",
+	customDialogText = "Here are the resources I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(resource_resources)
 
 
 
