@@ -27,7 +27,7 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
 	--Ethan testing 5-18-24 (NPC VENDOR): Seeing if I can get the inventory to change depending on the planet
 	local zoneName = CreatureObject(pPlayer):getZoneName()
-	local inventoryTable = self.genericWaresData.planetInventory[zoneName]
+	local inventoryTable = genericWaresData.planetInventory[zoneName]
 
 	local startIndex = math.floor(inventoryTable.inventoryStartIndex * #waresData)
 
