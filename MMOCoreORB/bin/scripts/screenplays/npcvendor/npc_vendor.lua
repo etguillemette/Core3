@@ -51,6 +51,9 @@ end
 
 function NPCVendor:sendResourceSalesSui(nNpc, pPlayer, screenID)
 
+	print("Calling sendResourceSalesSUI")
+	print(screenID)
+
 	if (pPlayer == nil or pNpc == nil) then
 		return
 	end
@@ -59,12 +62,16 @@ function NPCVendor:sendResourceSalesSui(nNpc, pPlayer, screenID)
 	local suiManager = LuaSuiManager()
 	local resourceData = resources
 
+	print("Resource list size:")
+	print(#resourceData)
+
 	local options = { }
 	for i = 1, 10, 1 do
 		local resource = {getStringId(resourceData[i].name) .. " (Cost: " .. resourceData[i].attributes[1] .. ")", 0}
 		table.insert(options, resource)
 	end
 
+	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "NPCVendor", "handleSuiPurchase", 32, options)
 end
 
 function NPCVendor:getWaresTable(category)
