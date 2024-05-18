@@ -40,7 +40,7 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
 	local options = { }
 	--	for i = 1, #waresData, 1 do --TESTING
-	for i = startIndex, #endIndex, 1 do
+	for i = startIndex, endIndex, 1 do
 		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. waresData[i].cost .. ")", 0}
 		table.insert(options, ware)
 	end
