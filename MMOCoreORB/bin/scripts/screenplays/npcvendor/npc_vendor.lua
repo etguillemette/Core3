@@ -66,7 +66,6 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.waresUnarmed
 	elseif category == "wares_heavy" then
 		return genericWaresData.waresHeavyWeapon
-
 	elseif category == "wares_armor_helm" then
 		return genericWaresData.waresArmorHelm
 	elseif category == "wares_armor_chest" then
@@ -77,37 +76,6 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.waresArmorArm
 	elseif category == "wares_armor_accessory" then
 		return genericWaresData.waresArmorAccessory
-	elseif category == "wares_" then
-		return genericWaresData.waresArmor
-	elseif category == "wares_" then
-		return genericWaresData.waresArmor
-	
-	elseif category == "wares_bone" then
-		return genericWaresData.waresBone
-	elseif category == "wares_chitin" then
-		return genericWaresData.waresChitin
-	elseif category == "wares_mabari" then
-		return genericWaresData.waresMabari
-	elseif category == "wares_tantel" then
-		return genericWaresData.waresTantel
-	elseif category == "wares_ubese" then
-		return genericWaresData.waresUbese
-	elseif category == "wares_padded" then
-		return genericWaresData.waresPadded
-	elseif category == "wares_composite" then
-		return genericWaresData.waresComposite
-	elseif category == "wares_guardian" then
-		return genericWaresData.waresGuardian
-	elseif category == "wares_defender" then
-		return genericWaresData.waresDefender
-	elseif category == "wares_sentinel" then
-		return genericWaresData.waresSentinel
-	elseif category == "wares_ceremonial" then
-		return genericWaresData.waresCeremonial
-	elseif category == "wares_mountain" then
-		return genericWaresData.waresMountain
-	elseif category == "wares_hunting" then
-		return genericWaresData.waresHunting
 	elseif category == "wares_stim" then
 		return genericWaresData.waresStim
 	elseif category == "wares_medpack" then
@@ -304,6 +272,9 @@ function NPCVendor:transferData(pPlayer, pDatapad, itemData)
 	--else
 	--	pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, false)
 	--end
+
+	print(templatePath)
+	print(genPath)
 
 	if pItem ~= nil then
 		SceneObject(pItem):sendTo(pPlayer)

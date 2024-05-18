@@ -215,45 +215,6 @@ genericWaresData = {
         { template = "object/tangible/wearables/armor/ubese/armor_ubese_bandolier.iff", cost = 5000, displayName = "@wearables_name:armor_ubese_bandolier" },
     },
 
-    waresBone = {
-    },
-
-    waresMabari = {
-    },
-
-    waresChitin = {
-    },
-
-    waresTantel = {
-    },
-
-    waresUbese = {
-    },
-
-    waresPadded = {
-    },
-
-    waresComposite = {
-    },
-
-    waresGuardian = {
-    },
-
-    waresDefender = {
-    },
-
-    waresSentinel = {
-    },
-
-    waresCeremonial = {
-    },
-
-    waresMountain = {
-    },
-
-    waresHunting = {
-    },
-
     waresStim = {
         { template = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_a.iff", cost = 1000, displayName="@medicine_name:stimpack_sm_s1_a"},
         { template = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_b.iff", cost = 2000, displayName="@medicine_name:stimpack_sm_s1_b"},
