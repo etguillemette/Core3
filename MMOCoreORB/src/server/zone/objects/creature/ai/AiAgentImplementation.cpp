@@ -4170,15 +4170,21 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 	// Handle Pets - Check against owner
 	if (isPet() && !isMindTricked()) {
 		ManagedReference<PetControlDevice*> pcd = getControlDevice().get().castTo<PetControlDevice*>();
-		if (pcd != nullptr && pcd->getPetType() == PetManager::FACTIONPET && creature->isNeutral()) {
+		//Ethan edit 5-18-24 (HIRELINGS):
+		//if (pcd != nullptr && pcd->getPetType() == PetManager::FACTIONPET && creature->isNeutral()) {
 			//Ethan edit 5-16-24 (HIRELING)
 			//return true;
-			return false;
-		}
+		//	return false;
+		//}
 
 		ManagedReference<CreatureObject*> owner = getLinkedCreature().get();
 
 		if (owner == nullptr) {
+			return false;
+		}
+
+		//Ethan edit 5-18-24: Make sure that pets can't be attacked by their owners
+		if (owner == creature) {
 			return false;
 		}
 
@@ -4190,11 +4196,11 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 
 	if (creature->isPet()) {
 		ManagedReference<PetControlDevice*> controlDevice = creature->getControlDevice().get().castTo<PetControlDevice*>();
-
-		if (controlDevice != nullptr && controlDevice->getPetType() == PetManager::FACTIONPET && isNeutral())
-			//Ethan edit 5-16-24 (HIRELING)
+		
+		//Ethan edit 5-16-24 (HIRELING)
+		//if (controlDevice != nullptr && controlDevice->getPetType() == PetManager::FACTIONPET && isNeutral())
 			//return true;
-			return false;
+			//return false;
 
 		ManagedReference<CreatureObject*> owner = creature->getLinkedCreature().get();
 
@@ -4263,8 +4269,8 @@ bool AiAgentImplementation::isAttackableBy(CreatureObject* creature) {
 		// Faction check stricly for AI vs AI. Faction AI attamepting to attack non-faction AI
 		//Ethan edit 5-16-24 (HIRELING)
 		if (thisFaction == 0 && creatureFaction > 0)
-			return true;
-			//return false;
+			//return true;
+			return false;
 
 		AiAgent* creatureAgent = creature->asAiAgent();
 
