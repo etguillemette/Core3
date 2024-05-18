@@ -1,4 +1,24 @@
 genericWaresData = {
+    
+    planetInventory = {
+        corellia = { inventoryStartIndex = 0.0, inventoryEndIndex = 0.5},
+		naboo = {inventoryStartIndex = 0.0, inventoryEndIndex = 0.5},
+		tatooine = {inventoryStartIndex = 0.0, inventoryEndIndex = 0.5},
+        
+        talus = {inventoryStartIndex = 0.25, inventoryEndIndex = 0.75},
+        rori = {inventoryStartIndex = 0.25, inventoryEndIndex = 0.75},
+        dantooine = {inventoryStartIndex = 0.25, inventoryEndIndex = 0.75},
+		lok = {inventoryStartIndex = 0.25, inventoryEndIndex = 0.75},
+
+        yavin = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
+        endor = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
+        dathomir = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
+
+        kashyyyk = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
+        mustafar = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0}.
+    }
+    
+    
     waresPistol = {
 		{ template = "object/weapon/ranged/pistol/pistol_d18.iff", cost = 5000, displayName = "@weapon_name:pistol_d18" },
         { template = "object/weapon/ranged/pistol/pistol_dl44.iff", cost = 7500, displayName = "@weapon_name:pistol_dl44" },

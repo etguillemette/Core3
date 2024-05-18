@@ -25,8 +25,22 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 	local suiManager = LuaSuiManager()
 	local waresData = self:getWaresTable(screenID)
 
+	--Ethan testing 5-18-24 (NPC VENDOR): Seeing if I can get the inventory to change depending on the planet
+	local zoneName = CreatureObject(pPlayer):getZoneName()
+	local inventoryTable = self.planetInventory[zoneName]
+
+	local startIndex = math.floor(inventoryTable.inventoryStartIndex * #waresData)
+
+	if startIndex < 1 then
+		startIndex = 1
+	end
+
+	local endIndex = math.ceil(inventoryTable.inventoryEndIndex * #waresData)
+
+
 	local options = { }
-	for i = 1, #waresData, 1 do
+	--	for i = 1, #waresData, 1 do --TESTING
+	for i = startIndex, #endIndex, 1 do
 		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. waresData[i].cost .. ")", 0}
 		table.insert(options, ware)
 	end
