@@ -1,5 +1,5 @@
 includeFile("npcvendor/npc_vendor_data.lua")
-includeFile("../managers/resource_manager_spawns.lua")
+includeFile("../../managers/resource_manager_spawns.lua")
 local ObjectManager = require("managers.object.object_manager")
 
 NPCVendorScreenplay= ScreenPlay:new {
@@ -64,6 +64,8 @@ function NPCVendor:sendResourceSalesSui(nNpc, pPlayer, screenID)
 
 	print("Resource list size:")
 	print(#resourceData)
+	print("First resource:")
+	print(resourceData[1].name)
 
 	local options = { }
 	for i = 1, 10, 1 do
