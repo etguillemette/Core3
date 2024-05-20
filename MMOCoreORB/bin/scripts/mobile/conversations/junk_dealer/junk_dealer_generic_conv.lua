@@ -154,7 +154,7 @@ start_vendor = ConvoScreen:new {
 		{"I am looking for some food and drink.", "vendor_chef"},
 		{"I am looking for some scout equipment.", "vendor_scout"},
 		{"I am looking for some resources.", "resource_resources"},
-		--{"I am looking for some clothing."},
+		{"I am looking for some clothing."},
 		--{"I am looking for some entertainer items."},
 		--{"I am looking for a vehicle.","vendor_vehicle"},
 		--{"I am looking for some parts.","vendor_medicine"},
@@ -162,6 +162,335 @@ start_vendor = ConvoScreen:new {
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(start_vendor);
+
+--SHIP COMPONENT--------------------------
+------------------------------------------
+
+vendor_ship = ConvoScreen:new {
+	id = "vendor_ship",
+	customDialogText = "What kind of ship components were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a ship_crafted_armor.", "wares_ship_crafted_armor"},
+		{"I was looking for a ship_crafted_booster.", "wares_ship_crafted_booster"},
+		{"I was looking for a ship_crafted_capacitor.", "wares_ship_crafted_capacitor"},
+		{"I was looking for a ship_crafted_chassis.", "wares_ship_crafted_chassis"},
+		{"I was looking for a ship_crafted_droid_interface.", "wares_ship_crafted_droid_interface"},
+		{"I was looking for a ship_crafted_engine.", "wares_ship_crafted_engine"},
+		{"I was looking for a ship_crafted_reactor.", "wares_ship_crafted_reactor"},
+		{"I was looking for a ship_crafted_repair.", "wares_ship_crafted_repair"},
+		{"I was looking for a ship_crafted_reverse_engineering.", "wares_ship_crafted_reverse_engineering"},
+		{"I was looking for a ship_crafted_shields.", "wares_ship_crafted_shields"},
+		{"I was looking for a ship_crafted_weapon.", "wares_ship_crafted_weapon"},		
+		{"Actually, I don't need anything right now.", "no_loot"}
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_ship);
+
+
+wares_ship_crafted_armor = ConvoScreen:new {
+	id = "wares_ship_crafted_armor",
+	customDialogText = "Here are the wares_ship_crafted_armor I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_armor);
+
+wares_ship_crafted_booster = ConvoScreen:new {
+	id = "wares_ship_crafted_booster",
+	customDialogText = "Here are the wares_ship_crafted_booster I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_booster);
+
+wares_ship_crafted_capacitor = ConvoScreen:new {
+	id = "wares_ship_crafted_capacitor",
+	customDialogText = "Here are the wares_ship_crafted_capacitor I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_capacitor);
+
+wares_ship_crafted_chassis = ConvoScreen:new {
+	id = "wares_ship_crafted_chassis",
+	customDialogText = "Here are the wares_ship_crafted_chassis I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_chassis);
+
+wares_ship_crafted_droid_interface = ConvoScreen:new {
+	id = "wares_ship_crafted_droid_interface",
+	customDialogText = "Here are the wares_ship_crafted_droid_interface I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_droid_interface);
+
+wares_ship_crafted_engine = ConvoScreen:new {
+	id = "wares_ship_crafted_engine",
+	customDialogText = "Here are the wares_ship_crafted_engine I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_engine);
+
+wares_ship_crafted_reactor = ConvoScreen:new {
+	id = "wares_ship_crafted_reactor",
+	customDialogText = "Here are the wares_ship_crafted_reactor I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_reactor);
+
+wares_ship_crafted_repair = ConvoScreen:new {
+	id = "wares_ship_crafted_repair",
+	customDialogText = "Here are the wares_ship_crafted_repair I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_repair);
+
+wares_ship_crafted_reverse_engineering = ConvoScreen:new {
+	id = "wares_ship_crafted_reverse_engineering",
+	customDialogText = "Here are the wares_ship_crafted_reverse_engineering I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_reverse_engineering);
+
+wares_ship_crafted_shields = ConvoScreen:new {
+	id = "wares_ship_crafted_shields",
+	customDialogText = "Here are the wares_ship_crafted_shields I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_shields);
+
+wares_ship_crafted_weapon = ConvoScreen:new {
+	id = "wares_ship_crafted_weapon",
+	customDialogText = "Here are the wares_ship_crafted_weapon I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_ship_crafted_weapon);
+
+
+
+--CLOTHING--------------------------------
+------------------------------------------
+
+vendor_wearables = ConvoScreen:new {
+	id = "vendor_wearables",
+	customDialog = "Of course! What kind of clothing were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a wearables_apron.", "wares_wearables_apron"},
+		{"I was looking for a wearables_backpack.", "wares_wearables_backpack"},
+		{"I was looking for a wearables_belt.", "wares_wearables_belt"},
+		{"I was looking for a wearables_bikini.", "wares_wearables_bikini"},
+		{"I was looking for a wearables_bodysuit.", "wares_wearables_bodysuit"},
+		{"I was looking for a wearables_boots.", "wares_wearables_boots"},
+		{"I was looking for a wearables_bustier.", "wares_wearables_bustier"},
+		{"I was looking for a wearables_dress.", "wares_wearables_dress"},
+		{"I was looking for a wearables_gloves.", "wares_wearables_gloves"},
+		{"I was looking for a wearables_goggles.", "wares_wearables_goggles"},
+		{"I was looking for a wearables_hat.", "wares_wearables_hat"},
+		{"I was looking for a wearables_ithorian.", "wares_wearables_ithorian"},
+		{"I was looking for a wearables_jacket.", "wares_wearables_jacket"},
+		{"I was looking for a wearables_necklace.", "wares_wearables_necklace"},
+		{"I was looking for a wearables_pants.", "wares_wearables_pants"},
+		{"I was looking for a wearables_ring.", "wares_wearables_ring"},
+		{"I was looking for a wearables_robe.", "wares_wearables_robe"},
+		{"I was looking for a wearables_shirt.", "wares_wearables_shirt"},
+		{"I was looking for a wearables_shoes.", "wares_wearables_shoes"},
+		{"I was looking for a wearables_skirt.", "wares_wearables_skirt"},
+		{"I was looking for a wearables_vest.", "wares_wearables_vest"},
+		{"I was looking for a wearables_wookiee.", "wares_wearables_wookiee"},
+		{"Actually, I don't need anything right now.", "no_loot"}		
+	}
+}
+JunkDealerGenericConvoHandler:addScreen(vendor_wearables);
+
+
+wares_wearables_apron = ConvoScreen:new {
+	id = "wares_wearables_apron",
+	customDialogText = "Here are the wares_wearables_apron I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_apron);
+
+wares_wearables_backpack = ConvoScreen:new {
+	id = "wares_wearables_backpack",
+	customDialogText = "Here are the wares_wearables_backpack I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_backpack);
+
+wares_wearables_belt = ConvoScreen:new {
+	id = "wares_wearables_belt",
+	customDialogText = "Here are the wares_wearables_belt I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_belt);
+
+wares_wearables_bikini = ConvoScreen:new {
+	id = "wares_wearables_bikini",
+	customDialogText = "Here are the wares_wearables_bikini I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_bikini);
+
+wares_wearables_bodysuit = ConvoScreen:new {
+	id = "wares_wearables_bodysuit",
+	customDialogText = "Here are the wares_wearables_bodysuit I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_bodysuit);
+
+wares_wearables_boots = ConvoScreen:new {
+	id = "wares_wearables_boots",
+	customDialogText = "Here are the wares_wearables_boots I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_boots);
+
+wares_wearables_bustier = ConvoScreen:new {
+	id = "wares_wearables_bustier",
+	customDialogText = "Here are the wares_wearables_bustier I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_bustier);
+
+wares_wearables_dress = ConvoScreen:new {
+	id = "wares_wearables_dress",
+	customDialogText = "Here are the wares_wearables_dress I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_dress);
+
+wares_wearables_gloves = ConvoScreen:new {
+	id = "wares_wearables_gloves",
+	customDialogText = "Here are the wares_wearables_gloves I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_gloves);
+
+wares_wearables_goggles = ConvoScreen:new {
+	id = "wares_wearables_goggles",
+	customDialogText = "Here are the wares_wearables_goggles I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_goggles);
+
+wares_wearables_hat = ConvoScreen:new {
+	id = "wares_wearables_hat",
+	customDialogText = "Here are the wares_wearables_hat I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_hat);
+
+wares_wearables_ithorian = ConvoScreen:new {
+	id = "wares_wearables_ithorian",
+	customDialogText = "Here are the wares_wearables_ithorian I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_ithorian);
+
+wares_wearables_jacket = ConvoScreen:new {
+	id = "wares_wearables_jacket",
+	customDialogText = "Here are the wares_wearables_jacket I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_jacket);
+
+wares_wearables_necklace = ConvoScreen:new {
+	id = "wares_wearables_necklace",
+	customDialogText = "Here are the wares_wearables_necklace I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_necklace);
+
+wares_wearables_pants = ConvoScreen:new {
+	id = "wares_wearables_pants",
+	customDialogText = "Here are the wares_wearables_pants I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_pants);
+
+wares_wearables_ring = ConvoScreen:new {
+	id = "wares_wearables_ring",
+	customDialogText = "Here are the wares_wearables_ring I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_ring);
+
+wares_wearables_robe = ConvoScreen:new {
+	id = "wares_wearables_robe",
+	customDialogText = "Here are the wares_wearables_robe I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_robe);
+
+wares_wearables_shirt = ConvoScreen:new {
+	id = "wares_wearables_shirt",
+	customDialogText = "Here are the wares_wearables_shirt I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_shirt);
+
+wares_wearables_shoes = ConvoScreen:new {
+	id = "wares_wearables_shoes",
+	customDialogText = "Here are the wares_wearables_shoes I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_shoes);
+
+wares_wearables_skirt = ConvoScreen:new {
+	id = "wares_wearables_skirt",
+	customDialogText = "Here are the wares_wearables_skirt I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_skirt);
+
+wares_wearables_vest = ConvoScreen:new {
+	id = "wares_wearables_vest",
+	customDialogText = "Here are the wares_wearables_vest I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_vest);
+
+wares_wearables_wookiee = ConvoScreen:new {
+	id = "wares_wearables_wookiee",
+	customDialogText = "Here are the wares_wearables_wookiee I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_wearables_wookiee);
+
+
 
 --WEAPON----------------------------------
 ------------------------------------------
@@ -425,6 +754,125 @@ wares_hunting = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(wares_hunting);
 
+--COMPONENTS------------------------------
+------------------------------------------
+
+vendor_component = ConvoScreen:new {
+	id = "vendor_component",
+	customDialogText = "What kind of crafting components were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a component_armor.", "wares_component_armor"},
+		{"I was looking for a component_bio.", "wares_component_bio"},
+		{"I was looking for a component_chemistry.", "wares_component_chemistry"},
+		{"I was looking for a component_clothing.", "wares_component_clothing"},
+		{"I was looking for a component_dna.", "wares_component_dna"},
+		{"I was looking for a component_droid.", "wares_component_droid"},
+		{"I was looking for a component_item.", "wares_component_item"},
+		{"I was looking for a component_munition.", "wares_component_munition"},
+		{"I was looking for a component.", "wares_component"},
+		{"I was looking for a component_structure.", "wares_component_structure"},
+		{"I was looking for a component_vehicle.", "wares_component_vehicle"},
+		{"I was looking for a component_weapon.", "wares_component_weapon"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_component);
+
+wares_component_armor = ConvoScreen:new {
+	id = "wares_component_armor",
+	customDialogText = "Here are the wares_component_armor I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_armor);
+
+wares_component_bio = ConvoScreen:new {
+	id = "wares_component_bio",
+	customDialogText = "Here are the wares_component_bio I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_bio);
+
+wares_component_chemistry = ConvoScreen:new {
+	id = "wares_component_chemistry",
+	customDialogText = "Here are the wares_component_chemistry I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_chemistry);"
+
+wares_component_clothing = ConvoScreen:new {
+	id = "wares_component_clothing",
+	customDialogText = "Here are the wares_component_clothing I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_clothing);
+
+wares_component_dna = ConvoScreen:new {
+	id = "wares_component_dna",
+	customDialogText = "Here are the wares_component_dna I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_dna);
+
+wares_component_droid = ConvoScreen:new {
+	id = "wares_component_droid",
+	customDialogText = "Here are the wares_component_droid I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_droid);
+
+wares_component_item = ConvoScreen:new {
+	id = "wares_component_item",
+	customDialogText = "Here are the wares_component_item I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_item);
+
+wares_component_munition = ConvoScreen:new {
+	id = "wares_component_munition",
+	customDialogText = "Here are the wares_component_munition I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_munition);
+
+wares_component = ConvoScreen:new {
+	id = "wares_component",
+	customDialogText = "Here are the wares_component I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component);
+
+wares_component_structure = ConvoScreen:new {
+	id = "wares_component_structure",
+	customDialogText = "Here are the wares_component_structure I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_structure);
+
+wares_component_vehicle = ConvoScreen:new {
+	id = "wares_component_vehicle",
+	customDialogText = "Here are the wares_component_vehicle I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_vehicle);
+
+wares_component_weapon = ConvoScreen:new {
+	id = "wares_component_weapon",
+	customDialogText = "Here are the wares_component_weapon I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_component_weapon);
 
 --MEDICINE--------------------------------
 ------------------------------------------
@@ -439,6 +887,7 @@ vendor_medicine = ConvoScreen:new {
 		{"I was looking for some status medpacks.", "wares_status"},
 		{"I was looking for some wound medpacks.", "wares_wound"},
 		{"I was looking for some enhancements.", "wares_enhancement"},
+		{"I was looking for some pet medicine.", "wares_medicine_pet"},
 		{"Actually, I don't need anything right now.","no_loot"}
 	}
 }
@@ -483,6 +932,14 @@ wares_enhancement = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(wares_enhancement);
+
+wares_medicine_pet = ConvoScreen:new {
+	id = "wares_medicine_pet",
+	customDialogText = "Here are the wares_medicine_pet I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_medicine_pet);
 
 --INSTALLATIONS------------------------------
 ---------------------------------------------
@@ -614,7 +1071,7 @@ junkDealerGenericConvoTemplate:addScreen(wares_camo);
 
 wares_camp = ConvoScreen:new {
 	id = "wares_camp",
-	customDialogText = "Here are the traps I have available.",
+	customDialogText = "Here are the camps I have available.",
 	stopConversation = "true",
 	options = {}
 }
@@ -652,6 +1109,65 @@ hires_brawler = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(hires_brawler);
 
+
+--FURNITURE-----------------------------------
+----------------------------------------------
+
+vendor_furniture = ConvoScreen:new {
+	id = "vendor_furniture",
+	customDialogText = "What kind of furniture were you looking for?",
+	stopConversation = "false",
+	options = {
+		{"I was looking for a furniture_all.", "wares_furniture_all"},
+		{"I was looking for a furniture_city.", "wares_furniture_city"},
+		{"I was looking for a furniture_decorative.", "wares_furniture_decorative"},
+		{"I was looking for a furniture_tatooine.", "wares_furniture_tatooine"},
+		{"I was looking for a painting.", "wares_painting"},
+	}
+}
+junkDealerGenericConvoTemplate:addScreen(vendor_furniture);
+
+wares_furniture_all = ConvoScreen:new {
+	id = "wares_furniture_all",
+	customDialogText = "Here are the wares_furniture_all I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_furniture_all);
+
+wares_furniture_city = ConvoScreen:new {
+	id = "wares_furniture_city",
+	customDialogText = "Here are the wares_furniture_city I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_furniture_city);
+
+wares_furniture_decorative = ConvoScreen:new {
+	id = "wares_furniture_decorative",
+	customDialogText = "Here are the wares_furniture_decorative I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_furniture_decorative);
+
+wares_furniture_tatooine = ConvoScreen:new {
+	id = "wares_furniture_tatooine",
+	customDialogText = "Here are the wares_furniture_tatooine I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_furniture_tatooine);
+
+wares_painting = ConvoScreen:new {
+	id = "wares_painting",
+	customDialogText = "Here are the wares_painting I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_painting);
+
+
 --RESOURCES-----------------------------------
 ----------------------------------------------
 
@@ -662,6 +1178,96 @@ resource_resources = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(resource_resources)
+
+----------------------------------------------
+----------------------------------------------
+
+wares_battery = ConvoScreen:new {
+	id = "wares_battery",
+	customDialogText = "Here are the wares_battery I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_battery);
+
+
+
+wares_deed_city_deed = ConvoScreen:new {
+	id = "wares_deed_city_deed",
+	customDialogText = "Here are the wares_deed_city_deed I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_deed_city_deed);
+
+wares_deed_pet_deed = ConvoScreen:new {
+	id = "wares_deed_pet_deed",
+	customDialogText = "Here are the wares_deed_pet_deed I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_deed_pet_deed);
+
+wares_deed_vehicle_deed = ConvoScreen:new {
+	id = "wares_deed_vehicle_deed",
+	customDialogText = "Here are the wares_deed_vehicle_deed I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_deed_vehicle_deed);
+
+wares_droid_battery = ConvoScreen:new {
+	id = "wares_droid_battery",
+	customDialogText = "Here are the wares_droid_battery I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_droid_battery);
+
+wares_firework = ConvoScreen:new {
+	id = "wares_firework",
+	customDialogText = "Here are the wares_firework I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_firework);
+
+
+wares_loot_loot_schematic = ConvoScreen:new {
+	id = "wares_loot_loot_schematic",
+	customDialogText = "Here are the wares_loot_loot_schematic I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_loot_loot_schematic);
+
+
+wares_recycler = ConvoScreen:new {
+	id = "wares_recycler",
+	customDialogText = "Here are the wares_recycler I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_recycler);
+
+wares_scout_camp = ConvoScreen:new {
+	id = "wares_scout_camp",
+	customDialogText = "Here are the wares_scout_camp I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_scout_camp);
+
+wares_survey_tool = ConvoScreen:new {
+	id = "wares_survey_tool",
+	customDialogText = "Here are the wares_survey_tool I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_survey_tool);
+
+
+
 
 
 
