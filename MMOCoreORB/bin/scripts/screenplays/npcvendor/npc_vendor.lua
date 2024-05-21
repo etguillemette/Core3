@@ -82,7 +82,7 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 		table.insert(options, resource)
 	end
 
-	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "NPCVendor", "handleSuiPurchase", 32, options)
+	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "NPCVendor", "handleResourceSuiPurchase", 32, options)
 end
 
 function NPCVendor:getWaresTable(category)
@@ -275,9 +275,10 @@ end
 
 
 --Handles the actual handoff of the resources to the player
-function NPCVendor:giveItem(pPlayer, itemData)
+function NPCVendor:giveResource(pPlayer, itemData)
 	local pGhost = CreatureObject(pPlayer):getPlayerObject()
 
+	local resourceName = itemData.name
 	local resourceValue = itemData.attributes[1][1]
 
 	if (pGhost == nil) then
@@ -310,6 +311,8 @@ function NPCVendor:giveItem(pPlayer, itemData)
 
 	templatePath = itemData.containerCRC
 
+	--Ethan testing 5-21-24 - NPC VENDOR RESOURCES: I have no idea if this will actually work?
+	giveResource(pPlayer,resourceName,1000)
 	--local pItem = giveItem(pInventory, templatePath, -1)
 
 	--if (pItem ~= nil) then
@@ -392,6 +395,9 @@ function NPCVendor:transferData(pPlayer, pDatapad, itemData)
 	--else
 	--	pItem = giveControlDevice(pDatapad, templatePath, genPath, -1, false)
 	--end
+
+	--TESTING Ethan 5-20-24: Seeing if I can change the pet type here:
+	pItem.setPetType(HIRELING)
 
 	print(templatePath)
 	print(genPath)
