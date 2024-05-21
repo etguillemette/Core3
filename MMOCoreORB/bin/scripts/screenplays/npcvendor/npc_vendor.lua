@@ -78,7 +78,7 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 
 	local options = { }
 	for i = 1, 10, 1 do
-		local resource = {getStringId(resourceData[i].name) .. " (Cost: " .. resourceData[i].name .. "Stats: " resourceData[i].attributes[1][2] .. ")", 0}
+		local resource = {getStringId(resourceData[i].name) .. " (Cost: " .. resourceData[i].name .. "Stats: " .. resourceData[i].attributes[1][2] .. ")", 0}
 		table.insert(options, resource)
 	end
 
@@ -202,6 +202,8 @@ end
 function NPCVendor:handleResourceSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	local cancelPressed = (eventIndex == 1)
 
+	print("handleResourceSUIPUrchase called:")
+
 	if (pPlayer == nil) then
 		return
 	end
@@ -216,6 +218,9 @@ function NPCVendor:handleResourceSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	local purchaseIndex = arg0 + 1
 	
 	
+
+
+	
 	local resourceData = resources
 	
 	if (resourceData == nil or purchaseIndex < 1 or purchaseIndex > #resourceData) then
@@ -223,6 +228,7 @@ function NPCVendor:handleResourceSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	end
 
 	local itemData = resourceData[purchaseIndex]
+
 
 	if string.find(purchaseCategory, "resources_") ~= nil then
 		deleteStringData(playerID .. ":npc_vendor_purchase")
@@ -281,6 +287,14 @@ function NPCVendor:giveResource(pPlayer, itemData)
 	local resourceName = itemData.name
 	local resourceValue = itemData.attributes[1][1]
 
+
+	print("giveResource called:")
+	print("name:")
+	print(resourceName)
+	print("value:")
+	print(resourceValue)
+
+
 	if (pGhost == nil) then
 		return
 	end
@@ -309,10 +323,20 @@ function NPCVendor:giveResource(pPlayer, itemData)
 
 	local templatePath
 
+
 	templatePath = itemData.containerCRC
 
+	
+	print("template path:")
+	print(templatePath)
+
 	--Ethan testing 5-21-24 - NPC VENDOR RESOURCES: I have no idea if this will actually work?
+	print("giving resource by name:")
+	
 	giveResource(pPlayer,resourceName,1000)
+
+	print("giving resource by path:")
+
 	giveResource(pPlayer,templatePath,1000)
 	--local pItem = giveItem(pInventory, templatePath, -1)
 
