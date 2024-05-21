@@ -78,7 +78,7 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 
 	local options = { }
 	for i = 1, 10, 1 do
-		local resource = {getStringId(resourceData[i].name) .. " (Cost: " .. resourceData[i].attributes[1][2] .. ")", 0}
+		local resource = {getStringId(resourceData[i].name) .. " (Cost: " .. resourceData[i].name .. "Stats: " resourceData[i].attributes[1][2] .. ")", 0}
 		table.insert(options, resource)
 	end
 
@@ -313,6 +313,7 @@ function NPCVendor:giveResource(pPlayer, itemData)
 
 	--Ethan testing 5-21-24 - NPC VENDOR RESOURCES: I have no idea if this will actually work?
 	giveResource(pPlayer,resourceName,1000)
+	giveResource(pPlayer,templatePath,1000)
 	--local pItem = giveItem(pInventory, templatePath, -1)
 
 	--if (pItem ~= nil) then
