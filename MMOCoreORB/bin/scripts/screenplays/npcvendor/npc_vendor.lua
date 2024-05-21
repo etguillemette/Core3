@@ -11,7 +11,10 @@ NPCVendorScreenplay= ScreenPlay:new {
 }
 
 NPCVendor = {
-
+	errorCodes =  {
+		SUCCESS = 0, INVENTORYFULL = 1,  NOTENOUGHCREDITS = 2, GENERALERROR = 3, ITEMCOST = 4, INVENTORYERROR = 5,
+		TEMPLATEPATHERROR = 6, GIVEERROR = 7, DATAPADFULL = 8, DATAPADERROR = 9, TOOMANYHIRELINGS = 10, SCHEMATICERROR = 11,
+	}
 }
 
 
@@ -230,10 +233,12 @@ function NPCVendor:handleResourceSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	local itemData = resourceData[purchaseIndex]
 
 
-	if string.find(purchaseCategory, "resources_") ~= nil then
+	if string.find(purchaseCategory, "resource_") ~= nil then
 		deleteStringData(playerID .. ":npc_vendor_purchase")
 		self:giveResource(pPlayer,itemData)
+	
 	end
+
 end
 
 
