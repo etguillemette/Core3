@@ -411,7 +411,7 @@ bool PetManagerImplementation::handleCommandTraining(CreatureObject* speaker, Ai
 	}
 
 	// No renaming of faction pets
-	if (petType == FACTIONPET)
+	if (petType == FACTIONPET || petType == HIRELING) //Ethan edit 5-20-24 (HIRELING)
 		return true;
 	// no renaming of converse style droids with personalities installed.
 	if ((pet->getOptionsBitmask() & OptionBitmask::CONVERSE) && petType == DROIDPET)
@@ -598,7 +598,7 @@ void PetManagerImplementation::killPet(TangibleObject* attacker, AiAgent* pet, b
 		petControlDevice->setLastCommandTarget(nullptr);
 		petControlDevice->setLastCommand(PetManager::FOLLOW);
 
-		if (petControlDevice->getPetType() == FACTIONPET) {
+		if (petControlDevice->getPetType() == FACTIONPET || petControlDevice->getPetType() == HIRELING) { //Ethan edit 5-20-24 (HIRELING)
 			ManagedReference<CreatureObject*> owner = zoneServer->getObject(pet->getCreatureLinkID()).castTo<CreatureObject*>();
 
 			if (owner != nullptr) {

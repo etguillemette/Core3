@@ -199,7 +199,9 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 
 	} else if (petType == PetManager::FACTIONPET){
 		maxPets = 3;
-	}
+	} else if (petType == PetManager::HIRELING){ //Ethan edit 5-20-24 (HIRELING)
+		maxPets = 4; //Ethan edit 5-20-24 (HIRELING)
+	} //Ethan edit 5-20-24 (HIRELING)
 
 	for (int i = 0; i < ghost->getActivePetsSize(); ++i) {
 		ManagedReference<AiAgent*> object = ghost->getActivePet(i);
@@ -238,6 +240,17 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call.
 					return;
 				}
+			} else if (object->isCreature() && petType == PetManager::HIRELING) { //Ethan edit 5-20-24 (HIRELING)
+				const CreatureTemplate* activePetTemplate = object->getCreatureTemplate(); //Ethan edit 5-20-24 (HIRELING)
+				const CreatureTemplate* callingPetTemplate = pet->getCreatureTemplate(); //Ethan edit 5-20-24 (HIRELING)
+
+				if (activePetTemplate == nullptr || callingPetTemplate == nullptr || activePetTemplate->getTemplateName() != "at_st") //Ethan edit 5-20-24 (HIRELING)
+					continue; //Ethan edit 5-20-24 (HIRELING)
+
+				if (++currentlySpawned >= maxPets || (activePetTemplate->getTemplateName() == "at_st" && callingPetTemplate->getTemplateName() == "at_st")) { //Ethan edit 5-20-24 (HIRELING)
+					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call. //Ethan edit 5-20-24 (HIRELING)
+					return; //Ethan edit 5-20-24 (HIRELING)
+				} //Ethan edit 5-20-24 (HIRELING)
 			} else if (object->isDroidObject() && petType == PetManager::DROIDPET) {
 				if (++currentlySpawned >= maxPets) {
 					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call.

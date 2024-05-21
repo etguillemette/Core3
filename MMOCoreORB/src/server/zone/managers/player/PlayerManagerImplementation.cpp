@@ -2719,6 +2719,8 @@ bool PlayerManagerImplementation::checkTradeItems(CreatureObject* player, Creatu
 	int receiverVehiclesTraded = 0;
 	int playerShipsTraded = 0;
 	int receiverShipsTraded = 0;
+	int playerHirelingPetsTraded = 0; //Ethan edit 5-20-24 (HIRELING)
+	int receiverHirelingPetsTrade = 0; //Ethan edit 5-20-24 (HIRELING)
 
 	for (int i = 0; i < tradeContainer->getTradeSize(); ++i) {
 		ManagedReference<SceneObject*> scene = tradeContainer->getTradeItem(i);
@@ -2766,7 +2768,9 @@ bool PlayerManagerImplementation::checkTradeItems(CreatureObject* player, Creatu
 					receiverDroidsTraded++;
 				} else if (petControlDevice->getPetType() == PetManager::HELPERDROIDPET) {
 					return false;
-				}
+				} else if (petControlDevice->getPetType() == PetManager::HIRELING) { //Ethan edit 5-20-24 (HIRELING)
+					return false; //Ethan edit 5-20-24 (HIRELING)
+				} //Ethan edit 5-20-24 (HIRELING)
 			} else if (scene->isVehicleControlDevice()) {
 				VehicleControlDevice* vehicleControlDevice = cast<VehicleControlDevice*>(scene.get());
 
@@ -2834,7 +2838,12 @@ bool PlayerManagerImplementation::checkTradeItems(CreatureObject* player, Creatu
 						return false;
 
 					playerDroidsTraded++;
-				}
+				} else if (petControlDevice->getPetType() == PetManager::HIRELING) { //Ethan edit 5-20-24 (HIRELING)
+					if (!petControlDevice->canBeTradedTo(receiver, player, playerHirelingPetsTraded)) //Ethan edit 5-20-24 (HIRELING)
+						return false; //Ethan edit 5-20-24 (HIRELING)
+
+					playerHirelingPetsTraded++; //Ethan edit 5-20-24 (HIRELING)
+				} //Ethan edit 5-20-24 (HIRELING)
 			} else if (scene->isVehicleControlDevice()) {
 				VehicleControlDevice* vehicleControlDevice = cast<VehicleControlDevice*>(scene.get());
 

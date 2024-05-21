@@ -65,6 +65,7 @@ globalExpMultiplier = 3.0
 --For creature pets, A Creature Handler will have the base number + their stored pets skill mod as limit
 baseStoredCreaturePets = 2
 baseStoredFactionPets = 3
+baseStoredHirelingPets = 4 -- Ethan edit 5-20-24 (HIRELING)
 baseStoredDroids = 5
 baseStoredVehicles = 3
 baseStoredShips = 3

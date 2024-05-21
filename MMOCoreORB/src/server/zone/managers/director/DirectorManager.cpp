@@ -2471,6 +2471,8 @@ int DirectorManager::checkTooManyHirelings(lua_State* L) {
 
 			if (device->getPetType() == PetManager::FACTIONPET)
 				numberOfHirelings++;
+			if (device->getPetType() == PetManager::HIRELING) //Ethan edit 5-20-24 (HIRELING)
+				numberOfHirelings++; //Ethan edit 5-20-24 (HIRELING)
 		}
 	}
 
