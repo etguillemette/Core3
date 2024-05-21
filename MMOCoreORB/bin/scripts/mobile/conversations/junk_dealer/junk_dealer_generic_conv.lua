@@ -804,7 +804,7 @@ wares_component_chemistry = ConvoScreen:new {
 	stopConversation = "true",
 	options = {}
 }
-junkDealerGenericConvoTemplate:addScreen(wares_component_chemistry);"
+junkDealerGenericConvoTemplate:addScreen(wares_component_chemistry);
 
 wares_component_clothing = ConvoScreen:new {
 	id = "wares_component_clothing",
