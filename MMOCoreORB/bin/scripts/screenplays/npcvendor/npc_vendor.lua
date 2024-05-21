@@ -236,7 +236,7 @@ function NPCVendor:handleResourceSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	if string.find(purchaseCategory, "resource_") ~= nil then
 		deleteStringData(playerID .. ":npc_vendor_purchase")
 		self:giveResource(pPlayer,itemData)
-	
+
 	end
 
 end
@@ -290,7 +290,7 @@ function NPCVendor:giveResource(pPlayer, itemData)
 	local pGhost = CreatureObject(pPlayer):getPlayerObject()
 
 	local resourceName = itemData.name
-	local resourceValue = itemData.attributes[1][1]
+	local resourceValue = itemData.attributes[1][2]
 
 
 	print("giveResource called:")
