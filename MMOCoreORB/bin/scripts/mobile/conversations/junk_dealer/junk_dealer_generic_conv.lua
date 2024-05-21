@@ -154,7 +154,11 @@ start_vendor = ConvoScreen:new {
 		{"I am looking for some food and drink.", "vendor_chef"},
 		{"I am looking for some scout equipment.", "vendor_scout"},
 		{"I am looking for some resources.", "resource_resources"},
-		{"I am looking for some clothing."},
+		{"I am looking for some clothing.", "vendor_wearables"},
+		{"I am looking for some ship components.", "vendor_ship"},
+		{"I am looking for some crafting components.", "vendor_component"},
+		{"I am looking for some furniture.", "vendor_furniture"},
+		{"I am looking for a vehicle.", "wares_deed_vehicle_deed"},
 		--{"I am looking for some entertainer items."},
 		--{"I am looking for a vehicle.","vendor_vehicle"},
 		--{"I am looking for some parts.","vendor_medicine"},
@@ -181,7 +185,7 @@ vendor_ship = ConvoScreen:new {
 		{"I was looking for a ship_crafted_repair.", "wares_ship_crafted_repair"},
 		{"I was looking for a ship_crafted_reverse_engineering.", "wares_ship_crafted_reverse_engineering"},
 		{"I was looking for a ship_crafted_shields.", "wares_ship_crafted_shields"},
-		{"I was looking for a ship_crafted_weapon.", "wares_ship_crafted_weapon"},		
+		{"I was looking for a ship_crafted_weapon.", "wares_ship_crafted_weapon"},	
 		{"Actually, I don't need anything right now.", "no_loot"}
 	}
 }

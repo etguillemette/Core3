@@ -1,6 +1,7 @@
 includeFile("npcvendor/npc_vendor_data.lua")
 includeFile("../managers/resource_manager_spawns.lua")
 local ObjectManager = require("managers.object.object_manager")
+--local ResourceManager = require("managers.resource.resource_manager")
 
 NPCVendorScreenplay= ScreenPlay:new {
 	errorCodes =  {
@@ -77,7 +78,7 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 
 	local options = { }
 	for i = 1, 10, 1 do
-		local resource = {getStringId(resourceData[i].name) .. " (Cost: " .. resourceData[i].attributes[1] .. ")", 0}
+		local resource = {getStringId(resourceData[i].name) .. " (Cost: " .. resourceData[i].attributes[1][2] .. ")", 0}
 		table.insert(options, resource)
 	end
 
@@ -191,10 +192,44 @@ function NPCVendor:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	end
 
 	--if string.find(purchaseCategory, "resources_") ~= nil then
-		--deleteStringData(playerID .. ":npc_vendor_purchase")
-		--self:giveResource(pPlayer,itemData)
+	--	deleteStringData(playerID .. ":npc_vendor_purchase")
+	--	self:giveResource(pPlayer,itemData)
 	--end
 end
+
+
+--This functions is called by the conversation screenplay, and sends a list of resources to the player for purchase
+function NPCVendor:handleResourceSuiPurchase(pPlayer, pSui, eventIndex, arg0)
+	local cancelPressed = (eventIndex == 1)
+
+	if (pPlayer == nil) then
+		return
+	end
+
+	if (cancelPressed) then
+		deleteStringData(CreatureObject(pPlayer):getObjectID() .. ":npc_vendor_purchase")
+		return
+	end
+
+	local playerID = SceneObject(pPlayer):getObjectID()
+	local purchaseCategory = readStringData(playerID .. ":npc_vendor_purchase")
+	local purchaseIndex = arg0 + 1
+	
+	
+	local resourceData = resources
+	
+	if (resourceData == nil or purchaseIndex < 1 or purchaseIndex > #resourceData) then
+		return
+	end
+
+	local itemData = resourceData[purchaseIndex]
+
+	if string.find(purchaseCategory, "resources_") ~= nil then
+		deleteStringData(playerID .. ":npc_vendor_purchase")
+		self:giveResource(pPlayer,itemData)
+	end
+end
+
 
 --Handles the actual handoff of the item to the player
 function NPCVendor:giveItem(pPlayer, itemData)
@@ -237,6 +272,51 @@ function NPCVendor:giveItem(pPlayer, itemData)
 		PlayerObject(pGhost):addEventPerk(pItem)
 	end
 end
+
+
+--Handles the actual handoff of the resources to the player
+function NPCVendor:giveItem(pPlayer, itemData)
+	local pGhost = CreatureObject(pPlayer):getPlayerObject()
+
+	local resourceValue = itemData.attributes[1][1]
+
+	if (pGhost == nil) then
+		return
+	end
+
+	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
+
+	if (pInventory == nil) then
+		return
+	end
+
+	if (CreatureObject(pPlayer):getCashCredits() < resourceValue) then
+		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
+		return
+	elseif (SceneObject(pInventory):isContainerFullRecursive()) then
+		CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
+		return
+	end
+
+	CreatureObject(pPlayer):subtractCashCredits(resourceValue)
+
+	local messageString = LuaStringIdChatParameter("@bartender:prose_buy_pass")
+	messageString:setTT(itemData.name)
+	messageString:setDI(resourceValue)
+	CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
+
+
+	local templatePath
+
+	templatePath = itemData.containerCRC
+
+	--local pItem = giveItem(pInventory, templatePath, -1)
+
+	--if (pItem ~= nil) then
+	--	PlayerObject(pGhost):addEventPerk(pItem)
+	--end
+end
+
 
 --Essentially checks that all the data is valid before creating the control device for a hireling
 function NPCVendor:awardData(pPlayer, itemData)
