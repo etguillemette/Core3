@@ -397,7 +397,7 @@ function NPCVendor:transferData(pPlayer, pDatapad, itemData)
 	--end
 
 	--TESTING Ethan 5-20-24: Seeing if I can change the pet type here:
-	pItem.setPetType(HIRELING)
+	SceneObject(pItem):setPetType(HIRELING)
 
 	print(templatePath)
 	print(genPath)
