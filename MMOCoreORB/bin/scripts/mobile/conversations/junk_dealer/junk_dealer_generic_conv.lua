@@ -315,7 +315,7 @@ vendor_wearables = ConvoScreen:new {
 		{"Actually, I don't need anything right now.", "no_loot"}		
 	}
 }
-JunkDealerGenericConvoHandler:addScreen(vendor_wearables);
+junkDealerGenericConvoTemplate:addScreen(vendor_wearables);
 
 
 wares_wearables_apron = ConvoScreen:new {
