@@ -235,7 +235,7 @@ function NPCVendor:handleResourceSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 
 	if string.find(purchaseCategory, "resource_") ~= nil then
 		deleteStringData(playerID .. ":npc_vendor_purchase")
-		self:giveResource(pPlayer,itemData)
+		giveResource(pPlayer,itemData)
 
 	end
 
