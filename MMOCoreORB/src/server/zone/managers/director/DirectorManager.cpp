@@ -534,6 +534,7 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->registerFunction("broadcastToGalaxy", broadcastToGalaxy);
 	luaEngine->registerFunction("getWorldFloor", getWorldFloor);
 	luaEngine->registerFunction("useCovertOvert", useCovertOvert);
+	luaEngine->registerFunction("testValue", testValue);//TESTING
 
 	// JTL
 	luaEngine->registerFunction("generateShipDeed", generateShipDeed);
@@ -1176,6 +1177,21 @@ int DirectorManager::getResourceNameByIndex(lua_State* L) {
 
 	return 1;
 
+}
+
+int DirectorManager::testValue(lua_State* L) {
+	if (checkArgumentCount(L, 1) == 1) {
+		String err = "incorrect number of arguments passed to DirectorManager::givePlayerResource";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	const String input = lua_tostring(L, -1);
+
+	lua_pushstring(L, input.toCharArray());
+
+	return 1;
 }
 
 /*

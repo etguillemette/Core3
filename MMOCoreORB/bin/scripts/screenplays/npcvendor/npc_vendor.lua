@@ -354,6 +354,12 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 	local resourceName = getResourceNameByIndex("organic",pPlayer,1)
 	print("first organic is..." .. resourceName)
 
+	local test = "This is a test"
+
+	local output = testValue(test)
+
+	print(output)
+
 	--[[
 	local resourceData = getResourceListingByType("organic",pPlayer)
 

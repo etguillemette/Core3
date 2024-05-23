@@ -147,7 +147,7 @@ Core3 = {
 	},
 
 	------TRE config------
-	TrePath = "/home/swgemu/Desktop/TRE Files (Baseline SWG)",
+	TrePath = "/home/swgemu/Desktop/swgemu",
 	TreFiles = {
 		"default_patch.tre",
 		"patch_sku1_14_00.tre",
