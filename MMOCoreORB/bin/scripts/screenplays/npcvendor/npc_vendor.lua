@@ -350,6 +350,7 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 
 	writeStringData(CreatureObject(pPlayer):getObjectID() .. ":npc_vendor_purchase", screenID)
 	local suiManager = LuaSuiManager()
+	--[[
 	local resourceData = getResourceListingByType("organic",pPlayer)
 
 	if resourceData ~= nil then
@@ -365,6 +366,7 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 	end
 
 	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "NPCVendor", "handleResourceSuiPurchase", 32, options)
+	--]]
 end
 
 

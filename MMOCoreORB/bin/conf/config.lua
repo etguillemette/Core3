@@ -59,7 +59,7 @@ Core3 = {
 	DBPort = 3306,
 	DBName = "swgemu",
 	DBUser = "swgemu",
-	DBPass = "Loophole24!",
+	DBPass = "ThusolDenoir",
 	DBInstances = 2,
 	DBSecret = "swgemus3cr37!", -- Change this! This value should be unique and of reasonable length.
 
@@ -147,7 +147,7 @@ Core3 = {
 	},
 
 	------TRE config------
-	TrePath = "/home/swgemu/Desktop/swgemu",
+	TrePath = "/home/swgemu/Desktop/TRE Files (Baseline SWG)",
 	TreFiles = {
 		"default_patch.tre",
 		"patch_sku1_14_00.tre",
