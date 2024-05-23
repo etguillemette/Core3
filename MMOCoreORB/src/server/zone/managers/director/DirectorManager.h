@@ -12,6 +12,7 @@
 #include "server/zone/managers/director/QuestStatus.h"
 #include "server/zone/managers/director/ScreenPlayTask.h"
 #include "server/zone/managers/director/QuestVectorMap.h"
+#include "server/zone/objects/resource/ResourceSpawn.h" //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
 
 #include "system/util/SynchronizedSortedVector.h"
 #include "system/util/SynchronizedHashTable.h"
