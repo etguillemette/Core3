@@ -461,6 +461,7 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->registerFunction("setAuthorizationState", setAuthorizationState);
 	luaEngine->registerFunction("giveItem", giveItem);
 	luaEngine->registerFunction("giveControlDevice", giveControlDevice);
+	luaEngine->registerFunction("giveHirelingControlDevice", giveHirelingControlDevice); //Ethan edit 5-23-24 (HIRELING)
 	luaEngine->registerFunction("checkTooManyHirelings", checkTooManyHirelings);
 	luaEngine->registerFunction("checkInt64Lua", checkInt64Lua);
 	luaEngine->registerFunction("getChatMessage", getChatMessage);
@@ -485,6 +486,8 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->registerFunction("createLootSet", createLootSet);
 	luaEngine->registerFunction("createLootFromCollection", createLootFromCollection);
 	luaEngine->registerFunction("givePlayerResource", givePlayerResource);
+	luaEngine->registerFunction("givePlayerResourceByIndex", givePlayerResourceByIndex); //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
+	luaEngine->registerFunction("getResourceListingByType", getResourceListingByType); //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
 
 	luaEngine->registerFunction("getRegion", getRegion);
 	luaEngine->registerFunction("writeScreenPlayData", writeScreenPlayData);
@@ -1025,6 +1028,147 @@ int DirectorManager::createLootFromCollection(lua_State* L) {
 
 	return 0;
 }
+
+//Ethan edit 5-24-24 (NPC VENDOR RESOURCES) - This function should give a player the resIndex'nth resource that matches the input type currently spawning
+int DirectorManager::givePlayerResourceByIndex(lua_State* L) {
+	if (checkArgumentCount(L, 4) == 1) {
+		String err = "incorrect number of arguments passed to DirectorManager::givePlayerResource";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	const int quantity = lua_tointeger(L, -1);
+	const String typeString = lua_tostring(L, -2);
+	CreatureObject* player = (CreatureObject*)lua_touserdata(L, -3);
+	const int resIndex = lua_tointeger(L, -4);
+
+	if (player == nullptr)
+		return 0;
+
+	ZoneServer* zoneServer = ServerCore::getZoneServer();
+	Zone* zone = player->getZone();
+
+	if (zoneServer == nullptr || zone == nullptr)
+		return 0;
+
+	ResourceManager* resourceManager = zoneServer->getResourceManager();
+
+	if (resourceManager == nullptr)
+		return 0;
+
+	int type = 0;
+
+	// TODO: Global resource types
+	// SOLAR = 1; CHEMICAL = 2; FLORA = 3; GAS = 4; GEOTHERMAL = 5; MINERAL = 6; WATER = 7; WIND = 8; FUSION = 9;
+	if (typeString == "organic")
+		type = -1;
+	else if (typeString == "solar")
+		type = 1;
+	else if (typeString == "chemical")
+		type = 2;
+	else if (typeString == "flora")
+		type = 3;
+	else if (typeString == "gas")
+		type = 4;
+	else if (typeString == "geothermal")
+		type = 5;
+	else if (typeString == "mineral")
+		type = 6;
+	else if (typeString == "water")
+		type = 7;
+	else if (typeString == "wind")
+		type = 8;
+	else if (typeString == "fusion")
+		type = 9;
+	else if (typeString == "inorganic")
+		type = 10;
+
+	Vector<ManagedReference<ResourceSpawn*> > resources;
+	resourceManager->getResourceListByType(resources, type, zone->getZoneName());
+
+	if (resources.size() < 1)
+		return 0;
+
+	ManagedReference<ResourceSpawn*> spawn = resources.get(resIndex);
+
+	if (spawn == nullptr) {
+		return 0;
+	}
+
+	TransactionLog trx(TrxCode::LUASCRIPT, player);
+	trx.addContextFromLua(L);
+
+	resourceManager->harvestResourceToPlayer(trx, player, spawn, quantity);
+	trx.commit();
+
+	return 0;
+}
+
+//Pull the resource list (sorted by type) currently spawning into lua
+Vector<ManagedReference<ResourceSpawn*> > DirectorManager::getResourceListingByType(lua_State* L) {
+	
+if (checkArgumentCount(L, 2) == 1) {
+		String err = "incorrect number of arguments passed to DirectorManager::givePlayerResource";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	const String typeString = lua_tostring(L, -1);
+	CreatureObject* player = (CreatureObject*)lua_touserdata(L, -2);
+
+	if (player == nullptr)
+		return 0;
+
+	ZoneServer* zoneServer = ServerCore::getZoneServer();
+	Zone* zone = player->getZone();
+
+	if (zoneServer == nullptr || zone == nullptr)
+		return 0;
+
+	ResourceManager* resourceManager = zoneServer->getResourceManager();
+
+	if (resourceManager == nullptr)
+		return 0;
+
+	int type = 0;
+
+	// TODO: Global resource types
+	// SOLAR = 1; CHEMICAL = 2; FLORA = 3; GAS = 4; GEOTHERMAL = 5; MINERAL = 6; WATER = 7; WIND = 8; FUSION = 9;
+	if (typeString == "organic")
+		type = -1;
+	else if (typeString == "solar")
+		type = 1;
+	else if (typeString == "chemical")
+		type = 2;
+	else if (typeString == "flora")
+		type = 3;
+	else if (typeString == "gas")
+		type = 4;
+	else if (typeString == "geothermal")
+		type = 5;
+	else if (typeString == "mineral")
+		type = 6;
+	else if (typeString == "water")
+		type = 7;
+	else if (typeString == "wind")
+		type = 8;
+	else if (typeString == "fusion")
+		type = 9;
+	else if (typeString == "inorganic")
+		type = 10;
+
+	Vector<ManagedReference<ResourceSpawn*> > resources;
+	resourceManager->getResourceListByType(resources, type, zone->getZoneName());
+
+	if (resources.size() < 1)
+		return 0;
+
+
+	return resources;
+}
+//End Ethan edit 5-24-24 (NPC VENDOR RESOURCES)
 
 int DirectorManager::givePlayerResource(lua_State* L) {
 	if (checkArgumentCount(L, 3) == 1) {
@@ -2445,6 +2589,116 @@ int DirectorManager::giveControlDevice(lua_State* L) {
 
 	return 1;
 }
+
+//Ethan edit 5-23-24 (HIRELING)
+int DirectorManager::giveHirelingControlDevice(lua_State* L) {
+	if (checkArgumentCount(L, 5) == 1) {
+		String err = "incorrect number of arguments passed to DirectorManager::giveControlDevice";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	SceneObject* datapad = (SceneObject*) lua_touserdata(L, -5);
+	String objectString = lua_tostring(L, -4);
+	String controlledObjectPath = lua_tostring(L, -3);
+	int slot = lua_tointeger(L, -2);
+	bool mobile = lua_toboolean(L, -1);
+
+	if (datapad == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	ZoneServer* zoneServer = datapad->getZoneServer();
+	Zone* zone = datapad->getZone();
+
+	if (zone == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	ManagedReference<ControlDevice*> controlDevice = zoneServer->createObject(objectString.hashCode(), 1).castTo<ControlDevice*>();
+
+	if (controlDevice == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Locker locker(controlDevice);
+
+	ManagedReference<TangibleObject*> controlledObject = nullptr;
+	ManagedReference<CreatureObject*> player = (datapad->getParent().get()).castTo<CreatureObject*>();
+
+	if (mobile) {
+		CreatureManager* creatureManager = zone->getCreatureManager();
+		CreatureTemplate* creoTempl = CreatureTemplateManager::instance()->getTemplate(controlledObjectPath.hashCode());
+
+		if (creoTempl == nullptr) {
+			controlDevice->destroyObjectFromDatabase(true);
+			lua_pushnil(L);
+			return 1;
+		}
+
+		String templateToSpawn = creatureManager->getTemplateToSpawn(controlledObjectPath.hashCode());
+		controlledObject = creatureManager->createCreature(templateToSpawn.hashCode(), true, controlledObjectPath.hashCode());
+
+		if (controlledObject == nullptr) {
+			controlDevice->destroyObjectFromDatabase(true);
+			lua_pushnil(L);
+			return 1;
+		}
+
+		Locker locker2(controlledObject);
+
+		if (!controlledObject->isAiAgent()) {
+			controlDevice->destroyObjectFromDatabase(true);
+			controlledObject->destroyObjectFromDatabase(true);
+			lua_pushnil(L);
+			return 1;
+		}
+
+		AiAgent* pet = controlledObject.castTo<AiAgent*>();
+		pet->loadTemplateData(creoTempl);
+
+	} else {
+		controlledObject = zoneServer->createObject(controlledObjectPath.hashCode(), 1).castTo<TangibleObject*>();
+
+		if (controlledObject == nullptr) {
+			controlDevice->destroyObjectFromDatabase(true);
+			lua_pushnil(L);
+			return 1;
+		}
+
+		Locker locker2(controlledObject);
+
+		SharedObjectTemplate* temp = controlledObject->getObjectTemplate();
+		controlledObject->loadTemplateData(temp);
+	}
+
+	controlDevice->setControlledObject(controlledObject);
+	StringId s;
+	s.setStringId(controlledObject->getObjectName()->getFullPath());
+	controlDevice->setObjectName(s, false);
+
+	PetControlDevice* petControlDevice = cast<PetControlDevice*>(controlDevice.get());
+	if( petControlDevice != nullptr ){
+		petControlDevice->setDefaultCommands();
+	}
+
+	if (datapad->transferObject(controlDevice, slot, true)) {
+		controlDevice->_setUpdated(true); //mark updated so the GC doesnt delete it while in LUA
+		petControlDevice->setPetType(PetManager::HIRELING);
+		lua_pushlightuserdata(L, controlDevice.get());
+	} else {
+		controlDevice->destroyObjectFromDatabase(true);
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+//End Ethan edit 5-23-24 (HIRELING)
 
 int DirectorManager::checkTooManyHirelings(lua_State* L) {
 	if (checkArgumentCount(L, 1) == 1) {
