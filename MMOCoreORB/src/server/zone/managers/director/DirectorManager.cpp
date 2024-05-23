@@ -2593,7 +2593,7 @@ int DirectorManager::giveControlDevice(lua_State* L) {
 //Ethan edit 5-23-24 (HIRELING)
 int DirectorManager::giveHirelingControlDevice(lua_State* L) {
 	if (checkArgumentCount(L, 5) == 1) {
-		String err = "incorrect number of arguments passed to DirectorManager::giveControlDevice";
+		String err = "incorrect number of arguments passed to DirectorManager::giveHirelingControlDevice";
 		printTraceError(L, err);
 		ERROR_CODE = INCORRECT_ARGUMENTS;
 		return 0;
