@@ -350,6 +350,10 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 
 	writeStringData(CreatureObject(pPlayer):getObjectID() .. ":npc_vendor_purchase", screenID)
 	local suiManager = LuaSuiManager()
+
+	local resourceName = getResourceNameByIndex("organic",pPlayer,1)
+	print("first organic is..." .. resourceName)
+
 	--[[
 	local resourceData = getResourceListingByType("organic",pPlayer)
 

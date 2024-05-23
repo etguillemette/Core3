@@ -487,8 +487,8 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->registerFunction("createLootFromCollection", createLootFromCollection);
 	luaEngine->registerFunction("givePlayerResource", givePlayerResource);
 	luaEngine->registerFunction("givePlayerResourceByIndex", givePlayerResourceByIndex); //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
-	luaEngine->registerFunction("getResourceListingByType", getResourceListingByType); //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
-
+	//luaEngine->registerFunction("getResourceListingByType", getResourceListingByType); //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
+	luaEngine->registerFunction("getResourceNameByIndex", getResourceNameByIndex);//Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
 	luaEngine->registerFunction("getRegion", getRegion);
 	luaEngine->registerFunction("writeScreenPlayData", writeScreenPlayData);
 	luaEngine->registerFunction("readScreenPlayData", readScreenPlayData);
@@ -1105,10 +1105,82 @@ int DirectorManager::givePlayerResourceByIndex(lua_State* L) {
 	return 0;
 }
 
-//Pull the resource list (sorted by type) currently spawning into lua
-Vector<ManagedReference<ResourceSpawn*> > DirectorManager::getResourceListingByType(lua_State* L) {
-	
-if (checkArgumentCount(L, 2) == 1) {
+int DirectorManager::getResourceNameByIndex(lua_State* L) {
+	if (checkArgumentCount(L,3) == 1) {
+		String err = "incorrect number of arguments passed to DirectorManager::getResourceNameByIndex";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	const String typeString = lua_tostring(L, -1);
+	CreatureObject* player = (CreatureObject*)lua_touserdata(L, -2);
+	const int resourceIndex = lua_tointeger(L, -3);
+
+	if (player == nullptr)
+		return 0;
+
+	ZoneServer* zoneServer = ServerCore::getZoneServer();
+	Zone* zone = player->getZone();
+
+	if (zoneServer == nullptr || zone == nullptr)
+		return 0;
+
+	ResourceManager* resourceManager = zoneServer->getResourceManager();
+
+	if (resourceManager == nullptr)
+		return 0;
+
+	int type = 0;
+
+	// TODO: Global resource types
+	// SOLAR = 1; CHEMICAL = 2; FLORA = 3; GAS = 4; GEOTHERMAL = 5; MINERAL = 6; WATER = 7; WIND = 8; FUSION = 9;
+	if (typeString == "organic")
+		type = -1;
+	else if (typeString == "solar")
+		type = 1;
+	else if (typeString == "chemical")
+		type = 2;
+	else if (typeString == "flora")
+		type = 3;
+	else if (typeString == "gas")
+		type = 4;
+	else if (typeString == "geothermal")
+		type = 5;
+	else if (typeString == "mineral")
+		type = 6;
+	else if (typeString == "water")
+		type = 7;
+	else if (typeString == "wind")
+		type = 8;
+	else if (typeString == "fusion")
+		type = 9;
+	else if (typeString == "inorganic")
+		type = 10;
+
+	Vector<ManagedReference<ResourceSpawn*> > resources;
+	resourceManager->getResourceListByType(resources, type, zone->getZoneName());
+
+	if (resources.size() < 1)
+		return 0;
+
+	ManagedReference<ResourceSpawn*> spawn = resources.get(resourceIndex);
+
+	if (spawn == nullptr) {
+		return 0;
+	}
+
+	String resourceName = spawn->getName();
+
+	lua_pushstring(L, resourceName.toCharArray());
+
+	return 1;
+
+}
+
+/*
+int DirectorManager::getResourceListingByType(lua_State* L) {
+	if (checkArgumentCount(L, 2) == 1) {
 		String err = "incorrect number of arguments passed to DirectorManager::givePlayerResource";
 		printTraceError(L, err);
 		ERROR_CODE = INCORRECT_ARGUMENTS;
@@ -1165,9 +1237,11 @@ if (checkArgumentCount(L, 2) == 1) {
 	if (resources.size() < 1)
 		return 0;
 
+	lua_pushlightuserdata(L, resources);
 
-	return resources;
+	return 1;
 }
+*/
 //End Ethan edit 5-24-24 (NPC VENDOR RESOURCES)
 
 int DirectorManager::givePlayerResource(lua_State* L) {

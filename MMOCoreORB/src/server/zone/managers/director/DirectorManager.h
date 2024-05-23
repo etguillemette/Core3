@@ -12,7 +12,6 @@
 #include "server/zone/managers/director/QuestStatus.h"
 #include "server/zone/managers/director/ScreenPlayTask.h"
 #include "server/zone/managers/director/QuestVectorMap.h"
-#include "server/zone/objects/resource/ResourceSpawn.h" //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
 
 #include "system/util/SynchronizedSortedVector.h"
 #include "system/util/SynchronizedHashTable.h"
@@ -138,7 +137,8 @@ namespace server {
 		static int createLootFromCollection(lua_State* L);
 		static int givePlayerResource(lua_State* L);
 		static int givePlayerResourceByIndex(lua_State* L);	//Ethan edit 5-23-24 (NPC VENDOR RESOURCES)
-		Vector<ManagedReference<ResourceSpawn*> > getResourceListingByType(lua_State* L); //Ethan edit 5-23-24 (NPC VENDOR RESOURCES)
+		//static int getResourceListingByType(lua_State* L); //Ethan edit 5-23-24 (NPC VENDOR RESOURCES)
+		static int getResourceNameByIndex(lua_State* L); //Ethan edit 5-23-24 (NPC VENDOR RESOURCES
 		static int getRandomNumber(lua_State* L);
 		static int getHashCode(lua_State* L);
 		static int spatialChat(lua_State* L);
