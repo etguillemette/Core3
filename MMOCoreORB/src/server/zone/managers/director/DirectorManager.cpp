@@ -2778,7 +2778,13 @@ int DirectorManager::giveHirelingControlDevice(lua_State* L) {
 
 	if (datapad->transferObject(controlDevice, slot, true)) {
 		controlDevice->_setUpdated(true); //mark updated so the GC doesnt delete it while in LUA
-		petControlDevice->setPetType(PetManager::HIRELING);
+		Reference<PetControlDevice*> newControlDevice = controlDevice.castTo<PetControlDevice*>();
+		//controlDevice->setPetType(PetManager::HIRELING);
+		newControlDevice->setPetType(PetManager::HIRELING); //Ethan edit... Doesn't work? Changing it to controlDevice instead... Fuckit, who knows, let's see if it will compile...
+
+		//following stolen from DroidDeedImplementation:
+		//Reference<PetControlDevice*> controlDevice = (server->getZoneServer()->createObject(controlDeviceObjectTemplate.hashCode(), 1)).castTo<PetControlDevice*>();
+
 		lua_pushlightuserdata(L, controlDevice.get());
 	} else {
 		controlDevice->destroyObjectFromDatabase(true);
@@ -2787,7 +2793,6 @@ int DirectorManager::giveHirelingControlDevice(lua_State* L) {
 
 	return 1;
 }
-
 //End Ethan edit 5-23-24 (HIRELING)
 
 int DirectorManager::checkTooManyHirelings(lua_State* L) {
