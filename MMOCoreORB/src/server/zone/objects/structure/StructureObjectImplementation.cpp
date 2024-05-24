@@ -639,7 +639,7 @@ int StructureObjectImplementation::getDecayPercentage() {
 			//If entropy is disabled, structures will never get past 10% decay
 			if (playerStructureEntropyEnabled == false)
 			{
-				percentage = 10; 
+				percentage = 50; 
 			}
 
 			//End Ethan edit 5-6-24 (HALT ENTROPY)
