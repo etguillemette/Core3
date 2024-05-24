@@ -200,7 +200,7 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 	} else if (petType == PetManager::FACTIONPET){
 		maxPets = 3;
 	} else if (petType == PetManager::HIRELING){ //Ethan edit 5-20-24 (HIRELING)
-		maxPets = 4; //Ethan edit 5-20-24 (HIRELING)
+		maxPets = 3; //Ethan edit 5-20-24 (HIRELING)
 	} //Ethan edit 5-20-24 (HIRELING)
 
 	for (int i = 0; i < ghost->getActivePetsSize(); ++i) {
@@ -229,6 +229,11 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call.
 					return;
 				}
+			} else if (object->isNonPlayerCreatureObject() && petType == PetManager::HIRELING) {
+				if (++currentlySpawned >= maxPets) {
+					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call.
+					return;
+				}
 			} else if (object->isCreature() && petType == PetManager::FACTIONPET) {
 				const CreatureTemplate* activePetTemplate = object->getCreatureTemplate();
 				const CreatureTemplate* callingPetTemplate = pet->getCreatureTemplate();
@@ -240,17 +245,19 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call.
 					return;
 				}
-			} else if (object->isCreature() && petType == PetManager::HIRELING) { //Ethan edit 5-20-24 (HIRELING)
-				const CreatureTemplate* activePetTemplate = object->getCreatureTemplate(); //Ethan edit 5-20-24 (HIRELING)
-				const CreatureTemplate* callingPetTemplate = pet->getCreatureTemplate(); //Ethan edit 5-20-24 (HIRELING)
+			//Ethan edit 5-20-24 (HIRELING)
+			} else if (object->isCreature() && petType == PetManager::HIRELING) { 
+				const CreatureTemplate* activePetTemplate = object->getCreatureTemplate();
+				const CreatureTemplate* callingPetTemplate = pet->getCreatureTemplate();
 
-				if (activePetTemplate == nullptr || callingPetTemplate == nullptr || activePetTemplate->getTemplateName() != "at_st") //Ethan edit 5-20-24 (HIRELING)
-					continue; //Ethan edit 5-20-24 (HIRELING)
+				if (activePetTemplate == nullptr || callingPetTemplate == nullptr || activePetTemplate->getTemplateName() != "at_st")
+					continue;
 
-				if (++currentlySpawned >= maxPets || (activePetTemplate->getTemplateName() == "at_st" && callingPetTemplate->getTemplateName() == "at_st")) { //Ethan edit 5-20-24 (HIRELING)
-					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call. //Ethan edit 5-20-24 (HIRELING)
-					return; //Ethan edit 5-20-24 (HIRELING)
-				} //Ethan edit 5-20-24 (HIRELING)
+				if (++currentlySpawned >= maxPets || (activePetTemplate->getTemplateName() == "at_st" && callingPetTemplate->getTemplateName() == "at_st")) { 
+					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call. 
+					return;
+				}
+			//End Ethan edit 5-20-24 (HIRELING)	 
 			} else if (object->isDroidObject() && petType == PetManager::DROIDPET) {
 				if (++currentlySpawned >= maxPets) {
 					player->sendSystemMessage("@pet/pet_menu:at_max"); // You already have the maximum number of pets of this type that you can call.
@@ -488,6 +495,11 @@ void PetControlDeviceImplementation::spawnObject(CreatureObject* player) {
 			pet->setOptionBit(OptionBitmask::CONVERSE,true);
 		**/
 	}
+	//Ethan edit 5-24-24 (HIRELING)
+	if (petType == PetManager::HIRELING) {
+		pet->setCreatureBitmask(ObjectFlag::PET);
+	}
+	//End Ethan edit 5-24-24 (HIRELING)
 
 	pet->setAITemplate();
 	pet->activateRecovery();
@@ -794,7 +806,9 @@ bool PetControlDeviceImplementation::canBeTradedTo(CreatureObject* player, Creat
 	if (datapad == nullptr)
 		return false;
 
-	if (petType == PetManager::FACTIONPET) {
+	//Ethan Edit 5-24-24 (HIRELING)
+	//if (petType == PetManager::FACTIONPET) {
+	if (petType == PetManager::FACTIONPET || petType == PetManager::HIRELING) {
 		player->sendSystemMessage("@pet/pet_menu:bad_type"); // You cannot trade a pet of that type. Transfer failed.
 		return false;
 	} else if (petType == PetManager::DROIDPET) {
@@ -1223,6 +1237,18 @@ void PetControlDeviceImplementation::setTrainingCommand(unsigned int commandID) 
 			(commandID == PetManager::TRICK2))
 				return;
 	}
+	//Ethan edit 5-24-24 (HIRELING)
+	else if (petType == PetManager::HIRELING) {
+		if (commandID == PetManager::RECHARGEOTHER ||
+			(commandID == PetManager::TRANSFER) ||
+			(commandID == PetManager::SPECIAL_ATTACK1) ||
+			(commandID == PetManager::SPECIAL_ATTACK2) ||
+			(commandID == PetManager::TRICK1) ||
+			(commandID == PetManager::TRICK2))
+				return;
+	}
+	//End Ethan edit 5-24-24 (HIRELING)
+	
 
 	/** Check for converse and if so, get its personalityStf**/
 	if (pet->getOptionsBitmask() & OptionBitmask::CONVERSE) {

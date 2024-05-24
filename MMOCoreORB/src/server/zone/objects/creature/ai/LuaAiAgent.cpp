@@ -94,6 +94,7 @@ Luna<LuaAiAgent>::RegType LuaAiAgent::Register[] = {
 		{ "isEventMob", &LuaAiAgent::isEventMob },
 		{ "isPet", &LuaAiAgent::isPet },
 		{ "isFactionPet", &LuaAiAgent::isFactionPet },
+		{ "isHireling", &LuaAiAgent::isHireling }, //Ethan edit 5-24-24 (HIRELING)
 		{ "isCreature", &LuaSceneObject::isCreature},
 		{ "isAggressiveTo", &LuaAiAgent::isAggressiveTo },
 		{ "isAttackableBy", &LuaAiAgent::isAttackableBy },
@@ -656,6 +657,24 @@ int LuaAiAgent::isFactionPet(lua_State* L) {
 
 	return 1;
 }
+
+//Ethan edit 5-24-24 (HIRELING)
+int LuaAiAgent::isHireling(lua_State* L) {
+	bool hireling = false;
+
+	if (realObject->isPet()) {
+		ManagedReference<PetControlDevice*> controlDevice = realObject->getControlDevice().get().castTo<PetControlDevice*>();
+
+		if (controlDevice != nullptr) {
+			hireling = controlDevice->getPetType() == PetManager::HIRELING;
+		}
+	}
+
+	lua_pushboolean(L, hireling);
+
+	return 1;
+}
+//Ethan edit 5-24-24 (HIRELING)
 
 int LuaAiAgent::isAggressiveTo(lua_State* L) {
 	CreatureObject* obj = (CreatureObject*) lua_touserdata(L, -1);

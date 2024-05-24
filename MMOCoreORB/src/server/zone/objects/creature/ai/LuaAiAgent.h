@@ -93,6 +93,7 @@ namespace ai {
 		int isEventMob(lua_State* L);
 		int isPet(lua_State* L);
 		int isFactionPet(lua_State* L);
+		int isHireling(lua_State* L); //Ethan edit 5-24-24 (HIRELING)
 		int isAggressiveTo(lua_State* L);
 		int isAttackableBy(lua_State* L);
 		int isCamouflaged(lua_State* L);
