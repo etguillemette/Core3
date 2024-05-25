@@ -1195,6 +1195,105 @@ int DirectorManager::testValue(lua_State* L) {
 	return 1;
 }
 
+
+int DirectorManager::testGiveResource(lua_State* L){
+	if (checkArgumentCount(L, 3) == 1) {
+		String err = "incorrect number of arguments passed to DirectorManager::givePlayerResource";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	const int quantity = lua_tointeger(L, -1);
+	const String nameString = lua_tostring(L, -2);
+	CreatureObject* player = (CreatureObject*)lua_touserdata(L, -3);
+
+	//if(true)
+	//{
+		//String err = "Nothing is wrong yet with testGiveResource";
+		//printTraceError(L, err);
+	//}
+	
+
+	player->sendSystemMessage("Calling testGiveResource");
+
+	//printTraceError(L, quantity.toString());
+
+	if (player == nullptr){
+	//	String err = "player is nullptr";
+	//	printTraceError(L, err);
+		return 0;
+	}
+
+	ZoneServer* zoneServer = ServerCore::getZoneServer();
+	Zone* zone = player->getZone();
+
+	if (zoneServer == nullptr || zone == nullptr){
+	//	String err = "zoneServer or zone is nullptr";
+	//	printTraceError(L, err);
+		return 0;
+	}
+
+	ResourceManager* resourceManager = zoneServer->getResourceManager();
+
+	if (resourceManager == nullptr){
+	//	String err = "resourceManager is nullptr";
+	//	printTraceError(L, err);
+		return 0;
+	}
+	//int type = 0;
+
+	// TODO: Global resource types
+	// SOLAR = 1; CHEMICAL = 2; FLORA = 3; GAS = 4; GEOTHERMAL = 5; MINERAL = 6; WATER = 7; WIND = 8; FUSION = 9;
+	//if (typeString == "organic")
+	//	type = -1;
+	//else if (typeString == "solar")
+	//	type = 1;
+	//else if (typeString == "chemical")
+	//	type = 2;
+	//else if (typeString == "flora")
+	//	type = 3;
+	//else if (typeString == "gas")
+	//	type = 4;
+	//else if (typeString == "geothermal")
+	//	type = 5;
+	//else if (typeString == "mineral")
+	//	type = 6;
+	//else if (typeString == "water")
+	//	type = 7;
+	//else if (typeString == "wind")
+	//	type = 8;
+	//else if (typeString == "fusion")
+	//	type = 9;
+	//else if (typeString == "inorganic")
+	//	type = 10;
+
+	//Vector<ManagedReference<ResourceSpawn*> > resources;
+	//resourceManager->getResourceListByType(resources, type, zone->getZoneName());
+
+	ManagedReference<ResourceSpawn*> spawn;
+	spawn = resourceManager->getResourceSpawn(nameString);
+
+	//if (resources.size() < 1)
+	//	return 0;
+
+	//ManagedReference<ResourceSpawn*> spawn = resources.get(System::random(resources.size() - 1));
+
+	if (spawn == nullptr) {
+	//	String err = "spawn is nullptr";
+	//	printTraceError(L, err);
+		return 0;
+	}
+
+	TransactionLog trx(TrxCode::LUASCRIPT, player);
+	trx.addContextFromLua(L);
+
+	resourceManager->harvestResourceToPlayer(trx, player, spawn, quantity);
+	trx.commit();
+
+	return 0;
+}
+
 /*
 int DirectorManager::getResourceListingByType(lua_State* L) {
 	if (checkArgumentCount(L, 2) == 1) {
@@ -2791,25 +2890,6 @@ int DirectorManager::giveHirelingControlDevice(lua_State* L) {
 		controlDevice->destroyObjectFromDatabase(true);
 		lua_pushnil(L);
 	}
-
-	return 1;
-}
-
-int DirectorManager::testGiveResource(lua_State* L){
-	if (checkArgumentCount(L, 3) == 1) {
-		String err = "incorrect number of arguments passed to DirectorManager::testGiveResource";
-		printTraceError(L, err);
-		ERROR_CODE = INCORRECT_ARGUMENTS;
-		return 0;
-	}
-
-	CreatureObject* player = (CreatureObject*)lua_touserdata(L, -1);
-	String resourceName = lua_tostring(L, -2);
-	int quantity = lua_tointeger(L, -3);
-
-	
-
-	ResourceManagerImplementation::givePlayerResource(player, resourceName, quantity);
 
 	return 1;
 }

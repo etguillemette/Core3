@@ -628,23 +628,23 @@ int StructureObjectImplementation::getDecayPercentage() {
 			percentage = 0;
 		} else if (percentage > 100) {
 			percentage = 100;
-
-			//Ethan edit 5-6-24 (HALT ENTROPY)
-			Lua* lua = new Lua();
-			lua->init();
-
-			lua->runFile("scripts/managers/player_manager.lua");
-			int playerStructureEntropyEnabled = lua->getGlobalInt("playerStructureEntropyEnabled");
-			
-			//If entropy is disabled, structures will never get past 10% decay
-			if (playerStructureEntropyEnabled == false)
-			{
-				percentage = 50; 
-			}
-
-			//End Ethan edit 5-6-24 (HALT ENTROPY)
-
 		}
+
+		//Ethan edit 5-6-24 (HALT ENTROPY)
+		Lua* lua = new Lua();
+		lua->init();
+
+		lua->runFile("scripts/managers/player_manager.lua");
+		int playerStructureEntropyEnabled = lua->getGlobalInt("playerStructureEntropyEnabled");
+			
+		//If entropy is disabled, structures will never get past 50% decay
+		if (playerStructureEntropyEnabled == false && percentage < 50)
+		{
+			percentage = 50; 
+		}
+
+		//End Ethan edit 5-6-24 (HALT ENTROPY)
+
 	} else {
 		// Structure has 0 in max condition, i.e. it cannot decay. Condition is therefore always 100 %.
 		percentage = 100;

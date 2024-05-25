@@ -249,9 +249,6 @@ function NPCVendor:awardData(pPlayer, itemData)
 	if (CreatureObject(pPlayer):getCashCredits() < itemData.cost) then
 		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
 		return
-	elseif (SceneObject(pInventory):isContainerFullRecursive()) then
-		CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
-		return
 	end
 
 	CreatureObject(pPlayer):subtractCashCredits(itemData.cost)
@@ -354,7 +351,7 @@ function NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
 	--local resourceName = getResourceNameByIndex("organic",pPlayer,1)
 	--print("first organic is..." .. resourceName)
 
-	testGiveResource(pPlayer,"Ababuglu",1000)
+	testGiveResource(1000,"Ababuglu",pPlayer)
 
 	--[[
 	local resourceData = getResourceListingByType("organic",pPlayer)
