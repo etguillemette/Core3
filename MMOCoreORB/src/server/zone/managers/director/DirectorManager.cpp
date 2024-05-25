@@ -2809,7 +2809,7 @@ int DirectorManager::testGiveResource(lua_State* L){
 
 	
 
-	ResourceManagerImplementation::givePlayerResource(player, resourceName, quantity)
+	ResourceManagerImplementation::givePlayerResource(player, resourceName, quantity);
 
 	return 1;
 }
