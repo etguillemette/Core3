@@ -139,6 +139,7 @@ namespace server {
 		static int givePlayerResourceByIndex(lua_State* L);	//Ethan edit 5-23-24 (NPC VENDOR RESOURCES)
 		//static int getResourceListingByType(lua_State* L); //Ethan edit 5-23-24 (NPC VENDOR RESOURCES)
 		static int getResourceNameByIndex(lua_State* L); //Ethan edit 5-23-24 (NPC VENDOR RESOURCES
+		static int testGiveResource(lua_State* L); //Ethan edit 5-24-24 (NPC VENDOR RESOURCES
 		static int getRandomNumber(lua_State* L);
 		static int getHashCode(lua_State* L);
 		static int spatialChat(lua_State* L);

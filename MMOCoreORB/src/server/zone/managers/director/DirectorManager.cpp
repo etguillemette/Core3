@@ -488,6 +488,7 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->registerFunction("givePlayerResource", givePlayerResource);
 	luaEngine->registerFunction("givePlayerResourceByIndex", givePlayerResourceByIndex); //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
 	//luaEngine->registerFunction("getResourceListingByType", getResourceListingByType); //Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
+	luaEngine->registerFunction("testGiveResource", testGiveResource); //Ethan edit 5-24-24 (NPC VENDOR RESOURCE)
 	luaEngine->registerFunction("getResourceNameByIndex", getResourceNameByIndex);//Ethan edit 5-23-24 (NPC VENDOR RESOURCE)
 	luaEngine->registerFunction("getRegion", getRegion);
 	luaEngine->registerFunction("writeScreenPlayData", writeScreenPlayData);
@@ -2790,6 +2791,25 @@ int DirectorManager::giveHirelingControlDevice(lua_State* L) {
 		controlDevice->destroyObjectFromDatabase(true);
 		lua_pushnil(L);
 	}
+
+	return 1;
+}
+
+int DirectorManager::testGiveResource(lua_State* L){
+	if (checkArgumentCount(L, 3) == 1) {
+		String err = "incorrect number of arguments passed to DirectorManager::testGiveResource";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	CreatureObject* player = (CreatureObject*)lua_touserdata(L, -1);
+	String resourceName = lua_tostring(L, -2);
+	int quantity = lua_tointeger(L, -3);
+
+	
+
+	ResourceManagerImplementation::givePlayerResource(player, resourceName, quantity)
 
 	return 1;
 }
