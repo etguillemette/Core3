@@ -30,6 +30,8 @@
 #include "server/zone/Zone.h"
 #include "server/zone/packets/scene/PlayClientEffectLocMessage.h"
 
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER)
+
 void EntertainingSessionImplementation::doEntertainerPatronEffects() {
 	ManagedReference<CreatureObject*> creo = entertainer.get();
 
@@ -1068,23 +1070,8 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 
 			xpAmount = ceil(xpAmount * totalBonus);
 
-			if (playerManager != nullptr){
+			if (playerManager != nullptr)
 				playerManager->awardExperience(player, xptype, xpAmount, true);
-
-				//Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
-				Lua* lua = new Lua();
-				lua->init();
-
-				lua->runFile("scripts/managers/player_manager.lua");
-				bool entertainerSelfExp = lua->getGlobalInt("entertainerSelfExp");
-
-				if(entertainerSelfExp == true)
-				{
-					String selfhealxptype("entertainer_healing");
-					playerManager->awardExperience(player, selfhealxptype, xpAmount, true);
-				}
-			}
-				//End Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
 
 			oldFlourishXp = flourishXp;
 			flourishXp = 0;
@@ -1099,6 +1086,21 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 				playerManager->awardExperience(player, healxptype, healingXp, true);
 
 			healingXp = 0;
+		}
+		else {
+			//Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
+			Lua* lua = new Lua();
+			lua->init();
+
+			lua->runFile("scripts/managers/player_manager.lua");
+			bool entertainerSelfExp = lua->getGlobalInt("entertainerSelfExp");
+
+			if(entertainerSelfExp == true)
+			{
+				String healxptype("entertainer_healing");
+				playerManager->awardExperience(player, healxptype, 50, true);
+			}
+			//End Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
 		}
 	}
 

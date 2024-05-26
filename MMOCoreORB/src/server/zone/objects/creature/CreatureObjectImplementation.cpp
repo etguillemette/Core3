@@ -95,6 +95,8 @@
 #include "server/zone/objects/player/events/SpawnHelperDroidTask.h"
 #include "server/zone/packets/object/StartNpcConversation.h"
 
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER)
+
 float CreatureObjectImplementation::DEFAULTRUNSPEED = 5.376f;
 
 void CreatureObjectImplementation::initializeTransientMembers() {
@@ -2961,6 +2963,69 @@ void CreatureObjectImplementation::activateHAMRegeneration(int latency) {
 	healDamage(asCreatureObject(), CreatureAttribute::HEALTH, healthTick, true, false);
 	healDamage(asCreatureObject(), CreatureAttribute::ACTION, actionTick, true, false);
 	healDamage(asCreatureObject(), CreatureAttribute::MIND, mindTick, true, false);
+
+	//Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER)
+	Lua* lua = new Lua();
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	bool entertainerSelfExp = lua->getGlobalInt("entertainerSelfExp");
+	bool selfHealEnabled = getSkillMod("selfHealEnabled");
+	
+	if (entertainerSelfExp == true)
+	{
+		//Check if in cantina
+		/// Mind wound regen
+		int mindRegen = getSkillMod("private_med_wound_mind");
+
+		if(mindRegen > 0) {
+			mindWoundHeal += (int)(mindRegen * 0.2);
+			if(mindWoundHeal >= 100) {
+				healWound(asCreatureObject(), CreatureAttribute::MIND, 1, true, false);
+				healWound(asCreatureObject(), CreatureAttribute::FOCUS, 1, true, false);
+				healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 1, true, false);
+				mindWoundHeal -= 100;
+
+				addShockWounds(-10, true, false);
+
+				//addEntertainerBuffDuration(patron, performance->getType(), 2.0f * buffAcceleration);
+				//addEntertainerBuffStrength(patron, performance->getType(), performance->getHealShockWound());
+				//EntertainingSessionImplementation::addEntertainerBuffDuration(asCreatureObject(), PerformanceManager::PerformanceBuffType::MUSIC, 2.0f * buffAcceleration);
+				//EntertainingSessionImplementation::addEntertainerBuffStrength(patron, PerformanceManager::PerformanceBuffType::MUSIC, 10);
+			}
+		}
+		
+	}
+
+	if (selfHealEnabled == true)
+	{
+		//Check if in hospital
+		int healthRegen = getSkillMod("private_med_wound_health");
+		//Health Regen
+		if(healthRegen > 0) {
+			healthWoundHeal += (int)(healthRegen * 0.2);
+			if(healthWoundHeal >= 100) {
+				healWound(asCreatureObject(), CreatureAttribute::HEALTH, 1, true, false);
+				healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 1, true, false);
+				healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1, true, false);
+				healthWoundHeal -= 100;
+			}
+		}
+		//Action regen
+		int actionRegen = getSkillMod("private_med_wound_action");
+		if(actionRegen > 0) {
+			actionWoundHeal += (int)(actionRegen * 0.2);
+			if(actionWoundHeal >= 100) {
+				healWound(asCreatureObject(), CreatureAttribute::ACTION, 1, true, false);
+				healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 1, true, false);
+				healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1, true, false);
+				actionWoundHeal -= 100;
+			}
+		}
+
+	}
+
+	//End Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER)
 
 	activatePassiveWoundRegeneration();
 }
