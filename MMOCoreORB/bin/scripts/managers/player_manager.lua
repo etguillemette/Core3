@@ -77,6 +77,8 @@ baseStoredShips = 3
 selfHealEnabled = true
 playerStructureMaintenanceRate = 1.0
 playerStructureEntropyEnabled = false;
+playerStructureLowestCondition = 0.5; --This is the lowest damage level a structure can have
+entertainerSelfExp = true;
 --End Ethan Edit 5-2-24 (XP FOR SELF HEALS)
 
 

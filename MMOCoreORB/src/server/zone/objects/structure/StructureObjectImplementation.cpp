@@ -524,6 +524,23 @@ void StructureObjectImplementation::updateStructureStatus() {
 	float maintenanceDue = (getMaintenanceRate() / 3600.0f) * timeDiff;
 	float cityTaxDue = 0.0f;
 
+
+	//Ethan edit 5-25-24 (HALT ENTROPY)
+	Lua* lua = new Lua();
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	int playerStructureEntropyEnabled = lua->getGlobalInt("playerStructureEntropyEnabled");
+	float lowestPlayerMaintenance = lua->getGlobalInt("playerStructureLowestCondition");
+	
+	//Checks if the mainenance due is 500 hours worth, which should be 50% damage, I -THINK-
+	if(playerStructureEntropyEnabled == false && maintenance > (getMaintenanceRate() * lowestPlayerMaintenance * 1000.0))
+	{
+		maintenanceDue = 0;
+	}
+	//End Ethan edit 5-25-24 (HALT ENTROPY)
+
+
 #if DEBUG_STRUCTURE_MAINT
 	info("updateStructureStatus: timeDiff = " + String::valueOf(timeDiff)
 		+ " maintenanceDue = " + String::valueOf(maintenanceDue)

@@ -1213,9 +1213,6 @@ int DirectorManager::testGiveResource(lua_State* L){
 		//String err = "Nothing is wrong yet with testGiveResource";
 		//printTraceError(L, err);
 	//}
-	
-
-	player->sendSystemMessage("Calling testGiveResource");
 
 	//printTraceError(L, quantity.toString());
 
