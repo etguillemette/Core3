@@ -1068,7 +1068,7 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 
 			xpAmount = ceil(xpAmount * totalBonus);
 
-			if (playerManager != nullptr)
+			if (playerManager != nullptr){
 				playerManager->awardExperience(player, xptype, xpAmount, true);
 
 				//Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
@@ -1082,8 +1082,8 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 				{
 					String selfhealxptype("entertainer_healing");
 					playerManager->awardExperience(player, selfhealxptype, xpAmount, true);
-
 				}
+			}
 				//End Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
 
 			oldFlourishXp = flourishXp;

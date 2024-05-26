@@ -534,7 +534,7 @@ void StructureObjectImplementation::updateStructureStatus() {
 	float lowestPlayerMaintenance = lua->getGlobalInt("playerStructureLowestCondition");
 	
 	//Checks if the mainenance due is 500 hours worth, which should be 50% damage, I -THINK-
-	if(playerStructureEntropyEnabled == false && maintenance > (getMaintenanceRate() * lowestPlayerMaintenance * 1000.0))
+	if(playerStructureEntropyEnabled == false && maintenanceDue > (getMaintenanceRate() * lowestPlayerMaintenance * 1000.0))
 	{
 		maintenanceDue = 0;
 	}
