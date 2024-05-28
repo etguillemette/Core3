@@ -65,6 +65,7 @@ namespace tangible {
 		int isSliced(lua_State* L);
 		int isNoTrade(lua_State* L);
 		int getMainDefender(lua_State* L);
+		int setSerialNumber(lua_State* L); //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 
 	protected:
 		TangibleObject* realObject;

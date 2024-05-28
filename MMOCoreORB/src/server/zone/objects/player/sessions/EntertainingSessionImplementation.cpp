@@ -1071,8 +1071,23 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 			xpAmount = ceil(xpAmount * totalBonus);
 
 			if (playerManager != nullptr)
+			{
 				playerManager->awardExperience(player, xptype, xpAmount, true);
+				//Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
+				Lua* lua = new Lua();
+				lua->init();
 
+				lua->runFile("scripts/managers/player_manager.lua");
+				bool entertainerSelfExp = lua->getGlobalInt("entertainerSelfExp");
+
+				if(entertainerSelfExp == true)
+				{
+					String healxptype("entertainer_healing");
+					playerManager->awardExperience(player, healxptype, xpAmount, true);
+				}
+				//End Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
+			}
+				
 			oldFlourishXp = flourishXp;
 			flourishXp = 0;
 		} else {
@@ -1088,19 +1103,6 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 			healingXp = 0;
 		}
 		else {
-			//Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
-			Lua* lua = new Lua();
-			lua->init();
-
-			lua->runFile("scripts/managers/player_manager.lua");
-			bool entertainerSelfExp = lua->getGlobalInt("entertainerSelfExp");
-
-			if(entertainerSelfExp == true)
-			{
-				String healxptype("entertainer_healing");
-				playerManager->awardExperience(player, healxptype, 50, true);
-			}
-			//End Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
 		}
 	}
 

@@ -737,6 +737,62 @@ void FactoryObjectImplementation::createNewObject() {
 		dfcty3->close();
 
 		broadcastToOperators(dfcty3);
+
+		//Ethan edit 5-28-24 (FACTORY XP) Note: This will probably crash the server...
+		ManagedWeakReference<CreatureObject* > crafter = schematic->getCrafter();
+		DraftSchematic* draftSchematic = schematic->getDraftSchematic();
+		String xpType = draftSchematic->getXpType();
+		int xp = draftSchematic->getXpAmount();
+		xp = round(xp * 0.5f);
+
+		
+
+		if (crafter != nullptr)
+		{
+			ManagedReference<CreatureObject*> crafterPlayer = crafter.get();
+			Reference<PlayerObject*> ghost = crafterPlayer->getSlottedObject("ghost").castTo<PlayerObject*>();
+
+			if (ghost != nullptr) {
+				TransactionLog trx(TrxCode::EXPERIENCE, crafterPlayer);
+				ghost->addExperience(trx, "xpType", xp, true);
+			}
+		}
+
+		
+
+		/*
+		ManagedReference<CreatureObject*> crafter = schematic->getCrafter().get().castTo<CreatureObject*>(); //Get the crafter
+		String xpType = manufactureSchematic->getDraftSchematic()->getXpType(); //Get the xp type
+		int xp = manufactureSchematic->getDraftSchematic()->getXpAmount();
+		xp = round(xp * 0.5f);
+		Reference<PlayerManager*> playerManager = crafter->getZoneServer()->getPlayerManager();
+		playerManager->awardExperience(crafter, xpType, xp, true);
+		*/
+
+		/*
+		From CityManagerImplementation:
+		ManagedReference<SceneObject*> mayorObject = zoneServer->getObject(candidateID);
+
+		if (mayorObject != nullptr && mayorObject->isPlayerCreature()) {
+			Locker _crosslock(mayorObject, city);
+
+			CreatureObject* mayor = cast<CreatureObject*> (mayorObject.get());
+
+			//Make sure the candidate is still a politician.
+			if (!mayor->hasSkill("social_politician_novice")) {
+				continue;
+			}
+
+			Reference<PlayerObject*> ghost = mayorObject->getSlottedObject("ghost").castTo<PlayerObject*>();
+
+			if (ghost != nullptr) {
+				TransactionLog trx(TrxCode::EXPERIENCE, mayor);
+				ghost->addExperience(trx, "political", votes * 300, true);
+			}
+		}
+		*/
+
+		//End Ethan edit 5-28-24 (FACTORY XP)
 	} else {
 		ManagedReference<TangibleObject*> newItem = createNewUncratedItem(prototype);
 

@@ -55,6 +55,7 @@ Luna<LuaTangibleObject>::RegType LuaTangibleObject::Register[] = {
 		{ "isSliced", &LuaTangibleObject::isSliced},
 		{ "isNoTrade", &LuaTangibleObject::isNoTrade},
 		{ "getMainDefender", &LuaTangibleObject::getMainDefender},
+		{ "setSerialNumber", &LuaTangibleObject::setSerialNumber}, //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 		{ 0, 0 }
 };
 
@@ -431,3 +432,15 @@ int LuaTangibleObject::getMainDefender(lua_State* L) {
 
 	return 1;
 }
+
+//Ethan edit 5-28-24 (JUNK DEALER VENDOR)
+
+int LuaTangibleObject::setSerialNumber(lua_State* L){
+	String serial = lua_tostring(L, -1);
+
+	realObject->setSerialNumber(serial);
+
+	return 0;
+}
+
+//END Ethan edit 5-28-24 (JUNK DEALER VENDOR)

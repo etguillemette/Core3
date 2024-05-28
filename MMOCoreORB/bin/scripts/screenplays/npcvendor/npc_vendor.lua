@@ -204,6 +204,16 @@ function NPCVendor:giveItem(pPlayer, itemData)
 
 	local pItem = giveItem(pInventory, templatePath, -1)
 
+	local newSerial = itemData.serial
+	local tano = TangibleObject(pItem)
+	
+	--Ethan testing 5-28-24: Seeing if I can force a serial number on components for factory runs
+	if(newSerial ~= nil) then
+		tano:setSerialNumber(newSerial)
+	end
+
+
+
 	if (pItem ~= nil) then
 		PlayerObject(pGhost):addEventPerk(pItem)
 	end
