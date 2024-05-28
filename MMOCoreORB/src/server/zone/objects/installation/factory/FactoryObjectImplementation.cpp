@@ -754,7 +754,7 @@ void FactoryObjectImplementation::createNewObject() {
 
 			if (ghost != nullptr) {
 				TransactionLog trx(TrxCode::EXPERIENCE, crafterPlayer);
-				ghost->addExperience(trx, "xpType", xp, true);
+				ghost->addExperience(trx, xpType, xp, true);
 			}
 		}
 

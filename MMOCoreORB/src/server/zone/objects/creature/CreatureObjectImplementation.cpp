@@ -2979,7 +2979,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	int healBonus = 0;
 	if(entertainerSelfExp == true)
 	{
-		healBonus = 3;
+		healBonus = 9;
 	}
 	//END Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER)
 	
@@ -3020,7 +3020,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::FOCUS, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			mindWoundHeal -= 100;
-			addShockWounds(-healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			addShockWounds(-(healBonus + 1), true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			//addEntertainerBuffDuration(patron, performance->getType(), 2.0f * buffAcceleration);
 			//addEntertainerBuffStrength(patron, performance->getType(), performance->getHealShockWound());
 			//EntertainingSessionImplementation::addEntertainerBuffDuration(asCreatureObject(), PerformanceManager::PerformanceBuffType::MUSIC, 2.0f * buffAcceleration);
