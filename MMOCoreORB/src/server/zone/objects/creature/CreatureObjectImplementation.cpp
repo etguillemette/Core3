@@ -2964,82 +2964,35 @@ void CreatureObjectImplementation::activateHAMRegeneration(int latency) {
 	healDamage(asCreatureObject(), CreatureAttribute::ACTION, actionTick, true, false);
 	healDamage(asCreatureObject(), CreatureAttribute::MIND, mindTick, true, false);
 
+	activatePassiveWoundRegeneration();
+}
+
+void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
+	
 	//Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER)
 	Lua* lua = new Lua();
 	lua->init();
 
 	lua->runFile("scripts/managers/player_manager.lua");
-	bool entertainerSelfExp = lua->getGlobalInt("entertainerSelfExp");
-	bool selfHealEnabled = getSkillMod("selfHealEnabled");
+	bool entertainerSelfExp = lua->getGlobalBoolean("entertainerSelfExp");
+
+	int healBonus = 0;
+	if(entertainerSelfExp == true)
+	{
+		healBonus = 3;
+	}
+	//END Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER)
 	
-	if (entertainerSelfExp == true)
-	{
-		//Check if in cantina
-		/// Mind wound regen
-		int mindRegen = getSkillMod("private_med_wound_mind");
-
-		if(mindRegen > 0) {
-			mindWoundHeal += (int)(mindRegen * 0.2);
-			if(mindWoundHeal > 0) {
-				healWound(asCreatureObject(), CreatureAttribute::MIND, 10, true, false);
-				healWound(asCreatureObject(), CreatureAttribute::FOCUS, 10, true, false);
-				healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 10, true, false);
-				//mindWoundHeal -= 100;
-
-				addShockWounds(-10, true, false);
-
-				//addEntertainerBuffDuration(patron, performance->getType(), 2.0f * buffAcceleration);
-				//addEntertainerBuffStrength(patron, performance->getType(), performance->getHealShockWound());
-				//EntertainingSessionImplementation::addEntertainerBuffDuration(asCreatureObject(), PerformanceManager::PerformanceBuffType::MUSIC, 2.0f * buffAcceleration);
-				//EntertainingSessionImplementation::addEntertainerBuffStrength(patron, PerformanceManager::PerformanceBuffType::MUSIC, 10);
-			}
-		}
-		
-	}
-
-	if (selfHealEnabled == true)
-	{
-		//Check if in hospital
-		int healthRegen = getSkillMod("private_med_wound_health");
-		//Health Regen
-		if(healthRegen > 0) {
-			healthWoundHeal += (int)(healthRegen * 0.2);
-			if(healthWoundHeal > 0) {
-				healWound(asCreatureObject(), CreatureAttribute::HEALTH, 10, true, false);
-				healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 10, true, false);
-				healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 10, true, false);
-				//healthWoundHeal -= 100;
-			}
-		}
-		//Action regen
-		int actionRegen = getSkillMod("private_med_wound_action");
-		if(actionRegen > 0) {
-			actionWoundHeal += (int)(actionRegen * 0.2);
-			if(actionWoundHeal > 0) {
-				healWound(asCreatureObject(), CreatureAttribute::ACTION, 10, true, false);
-				healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 10, true, false);
-				healWound(asCreatureObject(), CreatureAttribute::STAMINA, 10, true, false);
-				//actionWoundHeal -= 100;
-			}
-		}
-
-	}
-
-	//End Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER)
-
-	activatePassiveWoundRegeneration();
-}
-
-void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
+	
 	/// Health wound regen
 	int healthRegen = getSkillMod("private_med_wound_health");
 
 	if(healthRegen > 0) {
-		healthWoundHeal += (int)(healthRegen * 0.2);
+		healthWoundHeal += (int)(healthRegen * 0.2); 
 		if(healthWoundHeal >= 100) {
-			healWound(asCreatureObject(), CreatureAttribute::HEALTH, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::HEALTH, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			healthWoundHeal -= 100;
 		}
 	}
@@ -3050,9 +3003,9 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	if(actionRegen > 0) {
 		actionWoundHeal += (int)(actionRegen * 0.2);
 		if(actionWoundHeal >= 100) {
-			healWound(asCreatureObject(), CreatureAttribute::ACTION, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::ACTION, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			actionWoundHeal -= 100;
 		}
 	}
@@ -3063,10 +3016,15 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	if(mindRegen > 0) {
 		mindWoundHeal += (int)(mindRegen * 0.2);
 		if(mindWoundHeal >= 100) {
-			healWound(asCreatureObject(), CreatureAttribute::MIND, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::FOCUS, 1, true, false);
-			healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 1, true, false);
+			healWound(asCreatureObject(), CreatureAttribute::MIND, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::FOCUS, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			mindWoundHeal -= 100;
+			addShockWounds(-healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			//addEntertainerBuffDuration(patron, performance->getType(), 2.0f * buffAcceleration);
+			//addEntertainerBuffStrength(patron, performance->getType(), performance->getHealShockWound());
+			//EntertainingSessionImplementation::addEntertainerBuffDuration(asCreatureObject(), PerformanceManager::PerformanceBuffType::MUSIC, 2.0f * buffAcceleration);
+			//EntertainingSessionImplementation::addEntertainerBuffStrength(patron, PerformanceManager::PerformanceBuffType::MUSIC, 10);
 		}
 	}
 }

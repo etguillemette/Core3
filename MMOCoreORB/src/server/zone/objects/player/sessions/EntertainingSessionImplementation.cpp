@@ -1078,7 +1078,7 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 				lua->init();
 
 				lua->runFile("scripts/managers/player_manager.lua");
-				bool entertainerSelfExp = lua->getGlobalInt("entertainerSelfExp");
+				bool entertainerSelfExp = lua->getGlobalBoolean("entertainerSelfExp");
 
 				if(entertainerSelfExp == true)
 				{
