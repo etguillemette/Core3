@@ -745,6 +745,9 @@ void FactoryObjectImplementation::createNewObject() {
 		int xp = draftSchematic->getXpAmount();
 		xp = round(xp * 0.5f);
 
+		error("xpType = " + xpType);
+		error("xp = " + xp);
+
 		if (crafter != nullptr)
 		{
 			ManagedReference<CreatureObject*> crafterPlayer = crafter.get();
@@ -754,6 +757,12 @@ void FactoryObjectImplementation::createNewObject() {
 				TransactionLog trx(TrxCode::EXPERIENCE, crafterPlayer);
 				ghost->addExperience(trx, xpType, xp, true);
 			}
+			else{
+				error("ghost is nullptr");
+			}
+		}
+		else {
+			error("crafer is nullptr");
 		}
 
 		//End Ethan edit 5-28-24 (FACTORY XP)
