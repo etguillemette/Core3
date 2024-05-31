@@ -458,8 +458,8 @@ wares_clothingshirt = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(wares_clothingshirt);
-w
-ares_clothingrobe = ConvoScreen:new {
+
+wares_clothingrobe = ConvoScreen:new {
 	id = "wares_clothingrobe",
 	customDialogText = "Here are the robes I have available.",
 	stopConversation = "true",
