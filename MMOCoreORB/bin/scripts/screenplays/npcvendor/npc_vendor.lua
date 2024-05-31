@@ -56,68 +56,176 @@ end
 
 function NPCVendor:getWaresTable(category)
 	
-	if category == "wares_pistol" then
+	if category == "wares_pistol" then	
 		return genericWaresData.waresPistol
-	elseif category == "wares_rifle" then
+	elseif category == "wares_relseifle" then
 		return genericWaresData.waresRifle
 	elseif category == "wares_carbine" then
 		return genericWaresData.waresCarbine
-	elseif category == "wares_oh" then
+	elseif category == "wares_onehanded" then
 		return genericWaresData.waresOneHanded
-	elseif category == "wares_th" then
-		return genericWaresData.waresTwoHanded
-	elseif category == "wares_pole" then
+	elseif category == "wares_polearm" then
 		return genericWaresData.waresPolearm
-	elseif category == "wares_ua" then
+	elseif category == "wares_twohanded" then
+		return genericWaresData.waresTwoHanded
+	elseif category == "wares_unarmed" then
 		return genericWaresData.waresUnarmed
-	elseif category == "wares_heavy" then
+	elseif category == "wares_heavyweapon" then
 		return genericWaresData.waresHeavyWeapon
-	elseif category == "wares_armor_helm" then
+	elseif category == "wares_munition" then
+		return genericWaresData.waresMunition
+	elseif category == "wares_powerup" then
+		return genericWaresData.waresPowerup
+	elseif category == "wares_armorhelm" then
 		return genericWaresData.waresArmorHelm
-	elseif category == "wares_armor_chest" then
+	elseif category == "wares_armorchest" then
 		return genericWaresData.waresArmorChest
-	elseif category == "wares_armor_leg" then
+	elseif category == "wares_armorleg" then
 		return genericWaresData.waresArmorLeg
-	elseif category == "wares_armor_arm" then
+	elseif category == "wares_armorarm" then
 		return genericWaresData.waresArmorArm
-	elseif category == "wares_armor_accessory" then
+	elseif category == "wares_armoraccessory" then
 		return genericWaresData.waresArmorAccessory
+	elseif category == "wares_clothingapron" then
+		return genericWaresData.waresClothingApron
+	elseif category == "wares_clothingbackpack" then
+		return genericWaresData.waresClothingBackpack
+	elseif category == "wares_clothingbandolier" then
+		return genericWaresData.waresClothingBandolier
+	elseif category == "wares_clothingbelt" then
+		return genericWaresData.waresClothingBelt
+	elseif category == "wares_clothingbikini" then
+		return genericWaresData.waresClothingBikini
+	elseif category == "wares_clothingbodysuit" then
+		return genericWaresData.waresClothingBodysuit
+	elseif category == "wares_clothingboots" then
+		return genericWaresData.waresClothingBoots
+	elseif category == "wares_clothingbracelet" then
+		return genericWaresData.waresClothingBracelet
+	elseif category == "wares_clothingnecklace" then
+		return genericWaresData.waresClothingNecklace
+	elseif category == "wares_clothingpants" then
+		return genericWaresData.waresClothingPants
+	elseif category == "wares_clothingring" then
+		return genericWaresData.waresClothingRing
+	elseif category == "wares_clothingshirt" then
+		return genericWaresData.waresClothingShirt
+	elseif category == "wares_clothingrobe" then
+		return genericWaresData.waresClothingRobe
+	elseif category == "wares_clothingshoes" then
+		return genericWaresData.waresClothingShoes
+	elseif category == "wares_clothingskirt" then
+		return genericWaresData.waresClothingSkirt
+	elseif category == "wares_clothingvest" then
+		return genericWaresData.waresClothingVest
+	elseif category == "wares_clothingwookie" then
+		return genericWaresData.waresClothingWookie
+	elseif category == "wares_clothingbustier" then
+		return genericWaresData.waresClothingBustier
+	elseif category == "wares_clothingdress" then
+		return genericWaresData.waresClothingDress
+	elseif category == "wares_clothinggloves" then
+		return genericWaresData.waresClothingGloves
+	elseif category == "wares_clothinghat" then
+		return genericWaresData.waresClothingHat
+	elseif category == "wares_clothingjacket" then
+		return genericWaresData.waresClothingJacket
+	elseif category == "wares_clothingithorianchest" then
+		return genericWaresData.waresClothingIthorianChest
+	elseif category == "wares_clothingithorianheadwear" then
+		return genericWaresData.waresClothingIthorianHeadwear
+	elseif category == "wares_clothingithorianhandwear" then
+		return genericWaresData.waresClothingIthorianHandwear
+	elseif category == "wares_clothingithorianjewelry" then
+		return genericWaresData.waresClothingIthorianJewelry
+	elseif category == "wares_clothingithorianpants" then
+		return genericWaresData.waresClothingIthorianPants
 	elseif category == "wares_stim" then
 		return genericWaresData.waresStim
-	elseif category == "wares_medpack" then
-		return genericWaresData.waresMedpack
-	elseif category == "wares_status" then
-		return genericWaresData.waresStatusMedpack
-	elseif category == "wares_wound" then
+	elseif category == "wares_woundpack" then
 		return genericWaresData.waresWoundPack
-	elseif category == "wares_enhancement" then
+	elseif category == "wares_medpackcure" then
+		return genericWaresData.waresMedpackCure
+	elseif category == "wares_medpackdisease" then
+		return genericWaresData.waresMedpackDisease
+	elseif category == "wares_enhacement" then
 		return genericWaresData.waresEnhacement
-	elseif category == "wares_camo" then
-		return genericWaresData.waresCamo
-	elseif category == "wares_trap" then
-		return genericWaresData.waresTrap
-	elseif category == "wares_camp" then
-		return genericWaresData.waresCamp
+	elseif category == "wares_medpackpoison" then
+		return genericWaresData.waresMedpackPoison
+	elseif category == "wares_petstim" then
+		return genericWaresData.waresPetStim
+	elseif category == "wares_dessert" then
+		return genericWaresData.waresDessert
 	elseif category == "wares_food" then
 		return genericWaresData.waresFood
 	elseif category == "wares_drink" then
 		return genericWaresData.waresDrink
-	elseif category == "wares_dessert" then
-		return genericWaresData.waresDessert
-	elseif category == "wares_harvester" then
-		return genericWaresData.waresHarvester
-	elseif category == "wares_factory" then
-		return genericWaresData.waresFactory
-	elseif category == "wares_generator" then
-		return genericWaresData.waresGenerator
-	elseif category == "wares_guild" then
-		return genericWaresData.waresGuild
+	elseif category == "wares_compchef" then
+		return genericWaresData.waresCompChef
+	elseif category == "wares_comparmor" then
+		return genericWaresData.waresCompArmor
+	elseif category == "wares_compbio" then
+		return genericWaresData.waresCompBio
+	elseif category == "wares_compchemistry" then
+		return genericWaresData.waresCompChemistry
+	elseif category == "wares_compclothing" then
+		return genericWaresData.waresCompClothing
+	elseif category == "wares_compdroid" then
+		return genericWaresData.waresCompDroid
+	elseif category == "wares_tools" then
+		return genericWaresData.waresTools
+	elseif category == "wares_compartisan" then
+		return genericWaresData.waresCompArtisan
+	elseif category == "wares_trap" then
+		return genericWaresData.waresTrap
+	elseif category == "wares_camo" then
+		return genericWaresData.waresCamo
+	elseif category == "wares_camp" then
+		return genericWaresData.waresCamp
+	elseif category == "wares_compshipwright" then
+		return genericWaresData.waresCompShipwright
+	elseif category == "wares_installation" then
+		return genericWaresData.waresInstallation
+	elseif category == "wares_city" then
+		return genericWaresData.waresCity
+	elseif category == "wares_compstructure" then
+		return genericWaresData.waresCompStructure
+	elseif category == "wares_compweapon" then
+		return genericWaresData.waresCompWeapon
+	elseif category == "wares_furniture" then
+		return genericWaresData.waresFurniture
 	elseif category == "wares_house" then
 		return genericWaresData.waresHouse
-	elseif category == "hires_marksman" then
+	elseif category == "wares_pets" then
+		return genericWaresData.waresPets
+	elseif category == "wares_droid" then
+		return genericWaresData.waresDroid
+	elseif category == "wares_droidassc" then
+		return genericWaresData.waresDroidAssc
+	elseif category == "wares_fireworks" then
+		return genericWaresData.waresFireworks
+	elseif category == "wares_misc" then
+		return genericWaresData.waresMisc
+	elseif category == "wares_slicing" then
+		return genericWaresData.waresSlicing
+	elseif category == "wares_spice" then
+		return genericWaresData.waresSpice
+	elseif category == "wares_spacecustomization" then
+		return genericWaresData.waresSpaceCustomization
+	elseif category == "wares_spacechassis" then
+		return genericWaresData.waresSpaceChassis
+	elseif category == "wares_spacepart" then
+		return genericWaresData.waresSpacePart
+	elseif category == "wares_spacemissile" then
+		return genericWaresData.waresSpaceMissile
+	elseif category == "wares_instrument" then
+		return genericWaresData.waresInstrument
+	elseif category == "wares_vehicle" then
+		return genericWaresData.waresVehicle
+	elseif category == "wares_marksman" then
 		return genericWaresData.hiresMarksman
-	elseif category == "hires_brawler" then
-		return genericWaresData.hiresBrawler
+	elseif category == "wares_brawler" then
+		return genericWaresData.hiresMarksman
 	end
 end
 
