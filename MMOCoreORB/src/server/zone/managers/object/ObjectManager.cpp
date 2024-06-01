@@ -237,6 +237,7 @@ void ObjectManager::registerObjectTypes() {
 	objectFactory.registerObject<StructureDeed>(SceneObjectType::BUILDINGDEED);
 	objectFactory.registerObject<StructureDeed>(SceneObjectType::INSTALLATIONDEED);
 	objectFactory.registerObject<ResourceDeed>(SceneObjectType::RESOURCEDEED);
+	objectFactory.registerObject<ResourcePurchase>(SceneObjectType::RESOURCEPURCHASE); //Ethan edit 5-31-24 (RESOURCE)
 	objectFactory.registerObject<EventPerkDeed>(SceneObjectType::EVENTPERKDEED);
 	objectFactory.registerObject<VetHarvesterDeed>(SceneObjectType::VETHARVESTERDEED);
 	objectFactory.registerObject<ShipDeed>(SceneObjectType::SHIPDEED);

@@ -272,6 +272,59 @@ void ResourceSpawnImplementation::addStatsToDeedListBox(SuiListBox* suil) {
 	}
 }
 
+//Ethan edit 5-31-24 (RESOURCE VENDOR)
+void ResourceSpawnImplementation::evaluatePurchaseListBox(SuiListBox* suil) {
+	suil->setPromptTitle("@veteran:resource_name"); //Resource Name
+	suil->setPromptText("@veteran:confirm_choose_type"); //Please confirm that you would like to select this resource as your Veteran Reward Crate of Resources. Use the CANCEL button to go back and select a different resource.
+
+	String tempname = "Name = " + spawnName;
+	suil->addMenuItem(tempname);
+
+	int pricePerUnit = 1;
+
+	for (int i = 0; i < spawnAttributes.size(); ++i) {
+		String attrib;
+		int value = getAttributeAndValue(attrib, i);
+
+		if(value > 900)
+		{
+			pricePerUnit+= 4;
+		}
+		else if(value > 800)
+		{
+			pricePerUnit+= 2;
+		}
+
+		String tempstat = "@obj_attr_n:" + attrib + " = " + value;
+		suil->addMenuItem(tempstat);
+
+		String pricevalue = "Price: " + std::to_string(pricePerUnit) + " credits per unit";
+		suil->addMenuItem(pricevalue);
+	}
+
+}
+
+int ResourceSpawnImplementation::evaluatePrice(){
+	int pricePerUnit = 1;
+
+	for (int i = 0; i < spawnAttributes.size(); ++i) {
+		String attrib;
+		int value = getAttributeAndValue(attrib, i);
+
+		if(value > 900)
+		{
+			pricePerUnit+= 4;
+		}
+		else if(value > 800)
+		{
+			pricePerUnit+= 2;
+		}
+	}
+
+	return pricePerUnit;
+}
+//End Ethan edit 5-31-24 (RESOURCE VENDOR)
+
 void ResourceSpawnImplementation::print() const {
 	info("**** Resource Data ****\n", true);
 	info("Class: " + getFinalClass(), true);

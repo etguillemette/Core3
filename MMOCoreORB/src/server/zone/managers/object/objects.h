@@ -92,6 +92,7 @@
 #include "server/zone/objects/tangible/deed/ship/ShipDeed.h"
 #include "server/zone/objects/tangible/deed/structure/StructureDeed.h"
 #include "server/zone/objects/tangible/deed/resource/ResourceDeed.h"
+#include "server/zone/objects/tangible/deed/resource/ResourcePurchase.h" //Ethan edit 5-31-24 (RESOURCE VENDOR)
 #include "server/zone/objects/tangible/deed/eventperk/EventPerkDeed.h"
 #include "server/zone/objects/tangible/deed/vetharvester/VetHarvesterDeed.h"
 #include "server/zone/objects/tangible/wearables/ArmorObject.h"

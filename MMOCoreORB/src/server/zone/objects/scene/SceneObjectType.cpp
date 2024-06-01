@@ -237,6 +237,7 @@ const String SceneObjectType::typeToString(int gameObjectType) {
 		case DROIDDEED:					return "@got_n:deed_droid";
 		case VEHICLEDEED:				return "@got_n:deed_vehicle";
 		case RESOURCEDEED:				return "@got_n:deed";
+		case RESOURCEPURCHASE:			return "@got_n:deed"; //Ethan edit 5-31-24 (RESOURCE VENDOR)
 		case EVENTPERKDEED:				return "@got_n:deed";
 		case VETHARVESTERDEED:			return "@got_n:deed";
 		case CLOTHING:					return "@got_n:clothing";

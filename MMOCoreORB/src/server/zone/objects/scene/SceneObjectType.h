@@ -305,6 +305,7 @@ public:
 	const static int DROIDDEED = 0x800004;
 	const static int VEHICLEDEED = 0x800005;
 	const static int RESOURCEDEED = 0x800006;
+	const static int RESOURCEPURCHASE = 0x800010;
 	const static int SHIPDEED = 0x800009;
 
 	// Not in client **********

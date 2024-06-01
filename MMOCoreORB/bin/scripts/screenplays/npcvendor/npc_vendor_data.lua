@@ -1872,5 +1872,12 @@ genericWaresData = {
         { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="brawler_novice", displayName = "@mob/creature_names:brawler"},
     },
 
+--------------------------------------------
+--RESOURCE----------------------------------
+
+    waresResource = {
+        { template = "object/tangible/veteran_reward/shared_resource_purchase_deed.iff", cost = 1000, displayName = "@item_n:free_resource"},
+    },
+
     --Ethan End testing NPC vendor 5-16-24
 }
