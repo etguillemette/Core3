@@ -83,7 +83,26 @@ public:
 				deed->destroyDeed();
 				clocker.release();
 
-				resourceManager->givePlayerResource(creature, nodeName, ResourceManager::RESOURCE_DEED_QUANTITY);
+				//Ethan edit 6-1-24 (RESOURCE VENDOR)
+
+				int cash = creature->getBankCredits();
+				int price = resourceManager->getResourceSpawn(nodeName)->evaluatePrice();
+
+				if (price > cash) {
+					//StringIdChatParameter ptnsfw("base_player", "prose_tip_nsf_wire"); // You do not have %DI credits (surcharge included) to tip the desired amount to %TT.
+					//ptnsfw.setDI(price);
+					//ptnsfw.setTT(creat->getCreatureName());
+					//player->sendSystemMessage(ptnsfw);
+					//return;
+				}
+				else{
+					creature->subtractBankCredits(amount + surcharge);
+					resourceManager->givePlayerResource(creature, nodeName, ResourceManager::RESOURCE_DEED_QUANTITY); //THIS WAS MOVED HERE
+				}
+
+				//Ethan edit 6-1-24 (RESOURCE VENDOR)
+
+
 
 				return;
 			}
@@ -96,6 +115,8 @@ public:
 				spawn = resourceManager->getResourceSpawn(nodeName); //Check again, this means they are looking at stats.
 				if (spawn != nullptr) {
 					spawn->addStatsToDeedListBox(listBox);
+					spawn->evaluatePurchaseListBox(listBox); //Ethan edit 6-1-24 (RESOURCE VENDOR)
+
 				} else {
 					resourceManager->addNodeToListBox(listBox, nodeName);
 				}

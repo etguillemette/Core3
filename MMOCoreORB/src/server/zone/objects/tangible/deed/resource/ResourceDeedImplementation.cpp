@@ -29,7 +29,8 @@ int ResourceDeedImplementation::handleObjectMenuSelect(CreatureObject* player, b
 		return 1;
 
 	if (player != nullptr)
-		useObject(player);
+		//useObject(player); //Ethan edit 6-1-24 (RESOURCE VENDOR)
+		useObjectPurchase(player);
 
 	return 0;
 }
@@ -68,6 +69,43 @@ int ResourceDeedImplementation::useObject(CreatureObject* creature) {
 
 	return 1;
 }
+
+//Ethan 6-1-24 (RESOURCE VENDOR)
+int ResourceDeedImplementation::useObjectPurchase(CreatureObject* creature) {
+	if (creature == nullptr)
+		return 0;
+
+	if (!isASubChildOf(creature))
+		return 0;
+
+	ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
+
+	if (ghost == nullptr || ghost->hasSuiBoxWindowType(SuiWindowType::FREE_RESOURCE)) {
+		//ghost->closeSuiWindowType(SuiWindowType::FREE_RESOURCE);
+		ghost->removeSuiBoxType(SuiWindowType::FREE_RESOURCE);
+
+		return 0;
+	}
+
+	ManagedReference<ResourceManager*> resourceManager = server->getZoneServer()->getResourceManager();
+
+	ManagedReference<SuiListBox*> sui = new SuiListBox(creature, SuiWindowType::FREE_RESOURCE);
+	sui->setUsingObject(_this.getReferenceUnsafeStaticCast());
+	sui->setCallback(new ResourceDeedSuiCallback(server->getZoneServer(), "Resource"));
+	sui->setPromptTitle("@veteran:resource_title"); //Resources
+	sui->setPromptText("@veteran:choose_class"); //Choose resource class
+	sui->setOtherButton(true, "@back");
+	sui->setCancelButton(true, "@cancel");
+	sui->setOkButton(true, "@ok");
+
+	resourceManager->addNodeToListBox(sui, "resource");
+
+	ghost->addSuiBox(sui);
+	creature->sendMessage(sui->generateMessage());
+
+	return 1;
+}
+//End Ethan 6-1-24 (RESOURCE VENDOR)
 
 void ResourceDeedImplementation::destroyDeed() {
 	if (parent.get() != nullptr) {

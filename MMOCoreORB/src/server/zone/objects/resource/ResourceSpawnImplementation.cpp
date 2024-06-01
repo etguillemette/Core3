@@ -325,6 +325,7 @@ int ResourceSpawnImplementation::evaluatePrice(){
 }
 //End Ethan edit 5-31-24 (RESOURCE VENDOR)
 
+
 void ResourceSpawnImplementation::print() const {
 	info("**** Resource Data ****\n", true);
 	info("Class: " + getFinalClass(), true);

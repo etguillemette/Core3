@@ -55,7 +55,7 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 	elseif string.find(screenID, "hires_") ~= nil then
 		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID) --Ethan edit 5-15-24 (NPC VENDOR HIRES) testing
 	elseif string.find(screenID, "resource_") ~= nil then
-		NPCVendor:sendResourceSalesSui(pNpc, pPlayer, screenID)
+		NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
 	elseif string.find(screenID, "give_") ~= nil then
 		local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
