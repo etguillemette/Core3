@@ -320,6 +320,10 @@ class ResourceSpawn extends SceneObject {
 
 	public native void addStatsToDeedListBox(SuiListBox suil);
 
+	public native void evaluatePurchaseListBox(SuiListBox suil); //Ethan edit 5-1-24 (RESOURCE VENDOR)
+
+	public native int evaluatePrice(); //Ethan edit 5-1-24 (RESOURCE VENDOR)
+
 	@read
 	public native void print();
 }

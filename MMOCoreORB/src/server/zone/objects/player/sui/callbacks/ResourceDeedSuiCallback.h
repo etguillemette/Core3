@@ -86,7 +86,13 @@ public:
 				//Ethan edit 6-1-24 (RESOURCE VENDOR)
 
 				int cash = creature->getBankCredits();
-				int price = resourceManager->getResourceSpawn(nodeName)->evaluatePrice();
+				spawn = resourceManager->getResourceSpawn(nodeName);
+
+				if(spawn == nullptr){
+					return;
+				}
+				
+				int price = spawn->evaluatePrice();
 
 				if (price > cash) {
 					//StringIdChatParameter ptnsfw("base_player", "prose_tip_nsf_wire"); // You do not have %DI credits (surcharge included) to tip the desired amount to %TT.
@@ -96,7 +102,7 @@ public:
 					//return;
 				}
 				else{
-					creature->subtractBankCredits(amount + surcharge);
+					creature->subtractBankCredits(price);
 					resourceManager->givePlayerResource(creature, nodeName, ResourceManager::RESOURCE_DEED_QUANTITY); //THIS WAS MOVED HERE
 				}
 
