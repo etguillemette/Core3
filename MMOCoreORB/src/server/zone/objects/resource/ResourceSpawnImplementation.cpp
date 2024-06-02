@@ -298,10 +298,11 @@ void ResourceSpawnImplementation::evaluatePurchaseListBox(SuiListBox* suil) {
 		String tempstat = "@obj_attr_n:" + attrib + " = " + value;
 		suil->addMenuItem(tempstat);
 
-		String pricevalue = "Price: " + std::to_string(pricePerUnit) + " credits per unit";
-		suil->addMenuItem(pricevalue);
+		
 	}
-
+	
+	String pricevalue = "Price: " + std::to_string(pricePerUnit) + " credits per unit";
+	suil->addMenuItem(pricevalue);
 }
 
 int ResourceSpawnImplementation::evaluatePrice(){

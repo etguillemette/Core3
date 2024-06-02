@@ -95,13 +95,13 @@ public:
 				int price = spawn->evaluatePrice();
 
 				if (price > cash) {
-					//StringIdChatParameter ptnsfw("base_player", "prose_tip_nsf_wire"); // You do not have %DI credits (surcharge included) to tip the desired amount to %TT.
-					//ptnsfw.setDI(price);
-					//ptnsfw.setTT(creat->getCreatureName());
-					//player->sendSystemMessage(ptnsfw);
-					//return;
+					StringIdChatParameter ptnsfw("base_player", "prose_tip_nsf_wire"); // You do not have %DI credits (surcharge included) to tip the desired amount to %TT.
+					ptnsfw.setDI(price);
+					ptnsfw.setTT(creature->getCreatureName());
+					creature->sendSystemMessage(ptnsfw);
+					return;
 				}
-				else{
+				else {
 					creature->subtractBankCredits(price);
 					resourceManager->givePlayerResource(creature, nodeName, ResourceManager::RESOURCE_DEED_QUANTITY); //THIS WAS MOVED HERE
 				}
@@ -120,7 +120,7 @@ public:
 
 				spawn = resourceManager->getResourceSpawn(nodeName); //Check again, this means they are looking at stats.
 				if (spawn != nullptr) {
-					spawn->addStatsToDeedListBox(listBox);
+					//spawn->addStatsToDeedListBox(listBox);
 					spawn->evaluatePurchaseListBox(listBox); //Ethan edit 6-1-24 (RESOURCE VENDOR)
 
 				} else {
