@@ -115,12 +115,44 @@ void ResourceMap::addToSuiListBox(SuiListBox* suil, const String& name) {
 	}
 
 	for(int i = 0; i < spawns.size(); ++i){
-		if(spawns.get(i)->inShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
-			suil->addMenuItem(spawns.get(i)->getName(), spawns.get(i)->getObjectID());
+		if(spawns.get(i)->inShift() || spawns.get(i)->recentShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
+			int price = spawns.get(i)->evaluatePrice(); //Ethan edit 6-3-24 (RESOURCE VENDOR)
+			suil->addMenuItem(spawns.get(i)->getName() + " (" + price + " credits/unit)", spawns.get(i)->getObjectID()); //Ethan edit 6-4-24 (RESOURCE VENDOR) .. added the price in here
 		} //Ethan edit 6-3-24 (RESOURCE VENDOR)
 	}
 
 }
+
+//Ethan edit 6-4-24 (RESOURCE VENDOR)
+bool ResourceMap::hasSpawns(SuiListBox* suil, const String& name) {
+
+	TypeResourceMap* typemap = typeResourceMap.get(name);
+
+	if(typemap == nullptr) {
+		suil->addMenuItem("No resources to display");
+		return false;
+	}
+
+	SortedVector<ManagedReference<ResourceSpawn*>> spawns;
+
+	for(int i = 0; i < typemap->size(); ++i) {
+		ManagedReference<ResourceSpawn*> spawn = typemap->get(i);
+
+		if(spawn == nullptr)
+			continue;
+
+		spawns.put(spawn);
+	}
+
+	for(int i = 0; i < spawns.size(); ++i){
+		if(spawns.get(i)->inShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
+			return true;
+		} //Ethan edit 6-3-24 (RESOURCE VENDOR)
+	}
+
+	return false;
+}
+//End Ethan edit 6-4-24 (RESOURCE VENDOR)
 
 void ResourceMap::getTypeSubset(ResourceMap& subMap, const String& typeName) {
 	for (int i = 0; i < size(); i++) {

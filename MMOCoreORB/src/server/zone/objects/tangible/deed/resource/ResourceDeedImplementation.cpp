@@ -55,7 +55,7 @@ int ResourceDeedImplementation::useObject(CreatureObject* creature) {
 
 	ManagedReference<SuiListBox*> sui = new SuiListBox(creature, SuiWindowType::FREE_RESOURCE);
 	sui->setUsingObject(_this.getReferenceUnsafeStaticCast());
-	sui->setCallback(new ResourceDeedSuiCallback(server->getZoneServer(), "Resource"));
+	sui->setCallback(new ResourceDeedSuiCallback(server->getZoneServer(), "Resource",5000)); //Ethan edit 6-4-24 (RESOURCE VENDOR) .. added the quantity
 	sui->setPromptTitle("@veteran:resource_title"); //Resources
 	sui->setPromptText("@veteran:choose_class"); //Choose resource class
 	sui->setOtherButton(true, "@back");
@@ -91,7 +91,7 @@ int ResourceDeedImplementation::useObjectPurchase(CreatureObject* creature) {
 
 	ManagedReference<SuiListBox*> sui = new SuiListBox(creature, SuiWindowType::FREE_RESOURCE);
 	sui->setUsingObject(_this.getReferenceUnsafeStaticCast());
-	sui->setCallback(new ResourceDeedSuiCallback(server->getZoneServer(), "Resource"));
+	sui->setCallback(new ResourceDeedSuiCallback(server->getZoneServer(), "Resource", 5000));
 	sui->setPromptTitle("@veteran:resource_title"); //Resources
 	sui->setPromptText("@veteran:choose_class"); //Choose resource class
 	sui->setOtherButton(true, "@back");

@@ -13,10 +13,12 @@
 
 class ResourceDeedSuiCallback : public SuiCallback {
 	String nodeName;
+	int purchaseQuantity; //Ethan edit 6-4-24 (RESOURCE VENDOR)
 
 public:
-	ResourceDeedSuiCallback(ZoneServer* serv, const String& name) : SuiCallback(serv) {
+	ResourceDeedSuiCallback(ZoneServer* serv, const String& name, const int quantity) : SuiCallback(serv) { //Ethan edit 6-4-24 (RESOURCE VENDOR) ..(added quantity)
 		nodeName = name;
+		purchaseQuantity = quantity; //Ethan edit 6-4-24 (RESOURCE VENDOR)
 	}
 
 	void run(CreatureObject* creature, SuiBox* sui, uint32 eventIndex, Vector<UnicodeString>* args) {
@@ -79,6 +81,23 @@ public:
 
 			//They chose the resource, eat the deed and give them what they want...fuck it.
 			if (spawn != nullptr) {
+				
+				//Ethan edit 6-4-24 (RESOURCE VENDOR) ... I think below is where I would fold everything into another menu, this one for choosing crate size
+				/*
+				listBox->removeAllMenuItems();
+				listBox->setPromptTitle("@obj_attr_n:quantity");
+				listBox->setPromptText("@player_structure:select_amount");
+
+				listBox->addMenuItem(100);
+				listBox->addMenuItem(500);
+				listBox->addMenuItem(1000);
+				listBox->addMenuItem(5000);
+				listBox->addMenuItem(10000);
+				listBox->addMenuItem(50000);
+				listBox->addMenuItem(100000);
+				//End Ethan edit 6-4-24 (RESOURCE VENDOR)
+				*/
+
 				Locker clocker(deed, creature);
 				deed->destroyDeed();
 				clocker.release();
@@ -92,24 +111,24 @@ public:
 					return;
 				}
 				
-				int price = spawn->evaluatePrice();
+				int price = spawn->evaluatePrice() & purchaseQuantity;
 
 				if (price > cash) {
-					StringIdChatParameter ptnsfw("base_player", "prose_tip_nsf_wire"); // You do not have %DI credits (surcharge included) to tip the desired amount to %TT.
-					ptnsfw.setDI(price);
-					ptnsfw.setTT(creature->getCreatureName());
+					StringIdChatParameter ptnsfw("base_player", "prose_buy_fail"); // You were unable to purchase %TO. Perhaps you do not have enough credits?
+					ptnsfw.setTO("crate of "+ nodeName);
 					creature->sendSystemMessage(ptnsfw);
 					return;
 				}
 				else {
+					StringIdChatParameter ptnsfw("base_player", "prose_buy_pass"); //You successfully purchase a %TT for %DI credits.
+					ptnsfw.setTT("crate of " + nodeName);
+					ptnsfw.setDI(price);
+					creature->sendSystemMessage(ptnsfw);
 					creature->subtractBankCredits(price);
-					resourceManager->givePlayerResource(creature, nodeName, ResourceManager::RESOURCE_DEED_QUANTITY); //THIS WAS MOVED HERE
+					resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
 				}
 
 				//Ethan edit 6-1-24 (RESOURCE VENDOR)
-
-
-
 				return;
 			}
 
@@ -124,7 +143,9 @@ public:
 					spawn->evaluatePurchaseListBox(listBox); //Ethan edit 6-1-24 (RESOURCE VENDOR)
 
 				} else {
-					resourceManager->addNodeToListBox(listBox, nodeName);
+					//if(spawn->hasSpawns) { //Ethan edit 6-4-24 (RESOURCE VENDOR)
+					resourceManager->addNodeToListBox(listBox, nodeName); //Ethan edit 6-4-24 (RESOURCE VENDOR) .. This was moved here
+					//} //Ethan edit 6-4-24 (RESOURCE VENDOR)
 				}
 			}
 		}

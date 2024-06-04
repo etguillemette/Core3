@@ -136,6 +136,12 @@ public:
 	void addToSuiListBox(SuiListBox* sui, const String& nodeName);
 
 	/**
+	 *Ethan edit 6-4-24 (RESOURCE VENDOR)
+	 *Checks to see if there are any spawns under a particular node
+	*/
+	bool hasSpawns(SuiListBox* suil, const String& name);
+
+	/**
 	 * This is very slow, only meant to be used sparingly as a way to search everything
 	 * @param subMap map to write into
 	 * @param typeName string that represents the type, like "aluminum_phrik"

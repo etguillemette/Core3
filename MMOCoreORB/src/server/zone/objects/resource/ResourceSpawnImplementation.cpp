@@ -25,6 +25,12 @@ bool ResourceSpawnImplementation::inShift() const {
 	return despawned > time(0);
 }
 
+//Ethan edit 6-4-24 (RESOURCE VENDOR) - Checks to see if the resource is either in spawn, or was active within the past 10 days
+bool ResourceSpawnImplementation::recentShift() const {
+	return (despawned + 864000) > time(0);
+}
+//Ethan edit 6-4-24 (RESOURCE VENDOR)
+
 void ResourceSpawnImplementation::addAttribute(const String& attribute, int value) {
 	spawnAttributes.put(attribute, value);
 }
@@ -300,8 +306,15 @@ void ResourceSpawnImplementation::evaluatePurchaseListBox(SuiListBox* suil) {
 
 		
 	}
+
+	//Checks to see if it's currently in shift... If not, multiply the price by ten
+	if(!this->inShift())
+	{
+		pricePerUnit *= 10;
+		suil->addMenuItem("Resouce no longer being produced - Scarcity pricing adjusted:");
+	}
 	
-	String pricevalue = "Price: " + std::to_string(pricePerUnit) + " credits per unit";
+	String pricevalue = "Price = " + std::to_string(pricePerUnit) + " credits/unit";
 	suil->addMenuItem(pricevalue);
 }
 
@@ -320,6 +333,12 @@ int ResourceSpawnImplementation::evaluatePrice(){
 		{
 			pricePerUnit+= 2;
 		}
+	}
+
+	//Checks to see if it's currently in shift... If not, multiply the price by ten
+	if(!this->inShift())
+	{
+		pricePerUnit *= 10;
 	}
 
 	return pricePerUnit;

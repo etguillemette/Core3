@@ -1208,6 +1208,10 @@ void ResourceSpawner::addNodeToListBox(SuiListBox* sui, const String& nodeName) 
 		node = baseNode;
 	}
 
+	//Ethan edit 6-4-24 (RESOURCE VENDOR)
+	//Checks to see if there are any valid resources in this final node
+	//End Ethan edit 6-4-24 (RESOURCE VENDOR)
+
 	node->addToSuiListBox(sui);
 }
 
