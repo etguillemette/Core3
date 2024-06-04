@@ -120,8 +120,8 @@ public:
 					return;
 				}
 				else {
-					StringIdChatParameter ptnsfw("base_player", "prose_buy_pass"); //You successfully purchase a %TT for %DI credits.
-					ptnsfw.setTT("crate of " + nodeName);
+					StringIdChatParameter ptnsfw("base_player", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
+					ptnsfw.setTT(nodeName);
 					ptnsfw.setDI(price);
 					creature->sendSystemMessage(ptnsfw);
 					creature->subtractBankCredits(price);
@@ -135,9 +135,16 @@ public:
 			if(index >= 0 && index < listBox->getMenuSize()) {
 				nodeName = listBox->getMenuItemName(index);
 
+				int costIndex = nodeName.indexOf(" (");
+
+				if(costIndex != -1){
+					nodeName = nodeName.subString(0,costIndex);
+				}
+
 				listBox->removeAllMenuItems();
 
 				spawn = resourceManager->getResourceSpawn(nodeName); //Check again, this means they are looking at stats.
+				
 				if (spawn != nullptr) {
 					//spawn->addStatsToDeedListBox(listBox);
 					spawn->evaluatePurchaseListBox(listBox); //Ethan edit 6-1-24 (RESOURCE VENDOR)
