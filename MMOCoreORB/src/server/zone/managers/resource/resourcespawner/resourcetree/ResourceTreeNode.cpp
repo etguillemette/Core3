@@ -271,6 +271,7 @@ void ResourceTreeNode::addToSuiListBox(SuiListBox* suil) const {
 	for(int i = 0; i < entries.size(); ++i) {
 		suil->setPromptText("@veteran:choose_type"); //Choose resource type from
 		ResourceTreeEntry* ent = entries.get(i);
+
 		if(!ent->hasChildren() && !ent->isRecycled())
 			suil->addMenuItem(ent->getFinalClass());
 	}

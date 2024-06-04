@@ -115,7 +115,9 @@ void ResourceMap::addToSuiListBox(SuiListBox* suil, const String& name) {
 	}
 
 	for(int i = 0; i < spawns.size(); ++i){
-		suil->addMenuItem(spawns.get(i)->getName(), spawns.get(i)->getObjectID());
+		if(spawns.get(i)->inShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
+			suil->addMenuItem(spawns.get(i)->getName(), spawns.get(i)->getObjectID());
+		} //Ethan edit 6-3-24 (RESOURCE VENDOR)
 	}
 
 }
