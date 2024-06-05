@@ -55,7 +55,9 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 	elseif string.find(screenID, "hires_") ~= nil then
 		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID) --Ethan edit 5-15-24 (NPC VENDOR HIRES) testing
 	elseif string.find(screenID, "resource_") ~= nil then
-		NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
+		--NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
+		--ResourceDeedSuiCallback(ZoneServer* serv, const String& name, const int quantity) : SuiCallback(serv) { //Ethan edit 6-4-24 (RESOURCE VENDOR) ..(added quantity)
+		
 	elseif string.find(screenID, "give_") ~= nil then
 		local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 

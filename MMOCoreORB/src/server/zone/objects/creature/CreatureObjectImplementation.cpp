@@ -96,6 +96,7 @@
 #include "server/zone/packets/object/StartNpcConversation.h"
 
 #include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER)
+#include "server/zone/managers/skill/Performance.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER)
 
 float CreatureObjectImplementation::DEFAULTRUNSPEED = 5.376f;
 
@@ -3021,8 +3022,12 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			mindWoundHeal -= 100;
 			addShockWounds(-(healBonus + 1), true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			
+			//EntertainingSession::addEntertainerBuffDuration(this->asCreatureObject(), PerformanceType::DANCE, 2.0f * 100.0f);
+			//EntertainingSession::addEntertainerBuffDuration(this->asCreatureObject(), PerformanceType::MUSIC, 2.0f * 100.0f);
+			//EntertainingSession::addEntertainerBuffStrength(this->asCreatureObject(), PerformanceType::DANCE, 10);
+			//EntertainingSession::addEntertainerBuffStrength(this->asCreatureObject(), PerformanceType::MUSIC, 10);
 			//addEntertainerBuffDuration(patron, performance->getType(), 2.0f * buffAcceleration);
-			//addEntertainerBuffStrength(patron, performance->getType(), performance->getHealShockWound());
 			//EntertainingSessionImplementation::addEntertainerBuffDuration(asCreatureObject(), PerformanceManager::PerformanceBuffType::MUSIC, 2.0f * buffAcceleration);
 			//EntertainingSessionImplementation::addEntertainerBuffStrength(patron, PerformanceManager::PerformanceBuffType::MUSIC, 10);
 		}
