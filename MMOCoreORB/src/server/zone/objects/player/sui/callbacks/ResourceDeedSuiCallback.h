@@ -111,7 +111,7 @@ public:
 					return;
 				}
 				
-				int price = spawn->evaluatePrice() & purchaseQuantity;
+				int price = spawn->evaluatePrice() * purchaseQuantity;
 
 				if (price > cash) {
 					StringIdChatParameter ptnsfw("base_player", "prose_buy_fail"); // You were unable to purchase %TO. Perhaps you do not have enough credits?
