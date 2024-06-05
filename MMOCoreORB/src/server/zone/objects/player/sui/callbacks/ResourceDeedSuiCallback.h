@@ -76,59 +76,82 @@ public:
 		} else if(cancelPressed)
 			return;
 		else {
+			
+			//Ethan edit 6-4-24 (RESOURCE VENDOR)
+			int infoIndex = nodeName.indexOf(" ("); //Ethan edit 6-4-24 (RESOURCE VENDOR)
+			int quantity = 0;
+			int price = 0;
 
 			ManagedReference<ResourceSpawn*> spawn = resourceManager->getResourceSpawn(nodeName);
 
-			//They chose the resource, eat the deed and give them what they want...fuck it.
-			if (spawn != nullptr) {
-				
-				//Ethan edit 6-4-24 (RESOURCE VENDOR) ... I think below is where I would fold everything into another menu, this one for choosing crate size
-				/*
-				listBox->removeAllMenuItems();
-				listBox->setPromptTitle("@obj_attr_n:quantity");
-				listBox->setPromptText("@player_structure:select_amount");
+			
+			if(infoIndex != -1){
+				int priceStart  = nodeName.indexOf("/");
+				int priceEnd = nodeName.indexOf(")");
 
-				listBox->addMenuItem(100);
-				listBox->addMenuItem(500);
-				listBox->addMenuItem(1000);
-				listBox->addMenuItem(5000);
-				listBox->addMenuItem(10000);
-				listBox->addMenuItem(50000);
-				listBox->addMenuItem(100000);
-				//End Ethan edit 6-4-24 (RESOURCE VENDOR)
-				*/
+				String qtyStr = nodeName.subString(infoIndex,priceStart-infoIndex);
+				nodeName = nodeName.subString(0,infoIndex);
 
-				Locker clocker(deed, creature);
-				deed->destroyDeed();
-				clocker.release();
-
-				//Ethan edit 6-1-24 (RESOURCE VENDOR)
+				if(qtyStr == "1000"){
+					purchaseQuantity = 1000;
+				}
+				else if(qtyStr == "10000"){
+					purchaseQuantity = 10000;
+				}
+				else if(qtyStr == "100000"){
+					purchaseQuantity = 100000;
+				}
 
 				int cash = creature->getBankCredits();
 				spawn = resourceManager->getResourceSpawn(nodeName);
-
-				if(spawn == nullptr){
-					return;
-				}
 				
-				int price = spawn->evaluatePrice() * purchaseQuantity;
+				price = spawn->evaluatePrice() * purchaseQuantity;
 
 				if (price > cash) {
-					StringIdChatParameter ptnsfw("base_player", "prose_buy_fail"); // You were unable to purchase %TO. Perhaps you do not have enough credits?
+					StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
 					ptnsfw.setTO("crate of "+ nodeName);
+					ptnsfw.setDI(price);
 					creature->sendSystemMessage(ptnsfw);
 					return;
 				}
 				else {
-					StringIdChatParameter ptnsfw("base_player", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
+					Locker clocker(deed, creature); //Ethan edit moved this here
+					deed->destroyDeed(); //Ethan edit moved this here
+					clocker.release(); //Ethan edit moved this here
+
+					StringIdChatParameter ptnsfw("Purchase Successful", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
 					ptnsfw.setTT(nodeName);
 					ptnsfw.setDI(price);
 					creature->sendSystemMessage(ptnsfw);
 					creature->subtractBankCredits(price);
 					resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
 				}
+			}
 
-				//Ethan edit 6-1-24 (RESOURCE VENDOR)
+
+			//End Ethan edit 6-4-24 (RESOURCE VENDOR)
+
+
+			//They chose the resource, eat the deed and give them what they want...fuck it.
+			if (spawn != nullptr) {
+
+				if(spawn == nullptr){
+					return;
+				}
+
+				spawn = resourceManager->getResourceSpawn(nodeName);
+				int price = spawn->evaluatePrice() * purchaseQuantity;
+
+				//Ethan edit 6-4-24 (RESOURCE VENDOR) ... I think below is where I would fold everything into another menu, this one for choosing crate size
+				listBox->removeAllMenuItems();
+				listBox->setPromptTitle("@obj_attr_n:quantity");
+				listBox->setPromptText("@player_structure:select_amount");
+
+				listBox->addMenuItem(nodeName + " (" + price + "/1000)");
+				listBox->addMenuItem(nodeName + " (" + price + "/10000)");
+				listBox->addMenuItem(nodeName + " (" + price + "/10000)");
+				//End Ethan edit 6-4-24 (RESOURCE VENDOR)
+
 				return;
 			}
 
