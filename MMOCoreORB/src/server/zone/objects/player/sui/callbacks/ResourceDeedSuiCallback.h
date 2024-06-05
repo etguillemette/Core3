@@ -83,11 +83,12 @@ public:
 			//Ethan edit 6-4-24 (RESOURCE VENDOR)
 			int qtyIndex = nodeName.indexOf("|"); //Ethan edit 6-4-24 (RESOURCE VENDOR) //10
 			int price = 0;
+			bool done = false;
 			
 			ManagedReference<ResourceSpawn*> spawn = resourceManager->getResourceSpawn(nodeName);
 
 			//Is there a "|" in the nodeName, therefore we're looking at purchase options?
-			if(qtyIndex != -1){
+			if(done == true){
 				nodeName = nodeName.subString(0,qtyIndex+1);
 
 				StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI");
@@ -150,6 +151,8 @@ public:
 				listBox->addMenuItem(nodeName + "| (1000u for " + (price*1000) + "c)",2);
 				listBox->addMenuItem(nodeName + "| (10000u for " + (price*10000) + "c)",3);
 				listBox->addMenuItem(nodeName + "| (100000u for " + (price*100000) + "c)",4);
+
+				done = true;
 				//End Ethan edit 6-4-24 (RESOURCE VENDOR)
 				//return; Should this return??? I don't think it should
 			}
