@@ -124,12 +124,11 @@ void ResourceMap::addToSuiListBox(SuiListBox* suil, const String& name) {
 }
 
 //Ethan edit 6-4-24 (RESOURCE VENDOR)
-bool ResourceMap::hasSpawns(SuiListBox* suil, const String& name) {
+bool ResourceMap::hasSpawns(const String& name) {
 
 	TypeResourceMap* typemap = typeResourceMap.get(name);
 
 	if(typemap == nullptr) {
-		suil->addMenuItem("No resources to display");
 		return false;
 	}
 
@@ -144,10 +143,26 @@ bool ResourceMap::hasSpawns(SuiListBox* suil, const String& name) {
 		spawns.put(spawn);
 	}
 
+	bool hasRecent = false;
+	bool hasAny = false;
+
 	for(int i = 0; i < spawns.size(); ++i){
-		if(spawns.get(i)->inShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
-			return true;
+		if(spawns.get(i)->recentShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
+			hasRecent = true;
 		} //Ethan edit 6-3-24 (RESOURCE VENDOR)
+	}
+
+	for(int i = 0; i < spawns.size(); ++i){
+		if(spawns.get(i)->recentShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
+			hasAny = true;
+		} //Ethan edit 6-3-24 (RESOURCE VENDOR)
+	}
+
+	if(hasAny == true && hasRecent == false){
+		return false;
+	}
+	else{
+		return true;
 	}
 
 	return false;

@@ -457,3 +457,8 @@ String ResourceManagerImplementation::despawnResource(String& resourceName) {
 
 	return resourceName + " despawned.";
 }
+
+//Ethan edit 6-6-24 (RESOURCE VENDOR)
+bool ResourceManagerImplementation::hasSpawns(String& resourceName){
+	return resourceSpawner->hasSpawns(resourceName);
+}

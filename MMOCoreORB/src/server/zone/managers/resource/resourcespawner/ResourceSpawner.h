@@ -129,6 +129,8 @@ public:
 	void addNodeToListBox(SuiListBox* sui, const String& nodeName) const;
 	void addPlanetsToListBox(SuiListBox* sui) const;
 
+	bool hasSpawns(const String& nodeName) const; //Ethan edit 6-6-24 (RESOURCE VENDOR)
+
 	String addParentNodeToListBox(SuiListBox* sui, const String& currentNode) const;
 
 	inline ResourceMap* getResourceMap() {

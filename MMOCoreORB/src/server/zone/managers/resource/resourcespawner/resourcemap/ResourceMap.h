@@ -139,7 +139,7 @@ public:
 	 *Ethan edit 6-4-24 (RESOURCE VENDOR)
 	 *Checks to see if there are any spawns under a particular node
 	*/
-	bool hasSpawns(SuiListBox* suil, const String& name);
+	bool hasSpawns(const String& name);
 
 	/**
 	 * This is very slow, only meant to be used sparingly as a way to search everything

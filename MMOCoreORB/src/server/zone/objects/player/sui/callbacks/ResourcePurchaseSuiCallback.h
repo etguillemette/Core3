@@ -187,9 +187,10 @@ public:
 				} 
 				//The spawn name doesn't exist, so we much be cycling through the different branches of the resource map tree
 				else {
-					//if(spawn->hasSpawns) { //Ethan edit 6-4-24 (RESOURCE VENDOR)
-					resourceManager->addNodeToListBox(listBox, nodeName); //Ethan edit 6-4-24 (RESOURCE VENDOR) .. This was moved here
-					//} //Ethan edit 6-4-24 (RESOURCE VENDOR)
+					
+                    if(resourceManager->hasSpawns(nodeName)) {
+                    resourceManager->addNodeToListBox(listBox, nodeName);
+					} 
 				}
 			}
 		}

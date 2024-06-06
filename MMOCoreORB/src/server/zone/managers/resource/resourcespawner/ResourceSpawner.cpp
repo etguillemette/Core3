@@ -1308,3 +1308,17 @@ String ResourceSpawner::healthCheck() {
 
 	return health.toString();
 }
+
+//Ethan edit 6-6-24 (RESOURCE VENDOR)
+bool ResourceSpawner::hasSpawns(const String& nodeName) const {
+	ResourceTreeNode* baseNode = resourceTree->getBaseNode();
+
+	ResourceTreeNode* node = baseNode->findNode(nodeName);
+
+	//If we couldn't find a node
+	if (node == nullptr) {
+		node = baseNode;
+	}
+
+	return resourceMap->hasSpawns(nodeName);
+}
