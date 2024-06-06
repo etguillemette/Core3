@@ -86,7 +86,44 @@ public:
 			
 			ManagedReference<ResourceSpawn*> spawn = resourceManager->getResourceSpawn(nodeName);
 
-			
+			//Is there a "|" in the nodeName, therefore we're looking at purchase options?
+			if(qtyIndex != -1){
+				nodeName = nodeName.subString(0,qtyIndex+1);
+
+				StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI");
+				ptnsfw.setTO(nodeName);
+				ptnsfw.setDI(index);
+
+				//If purchase options are listed, therefore the purchase quantity is 10^index
+				int purchaseQuantity = index * std::pow(10,index);
+				
+				int cash = creature->getBankCredits();
+				spawn = resourceManager->getResourceSpawn(nodeName);
+				
+				price = spawn->evaluatePrice() * purchaseQuantity;
+
+				if (price > cash) {
+					StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
+					ptnsfw.setTO("crate of "+ nodeName);
+					ptnsfw.setDI(price);
+					creature->sendSystemMessage(ptnsfw);
+					return;
+				}
+				else {
+					Locker clocker(deed, creature); //Ethan edit moved this here
+					deed->destroyDeed(); //Ethan edit moved this here
+					clocker.release(); //Ethan edit moved this here
+
+					StringIdChatParameter ptnsfw("Purchase Successful", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
+					ptnsfw.setTT(nodeName);
+					ptnsfw.setDI(price);
+					creature->sendSystemMessage(ptnsfw);
+					creature->subtractBankCredits(price);
+					resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
+					return;
+				}
+			}
+			//End Ethan edit 6-4-24 (RESOURCE VENDOR)
 
 			//"Spawn" exists because we're on the "SHOW STATS" screen, we're not on the quantity list screen, and have hit OK
 			if (spawn != nullptr && qtyIndex == -1) {
@@ -150,45 +187,6 @@ public:
 					resourceManager->addNodeToListBox(listBox, nodeName); //Ethan edit 6-4-24 (RESOURCE VENDOR) .. This was moved here
 					//} //Ethan edit 6-4-24 (RESOURCE VENDOR)
 				}
-
-				//Is there a "|" in the nodeName, therefore we're looking at purchase options?
-			if(qtyIndex != -1){
-				nodeName = nodeName.subString(0,qtyIndex+1);
-
-				StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI");
-				ptnsfw.setTO(nodeName);
-				ptnsfw.setDI(index);
-
-				//If purchase options are listed, therefore the purchase quantity is 10^index
-				int purchaseQuantity = index * std::pow(10,index);
-				
-				int cash = creature->getBankCredits();
-				spawn = resourceManager->getResourceSpawn(nodeName);
-				
-				price = spawn->evaluatePrice() * purchaseQuantity;
-
-				if (price > cash) {
-					StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
-					ptnsfw.setTO("crate of "+ nodeName);
-					ptnsfw.setDI(price);
-					creature->sendSystemMessage(ptnsfw);
-					return;
-				}
-				else {
-					Locker clocker(deed, creature); //Ethan edit moved this here
-					deed->destroyDeed(); //Ethan edit moved this here
-					clocker.release(); //Ethan edit moved this here
-
-					StringIdChatParameter ptnsfw("Purchase Successful", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
-					ptnsfw.setTT(nodeName);
-					ptnsfw.setDI(price);
-					creature->sendSystemMessage(ptnsfw);
-					creature->subtractBankCredits(price);
-					resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
-					return;
-				}
-			}
-			//End Ethan edit 6-4-24 (RESOURCE VENDOR)
 			}
 		}
 

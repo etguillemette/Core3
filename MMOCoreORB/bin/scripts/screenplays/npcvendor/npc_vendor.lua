@@ -434,6 +434,10 @@ function NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
 	writeStringData(CreatureObject(pPlayer):getObjectID() .. ":npc_vendor_purchase", screenID)
 	local suiManager = LuaSuiManager()
 
+	suiManager:sendListBox(pNpc, pPlayer, "Title", "Description", 3, "@cancel", "@back", "&ok", "Resource", "ResourceDeedCallback", 32, options);
+	--ResourceDeedSuiCallback(ZoneServer* serv, const String& name, const int quantity) : SuiCallback(serv) { //Ethan edit 6-4-24 (RESOURCE VENDOR) ..(added quantity)
+	--suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "eventPromoterScreenplay", "handleSuiPurchase", 32, options)
+
 
 	--ResourceDeedSuiCallback(ZoneServer* serv, const String& name, const int quantity) : SuiCallback(serv) { //Ethan edit 6-4-24 (RESOURCE VENDOR) ..(added quantity)
 	--sui->setCallback(new ResourceDeedSuiCallback(server->getZoneServer(), "Resource",5000)); //Ethan edit 6-4-24 (RESOURCE VENDOR) .. added the quantity
