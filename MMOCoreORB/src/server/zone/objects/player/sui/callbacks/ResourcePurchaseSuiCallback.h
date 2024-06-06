@@ -128,7 +128,7 @@ public:
 			//End Ethan edit 6-4-24 (RESOURCE VENDOR)
 
 			//"Spawn" exists because we're on the "SHOW STATS" screen, we're not on the quantity list screen, and have hit OK
-			if (spawn != nullptr && qtyIndex == -1) {
+			if (spawn != nullptr) {
 
 
 				StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI");
@@ -162,13 +162,8 @@ public:
 			//Hit OK, but we're not on a spawn, so we're on a resource tree node.. 
 			//There are list options, and we hit an option that's at least 0 and no more than the max menu item size
 			if(index >= 0 && index < listBox->getMenuSize()) {
-				
-				StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI");
-				ptnsfw.setTO(nodeName);
-				ptnsfw.setDI(index);
 
 				nodeName = listBox->getMenuItemName(index);
-
 				int costIndex = nodeName.indexOf(" (");
 
 				if(costIndex != -1){
@@ -187,7 +182,6 @@ public:
 				} 
 				//The spawn name doesn't exist, so we much be cycling through the different branches of the resource map tree
 				else {
-					
                     if(resourceManager->hasSpawns(nodeName)) {
                     resourceManager->addNodeToListBox(listBox, nodeName);
 					} 

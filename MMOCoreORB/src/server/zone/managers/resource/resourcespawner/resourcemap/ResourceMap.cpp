@@ -115,7 +115,7 @@ void ResourceMap::addToSuiListBox(SuiListBox* suil, const String& name) {
 	}
 
 	for(int i = 0; i < spawns.size(); ++i){
-		if(spawns.get(i)->inShift() || spawns.get(i)->recentShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
+		if(spawns.get(i)->inShift() || spawns.get(i)->recentShift(30)){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
 			int price = spawns.get(i)->evaluatePrice(); //Ethan edit 6-3-24 (RESOURCE VENDOR)
 			suil->addMenuItem(spawns.get(i)->getName() + " (" + price + " credits/unit)", spawns.get(i)->getObjectID()); //Ethan edit 6-4-24 (RESOURCE VENDOR) .. added the price in here
 		} //Ethan edit 6-3-24 (RESOURCE VENDOR)
@@ -147,14 +147,16 @@ bool ResourceMap::hasSpawns(const String& name) {
 	bool hasAny = false;
 
 	for(int i = 0; i < spawns.size(); ++i){
-		if(spawns.get(i)->recentShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
+		if(spawns.get(i)->recentShift(30)){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
 			hasRecent = true;
+			break;
 		} //Ethan edit 6-3-24 (RESOURCE VENDOR)
 	}
 
 	for(int i = 0; i < spawns.size(); ++i){
-		if(spawns.get(i)->recentShift()){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
+		if(spawns.get(i)->recentShift(30)){ //Ethan edit 6-3-24 (RESOURCE VENDOR)
 			hasAny = true;
+		break;
 		} //Ethan edit 6-3-24 (RESOURCE VENDOR)
 	}
 

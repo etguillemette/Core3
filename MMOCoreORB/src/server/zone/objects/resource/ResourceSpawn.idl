@@ -306,7 +306,7 @@ class ResourceSpawn extends SceneObject {
 
 
 	@read //Ethan edit 6-4-24 (RESOURCE VENDOR)
-	public native boolean recentShift(); //Ethan edit 6-4-24 (RESOURCE VENDOR)
+	public native boolean recentShift(int days); //Ethan edit 6-4-24 (RESOURCE VENDOR)
 
 	@read
 	public native int getAttributeAndValue(string attribute, int index);

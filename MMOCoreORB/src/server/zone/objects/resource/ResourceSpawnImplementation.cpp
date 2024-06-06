@@ -25,9 +25,9 @@ bool ResourceSpawnImplementation::inShift() const {
 	return despawned > time(0);
 }
 
-//Ethan edit 6-4-24 (RESOURCE VENDOR) - Checks to see if the resource is either in spawn, or was active within the past 10 days
-bool ResourceSpawnImplementation::recentShift() const {
-	return (despawned + 864000) > time(0);
+//Ethan edit 6-4-24 (RESOURCE VENDOR) - Checks to see if the resource is either in spawn, or was active within the past x days
+bool ResourceSpawnImplementation::recentShift(int days) const {
+	return (despawned + (86400 * days)) > time(0);
 }
 //Ethan edit 6-4-24 (RESOURCE VENDOR)
 
@@ -291,21 +291,21 @@ void ResourceSpawnImplementation::evaluatePurchaseListBox(SuiListBox* suil) {
 	for (int i = 0; i < spawnAttributes.size(); ++i) {
 		String attrib;
 		int value = getAttributeAndValue(attrib, i);
-
+		/*
 		if(value > 900)
-		{
-			pricePerUnit+= 4;
-		}
-		else if(value > 800)
 		{
 			pricePerUnit+= 2;
 		}
-
+		else if(value > 800)
+		{
+			pricePerUnit+= 1;
+		}
+		*/
 		String tempstat = "@obj_attr_n:" + attrib + " = " + value;
 		suil->addMenuItem(tempstat);
-
-		
 	}
+
+	pricePerUnit = this->evaluatePrice();
 
 	//Checks to see if it's currently in shift... If not, multiply the price by ten
 	if(!this->inShift())
@@ -327,11 +327,11 @@ int ResourceSpawnImplementation::evaluatePrice(){
 
 		if(value > 900)
 		{
-			pricePerUnit+= 4;
+			pricePerUnit+= 2;
 		}
 		else if(value > 800)
 		{
-			pricePerUnit+= 2;
+			pricePerUnit+= 1;
 		}
 	}
 
