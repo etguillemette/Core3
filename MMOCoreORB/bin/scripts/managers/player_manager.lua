@@ -76,9 +76,22 @@ baseStoredShips = 3
 --(XP FOR SELF HEALS) Ethan Edit 5-2-24:
 selfHealEnabled = true
 playerStructureMaintenanceRate = 1.0
-playerStructureEntropyEnabled = false;
-playerStructureLowestCondition = 0.5; --This is the lowest damage level a structure can have
-entertainerSelfExp = true;
+playerStructureEntropyEnabled = false
+playerStructureLowestCondition = 0.5 --This is the lowest damage level a structure can have
+entertainerSelfExp = true
+
+
+autoDoctor = true --Ethan edit 6-7-24 (AUTO DOCTOR)
+hospitalMedBuffDuration = 900 --Ethan edit 6-7-24 (AUTO DOCTOR)
+hospitalMedBuffPoolStrength = 300 --Ethan edit 6-7-24 (AUTO DOCTOR)
+hospitalMedBuffAttrStrength = 50 --Ethan edit 6-7-24 (AUTO DOCTOR)
+
+entertainerSelfExp = true --Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
+autoEntertainer = true --Ethan edit 6-7-24 (AUTO ENTERTAINER)
+cantinaMindBuffDuration = 900 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
+cantinaMindBuffPoolStrength = 300 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
+cantinaMindBuffAttrStrength = 50 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
+
 --End Ethan Edit 5-2-24 (XP FOR SELF HEALS)
 
 

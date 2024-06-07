@@ -95,8 +95,12 @@
 #include "server/zone/objects/player/events/SpawnHelperDroidTask.h"
 #include "server/zone/packets/object/StartNpcConversation.h"
 
-#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER)
-#include "server/zone/managers/skill/Performance.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER)
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER) (AUTO DOCTOR) (AUTO ENTERTAINER)
+#include "server/zone/managers/skill/Performance.h" //Ethan edit 5-6-24 (AUTO ENTERTAINER)
+#include "server/zone/objects/creature/buffs/Buff.h" //Ethan edit 5-6-24 (AUTO DOCTOR) (AUTO ENTERTAINER)R)
+#include "server/zone/objects/creature/BuffAttribute.h" //Ethan edit 5-6-24 (AUTO DOCTOR) (AUTO ENTERTAINER)
+#include "server/zone/objects/creature/buffs/DelayedBuff.h" //Ethan edit 5-6-24 (AUTO DOCTOR) (AUTO ENTERTAINER)
+#include "server/zone/objects/creature/commands/HealEnhanceCommand.h" //Ethan edit 6-7-24 (AUTO DOCTOR) (AUTO ENTERTAINER)
 
 float CreatureObjectImplementation::DEFAULTRUNSPEED = 5.376f;
 
@@ -2976,9 +2980,20 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 	lua->runFile("scripts/managers/player_manager.lua");
 	bool entertainerSelfExp = lua->getGlobalBoolean("entertainerSelfExp");
+	bool autoDoctor = lua->getGlobalBoolean("autoDoctor"); //Ethan edit 6-7-24 (AUTO DOCTOR)
+	float hospitalMedBuffDuration = lua->getGlobalFloat("hospitalMedBuffDuration"); //Ethan edit 6-7-24 (AUTO DOCTOR)
+	float hospitalMedBuffPoolStrength = lua->getGlobalFloat("hospitalMedBuffPoolStrength"); //Ethan edit 6-7-24 (AUTO DOCTOR)
+	float hospitalMedBuffAttrStrength = lua->getGlobalFloat("hospitalMedBuffAttrStrength"); //Ethan edit 6-7-24 (AUTO DOCTOR)
+	
+	bool autoEntertainer = lua->getGlobalBoolean("autoEntertainer"); //Ethan edit 6-7-24 (AUTO ENTERTAINER)
+	float cantinaMindBuffDuration = lua->getGlobalFloat("cantinaMindBuffDuration"); //Ethan edit 6-7-24 (AUTO ENTERTAINER)
+	float cantinaMindBuffPoolStrength = lua->getGlobalFloat("cantinaMindBuffPoolStrength"); //Ethan edit 6-7-24 (AUTO ENTERTAINER)
+	float cantinaMindBuffAttrStrength = lua->getGlobalFloat("cantinaMindBuffAttrStrength"); //Ethan edit 6-7-24 (AUTO ENTERTAINER)
+
+
 
 	int healBonus = 0;
-	if(entertainerSelfExp == true)
+	if(autoDoctor == true)
 	{
 		healBonus = 9;
 	}
@@ -2994,6 +3009,61 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::HEALTH, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+
+			//Ethan edit 6-7-24 (AUTO DOCTOR)
+			if(autoDoctor == true){
+				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+			
+				if (zoneServer == nullptr)
+				return;
+
+				auto playerMan = zoneServer->getPlayerManager(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+
+				if (playerMan == nullptr)
+				return;
+				
+				//HEALTH
+				uint32 currentBuff = 0;
+				uint32 buffcrc = BuffCRC::getMedicalBuff(CreatureAttribute::HEALTH);
+
+				if (asCreatureObject()->hasBuff(buffcrc)) {
+					Buff* existingbuff = asCreatureObject()->getBuff(buffcrc);
+					currentBuff = existingbuff->getAttributeModifierValue(CreatureAttribute::HEALTH);
+				}
+				
+				if (asCreatureObject()->isPlayerCreature() && currentBuff < hospitalMedBuffPoolStrength) {
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::HEALTH, currentBuff + 10, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				}
+
+				//CONSTITUTION
+				currentBuff = 0;
+				buffcrc = BuffCRC::getMedicalBuff(CreatureAttribute::CONSTITUTION);
+
+				if (asCreatureObject()->hasBuff(buffcrc)) {
+					Buff* existingbuff = asCreatureObject()->getBuff(buffcrc);
+					currentBuff = existingbuff->getAttributeModifierValue(CreatureAttribute::CONSTITUTION);
+				}
+				
+				if (asCreatureObject()->isPlayerCreature() && currentBuff < hospitalMedBuffAttrStrength) {
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::CONSTITUTION, currentBuff + 10, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				}
+
+				//STRENGTH
+				currentBuff = 0;
+				buffcrc = BuffCRC::getMedicalBuff(CreatureAttribute::STRENGTH);
+
+				if (asCreatureObject()->hasBuff(buffcrc)) {
+					Buff* existingbuff = asCreatureObject()->getBuff(buffcrc);
+					currentBuff = existingbuff->getAttributeModifierValue(CreatureAttribute::STRENGTH);
+				}
+				
+				if (asCreatureObject()->isPlayerCreature() && currentBuff < hospitalMedBuffAttrStrength) {
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STRENGTH, currentBuff + 10, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				}
+
+			}
+			//End Ethan edit 6-7-24 (AUTO DOCTOR)
+
 			healthWoundHeal -= 100;
 		}
 	}
@@ -3009,6 +3079,60 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			actionWoundHeal -= 100;
 		}
+
+		//Ethan edit 6-7-24 (AUTO DOCTOR)
+			if(autoDoctor == true){
+				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+			
+				if (zoneServer == nullptr)
+				return;
+
+				auto playerMan = zoneServer->getPlayerManager(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+
+				if (playerMan == nullptr)
+				return;
+				
+				//ACTION
+				uint32 currentBuff = 0;
+				uint32 buffcrc = BuffCRC::getMedicalBuff(CreatureAttribute::ACTION);
+
+				if (asCreatureObject()->hasBuff(buffcrc)) {
+					Buff* existingbuff = asCreatureObject()->getBuff(buffcrc);
+					currentBuff = existingbuff->getAttributeModifierValue(CreatureAttribute::ACTION);
+				}
+				
+				if (asCreatureObject()->isPlayerCreature() && currentBuff < hospitalMedBuffPoolStrength) {
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::ACTION, currentBuff + 10, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				}
+
+				//QUICKNESS
+				currentBuff = 0;
+				buffcrc = BuffCRC::getMedicalBuff(CreatureAttribute::QUICKNESS);
+
+				if (asCreatureObject()->hasBuff(buffcrc)) {
+					Buff* existingbuff = asCreatureObject()->getBuff(buffcrc);
+					currentBuff = existingbuff->getAttributeModifierValue(CreatureAttribute::QUICKNESS);
+				}
+				
+				if (asCreatureObject()->isPlayerCreature() && currentBuff < hospitalMedBuffAttrStrength) {
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::QUICKNESS, currentBuff + 10, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				}
+
+				//STAMINA
+				currentBuff = 0;
+				buffcrc = BuffCRC::getMedicalBuff(CreatureAttribute::STAMINA);
+
+				if (asCreatureObject()->hasBuff(buffcrc)) {
+					Buff* existingbuff = asCreatureObject()->getBuff(buffcrc);
+					currentBuff = existingbuff->getAttributeModifierValue(CreatureAttribute::STAMINA);
+				}
+				
+				if (asCreatureObject()->isPlayerCreature() && currentBuff < hospitalMedBuffAttrStrength) {
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STAMINA, currentBuff + 10, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				}
+
+			}
+			//End Ethan edit 6-7-24 (AUTO DOCTOR)
 	}
 
 	/// Mind wound regen

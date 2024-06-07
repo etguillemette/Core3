@@ -99,7 +99,17 @@ class PlayerManager extends Observer implements Logger {
 	public float playerStructureMaintenanceRate; //Ethan Edit 5-6-24 (HALT ENTROPY)
 	public boolean playerStructureEntropyEnabled; //Ethan Edit 5-6-24 (HALT ENTROPY)
 	public float playerStructureLowestCondition; //Ethan Edit 5-6-24 (HALT ENTROPY)  This is the lowest damage level percentage a structure can have below 0
+	
+	public boolean autoDoctor; //Ethan edit 6-7-24 (AUTO DOCTOR)
+	public float hospitalMedBuffDuration; //Ethan edit 6-7-24 (AUTO DOCTOR)
+	public float hospitalMedBuffPoolStrength; //Ethan edit 6-7-24 (AUTO DOCTOR)
+	public float hospitalMedBuffAttrStrength; //Ethan edit 6-7-24 (AUTO DOCTOR)
+	
 	public boolean entertainerSelfExp; //Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
+	public boolean autoEntertainer; //Ethan edit 6-7-24 (AUTO ENTERTAINER)
+	public float cantinaMindBuffDuration; //Ethan edit 6-7-24 (AUTO ENTERTAINER)
+	public float cantinaMindBuffPoolStrength; //Ethan edit 6-7-24 (AUTO ENTERTAINER)
+	public float cantinaMindBuffAttrStrength; //Ethan edit 6-7-24 (AUTO ENTERTAINER)
 	/*
 	-----------------------------------
 	--END SINGLE PLAYER CONFIG
