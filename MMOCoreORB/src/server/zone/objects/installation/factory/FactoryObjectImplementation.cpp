@@ -739,7 +739,14 @@ void FactoryObjectImplementation::createNewObject() {
 		broadcastToOperators(dfcty3);
 
 		//Ethan edit 5-28-24 (FACTORY XP) Note: This will probably crash the server...
-		ManagedWeakReference<CreatureObject* > crafter = schematic->getCrafter();
+		
+		
+		ManagedReference<CreatureObject*> crafter = schematic->getCrafter().get();
+		String crafterName = crafter->getFirstName().toLowerCase();
+		
+		CreatureObject* owner = getOwnerCreatureObject();
+		String ownerName = owner->getFirstName().toLowerCase();
+
 		DraftSchematic* draftSchematic = schematic->getDraftSchematic();
 		String xpType = draftSchematic->getXpType();
 		int xp = draftSchematic->getXpAmount();
@@ -747,14 +754,17 @@ void FactoryObjectImplementation::createNewObject() {
 
 		error("xpType = " + xpType);
 		error("xp = " + xp);
+		error("crafterName = " + crafterName);
+		error("ownerName = " + ownerName);
 
-		if (crafter != nullptr)
+		if (owner != nullptr && ownerName == crafterName)
 		{
-			ManagedReference<CreatureObject*> crafterPlayer = crafter.get();
-			Reference<PlayerObject*> ghost = crafterPlayer->getPlayerObject();
+			PlayerObject* ghost = owner->getPlayerObject().get();
+			//ManagedReference<CreatureObject*> crafterPlayer = crafter.get();
+			//Reference<PlayerObject*> ghost = crafterPlayer->getPlayerObject();
 			
 			if (ghost != nullptr) {
-				TransactionLog trx(TrxCode::EXPERIENCE, crafterPlayer);
+				TransactionLog trx(TrxCode::EXPERIENCE, owner);
 				ghost->addExperience(trx, xpType, xp, true);
 			}
 			else{
@@ -762,7 +772,7 @@ void FactoryObjectImplementation::createNewObject() {
 			}
 		}
 		else {
-			error("crafer is nullptr");
+			error("crafer is nullptr or the crafterName and ownerName do not match");
 		}
 
 		//End Ethan edit 5-28-24 (FACTORY XP)
