@@ -1516,3 +1516,5 @@ TangibleObject* TangibleObject::asTangibleObject() {
 TangibleObject* TangibleObjectImplementation::asTangibleObject() {
 	return _this.getReferenceUnsafeStaticCast();
 }
+
+//End Ethan edit 6-7-24 (NPC VENDOR)

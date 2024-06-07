@@ -2,7 +2,7 @@ includeFile("npcvendor/npc_vendor_data.lua")
 includeFile("../managers/resource_manager_spawns.lua")
 local ObjectManager = require("managers.object.object_manager")
 
-NPCVendorScreenplay= ScreenPlay:new {
+NPCVendorScreenplay = ScreenPlay:new {
 	errorCodes =  {
 		SUCCESS = 0, INVENTORYFULL = 1,  NOTENOUGHCREDITS = 2, GENERALERROR = 3, ITEMCOST = 4, INVENTORYERROR = 5,
 		TEMPLATEPATHERROR = 6, GIVEERROR = 7, DATAPADFULL = 8, DATAPADERROR = 9, TOOMANYHIRELINGS = 10, SCHEMATICERROR = 11,
@@ -13,8 +13,12 @@ NPCVendor = {
 	errorCodes =  {
 		SUCCESS = 0, INVENTORYFULL = 1,  NOTENOUGHCREDITS = 2, GENERALERROR = 3, ITEMCOST = 4, INVENTORYERROR = 5,
 		TEMPLATEPATHERROR = 6, GIVEERROR = 7, DATAPADFULL = 8, DATAPADERROR = 9, TOOMANYHIRELINGS = 10, SCHEMATICERROR = 11,
-	}
+	},
+
+	globalPriceModifier = 2.0
 }
+
+
 
 
 --Calls up a sale menu
@@ -41,11 +45,12 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
 	local endIndex = math.ceil(inventoryTable.inventoryEndIndex * #waresData)
 
+	local itemCost = waresData[i].cost * globalPriceModifier
 
 	local options = { }
 	--	for i = 1, #waresData, 1 do --TESTING
 	for i = startIndex, endIndex, 1 do
-		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. waresData[i].cost .. ")", 0}
+		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. itemCost .. ") Qty: (x" .. waresData[i].quantity .. ")", 0}
 		table.insert(options, ware)
 	end
 
@@ -286,14 +291,14 @@ function NPCVendor:giveItem(pPlayer, itemData)
 	if (pGhost == nil) then
 		return
 	end
-
+	local itemCost = itemData.cost * globalPriceModifier
 	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
 	if (pInventory == nil) then
 		return
 	end
 
-	if (CreatureObject(pPlayer):getCashCredits() < itemData.cost) then
+	if (CreatureObject(pPlayer):getCashCredits() < itemCost) then
 		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
 		return
 	elseif (SceneObject(pInventory):isContainerFullRecursive()) then
@@ -301,11 +306,11 @@ function NPCVendor:giveItem(pPlayer, itemData)
 		return
 	end
 
-	CreatureObject(pPlayer):subtractCashCredits(itemData.cost)
+	CreatureObject(pPlayer):subtractCashCredits(itemCost)
 
 	local messageString = LuaStringIdChatParameter("@bartender:prose_buy_pass")
 	messageString:setTT(itemData.displayName)
-	messageString:setDI(itemData.cost)
+	messageString:setDI(itemCost)
 	CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
 
 
@@ -316,17 +321,25 @@ function NPCVendor:giveItem(pPlayer, itemData)
 	local pItem = giveItem(pInventory, templatePath, -1)
 
 	local newSerial = itemData.serial
+	local quantity = itemData.quantity
 	local tano = TangibleObject(pItem)
-	
-	--Ethan testing 5-28-24: Seeing if I can force a serial number on components for factory runs
+
 	if(newSerial ~= nil) then
 		tano:setSerialNumber(newSerial)
 	end
 
-
-
 	if (pItem ~= nil) then
-		PlayerObject(pGhost):addEventPerk(pItem)
+		if(quantity ~= nil) then
+			for i = 1, quantity, 1 do	
+				if(SceneObject(pInventory):isContainerFullRecursive() == false) then
+					PlayerObject(pGhost):addEventPerk(pItem)
+				else
+					CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
+				end
+			end
+		else
+			PlayerObject(pGhost):addEventPerk(pItem)
+		end
 	end
 end
 
@@ -349,7 +362,7 @@ function NPCVendor:awardData(pPlayer, itemData)
 		return self.errorCodes.DATAPADERROR
 	end
 
-	local itemCost = itemData.cost
+	local itemCost = itemData.cost * globalPriceModifier
 
 	if itemCost == nil then
 		return self.errorCodes.ITEMCOST
@@ -367,12 +380,12 @@ function NPCVendor:awardData(pPlayer, itemData)
 		return transferResult
 	end
 
-	if (CreatureObject(pPlayer):getCashCredits() < itemData.cost) then
+	if (CreatureObject(pPlayer):getCashCredits() < itemCost) then
 		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
 		return
 	end
 
-	CreatureObject(pPlayer):subtractCashCredits(itemData.cost)
+	CreatureObject(pPlayer):subtractCashCredits(itemCost)
 
 	local messageString = LuaStringIdChatParameter("@faction_recruiter:hireling_purchase_complete") -- The %TT is now under your command.
 	messageString:setTT(itemData.displayName)
@@ -435,14 +448,6 @@ function NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
 	local suiManager = LuaSuiManager()
 
 	suiManager:sendListBox(pNpc, pPlayer, "Title", "Description", 3, "@cancel", "@back", "&ok", "Resource", "ResourceDeedCallback", 32, options);
-	--ResourceDeedSuiCallback(ZoneServer* serv, const String& name, const int quantity) : SuiCallback(serv) { //Ethan edit 6-4-24 (RESOURCE VENDOR) ..(added quantity)
-	--suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "eventPromoterScreenplay", "handleSuiPurchase", 32, options)
-
-
-	--ResourceDeedSuiCallback(ZoneServer* serv, const String& name, const int quantity) : SuiCallback(serv) { //Ethan edit 6-4-24 (RESOURCE VENDOR) ..(added quantity)
-	--sui->setCallback(new ResourceDeedSuiCallback(server->getZoneServer(), "Resource",5000)); //Ethan edit 6-4-24 (RESOURCE VENDOR) .. added the quantity
-
-
 	suiManager:sendListBox(pNpc, pPlayer, "@veteran:resource_title", "@veteran:choose_class", 3, "@cancel", "@back", "@ok", "NPCVendor", "ResourceDeedSuiCallback", 32, options)
 end
 
