@@ -182,9 +182,9 @@ public:
 				} 
 				//The spawn name doesn't exist, so we much be cycling through the different branches of the resource map tree
 				else {
-                    if(resourceManager->hasSpawns(nodeName)) {
+                    //if(resourceManager->hasSpawns(nodeName)) {
                     resourceManager->addNodeToListBox(listBox, nodeName);
-					} 
+					//} 
 				}
 			}
 		}

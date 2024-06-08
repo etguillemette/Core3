@@ -82,13 +82,13 @@ entertainerSelfExp = true
 
 
 autoDoctor = true --Ethan edit 6-7-24 (AUTO DOCTOR)
-hospitalMedBuffDuration = 900 --Ethan edit 6-7-24 (AUTO DOCTOR)
+hospitalMedBuffDuration = 3600 --Ethan edit 6-7-24 (AUTO DOCTOR)
 hospitalMedBuffPoolStrength = 300 --Ethan edit 6-7-24 (AUTO DOCTOR)
 hospitalMedBuffAttrStrength = 50 --Ethan edit 6-7-24 (AUTO DOCTOR)
 
 entertainerSelfExp = true --Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
 autoEntertainer = true --Ethan edit 6-7-24 (AUTO ENTERTAINER)
-cantinaMindBuffDuration = 900 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
+cantinaMindBuffDuration = 3600 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
 cantinaMindBuffPoolStrength = 300 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
 cantinaMindBuffAttrStrength = 50 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
 
