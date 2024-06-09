@@ -757,6 +757,17 @@ void FactoryObjectImplementation::createNewObject() {
 		error("crafterName = " + crafterName);
 		error("ownerName = " + ownerName);
 
+		info(true) << "xpType = " << xpType;
+		info(true) << "xp = " << xp;
+		info(true) << "crafterName = " << crafterName;
+		info(true) << "ownerName = " << ownerName;
+
+		//StringIdChatParameter ptnsfw("Test","Owner name = %TO, crafter name = %TT, xpType = %TU");
+		//ptnsfw.setTO(ownerName);
+		//ptnsfw.setTT(crafterName);
+		//ptnsfw.setTU(xpType);
+		//owner->sendSystemMessage(ptnsfw);
+
 		if (owner != nullptr && ownerName == crafterName)
 		{
 			PlayerObject* ghost = owner->getPlayerObject().get();
@@ -768,11 +779,17 @@ void FactoryObjectImplementation::createNewObject() {
 				ghost->addExperience(trx, xpType, xp, true);
 			}
 			else{
-				error("ghost is nullptr");
+				StringIdChatParameter ptnsfw("Test","Error: chost is nullptr");
+				owner->sendSystemMessage(ptnsfw);
+				return;
+				//error("ghost is nullptr");
 			}
 		}
 		else {
-			error("crafer is nullptr or the crafterName and ownerName do not match");
+			StringIdChatParameter ptnsfw("Test","Error: owner is nullptr or ownername and craftername don't match");
+			owner->sendSystemMessage(ptnsfw);
+			return;
+			//error("crafer is nullptr or the crafterName and ownerName do not match");
 		}
 
 		//End Ethan edit 5-28-24 (FACTORY XP)

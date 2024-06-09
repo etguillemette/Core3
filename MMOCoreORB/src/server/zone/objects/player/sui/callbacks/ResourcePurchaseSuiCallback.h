@@ -80,60 +80,31 @@ public:
 		
 		//OKAY BUTTON;
 		else {
-			//Ethan edit 6-4-24 (RESOURCE VENDOR)
-			int qtyIndex = nodeName.indexOf("|"); //Ethan edit 6-4-24 (RESOURCE VENDOR) //10
-			int price = 0;
 			
 			ManagedReference<ResourceSpawn*> spawn = resourceManager->getResourceSpawn(nodeName);
 
-			//Is there a "|" in the nodeName, therefore we're looking at purchase options?
+			String screenStr;
 			if(purchaseScreen == true){
-				nodeName = nodeName.subString(0,qtyIndex);
-
-				StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI");
-				ptnsfw.setTO(nodeName);
-				ptnsfw.setDI(index);
-
-				//If purchase options are listed, therefore the purchase quantity is 10^index
-				int purchaseQuantity = index * std::pow(10,index+1);
-				
-				int cash = creature->getBankCredits();
-				spawn = resourceManager->getResourceSpawn(nodeName);
-				
-				price = spawn->evaluatePrice() * purchaseQuantity;
-
-				if (price > cash) {
-					StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
-					ptnsfw.setTO("crate of "+ nodeName);
-					ptnsfw.setDI(price);
-					creature->sendSystemMessage(ptnsfw);
-					return;
-				}
-				else {
-					Locker clocker(deed, creature); //Ethan edit moved this here
-					deed->destroyDeed(); //Ethan edit moved this here
-					clocker.release(); //Ethan edit moved this here
-
-					StringIdChatParameter ptnsfw("Purchase Successful", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
-					ptnsfw.setTT(nodeName);
-					ptnsfw.setDI(price);
-					creature->sendSystemMessage(ptnsfw);
-					creature->subtractBankCredits(price);
-					resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
-					return;
-				}
-
-				purchaseScreen = false;
+				screenStr = "true";
 			}
-			//End Ethan edit 6-4-24 (RESOURCE VENDOR)
+			else{
+				screenStr = "false";
+			}
+
+			StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI. PurchaseScreen = %TT");
+			ptnsfw.setTO(nodeName);
+			ptnsfw.setDI(index);
+			ptnsfw.setTT(screenStr);
+			creature->sendSystemMessage(ptnsfw);
 
 			//"Spawn" exists because we're on the "SHOW STATS" screen, we're not on the quantity list screen, and have hit OK
 			if (spawn != nullptr) {
 
 
-				StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI");
+				StringIdChatParameter ptnsfw("Test","Show stats screen because spawn exists");
 				ptnsfw.setTO(nodeName);
 				ptnsfw.setDI(index);
+				creature->sendSystemMessage(ptnsfw);
 
 				if(spawn == nullptr){
 					return;
@@ -163,6 +134,56 @@ public:
 			//There are list options, and we hit an option that's at least 0 and no more than the max menu item size
 			if(index >= 0 && index < listBox->getMenuSize()) {
 
+				
+
+				//Ethan edit 6-4-24 (RESOURCE VENDOR)
+				int qtyIndex = nodeName.indexOf("|"); //Ethan edit 6-4-24 (RESOURCE VENDOR) //10
+				int price = 0;
+				
+				StringIdChatParameter ptnsfw("Test","index is bigger than 0. Qty index = %TT");
+				ptnsfw.setTT(qtyIndex);
+				creature->sendSystemMessage(ptnsfw);
+
+				//Is there a "|" in the nodeName, therefore we're looking at purchase options?
+				if(qtyIndex != -1 || purchaseScreen == true){
+					nodeName = nodeName.subString(0,qtyIndex);
+
+					StringIdChatParameter ptnsfw("Test","In purchase screen");
+					creature->sendSystemMessage(ptnsfw);
+
+					//If purchase options are listed, therefore the purchase quantity is 10^index
+					int purchaseQuantity = index * std::pow(10,index+1);
+					
+					int cash = creature->getBankCredits();
+					spawn = resourceManager->getResourceSpawn(nodeName);
+					
+					price = spawn->evaluatePrice() * purchaseQuantity;
+
+					if (price > cash) {
+						StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
+						ptnsfw.setTO("crate of "+ nodeName);
+						ptnsfw.setDI(price);
+						creature->sendSystemMessage(ptnsfw);
+						return;
+					}
+					else {
+						Locker clocker(deed, creature); //Ethan edit moved this here
+						deed->destroyDeed(); //Ethan edit moved this here
+						clocker.release(); //Ethan edit moved this here
+
+						StringIdChatParameter ptnsfw("Purchase Successful", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
+						ptnsfw.setTT(nodeName);
+						ptnsfw.setDI(price);
+						creature->sendSystemMessage(ptnsfw);
+						creature->subtractBankCredits(price);
+						resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
+						return;
+					}
+
+					purchaseScreen = false;
+				}
+				//End Ethan edit 6-4-24 (RESOURCE VENDOR)
+
 				nodeName = listBox->getMenuItemName(index);
 				int costIndex = nodeName.indexOf(" (");
 
@@ -176,6 +197,8 @@ public:
 				
 				//The spawn name, with the " (" removed exists, so we much be looking at stats
 				if (spawn != nullptr) {
+					StringIdChatParameter ptnsfw("Test","Looking at stats");
+					creature->sendSystemMessage(ptnsfw);
 					//spawn->addStatsToDeedListBox(listBox);
 					spawn->evaluatePurchaseListBox(listBox); //Ethan edit 6-1-24 (RESOURCE VENDOR)
 
@@ -183,7 +206,9 @@ public:
 				//The spawn name doesn't exist, so we much be cycling through the different branches of the resource map tree
 				else {
                     //if(resourceManager->hasSpawns(nodeName)) {
-                    resourceManager->addNodeToListBox(listBox, nodeName);
+                    StringIdChatParameter ptnsfw("Test","Different branches");
+					creature->sendSystemMessage(ptnsfw);
+					resourceManager->addNodeToListBox(listBox, nodeName);
 					//} 
 				}
 			}
