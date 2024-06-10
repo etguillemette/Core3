@@ -245,6 +245,26 @@ public:
 
 		return buffCRC;
 	}
+
+	//Ethan edit 6-10-24 (AUTO ENTERTAINER)
+	uint32 static getEntertainerBuff(uint8 attribute) {
+		uint32 buffCRC = 0;
+
+		switch (attribute) {
+		case BuffAttribute::MIND:
+			buffCRC = BuffCRC::PERFORMANCE_ENHANCE_DANCE_MIND;
+			break;
+		case BuffAttribute::FOCUS:
+			buffCRC = BuffCRC::PERFORMANCE_ENHANCE_MUSIC_FOCUS;
+			break;
+		case BuffAttribute::WILLPOWER:
+			buffCRC = BuffCRC::PERFORMANCE_ENHANCE_MUSIC_WILLPOWER;
+			break;
+		}
+
+		return buffCRC;
+	}
+	//End Ethan edit 6-10-24 (AUTO ENTERTAINER)
 };
 
 

@@ -91,14 +91,57 @@ public:
 				screenStr = "false";
 			}
 
-			StringIdChatParameter ptnsfw("Test","Test nodeName = %TO, and index = %DI. PurchaseScreen = %TT");
-			ptnsfw.setTO(nodeName);
-			ptnsfw.setDI(index);
-			ptnsfw.setTT(screenStr);
-			creature->sendSystemMessage(ptnsfw);
+			StringIdChatParameter ptnsfwa("Test","Test nodeName = %TO, and index = %DI. PurchaseScreen = %TT");
+			ptnsfwa.setTO(nodeName);
+			ptnsfwa.setDI(index);
+			ptnsfwa.setTT(screenStr);
+			creature->sendSystemMessage(ptnsfwa);
+
+			int qtyIndex = nodeName.indexOf("|"); //Ethan edit 6-4-24 (RESOURCE VENDOR) //10
+			int price = 0;
+				
+
+			//Is there a "|" in the nodeName, therefore we're looking at purchase options?
+			if(screenStr == "true"){
+				nodeName = nodeName.subString(0,qtyIndex);
+
+				StringIdChatParameter ptnsfw("Test","!!!In purchase screen");
+				creature->sendSystemMessage(ptnsfw);
+
+				//If purchase options are listed, therefore the purchase quantity is 10^index
+				int purchaseQuantity = index * std::pow(10,index+1);
+					
+				int cash = creature->getBankCredits();
+				spawn = resourceManager->getResourceSpawn(nodeName);
+					
+				price = spawn->evaluatePrice() * purchaseQuantity;
+
+				if (price > cash) {
+					StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
+					ptnsfw.setTO("crate of "+ nodeName);
+					ptnsfw.setDI(price);
+					creature->sendSystemMessage(ptnsfw);
+					return;
+				}
+				else {
+					Locker clocker(deed, creature); //Ethan edit moved this here
+					deed->destroyDeed(); //Ethan edit moved this here
+					clocker.release(); //Ethan edit moved this here
+
+					StringIdChatParameter ptnsfw("Purchase Successful", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
+					ptnsfw.setTT(nodeName);
+					ptnsfw.setDI(price);
+					creature->sendSystemMessage(ptnsfw);
+					creature->subtractBankCredits(price);
+					resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
+					return;
+				}
+
+				purchaseScreen = false;
+			}
 
 			//"Spawn" exists because we're on the "SHOW STATS" screen, we're not on the quantity list screen, and have hit OK
-			if (spawn != nullptr) {
+			if (spawn != nullptr && purchaseScreen == false) {
 
 
 				StringIdChatParameter ptnsfw("Test","Show stats screen because spawn exists");
@@ -134,56 +177,10 @@ public:
 			//There are list options, and we hit an option that's at least 0 and no more than the max menu item size
 			if(index >= 0 && index < listBox->getMenuSize()) {
 
-				
-
-				//Ethan edit 6-4-24 (RESOURCE VENDOR)
-				int qtyIndex = nodeName.indexOf("|"); //Ethan edit 6-4-24 (RESOURCE VENDOR) //10
-				int price = 0;
-				
 				StringIdChatParameter ptnsfw("Test","index is bigger than 0. Qty index = %TT");
 				ptnsfw.setTT(qtyIndex);
 				creature->sendSystemMessage(ptnsfw);
-
-				//Is there a "|" in the nodeName, therefore we're looking at purchase options?
-				if(purchaseScreen == true){
-					nodeName = nodeName.subString(0,qtyIndex);
-
-					StringIdChatParameter ptnsfw("Test","In purchase screen");
-					creature->sendSystemMessage(ptnsfw);
-
-					//If purchase options are listed, therefore the purchase quantity is 10^index
-					int purchaseQuantity = index * std::pow(10,index+1);
-					
-					int cash = creature->getBankCredits();
-					spawn = resourceManager->getResourceSpawn(nodeName);
-					
-					price = spawn->evaluatePrice() * purchaseQuantity;
-
-					if (price > cash) {
-						StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
-						ptnsfw.setTO("crate of "+ nodeName);
-						ptnsfw.setDI(price);
-						creature->sendSystemMessage(ptnsfw);
-						return;
-					}
-					else {
-						Locker clocker(deed, creature); //Ethan edit moved this here
-						deed->destroyDeed(); //Ethan edit moved this here
-						clocker.release(); //Ethan edit moved this here
-
-						StringIdChatParameter ptnsfw("Purchase Successful", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
-						ptnsfw.setTT(nodeName);
-						ptnsfw.setDI(price);
-						creature->sendSystemMessage(ptnsfw);
-						creature->subtractBankCredits(price);
-						resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
-						return;
-					}
-
-					purchaseScreen = false;
-				}
-				//End Ethan edit 6-4-24 (RESOURCE VENDOR)
-
+				
 				nodeName = listBox->getMenuItemName(index);
 				int costIndex = nodeName.indexOf(" (");
 

@@ -741,8 +741,8 @@ void FactoryObjectImplementation::createNewObject() {
 		//Ethan edit 5-28-24 (FACTORY XP) Note: This will probably crash the server...
 		
 		
-		ManagedReference<CreatureObject*> crafter = schematic->getCrafter().get();
-		String crafterName = crafter->getFirstName().toLowerCase();
+		//ManagedReference<CreatureObject*> crafter = schematic->getCrafter().get();
+		//String crafterName = crafter->getFirstName().toLowerCase();
 		
 		CreatureObject* owner = getOwnerCreatureObject();
 		String ownerName = owner->getFirstName().toLowerCase();
@@ -752,23 +752,32 @@ void FactoryObjectImplementation::createNewObject() {
 		int xp = draftSchematic->getXpAmount();
 		xp = round(xp * 0.5f);
 
-		error("xpType = " + xpType);
-		error("xp = " + xp);
-		error("crafterName = " + crafterName);
-		error("ownerName = " + ownerName);
+		//error("xpType = " + xpType);
+		//error("xp = " + xp);
+		//error("crafterName = " + crafterName);
+		//error("ownerName = " + ownerName);
 
-		info(true) << "xpType = " << xpType;
-		info(true) << "xp = " << xp;
-		info(true) << "crafterName = " << crafterName;
-		info(true) << "ownerName = " << ownerName;
+		//info(true) << "xpType = " << xpType;
+		//info(true) << "xp = " << xp;
+		//info(true) << "crafterName = " << crafterName;
+		//info(true) << "ownerName = " << ownerName;
 
-		//StringIdChatParameter ptnsfw("Test","Owner name = %TO, crafter name = %TT, xpType = %TU");
-		//ptnsfw.setTO(ownerName);
-		//ptnsfw.setTT(crafterName);
-		//ptnsfw.setTU(xpType);
-		//owner->sendSystemMessage(ptnsfw);
+		//Just reporting fuckery over here::
 
-		if (owner != nullptr && ownerName == crafterName)
+		ManagedReference<ChatManager*> chatManager = server->getChatManager();
+
+		if (chatManager != nullptr && currentUserName != "") {
+			StringIdChatParameter emailBody;
+			emailBody.setStringId("TEST");
+			UnicodeString subject = "TEST";
+
+			chatManager->sendMail(getDisplayedName(), subject, emailBody, currentUserName);
+		}
+
+		//End reporting fuckery
+
+
+		if (owner != nullptr)
 		{
 			PlayerObject* ghost = owner->getPlayerObject().get();
 			//ManagedReference<CreatureObject*> crafterPlayer = crafter.get();

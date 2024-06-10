@@ -14,8 +14,6 @@ NPCVendor = {
 		SUCCESS = 0, INVENTORYFULL = 1,  NOTENOUGHCREDITS = 2, GENERALERROR = 3, ITEMCOST = 4, INVENTORYERROR = 5,
 		TEMPLATEPATHERROR = 6, GIVEERROR = 7, DATAPADFULL = 8, DATAPADERROR = 9, TOOMANYHIRELINGS = 10, SCHEMATICERROR = 11,
 	},
-
-	globalPriceModifier = 2.0
 }
 
 
@@ -23,6 +21,8 @@ NPCVendor = {
 
 --Calls up a sale menu
 function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
+
+	globalPriceModifier = 2.0
 
 	if (pPlayer == nil or pNpc == nil) then
 		return
@@ -45,7 +45,7 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
 	local endIndex = math.ceil(inventoryTable.inventoryEndIndex * #waresData)
 
-	local itemCost = waresData[i].cost * globalPriceModifier
+	local itemCost = waresData[i].cost
 
 	local options = { }
 	--	for i = 1, #waresData, 1 do --TESTING
@@ -291,7 +291,7 @@ function NPCVendor:giveItem(pPlayer, itemData)
 	if (pGhost == nil) then
 		return
 	end
-	local itemCost = itemData.cost * globalPriceModifier
+	local itemCost = itemData.cost
 	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
 	if (pInventory == nil) then
@@ -362,7 +362,7 @@ function NPCVendor:awardData(pPlayer, itemData)
 		return self.errorCodes.DATAPADERROR
 	end
 
-	local itemCost = itemData.cost * globalPriceModifier
+	local itemCost = itemData.cost
 
 	if itemCost == nil then
 		return self.errorCodes.ITEMCOST

@@ -101,6 +101,8 @@
 #include "server/zone/objects/creature/BuffAttribute.h" //Ethan edit 5-6-24 (AUTO DOCTOR) (AUTO ENTERTAINER)
 #include "server/zone/objects/creature/buffs/DelayedBuff.h" //Ethan edit 5-6-24 (AUTO DOCTOR) (AUTO ENTERTAINER)
 #include "server/zone/objects/creature/commands/HealEnhanceCommand.h" //Ethan edit 6-7-24 (AUTO DOCTOR) (AUTO ENTERTAINER)
+#include "server/zone/objects/creature/buffs/PerformanceBuff.h" //Ethan edit 6-10-24 (AUTO ENTERTAINER)
+#include "server/zone/objects/creature/buffs/PerformanceBuffType.h" //Ethan edit 6-10-24 (AUTO ENTERTAINER)
 
 float CreatureObjectImplementation::DEFAULTRUNSPEED = 5.376f;
 
@@ -3006,18 +3008,30 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	int cash = asCreatureObject()->getBankCredits(); //Ethan edit 6-9-24 (AUTO DOC)
 	int buffPrice = 1; //Ethan edit 6-9-24 (AUTO DOC)
 
+	bool isDoctor = asCreatureObject()->hasSkill("science_doctor_novice");
+
+	String docStr;
+
+	if(isDoctor == true){
+		docStr = "true";
+	}
+	else{
+		docStr = "false";
+	}
+
+	//StringIdChatParameter ptnsfwd("Medical Charge", "Your medical status is = %TT");
+	//ptnsfwd.setTT(docStr);
+	//asCreatureObject()->sendSystemMessage(ptnsfwd);
+
 	if(healthRegen > 0) {
 		healthWoundHeal += (int)(healthRegen * 0.2); 
-		
-		
-		
-		if(healthWoundHeal >= 100 && cash > buffPrice) {
-			healWound(asCreatureObject(), CreatureAttribute::HEALTH, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
-			healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
-			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+		if(healthWoundHeal >= 100) {
+			healWound(asCreatureObject(), CreatureAttribute::HEALTH, 1 + healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 1 + healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1 + healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
 
 			//Ethan edit 6-7-24 (AUTO DOCTOR)
-			if(autoDoctor == true){
+			if(autoDoctor == true && docStr == "false"){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
 				if (zoneServer == nullptr)
@@ -3028,6 +3042,8 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				if (playerMan == nullptr)
 				return;
 				
+				int chargeTotal = 0;
+
 				//HEALTH
 				uint32 heacurrentBuff = 0;
 				uint32 heabuffcrc = BuffCRC::getMedicalBuff(CreatureAttribute::HEALTH);
@@ -3040,6 +3056,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				if (asCreatureObject()->isPlayerCreature() && heacurrentBuff < hospitalMedBuffPoolStrength && buffPrice < cash) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::HEALTH, heacurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractBankCredits(buffPrice);
+					chargeTotal += buffPrice;
 				}
 
 				//CONSTITUTION
@@ -3054,6 +3071,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				if (asCreatureObject()->isPlayerCreature() && concurrentBuff < hospitalMedBuffAttrStrength && buffPrice < cash) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::CONSTITUTION, concurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractBankCredits(buffPrice);
+					chargeTotal += buffPrice;
 				}
 
 				//STRENGTH
@@ -3068,11 +3086,17 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				if (asCreatureObject()->isPlayerCreature() && strcurrentBuff < hospitalMedBuffAttrStrength && buffPrice < cash) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STRENGTH, strcurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractBankCredits(buffPrice);
+					chargeTotal += buffPrice;
+				}
+
+				if(chargeTotal > 0){
+					StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for health medical enhancements");
+					ptnsfw.setDI(chargeTotal);
+					asCreatureObject()->sendSystemMessage(ptnsfw);
 				}
 
 			}
 			//End Ethan edit 6-7-24 (AUTO DOCTOR)
-
 			healthWoundHeal -= 100;
 		}
 	}
@@ -3083,14 +3107,13 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	if(actionRegen > 0) {
 		actionWoundHeal += (int)(actionRegen * 0.2);
 		if(actionWoundHeal >= 100) {
-			healWound(asCreatureObject(), CreatureAttribute::ACTION, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
-			healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
-			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
-			actionWoundHeal -= 100;
-		}
+			healWound(asCreatureObject(), CreatureAttribute::ACTION, 1 + healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 1 + healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
+			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1 + healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
 
-		//Ethan edit 6-7-24 (AUTO DOCTOR)
-			if(autoDoctor == true){
+
+			//Ethan edit 6-7-24 (AUTO DOCTOR)
+			if(autoDoctor == true && docStr == "false"){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
 				if (zoneServer == nullptr)
@@ -3100,6 +3123,8 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 				if (playerMan == nullptr)
 				return;
+
+				int chargeTotal = 0;
 				
 				//ACTION
 				uint32 actcurrentBuff = 0;
@@ -3110,9 +3135,10 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					actcurrentBuff = actexistingbuff->getAttributeModifierValue(CreatureAttribute::ACTION);
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && actcurrentBuff < hospitalMedBuffPoolStrength && buffPrice < cash) {
+				if (asCreatureObject()->isPlayerCreature() && actcurrentBuff < hospitalMedBuffPoolStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::ACTION, actcurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractCashCredits(buffPrice);					
+					asCreatureObject()->subtractCashCredits(buffPrice);
+					chargeTotal += buffPrice;					
 				}
 
 				//QUICKNESS
@@ -3127,6 +3153,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				if (asCreatureObject()->isPlayerCreature() && quicurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::QUICKNESS, quicurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractCashCredits(buffPrice);
+					chargeTotal += buffPrice;
 				}
 
 				//STAMINA
@@ -3141,14 +3168,37 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				if (asCreatureObject()->isPlayerCreature() && stacurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STAMINA, stacurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractCashCredits(buffPrice);
+					chargeTotal += buffPrice;
+				}
+
+				if(chargeTotal > 0){
+					StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for action medical enhancements");
+					ptnsfw.setDI(chargeTotal);
+					asCreatureObject()->sendSystemMessage(ptnsfw);
 				}
 
 			}
 			//End Ethan edit 6-7-24 (AUTO DOCTOR)
+			actionWoundHeal -= 100;
+		}
 	}
 
 	/// Mind wound regen
 	int mindRegen = getSkillMod("private_med_wound_mind");
+	bool isEntertainer = asCreatureObject()->hasSkill("social_entertainer_novice");
+
+	String entStr;
+
+	if(isEntertainer == true){
+		entStr = "true";
+	}
+	else{
+		entStr = "false";
+	}
+
+	//StringIdChatParameter ptnsfwe("Cover Charge", "Your entertainer status is = %TT");
+	//ptnsfwe.setTT(entStr);
+	//asCreatureObject()->sendSystemMessage(ptnsfwe);
 
 	if(mindRegen > 0) {
 		mindWoundHeal += (int)(mindRegen * 0.2);
@@ -3156,12 +3206,9 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::MIND, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			healWound(asCreatureObject(), CreatureAttribute::FOCUS, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
 			healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 1 + healBonus, true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
-			mindWoundHeal -= 100;
-			addShockWounds(-(healBonus + 1), true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
-		}
 
-		//Ethan edit 6-7-24 (AUTO ENTERTAINER)
-			if(autoEntertainer == true){
+			//Ethan edit 6-7-24 (AUTO ENTERTAINER)
+			if(autoEntertainer == true && entStr == "false"){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
 				if (zoneServer == nullptr)
@@ -3171,28 +3218,38 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 				if (playerMan == nullptr)
 				return;
-				
+
+				int chargeTotal = 0;
+			
 				//MIND
 				uint32 mincurrentBuff = 0;
-				uint32 minbuffcrc = BuffCRC::PERFORMANCE_ENHANCE_DANCE_MIND;
+				//uint32 minbuffcrc = BuffCRC::getEntertainerBuff(CreatureAttribute::MIND);
+				//uint32 minbuffcrc = BuffCRC::PERFORMANCE_ENHANCE_DANCE_MIND;
 				//uint32 minbuffcrc = STRING_HASHCODE("performance_enhance_dance_mind");
-
-
+				uint32 minbuffcrc = STRING_HASHCODE("performance_enhance_dance_mind");
+				
 				//oldBuff = cast<PerformanceBuff*>(creature->getBuff(focusBuffCRC));
 				//oldBuff = cast<PerformanceBuff*>(creature->getBuff(mindBuffCRC));
 
 				if (asCreatureObject()->hasBuff(minbuffcrc)) {
-					Buff* minexistingbuff = asCreatureObject()->getBuff(minbuffcrc);
-					mincurrentBuff = minexistingbuff->getAttributeModifierValue(CreatureAttribute::MIND);
+					//Buff* minexistingbuff = asCreatureObject()->getBuff(minbuffcrc);
+					//mincurrentBuff = minexistingbuff->getAttributeModifierValue(CreatureAttribute::MIND);
+
+					ManagedReference<PerformanceBuff*> minexistingbuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(minbuffcrc));
+					mincurrentBuff = minexistingbuff->getBuffStrength()/1000;
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && mincurrentBuff < hospitalMedBuffPoolStrength && cash > buffPrice) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), minbuffcrc, mincurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				if (asCreatureObject()->isPlayerCreature() && mincurrentBuff < cantinaMindBuffPoolStrength && cash > buffPrice) {
+					//uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::MIND, mincurrentBuff + 1, cantinaMindBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), minbuffcrc, mincurrentBuff+1, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
+					asCreatureObject()->addBuff(mindBuff);
+
 					asCreatureObject()->subtractCashCredits(buffPrice);
 				}
 
 				//FOCUS
 				uint32 foccurrentBuff = 0;
+				//uint32 focbuffcrc = BuffCRC::getEntertainerBuff(CreatureAttribute::FOCUS);
 				uint32 focbuffcrc = BuffCRC::PERFORMANCE_ENHANCE_MUSIC_FOCUS;
 				//uint32 focbuffcrc = STRING_HASHCODE("performance_enhance_music_focus");
 
@@ -3201,14 +3258,15 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					foccurrentBuff = focexistingbuff->getAttributeModifierValue(CreatureAttribute::FOCUS);
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && foccurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), focbuffcrc, foccurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				if (asCreatureObject()->isPlayerCreature() && foccurrentBuff < cantinaMindBuffAttrStrength && cash > buffPrice) {
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::FOCUS, foccurrentBuff + 1, cantinaMindBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractCashCredits(buffPrice);
 				}
 
 				//WILLPOWER
 				uint32 wilcurrentBuff = 0;
 				uint32 wilbuffcrc = BuffCRC::PERFORMANCE_ENHANCE_MUSIC_WILLPOWER;
+				//uint32 wilbuffcrc = BuffCRC::getEntertainerBuff(CreatureAttribute::WILLPOWER);
 				//uint32 wilbuffcrc = STRING_HASHCODE("performance_enhance_music_willpower");
 
 
@@ -3217,13 +3275,23 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					wilcurrentBuff = wilexistingbuff->getAttributeModifierValue(CreatureAttribute::WILLPOWER);
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && wilcurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), wilbuffcrc, wilcurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+				if (asCreatureObject()->isPlayerCreature() && wilcurrentBuff < cantinaMindBuffAttrStrength && cash > buffPrice) {
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::WILLPOWER, wilcurrentBuff + 1, cantinaMindBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractCashCredits(buffPrice);
 				}
 
+				if(chargeTotal > 0){
+					StringIdChatParameter ptnsfw("Cover Charge", "You have been charged %DI credits for entertainer buffs.");
+					ptnsfw.setDI(chargeTotal);
+					asCreatureObject()->sendSystemMessage(ptnsfw);
+				}
+				
+
 			}
 			//End Ethan edit 6-7-24 (AUTO ENTERTAINER)
+			addShockWounds(-(healBonus + 1), true, false); //Ethan edit 5-25-24 (SINGLE PLAYER ENTERTAINER) (added the healBonus) 
+			mindWoundHeal -= 100;
+		}
 	}
 }
 
