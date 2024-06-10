@@ -145,7 +145,7 @@ public:
 				creature->sendSystemMessage(ptnsfw);
 
 				//Is there a "|" in the nodeName, therefore we're looking at purchase options?
-				if(qtyIndex != -1 || purchaseScreen == true){
+				if(purchaseScreen == true){
 					nodeName = nodeName.subString(0,qtyIndex);
 
 					StringIdChatParameter ptnsfw("Test","In purchase screen");

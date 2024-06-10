@@ -3111,8 +3111,8 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && actcurrentBuff < hospitalMedBuffPoolStrength && buffPrice < cash) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::ACTION, actcurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);					
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::ACTION, actcurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					asCreatureObject()->subtractCashCredits(buffPrice);					
 				}
 
 				//QUICKNESS
@@ -3125,8 +3125,8 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && quicurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::QUICKNESS, quicurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::QUICKNESS, quicurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					asCreatureObject()->subtractCashCredits(buffPrice);
 				}
 
 				//STAMINA
@@ -3139,8 +3139,8 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && stacurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STAMINA, stacurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STAMINA, stacurrentBuff + 1, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					asCreatureObject()->subtractCashCredits(buffPrice);
 				}
 
 			}
@@ -3188,7 +3188,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && mincurrentBuff < hospitalMedBuffPoolStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), minbuffcrc, mincurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);
+					asCreatureObject()->subtractCashCredits(buffPrice);
 				}
 
 				//FOCUS
@@ -3203,7 +3203,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && foccurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), focbuffcrc, foccurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);
+					asCreatureObject()->subtractCashCredits(buffPrice);
 				}
 
 				//WILLPOWER
@@ -3219,7 +3219,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && wilcurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), wilbuffcrc, wilcurrentBuff + 2, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);
+					asCreatureObject()->subtractCashCredits(buffPrice);
 				}
 
 			}
