@@ -103,20 +103,48 @@ public:
 
 			//Is there a "|" in the nodeName, therefore we're looking at purchase options?
 			if(screenStr == "true"){
-				nodeName = nodeName.subString(0,qtyIndex);
+				
+				StringIdChatParameter ptnsfwp("Test","!!!In purchase screen");
+				creature->sendSystemMessage(ptnsfwp);
 
-				StringIdChatParameter ptnsfw("Test","!!!In purchase screen");
-				creature->sendSystemMessage(ptnsfw);
+				if(qtyIndex != -1){
+					nodeName = nodeName.subString(0,qtyIndex);
+					StringIdChatParameter ptnsfw("Test","qtyIndex == %DI... nodeName = %TO");
+					ptnsfw.setTO(nodeName);
+					ptnsfw.setDI(qtyIndex);
+					creature->sendSystemMessage(ptnsfw);
+				}
 
-				//If purchase options are listed, therefore the purchase quantity is 10^index
-				int purchaseQuantity = index * std::pow(10,index+1);
-					
+				int purchaseQuantity = 0;
+				if(index >= 0){
+					//If purchase options are listed, therefore the purchase quantity is 10^index
+					purchaseQuantity = index * std::pow(10,index+1);
+					StringIdChatParameter ptnsfw("Test","Index is == %DI... purchaseQuantity = %TT");
+					ptnsfw.setDI(index);
+					ptnsfw.setTT(purchaseQuantity);
+					creature->sendSystemMessage(ptnsfw);
+				}
+				else{
+					StringIdChatParameter ptnsfw("Test","Index null...");
+					creature->sendSystemMessage(ptnsfw);
+				}
+				
 				int cash = creature->getBankCredits();
 				spawn = resourceManager->getResourceSpawn(nodeName);
-					
-				price = spawn->evaluatePrice() * purchaseQuantity;
 
-				if (price > cash) {
+				int price = 0;
+				if(spawn != nullptr){
+					price = spawn->evaluatePrice() * purchaseQuantity;
+					StringIdChatParameter ptnsfw("Test","Spawn is valid. Price == %DI...");
+					ptnsfw.setDI(price);
+					creature->sendSystemMessage(ptnsfw);
+				}
+				else{
+					StringIdChatParameter ptnsfw("Test","Spawn is null");
+					creature->sendSystemMessage(ptnsfw);
+				}
+
+				if (price > cash && price > 0) {
 					StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
 					ptnsfw.setTO("crate of "+ nodeName);
 					ptnsfw.setDI(price);
@@ -144,10 +172,10 @@ public:
 			if (spawn != nullptr && purchaseScreen == false) {
 
 
-				StringIdChatParameter ptnsfw("Test","Show stats screen because spawn exists");
-				ptnsfw.setTO(nodeName);
-				ptnsfw.setDI(index);
-				creature->sendSystemMessage(ptnsfw);
+				StringIdChatParameter ptnsfws("Test","Show stats screen because spawn exists");
+				ptnsfws.setTO(nodeName);
+				ptnsfws.setDI(index);
+				creature->sendSystemMessage(ptnsfws);
 
 				if(spawn == nullptr){
 					return;
@@ -177,15 +205,18 @@ public:
 			//There are list options, and we hit an option that's at least 0 and no more than the max menu item size
 			if(index >= 0 && index < listBox->getMenuSize()) {
 
-				StringIdChatParameter ptnsfw("Test","index is bigger than 0. Qty index = %TT");
-				ptnsfw.setTT(qtyIndex);
-				creature->sendSystemMessage(ptnsfw);
+				StringIdChatParameter ptnsfwi("Test","index is bigger than 0. Qty index = %TT");
+				ptnsfwi.setTT(qtyIndex);
+				creature->sendSystemMessage(ptnsfwi);
 				
 				nodeName = listBox->getMenuItemName(index);
 				int costIndex = nodeName.indexOf(" (");
 
 				if(costIndex != -1){
 					nodeName = nodeName.subString(0,costIndex);
+					StringIdChatParameter ptnsfw("Test","CostIndex != -1... Substring = %TT");
+					ptnsfw.setTT(costIndex);
+					creature->sendSystemMessage(ptnsfw);
 				}
 
 				listBox->removeAllMenuItems();

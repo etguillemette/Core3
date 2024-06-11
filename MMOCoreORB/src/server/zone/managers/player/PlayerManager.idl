@@ -110,6 +110,10 @@ class PlayerManager extends Observer implements Logger {
 	public float cantinaMindBuffDuration; //Ethan edit 6-7-24 (AUTO ENTERTAINER)
 	public float cantinaMindBuffPoolStrength; //Ethan edit 6-7-24 (AUTO ENTERTAINER)
 	public float cantinaMindBuffAttrStrength; //Ethan edit 6-7-24 (AUTO ENTERTAINER)
+
+	public int buffPrice; //Ethan edit 6-11-24 (AUTO DOCTOR)/(AUTO ENTERTAINER)
+	public int healPrice; //Ethan edit 6-11-24 (AUTO DOCTOR)/(AUTO ENTERTAINER)
+	public int healBonus; //Ethan edit 6-11-24 (AUTO DOCTOR)/(AUTO ENTERTAINER)
 	/*
 	-----------------------------------
 	--END SINGLE PLAYER CONFIG

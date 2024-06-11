@@ -739,11 +739,6 @@ void FactoryObjectImplementation::createNewObject() {
 		broadcastToOperators(dfcty3);
 
 		//Ethan edit 5-28-24 (FACTORY XP) Note: This will probably crash the server...
-		
-		
-		//ManagedReference<CreatureObject*> crafter = schematic->getCrafter().get();
-		//String crafterName = crafter->getFirstName().toLowerCase();
-		
 		CreatureObject* owner = getOwnerCreatureObject();
 		String ownerName = owner->getFirstName().toLowerCase();
 
@@ -752,53 +747,20 @@ void FactoryObjectImplementation::createNewObject() {
 		int xp = draftSchematic->getXpAmount();
 		xp = round(xp * 0.5f);
 
-		//error("xpType = " + xpType);
-		//error("xp = " + xp);
-		//error("crafterName = " + crafterName);
-		//error("ownerName = " + ownerName);
-
-		//info(true) << "xpType = " << xpType;
-		//info(true) << "xp = " << xp;
-		//info(true) << "crafterName = " << crafterName;
-		//info(true) << "ownerName = " << ownerName;
-
-		//Just reporting fuckery over here::
-
-		ManagedReference<ChatManager*> chatManager = server->getChatManager();
-
-		if (chatManager != nullptr && currentUserName != "") {
-			StringIdChatParameter emailBody;
-			emailBody.setStringId("TEST");
-			UnicodeString subject = "TEST";
-
-			chatManager->sendMail(getDisplayedName(), subject, emailBody, currentUserName);
-		}
-
-		//End reporting fuckery
-
-
 		if (owner != nullptr)
 		{
 			PlayerObject* ghost = owner->getPlayerObject().get();
-			//ManagedReference<CreatureObject*> crafterPlayer = crafter.get();
-			//Reference<PlayerObject*> ghost = crafterPlayer->getPlayerObject();
 			
 			if (ghost != nullptr) {
 				TransactionLog trx(TrxCode::EXPERIENCE, owner);
 				ghost->addExperience(trx, xpType, xp, true);
 			}
 			else{
-				StringIdChatParameter ptnsfw("Test","Error: chost is nullptr");
-				owner->sendSystemMessage(ptnsfw);
 				return;
-				//error("ghost is nullptr");
 			}
 		}
 		else {
-			StringIdChatParameter ptnsfw("Test","Error: owner is nullptr or ownername and craftername don't match");
-			owner->sendSystemMessage(ptnsfw);
 			return;
-			//error("crafer is nullptr or the crafterName and ownerName do not match");
 		}
 
 		//End Ethan edit 5-28-24 (FACTORY XP)

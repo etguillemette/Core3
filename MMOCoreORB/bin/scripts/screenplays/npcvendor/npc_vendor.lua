@@ -14,6 +14,8 @@ NPCVendor = {
 		SUCCESS = 0, INVENTORYFULL = 1,  NOTENOUGHCREDITS = 2, GENERALERROR = 3, ITEMCOST = 4, INVENTORYERROR = 5,
 		TEMPLATEPATHERROR = 6, GIVEERROR = 7, DATAPADFULL = 8, DATAPADERROR = 9, TOOMANYHIRELINGS = 10, SCHEMATICERROR = 11,
 	},
+
+	globalPriceModifier = 2.0,
 }
 
 
@@ -22,7 +24,7 @@ NPCVendor = {
 --Calls up a sale menu
 function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
-	globalPriceModifier = 2.0
+	
 
 	if (pPlayer == nil or pNpc == nil) then
 		return
@@ -33,7 +35,7 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 	local suiManager = LuaSuiManager()
 	local waresData = self:getWaresTable(screenID)
 
-	--Ethan testing 5-18-24 (NPC VENDOR): Seeing if I can get the inventory to change depending on the planet
+	--Filter inventory based on the planet the vendor is on, with certain higher level planets receiving more advanced inventory
 	local zoneName = CreatureObject(pPlayer):getZoneName()
 	local inventoryTable = genericWaresData.planetInventory[zoneName]
 
@@ -44,13 +46,13 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 	end
 
 	local endIndex = math.ceil(inventoryTable.inventoryEndIndex * #waresData)
-
-	local itemCost = waresData[i].cost
+	
 
 	local options = { }
 	--	for i = 1, #waresData, 1 do --TESTING
 	for i = startIndex, endIndex, 1 do
-		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. itemCost .. ") Qty: (x" .. waresData[i].quantity .. ")", 0}
+		local itemCost = waresData[i].cost * NPCVendor.globalPriceModifier
+		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. (itemCost) .. ") Qty: (x" .. waresData[i].quantity .. ")", 0}
 		table.insert(options, ware)
 	end
 
@@ -291,7 +293,7 @@ function NPCVendor:giveItem(pPlayer, itemData)
 	if (pGhost == nil) then
 		return
 	end
-	local itemCost = itemData.cost
+	local itemCost = itemData.cost * NPCVendor.globalPriceModifier
 	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
 	if (pInventory == nil) then
@@ -362,7 +364,7 @@ function NPCVendor:awardData(pPlayer, itemData)
 		return self.errorCodes.DATAPADERROR
 	end
 
-	local itemCost = itemData.cost
+	local itemCost = itemData.cost * NPCVendor.globalPriceModifier
 
 	if itemCost == nil then
 		return self.errorCodes.ITEMCOST
@@ -447,8 +449,8 @@ function NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
 	writeStringData(CreatureObject(pPlayer):getObjectID() .. ":npc_vendor_purchase", screenID)
 	local suiManager = LuaSuiManager()
 
-	suiManager:sendListBox(pNpc, pPlayer, "Title", "Description", 3, "@cancel", "@back", "&ok", "Resource", "ResourceDeedCallback", 32, options);
-	suiManager:sendListBox(pNpc, pPlayer, "@veteran:resource_title", "@veteran:choose_class", 3, "@cancel", "@back", "@ok", "NPCVendor", "ResourceDeedSuiCallback", 32, options)
+	--suiManager:sendListBox(pNpc, pPlayer, "Title", "Description", 3, "@cancel", "@back", "&ok", "Resources", "ResourceDeedCallback", 32, options);
+	suiManager:sendListBox(pNpc, pPlayer, "@veteran:resource_title", "@veteran:choose_class", 3, "@cancel", "@back", "@ok", "Resources", "ResourceDeedSuiCallback", 32, "Resources")
 end
 
 

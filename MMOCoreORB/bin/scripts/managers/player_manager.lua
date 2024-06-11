@@ -78,7 +78,6 @@ selfHealEnabled = true
 playerStructureMaintenanceRate = 1.0
 playerStructureEntropyEnabled = false
 playerStructureLowestCondition = 0.5 --This is the lowest damage level a structure can have
-entertainerSelfExp = true
 
 
 autoDoctor = true --Ethan edit 6-7-24 (AUTO DOCTOR)
@@ -92,9 +91,9 @@ cantinaMindBuffDuration = 3600 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
 cantinaMindBuffPoolStrength = 300 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
 cantinaMindBuffAttrStrength = 50 --Ethan edit 6-7-24 (AUTO ENTERTAINER)
 
---End Ethan Edit 5-2-24 (XP FOR SELF HEALS)
-
-
+buffPrice = 2 --(AUTO DOCTOR)/(AUTO ENTERTAINER)
+healPrice = 2 --(AUTO DOCTOR)/(AUTO ENTERTAINER)
+healBonus = 9 --(AUTO DOCTOR)/(AUTO ENTERTAINER
 -----------------------------------
 --END SINGLE PLAYER CONFIG
 -----------------------------------
