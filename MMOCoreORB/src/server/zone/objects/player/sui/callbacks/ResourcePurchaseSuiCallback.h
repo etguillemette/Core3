@@ -91,11 +91,11 @@ public:
 				screenStr = "false";
 			}
 
-			StringIdChatParameter ptnsfwa("Test","Test nodeName = %TO, and index = %DI. PurchaseScreen = %TT");
-			ptnsfwa.setTO(nodeName);
-			ptnsfwa.setDI(index);
-			ptnsfwa.setTT(screenStr);
-			creature->sendSystemMessage(ptnsfwa);
+			//StringIdChatParameter ptnsfwa("Test","Test nodeName = %TO, and index = %DI. PurchaseScreen = %TT");
+			//ptnsfwa.setTO(nodeName);
+			//ptnsfwa.setDI(index);
+			//ptnsfwa.setTT(screenStr);
+			//creature->sendSystemMessage(ptnsfwa);
 
 			int qtyIndex = nodeName.indexOf("|"); //Ethan edit 6-4-24 (RESOURCE VENDOR) //10
 			int price = 0;
@@ -104,29 +104,29 @@ public:
 			//Is there a "|" in the nodeName, therefore we're looking at purchase options?
 			if(screenStr == "true"){
 				
-				StringIdChatParameter ptnsfwp("Test","!!!In purchase screen");
-				creature->sendSystemMessage(ptnsfwp);
+				//StringIdChatParameter ptnsfwp("Test","!!!In purchase screen");
+				//creature->sendSystemMessage(ptnsfwp);
 
 				if(qtyIndex != -1){
 					nodeName = nodeName.subString(0,qtyIndex);
-					StringIdChatParameter ptnsfw("Test","qtyIndex == %DI... nodeName = %TO");
-					ptnsfw.setTO(nodeName);
-					ptnsfw.setDI(qtyIndex);
-					creature->sendSystemMessage(ptnsfw);
+					//StringIdChatParameter ptnsfw("Test","qtyIndex == %DI... nodeName = %TO");
+					//ptnsfw.setTO(nodeName);
+					//ptnsfw.setDI(qtyIndex);
+					//creature->sendSystemMessage(ptnsfw);
 				}
 
 				int purchaseQuantity = 0;
 				if(index >= 0){
 					//If purchase options are listed, therefore the purchase quantity is 10^index
-					purchaseQuantity = index * std::pow(10,index+1);
-					StringIdChatParameter ptnsfw("Test","Index is == %DI... purchaseQuantity = %TT");
-					ptnsfw.setDI(index);
-					ptnsfw.setTT(purchaseQuantity);
-					creature->sendSystemMessage(ptnsfw);
+					purchaseQuantity = std::pow(10,index+1);
+					//StringIdChatParameter ptnsfw("Test","Index is == %DI... purchaseQuantity = %TT");
+					//ptnsfw.setDI(index);
+					//ptnsfw.setTT(purchaseQuantity);
+					//creature->sendSystemMessage(ptnsfw);
 				}
 				else{
-					StringIdChatParameter ptnsfw("Test","Index null...");
-					creature->sendSystemMessage(ptnsfw);
+					//StringIdChatParameter ptnsfw("Test","Index null...");
+					//creature->sendSystemMessage(ptnsfw);
 				}
 				
 				int cash = creature->getBankCredits();
@@ -135,13 +135,13 @@ public:
 				int price = 0;
 				if(spawn != nullptr){
 					price = spawn->evaluatePrice() * purchaseQuantity;
-					StringIdChatParameter ptnsfw("Test","Spawn is valid. Price == %DI...");
-					ptnsfw.setDI(price);
-					creature->sendSystemMessage(ptnsfw);
+					//StringIdChatParameter ptnsfw("Test","Spawn is valid. Price == %DI...");
+					//ptnsfw.setDI(price);
+					//creature->sendSystemMessage(ptnsfw);
 				}
 				else{
-					StringIdChatParameter ptnsfw("Test","Spawn is null");
-					creature->sendSystemMessage(ptnsfw);
+					//StringIdChatParameter ptnsfw("Test","Spawn is null");
+					//creature->sendSystemMessage(ptnsfw);
 				}
 
 				if (price > cash && price > 0) {
@@ -172,10 +172,10 @@ public:
 			if (spawn != nullptr && purchaseScreen == false) {
 
 
-				StringIdChatParameter ptnsfws("Test","Show stats screen because spawn exists");
-				ptnsfws.setTO(nodeName);
-				ptnsfws.setDI(index);
-				creature->sendSystemMessage(ptnsfws);
+				//StringIdChatParameter ptnsfws("Test","Show stats screen because spawn exists");
+				//ptnsfws.setTO(nodeName);
+				//ptnsfws.setDI(index);
+				//creature->sendSystemMessage(ptnsfws);
 
 				if(spawn == nullptr){
 					return;
@@ -205,18 +205,18 @@ public:
 			//There are list options, and we hit an option that's at least 0 and no more than the max menu item size
 			if(index >= 0 && index < listBox->getMenuSize()) {
 
-				StringIdChatParameter ptnsfwi("Test","index is bigger than 0. Qty index = %TT");
-				ptnsfwi.setTT(qtyIndex);
-				creature->sendSystemMessage(ptnsfwi);
+				//StringIdChatParameter ptnsfwi("Test","index is bigger than 0. Qty index = %TT");
+				//ptnsfwi.setTT(qtyIndex);
+				//creature->sendSystemMessage(ptnsfwi);
 				
 				nodeName = listBox->getMenuItemName(index);
 				int costIndex = nodeName.indexOf(" (");
 
 				if(costIndex != -1){
 					nodeName = nodeName.subString(0,costIndex);
-					StringIdChatParameter ptnsfw("Test","CostIndex != -1... Substring = %TT");
-					ptnsfw.setTT(costIndex);
-					creature->sendSystemMessage(ptnsfw);
+					//StringIdChatParameter ptnsfw("Test","CostIndex != -1... Substring = %TT");
+					//ptnsfw.setTT(costIndex);
+					//creature->sendSystemMessage(ptnsfw);
 				}
 
 				listBox->removeAllMenuItems();
@@ -225,8 +225,8 @@ public:
 				
 				//The spawn name, with the " (" removed exists, so we much be looking at stats
 				if (spawn != nullptr) {
-					StringIdChatParameter ptnsfw("Test","Looking at stats");
-					creature->sendSystemMessage(ptnsfw);
+					//StringIdChatParameter ptnsfw("Test","Looking at stats");
+					//creature->sendSystemMessage(ptnsfw);
 					//spawn->addStatsToDeedListBox(listBox);
 					spawn->evaluatePurchaseListBox(listBox); //Ethan edit 6-1-24 (RESOURCE VENDOR)
 
@@ -234,8 +234,8 @@ public:
 				//The spawn name doesn't exist, so we much be cycling through the different branches of the resource map tree
 				else {
                     //if(resourceManager->hasSpawns(nodeName)) {
-                    StringIdChatParameter ptnsfw("Test","Different branches");
-					creature->sendSystemMessage(ptnsfw);
+                    //StringIdChatParameter ptnsfw("Test","Different branches");
+					//creature->sendSystemMessage(ptnsfw);
 					resourceManager->addNodeToListBox(listBox, nodeName);
 					//} 
 				}

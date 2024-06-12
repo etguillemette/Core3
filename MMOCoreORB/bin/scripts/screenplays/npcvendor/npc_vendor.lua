@@ -340,7 +340,11 @@ function NPCVendor:giveItem(pPlayer, itemData)
 				end
 			end
 		else
-			PlayerObject(pGhost):addEventPerk(pItem)
+			if(SceneObject(pInventory):isContainerFullRecursive() == false) then
+				PlayerObject(pGhost):addEventPerk(pItem)
+			else
+				CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
+			end
 		end
 	end
 end
