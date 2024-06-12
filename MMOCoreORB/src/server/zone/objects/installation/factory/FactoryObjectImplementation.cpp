@@ -741,14 +741,14 @@ void FactoryObjectImplementation::createNewObject() {
 		//Ethan edit 5-28-24 (FACTORY XP) Note: This will probably crash the server...
 		CreatureObject* owner = getOwnerCreatureObject();
 		String ownerName = owner->getFirstName().toLowerCase();
-		String crafterName = crate->getCraftersName().toLowerCase();
+		//String crafterName = crate->getCraftersName().toLowerCase();
 
 		DraftSchematic* draftSchematic = schematic->getDraftSchematic();
 		String xpType = draftSchematic->getXpType();
 		int xp = draftSchematic->getXpAmount();
 		xp = round(xp * 0.5f);
 
-		if (owner != nullptr && crafterName != nullptr && crafterName == ownerName)
+		if (owner != nullptr)
 		{
 			PlayerObject* ghost = owner->getPlayerObject().get();
 			
