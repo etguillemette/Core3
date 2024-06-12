@@ -3289,14 +3289,16 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				//MIND
 				uint32 oldMindBuffStrength = 0;
 				uint32 mindBuffCRC = STRING_HASHCODE("performance_enhance_dance_mind");
+				uint32 oldMindBuffModifier = 0;
 
 				if (asCreatureObject()->hasBuff(mindBuffCRC)) {
-					ManagedReference<PerformanceBuff*> oldMindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC));
-					oldMindBuffStrength = oldMindBuff->getBuffStrength()/1000;
+					ManagedReference<PerformanceBuff*> oldMindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC)); //
+					oldMindBuffStrength = oldMindBuff->getBuffStrength(); //Starts at 0
+					oldMindBuffModifier = oldMindBuff->getAttributeModifierValue(CreatureAttribute::MIND);
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && oldMindBuffStrength < cantinaMindBuffPoolStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, oldMindBuffStrength+10, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
+				if (asCreatureObject()->isPlayerCreature() && oldMindBuffModifier < cantinaMindBuffPoolStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, (oldMindBuffStrength)+0.01, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
 					Locker locker(mindBuff);
 					asCreatureObject()->addBuff(mindBuff);
 					locker.release();
@@ -3307,14 +3309,16 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				//FOCUS
 				uint32 oldFocusBuffStrength = 0;
 				uint32 focusBuffCRC = BuffCRC::PERFORMANCE_ENHANCE_MUSIC_FOCUS;
+				uint32 oldFocusBuffModifier = 0;
 
 				if (asCreatureObject()->hasBuff(focusBuffCRC)) {
 					ManagedReference<PerformanceBuff*> oldFocusBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(focusBuffCRC));
-					oldFocusBuffStrength = oldFocusBuff->getBuffStrength()/1000;
+					oldFocusBuffStrength = oldFocusBuff->getBuffStrength();
+					oldFocusBuffModifier = oldFocusBuff->getAttributeModifierValue(CreatureAttribute::FOCUS);
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && oldFocusBuffStrength < cantinaMindBuffAttrStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> focusBuff = new PerformanceBuff(asCreatureObject(), focusBuffCRC, oldFocusBuffStrength+10, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_FOCUS);
+				if (asCreatureObject()->isPlayerCreature() && oldFocusBuffModifier < cantinaMindBuffAttrStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> focusBuff = new PerformanceBuff(asCreatureObject(), focusBuffCRC, (oldFocusBuffStrength)+0.01, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_FOCUS);
 					Locker locker(focusBuff);
 					asCreatureObject()->addBuff(focusBuff);
 					locker.release();
@@ -3325,14 +3329,16 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				//WILLPOWER
 				uint32 oldWillpowerBuffStrength = 0;
 				uint32 willpowerBuffCRC = BuffCRC::PERFORMANCE_ENHANCE_MUSIC_WILLPOWER;
+				uint32 oldWillpowerBuffModifier = 0;
 
 				if (asCreatureObject()->hasBuff(willpowerBuffCRC)) {
 					ManagedReference<PerformanceBuff*> oldWillpowerBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(willpowerBuffCRC));
-					oldWillpowerBuffStrength = oldWillpowerBuff->getBuffStrength()/1000;
+					oldWillpowerBuffStrength = oldWillpowerBuff->getBuffStrength();
+					oldWillpowerBuffModifier = oldWillpowerBuff->getAttributeModifierValue(CreatureAttribute::WILLPOWER);
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && oldWillpowerBuffStrength < cantinaMindBuffAttrStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> willpowerBuff = new PerformanceBuff(asCreatureObject(), willpowerBuffCRC, oldWillpowerBuffStrength+10, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_WILLPOWER);
+				if (asCreatureObject()->isPlayerCreature() && oldWillpowerBuffModifier < cantinaMindBuffAttrStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> willpowerBuff = new PerformanceBuff(asCreatureObject(), willpowerBuffCRC, (oldWillpowerBuffStrength)+0.01, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_WILLPOWER);
 					Locker locker(willpowerBuff);
 					asCreatureObject()->addBuff(willpowerBuff);
 					locker.release();

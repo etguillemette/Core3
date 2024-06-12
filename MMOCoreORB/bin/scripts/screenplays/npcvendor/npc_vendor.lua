@@ -332,9 +332,12 @@ function NPCVendor:giveItem(pPlayer, itemData)
 
 	if (pItem ~= nil) then
 		if(quantity ~= nil) then
-			for i = 1, quantity, 1 do	
+			for i = 1, quantity do	
 				if(SceneObject(pInventory):isContainerFullRecursive() == false) then
-					PlayerObject(pGhost):addEventPerk(pItem)
+					local pItemStack = giveItem(pInventory,templatePath, -1)
+					if(pItemStack ~= nil) then
+						PlayerObject(pGhost):addEventPerk(pItemStack)
+					end
 				else
 					CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
 				end
@@ -454,7 +457,8 @@ function NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
 	local suiManager = LuaSuiManager()
 
 	--suiManager:sendListBox(pNpc, pPlayer, "Title", "Description", 3, "@cancel", "@back", "&ok", "Resources", "ResourceDeedCallback", 32, options);
-	suiManager:sendListBox(pNpc, pPlayer, "@veteran:resource_title", "@veteran:choose_class", 3, "@cancel", "@back", "@ok", "Resources", "ResourceDeedSuiCallback", 32, "Resources")
+	--suiManager:sendListBox(pNpc, pPlayer, "@veteran:resource_title", "@veteran:choose_class", 3, "@cancel", "@back", "@ok", "Resources", "ResourceDeedSuiCallback", 32, "Resources")
+	--suiManager:sendResourceSaleSui(pPlayer)
 end
 
 
