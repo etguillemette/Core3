@@ -1,19 +1,19 @@
-brawler_novice = Creature:new {
+brawler_mid = Creature:new {
 	objectName = "@mob/creature_names:brawler",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
-	level = 10,
+	level = 15,
 	chanceHit = 0.5,
-	damageMin = 40,
-	damageMax = 45,
+	damageMin = 80,
+	damageMax = 90,
 	baseXp = 62,
-	baseHAM = 500,
-	baseHAMmax = 750,
+	baseHAM = 1000,
+	baseHAMmax = 1500,
 	armor = 0,
-	resists = {15,15,15,15,15,15,15,-1,-1},
+	resists = {30,30,30,30,30,30,30,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -41,8 +41,8 @@ brawler_novice = Creature:new {
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = brawlernovice,
+	primaryAttacks = brawlermid,
 	secondaryAttacks = { }
 }
 
-CreatureTemplates:addCreatureTemplate(brawler_novice, "brawler_novice")
+CreatureTemplates:addCreatureTemplate(brawler_mid, "brawler_mid")
