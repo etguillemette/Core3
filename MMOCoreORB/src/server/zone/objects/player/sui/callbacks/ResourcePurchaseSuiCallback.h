@@ -66,13 +66,21 @@ public:
 			if(nodeName == "Resources" || nodeName == "Resource")
 				return;
 
-			listBox->setPromptTitle("@veteran:resource_title");
-			listBox->setPromptText("@veteran:choose_class");
+			if(purchaseScreen == true){
+				nodeName == "Resources";
+				listBox->setPromptTitle("@veteran:resource_title");
+				listBox->setPromptText("@veteran:choose_class");
 
-			listBox->removeAllMenuItems();
+				listBox->removeAllMenuItems();
+				resourceManager->addNodeToListBox(listBox, nodeName);
+			}
+			else{
+				listBox->setPromptTitle("@veteran:resource_title");
+				listBox->setPromptText("@veteran:choose_class");
 
-			nodeName = resourceManager->addParentNodeToListBox(listBox, nodeName);
-
+				listBox->removeAllMenuItems();
+				nodeName = resourceManager->addParentNodeToListBox(listBox, nodeName);
+			}
 		} 
 		//CANCEL BUTTON
 		else if(cancelPressed)

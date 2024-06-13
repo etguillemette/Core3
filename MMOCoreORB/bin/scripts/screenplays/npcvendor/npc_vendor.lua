@@ -233,7 +233,7 @@ function NPCVendor:getWaresTable(category)
 	elseif category == "wares_marksman" then
 		return genericWaresData.hiresMarksman
 	elseif category == "wares_brawler" then
-		return genericWaresData.hiresMarksman
+		return genericWaresData.hiresBrawler
 	elseif category == "wares_resource" then
 		return genericWaresData.waresResource
 	end
