@@ -68,7 +68,8 @@ function JunkDealer:getEligibleJunk(pPlayer, dealerType, skipItem)
 			if sceno:getObjectID() ~= skipItem then
 				--Ethan edit 5-11-24 (JUNK DEALER VENDOR): removing the line "and tano:getCraftersName() == "" below...
 				if tano:getJunkDealerNeeded() & dealerNum > 0 and not tano:isBroken() and not tano:isSliced() and not tano:isNoTrade() and sceno:getContainerObjectsSize() == 0 then
-					--End Ethan edit 5-11-24 (JUNK DEALER VENDOR):					local name = sceno:getDisplayedName()
+					--End Ethan edit 5-11-24 (JUNK DEALER VENDOR):					
+					local name = sceno:getDisplayedName()
 					local value = tano:getJunkValue()
 					local textTable = {"[" .. value .. "] " .. name, sceno:getObjectID()}
 					table.insert(junkList, textTable)

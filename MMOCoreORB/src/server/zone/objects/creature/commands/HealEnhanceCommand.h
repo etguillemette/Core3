@@ -428,9 +428,9 @@ public:
 		lua->init();
 
 		lua->runFile("scripts/managers/player_manager.lua");
-		int selfHealEnabled = lua->getGlobalBoolean("selfHealEnabled"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+		int soloMedicExp = lua->getGlobalBoolean("soloMedicExp"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
 		//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
-		if ((patient->getObjectID() != enhancer->getObjectID()) || selfHealEnabled == true)
+		if ((patient->getObjectID() != enhancer->getObjectID()) || soloMedicExp == true)
 			awardXp(enhancer, "medical", amountEnhanced); // No experience for healing yourself.
 
 		doAnimations(enhancer, patient);

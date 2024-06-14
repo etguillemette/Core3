@@ -67,12 +67,7 @@ public:
 				return;
 
 			if(purchaseScreen == true){
-				nodeName == "Resources";
-				listBox->setPromptTitle("@veteran:resource_title");
-				listBox->setPromptText("@veteran:choose_class");
-
-				listBox->removeAllMenuItems();
-				resourceManager->addNodeToListBox(listBox, nodeName);
+				return;
 			}
 			else{
 				listBox->setPromptTitle("@veteran:resource_title");

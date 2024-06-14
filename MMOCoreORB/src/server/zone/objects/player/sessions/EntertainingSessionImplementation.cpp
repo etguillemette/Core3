@@ -1078,9 +1078,9 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 				lua->init();
 
 				lua->runFile("scripts/managers/player_manager.lua");
-				bool entertainerSelfExp = lua->getGlobalBoolean("entertainerSelfExp");
+				bool soloEntertainerExp = lua->getGlobalBoolean("soloEntertainerExp");
 
-				if(entertainerSelfExp == true)
+				if(soloEntertainerExp == true)
 				{
 					String healxptype("entertainer_healing");
 					playerManager->awardExperience(player, healxptype, xpAmount, true);

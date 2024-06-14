@@ -272,9 +272,9 @@ public:
 			lua->init();
 
 			lua->runFile("scripts/managers/player_manager.lua");
-			int selfHealEnabled = lua->getGlobalBoolean("selfHealEnabled"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			int soloMedicExp = lua->getGlobalBoolean("soloMedicExp"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
 			//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
-			if ((targetCreature != creature && !targetCreature->isPet()) || selfHealEnabled == true) //End Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			if ((targetCreature != creature && !targetCreature->isPet()) || soloMedicExp == true) //End Ethan edit 5-6-24 (XP FOR SELF HEALS)
 				awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself or pets.
 
 			checkForTef(creature, targetCreature);

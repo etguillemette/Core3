@@ -276,9 +276,9 @@ public:
 			lua->init();
 
 			lua->runFile("scripts/managers/player_manager.lua");
-			int selfHealEnabled = lua->getGlobalBoolean("selfHealEnabled"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			int soloMedicExp = lua->getGlobalBoolean("soloMedicExp"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
 			//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
-			if (((creatureTarget != creature) || selfHealEnabled == 1) && healedWounds > 0) {
+			if (((creatureTarget != creature) || soloMedicExp == 1) && healedWounds > 0) {
 				awardXp(creature, "medical", round(healedWounds * 2.5f));
 				creature->notifyObservers(ObserverEventType::ABILITYUSED, creatureTarget, STRING_HASHCODE("tendwound"));
 			}

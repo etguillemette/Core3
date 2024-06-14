@@ -739,31 +739,39 @@ void FactoryObjectImplementation::createNewObject() {
 		broadcastToOperators(dfcty3);
 
 		//Ethan edit 5-28-24 (FACTORY XP) Note: This will probably crash the server...
-		CreatureObject* owner = getOwnerCreatureObject();
-		String ownerName = owner->getFirstName().toLowerCase();
-		//String crafterName = crate->getCraftersName().toLowerCase();
+		Lua* lua = new Lua();
+		lua->init();
 
-		DraftSchematic* draftSchematic = schematic->getDraftSchematic();
-		String xpType = draftSchematic->getXpType();
-		int xp = draftSchematic->getXpAmount();
-		xp = round(xp * 0.5f);
+		lua->runFile("scripts/managers/player_manager.lua");
+		bool factoryExp = lua->getGlobalBoolean("factoryExp");
+		float factoryExpRate = lua->getGlobalFloat("factoryExpRate");
+		
+		if(factoryExp == true){
+			CreatureObject* owner = getOwnerCreatureObject();
+			String ownerName = owner->getFirstName().toLowerCase();
+			//String crafterName = crate->getCraftersName().toLowerCase();
 
-		if (owner != nullptr)
-		{
-			PlayerObject* ghost = owner->getPlayerObject().get();
-			
-			if (ghost != nullptr) {
-				TransactionLog trx(TrxCode::EXPERIENCE, owner);
-				ghost->addExperience(trx, xpType, xp, true);
+			DraftSchematic* draftSchematic = schematic->getDraftSchematic();
+			String xpType = draftSchematic->getXpType();
+			int xp = draftSchematic->getXpAmount();
+			xp = round(xp * factoryExpRate);
+
+			if (owner != nullptr)
+			{
+				PlayerObject* ghost = owner->getPlayerObject().get();
+				
+				if (ghost != nullptr) {
+					TransactionLog trx(TrxCode::EXPERIENCE, owner);
+					ghost->addExperience(trx, xpType, xp, true);
+				}
+				else{
+					return;
+				}
 			}
-			else{
+			else {
 				return;
 			}
 		}
-		else {
-			return;
-		}
-
 		//End Ethan edit 5-28-24 (FACTORY XP)
 	} else {
 		ManagedReference<TangibleObject*> newItem = createNewUncratedItem(prototype);

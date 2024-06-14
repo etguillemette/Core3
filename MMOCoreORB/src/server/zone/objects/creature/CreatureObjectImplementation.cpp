@@ -2981,14 +2981,15 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	lua->init();
 
 	lua->runFile("scripts/managers/player_manager.lua");
-	bool entertainerSelfExp = lua->getGlobalBoolean("entertainerSelfExp");
 	bool autoDoctor = lua->getGlobalBoolean("autoDoctor");
 	float hospitalMedBuffDuration = lua->getGlobalFloat("hospitalMedBuffDuration");
+	float hospitalMedBuffTickStrength = lua->getGlobalFloat("hospitalMedBuffTickStrength");
 	float hospitalMedBuffPoolStrength = lua->getGlobalFloat("hospitalMedBuffPoolStrength");
 	float hospitalMedBuffAttrStrength = lua->getGlobalFloat("hospitalMedBuffAttrStrength");
 	
 	bool autoEntertainer = lua->getGlobalBoolean("autoEntertainer");
 	float cantinaMindBuffDuration = lua->getGlobalFloat("cantinaMindBuffDuration");
+	float cantinaMindBuffTickStrength = lua->getGlobalFloat("cantinaMindBuffTickStrength");
 	float cantinaMindBuffPoolStrength = lua->getGlobalFloat("cantinaMindBuffPoolStrength");
 	float cantinaMindBuffAttrStrength = lua->getGlobalFloat("cantinaMindBuffAttrStrength");
 
@@ -3067,7 +3068,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && heacurrentBuff < hospitalMedBuffPoolStrength && buffPrice < cash) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::HEALTH, heacurrentBuff + 5, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::HEALTH, heacurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractBankCredits(buffPrice);
 					chargeTotal += buffPrice;
 				}
@@ -3082,7 +3083,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && concurrentBuff < hospitalMedBuffAttrStrength && buffPrice < cash) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::CONSTITUTION, concurrentBuff + 5, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::CONSTITUTION, concurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractBankCredits(buffPrice);
 					chargeTotal += buffPrice;
 				}
@@ -3097,7 +3098,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && strcurrentBuff < hospitalMedBuffAttrStrength && buffPrice < cash) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STRENGTH, strcurrentBuff + 5, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STRENGTH, strcurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractBankCredits(buffPrice);
 					chargeTotal += buffPrice;
 				}
@@ -3175,7 +3176,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && actcurrentBuff < hospitalMedBuffPoolStrength && cash > buffPrice) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::ACTION, actcurrentBuff + 5, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::ACTION, actcurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractCashCredits(buffPrice);
 					chargeTotal += buffPrice;					
 				}
@@ -3190,7 +3191,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && quicurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::QUICKNESS, quicurrentBuff + 5, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::QUICKNESS, quicurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractCashCredits(buffPrice);
 					chargeTotal += buffPrice;
 				}
@@ -3205,7 +3206,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && stacurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
-					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STAMINA, stacurrentBuff + 5, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
+					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STAMINA, stacurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 					asCreatureObject()->subtractCashCredits(buffPrice);
 					chargeTotal += buffPrice;
 				}
@@ -3299,11 +3300,14 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					oldMindBuffModifier = oldMindBuff->getAttributeModifierValue(CreatureAttribute::MIND);
 					mindStatBefore = asCreatureObject()->getHAM(CreatureAttribute::MIND);
 
-					mindPercentageIncrease = 1.0 - (mindStatBefore / (mindStatBefore + oldMindBuffModifier));
+					mindPercentageIncrease = (1.0 - ((mindStatBefore + oldMindBuffModifier) / mindStatBefore)) + cantinaMindBuffTickStrength;
+					if(mindPercentageIncrease > cantinaMindBuffPoolStrength){
+						mindPercentageIncrease = cantinaMindBuffPoolStrength;
+					}
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && oldMindBuffModifier < cantinaMindBuffPoolStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindPercentageIncrease + 0.05, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
+				if (asCreatureObject()->isPlayerCreature() && mindPercentageIncrease < cantinaMindBuffPoolStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindPercentageIncrease, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
 					Locker locker(mindBuff);
 					asCreatureObject()->addBuff(mindBuff);
 					locker.release();
@@ -3324,11 +3328,14 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					oldFocusBuffModifier = oldFocusBuff->getAttributeModifierValue(CreatureAttribute::FOCUS);
 					focusStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS);
 
-					focusPercentageIncrease = 1.0 - (focusStatBefore / (focusStatBefore + oldFocusBuffModifier));
+					focusPercentageIncrease = (1.0 - ((focusStatBefore + oldFocusBuffModifier)/focusStatBefore)) + cantinaMindBuffTickStrength;
+					if(focusPercentageIncrease > cantinaMindBuffAttrStrength){
+						focusPercentageIncrease = cantinaMindBuffAttrStrength;
+					}
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && oldFocusBuffModifier < cantinaMindBuffAttrStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> focusBuff = new PerformanceBuff(asCreatureObject(), focusBuffCRC, focusPercentageIncrease + 0.05, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_FOCUS);
+				if (asCreatureObject()->isPlayerCreature() && focusPercentageIncrease < cantinaMindBuffAttrStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> focusBuff = new PerformanceBuff(asCreatureObject(), focusBuffCRC, focusPercentageIncrease, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_FOCUS);
 					Locker locker(focusBuff);
 					asCreatureObject()->addBuff(focusBuff);
 					locker.release();
@@ -3349,11 +3356,14 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					oldWillpowerBuffModifier = oldWillpowerBuff->getAttributeModifierValue(CreatureAttribute::WILLPOWER);
 					willpowerStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS);
 
-					willpowerPercentageIncrease = 1.0 - (willpowerStatBefore / (willpowerStatBefore + oldWillpowerBuffModifier));
+					willpowerPercentageIncrease = (1.0 - ((willpowerStatBefore + oldWillpowerBuffModifier)/ willpowerStatBefore)) + cantinaMindBuffTickStrength;
+					if(willpowerPercentageIncrease > cantinaMindBuffAttrStrength){
+						willpowerPercentageIncrease = cantinaMindBuffAttrStrength;
+					}
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && oldWillpowerBuffModifier < cantinaMindBuffAttrStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> willpowerBuff = new PerformanceBuff(asCreatureObject(), willpowerBuffCRC, willpowerPercentageIncrease + 0.05, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_WILLPOWER);
+				if (asCreatureObject()->isPlayerCreature() && willpowerPercentageIncrease < cantinaMindBuffAttrStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> willpowerBuff = new PerformanceBuff(asCreatureObject(), willpowerBuffCRC, willpowerPercentageIncrease, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_WILLPOWER);
 					Locker locker(willpowerBuff);
 					asCreatureObject()->addBuff(willpowerBuff);
 					locker.release();
