@@ -174,3 +174,25 @@ int LuaSuiManager::sendTransferBox(lua_State* L) {
 	return 0;
 }
 
+//Ethan edit 6-14-24 (RESOURCE VENDOR)
+int LuaSuiManager::sendResourceListBox(lua_State* L) {
+	if (lua_gettop(L) - 1 < 9) {
+		Logger::console.error("incorrect number of arguments for LuaSuiManager::sendListBox");
+		return 0;
+	}
+
+	SceneObject* creature = (SceneObject*) lua_touserdata(L, -9);
+	String title = lua_tostring(L, -8);
+	String text = lua_tostring(L, -7);
+	String cancelButton = lua_tostring(L, -6);
+	String otherButton = lua_tostring(L, -5);
+	String okButton = lua_tostring(L, -4);
+	String screenplay = lua_tostring(L, -3);
+	String callback = lua_tostring(L, -2);
+	float forceCloseDist = lua_tonumber(L, -1);
+
+	//realObject->sendListBox(creature, title, text, cancelButton, otherButton, okButton, screenplay, callback, forceCloseDist);
+
+	return 0;
+}
+//End Ethan edit 6-14-24 (RESOURCE VENDOR)

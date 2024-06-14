@@ -31,6 +31,7 @@ namespace sui {
 		int sendListBox(lua_State* L);
 		int sendTransferBox(lua_State* L);
 		int sendSuiPage(lua_State* L);
+		int sendResourceListBox(lua_State* L); //Ethan edit 6-14-24 (RESOURCE VENDOR)
 
 	private:
 		Reference<SuiManager*> realObject;

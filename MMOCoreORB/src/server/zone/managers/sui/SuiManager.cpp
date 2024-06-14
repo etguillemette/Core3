@@ -819,3 +819,37 @@ int32 SuiManager::sendSuiPage(CreatureObject* creature, SuiPageData* pageData, c
 
 	return 0;
 }
+
+//Ethan edit 6-14-24 (RESOURCE VENDOR)
+/*
+void SuiManager::sendResourceListBox(SceneObject* player, const String& title, const String& text, const String& cancelButton, const String& otherButton, const String& okButton, const String& screenplay, const String& callback, const float& forceCloseDist) {
+	if (player == nullptr || !player->isCreatureObject())
+		return;
+
+	CreatureObject* creature = cast<CreatureObject*>(player);
+
+	PlayerObject* playerObject = creature->getPlayerObject();
+
+	if (playerObject != nullptr) {
+		ManagedReference<SuiListBox*> box = nullptr;
+
+		box = new SuiListBox(creature, 0x00, SuiListBox::HANDLETHREEBUTTON);
+		box->setCancelButton(true, cancelButton);
+		box->setOtherButton(true, otherButton);
+		box->setOkButton(true, okButton);
+
+		//box->setCallback(new ResourcePurchaseSuiCallback(server->getZoneServer(), "Resource"));
+		box->setPromptTitle(title);
+		box->setPromptText(text);
+		box->setForceCloseDistance(forceCloseDist);
+
+		creature->sendMessage(box->generateMessage());
+		playerObject->addSuiBox(box);
+
+		ManagedReference<ResourceManager*> resourceManager = server->getZoneServer()->getResourceManager();
+		resourceManager->addNodeToListBox(box, "resource");
+		playerObject->addSuiBox(box);
+		creature->sendMessage(box->generateMessage());
+	}
+}
+*/
