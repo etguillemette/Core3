@@ -47,6 +47,11 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
 	local endIndex = math.ceil(inventoryTable.inventoryEndIndex * #waresData)
 	
+	local quantity = waresData[i].quantity
+
+	if(quantity == nil) then
+		quantity = 1
+	end
 
 	local options = { }
 	--	for i = 1, #waresData, 1 do --TESTING
@@ -58,9 +63,6 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
 	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "NPCVendor", "handleSuiPurchase", 32, options)
 end
-
-
-
 
 function NPCVendor:getWaresTable(category)
 	

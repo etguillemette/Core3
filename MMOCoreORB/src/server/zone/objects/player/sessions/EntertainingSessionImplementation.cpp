@@ -1084,7 +1084,14 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 				{
 					String healxptype("entertainer_healing");
 					playerManager->awardExperience(player, healxptype, xpAmount, true);
-					player->addCashCredits(round(xpAmount/10)); //Give single player entertainers some cash
+
+					int tipAmount = round(xpAmount/10);
+
+					if(xpAmounnt < 1){
+						tipAmount = 1;
+					}
+
+					player->addCashCredits(tipAmount); //Give single player entertainers some cash
 				}
 				//End Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
 			}
