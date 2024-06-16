@@ -1087,7 +1087,7 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 
 					int tipAmount = round(xpAmount/10);
 
-					if(xpAmount < 1){
+					if(tipAmount < 1){
 						tipAmount = 1;
 					}
 

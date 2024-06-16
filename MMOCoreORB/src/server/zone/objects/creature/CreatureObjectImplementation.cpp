@@ -3313,6 +3313,22 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					locker.release();
 					asCreatureObject()->subtractCashCredits(buffPrice);
 					chargeTotal += buffPrice;
+
+					StringIdChatParameter printbuffstr("Test", "oldMindBuffStrength = %DI");
+					printbuffstr.setDI(oldMindBuffStrength);
+					asCreatureObject()->sendSystemMessage(printbuffstr);
+
+					StringIdChatParameter printbuffmod("Test", "oldMindBuffModifier = %DI");
+					printbuffmod.setDI(oldMindBuffModifier);
+					asCreatureObject()->sendSystemMessage(printbuffmod);
+
+					StringIdChatParameter printstatebefore("Test", "mindStatBefore = %DI");
+					printstatebefore.setDI(mindStatBefore);
+					asCreatureObject()->sendSystemMessage(printstatebefore);
+
+					StringIdChatParameter printpercentincrease("Test", "mindPercentageIncrease = %DI");
+					printpercentincrease.setDI(mindPercentageIncrease);
+					asCreatureObject()->sendSystemMessage(printpercentincrease);
 				}
 
 				//FOCUS
