@@ -3288,25 +3288,27 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				int chargeTotal = 0;
 
 				//MIND
-				uint32 oldMindBuffStrength = 0; //0
+				uint32 oldMindBuffStrength = 0.0; //0
 				uint32 mindBuffCRC = STRING_HASHCODE("performance_enhance_dance_mind");
 				uint32 oldMindBuffModifier = 0; //0
 				uint32 mindStatBefore = 0; //0
 				float mindPercentageIncrease = 0.0; //0
 
+				mindStatBefore = asCreatureObject()->getHAM(CreatureAttribute::MIND); //1000 | 2000 | 2000
+
 				if (asCreatureObject()->hasBuff(mindBuffCRC)) {
 					ManagedReference<PerformanceBuff*> oldMindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC)); //
 					oldMindBuffStrength = oldMindBuff->getBuffStrength(); //0 | 1.00 | 1.0
 					oldMindBuffModifier = oldMindBuff->getAttributeModifierValue(CreatureAttribute::MIND); //0 | 1000 | 1000
-					mindStatBefore = asCreatureObject()->getHAM(CreatureAttribute::MIND); //1000 | 2000 | 2000
-					//(0 + 0 /  0) = 0 + .05 - 1.0 = 
-					//Actual mind = 1000 / 2000 / 2000
-					mindPercentageIncrease = ((mindStatBefore + oldMindBuffModifier/ mindStatBefore) + cantinaMindBuffTickStrength) - 1.0; //0.0 | 1.0 | 1.0
-					if(mindPercentageIncrease > cantinaMindBuffPoolStrength){
-						mindPercentageIncrease = cantinaMindBuffPoolStrength;
-					}
 				}
-				
+				//(0 + 0 /  0) = 0 + .05 - 1.0 = 
+				//Actual mind = 1000 / 2000 / 2000
+				mindPercentageIncrease = ((mindStatBefore + oldMindBuffModifier)/ mindStatBefore) + cantinaMindBuffTickStrength - 1.0; //0.0 | 1.0 | 1.0
+				if(mindPercentageIncrease > cantinaMindBuffPoolStrength){
+					mindPercentageIncrease = cantinaMindBuffPoolStrength;
+				}
+
+
 				if (asCreatureObject()->isPlayerCreature() && mindPercentageIncrease <= cantinaMindBuffPoolStrength && cash > buffPrice) {
 					StringIdChatParameter printbuffstr("Test", "oldMindBuffStrength = %DF");
 					printbuffstr.setDF(oldMindBuffStrength);
@@ -3350,12 +3352,12 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					ManagedReference<PerformanceBuff*> oldFocusBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(focusBuffCRC));
 					oldFocusBuffStrength = oldFocusBuff->getBuffStrength();
 					oldFocusBuffModifier = oldFocusBuff->getAttributeModifierValue(CreatureAttribute::FOCUS);
-					focusStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS) - oldFocusBuffModifier;
-					//mindPercentageIncrease = ((mindStatBefore / (mindStatBefore - oldMindBuffModifier)) + cantinaMindBuffTickStrength) - 1.0;
-					focusPercentageIncrease = ((focusStatBefore / (focusStatBefore - oldFocusBuffModifier)) + cantinaMindBuffTickStrength) - 1.0;
-					if(focusPercentageIncrease > cantinaMindBuffAttrStrength){
-						focusPercentageIncrease = cantinaMindBuffAttrStrength;
-					}
+				}
+
+				focusStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS);
+				focusPercentageIncrease = ((focusStatBefore + oldFocusBuffModifier) / focusStatBefore) + cantinaMindBuffTickStrength - 1.0;
+				if(focusPercentageIncrease > cantinaMindBuffAttrStrength){
+					focusPercentageIncrease = cantinaMindBuffAttrStrength;
 				}
 				
 				if (asCreatureObject()->isPlayerCreature() && focusPercentageIncrease < cantinaMindBuffAttrStrength && cash > buffPrice) {
@@ -3378,14 +3380,13 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					ManagedReference<PerformanceBuff*> oldWillpowerBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(willpowerBuffCRC));
 					oldWillpowerBuffStrength = oldWillpowerBuff->getBuffStrength();
 					oldWillpowerBuffModifier = oldWillpowerBuff->getAttributeModifierValue(CreatureAttribute::WILLPOWER);
-					willpowerStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS) - oldWillpowerBuffModifier;
-					//mindPercentageIncrease = ((mindStatBefore / (mindStatBefore - oldMindBuffModifier)) + cantinaMindBuffTickStrength) - 1.0;
-					willpowerPercentageIncrease = ((willpowerStatBefore / (willpowerStatBefore - oldWillpowerBuffModifier)) + cantinaMindBuffTickStrength) - 1.0;
-					if(willpowerPercentageIncrease > cantinaMindBuffAttrStrength){
-						willpowerPercentageIncrease = cantinaMindBuffAttrStrength;
-					}
 				}
-				
+				willpowerStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS) - oldWillpowerBuffModifier;
+				willpowerPercentageIncrease = ((willpowerStatBefore + oldWillpowerBuffModifier) / willpowerStatBefore) + cantinaMindBuffTickStrength - 1.0;
+				if(willpowerPercentageIncrease > cantinaMindBuffAttrStrength){
+					willpowerPercentageIncrease = cantinaMindBuffAttrStrength;
+				}
+
 				if (asCreatureObject()->isPlayerCreature() && willpowerPercentageIncrease < cantinaMindBuffAttrStrength && cash > buffPrice) {
 					ManagedReference<PerformanceBuff*> willpowerBuff = new PerformanceBuff(asCreatureObject(), willpowerBuffCRC, willpowerPercentageIncrease, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_WILLPOWER);
 					Locker locker(willpowerBuff);
