@@ -3296,17 +3296,39 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 				if (asCreatureObject()->hasBuff(mindBuffCRC)) {
 					ManagedReference<PerformanceBuff*> oldMindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC)); //
-					oldMindBuffStrength = oldMindBuff->getBuffStrength(); //0
-					oldMindBuffModifier = oldMindBuff->getAttributeModifierValue(CreatureAttribute::MIND); //50
-					mindStatBefore = asCreatureObject()->getHAM(CreatureAttribute::MIND) - oldMindBuffModifier; //1155
-					// ((1155 + 50) / 1155) -- this is 1.043290043 + 0.05 -- this is now 1.093290043 - 1.0 = 1.043290043 
-					mindPercentageIncrease = ((mindStatBefore / (mindStatBefore - oldMindBuffModifier)) + cantinaMindBuffTickStrength) - 1.0;
+					oldMindBuffStrength = oldMindBuff->getBuffStrength(); //0 | 1.00 | 1.0
+					oldMindBuffModifier = oldMindBuff->getAttributeModifierValue(CreatureAttribute::MIND); //0 | 1000 | 1000
+					mindStatBefore = asCreatureObject()->getHAM(CreatureAttribute::MIND); //1000 | 2000 | 2000
+					//(0 + 0 /  0) = 0 + .05 - 1.0 = 
+					//Actual mind = 1000 / 2000 / 2000
+					mindPercentageIncrease = ((mindStatBefore + oldMindBuffModifier/ mindStatBefore) + cantinaMindBuffTickStrength) - 1.0; //0.0 | 1.0 | 1.0
 					if(mindPercentageIncrease > cantinaMindBuffPoolStrength){
 						mindPercentageIncrease = cantinaMindBuffPoolStrength;
 					}
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && mindPercentageIncrease < cantinaMindBuffPoolStrength && cash > buffPrice) {
+				if (asCreatureObject()->isPlayerCreature() && mindPercentageIncrease <= cantinaMindBuffPoolStrength && cash > buffPrice) {
+					StringIdChatParameter printbuffstr("Test", "oldMindBuffStrength = %DF");
+					printbuffstr.setDF(oldMindBuffStrength);
+					asCreatureObject()->sendSystemMessage(printbuffstr);
+					//0 | 0 | 1.0
+
+					StringIdChatParameter printbuffmod("Test", "oldMindBuffModifier = %DI");
+					printbuffmod.setDI(oldMindBuffModifier);
+					asCreatureObject()->sendSystemMessage(printbuffmod);
+					//0 | 0 | 1000
+
+					StringIdChatParameter printstatebefore("Test", "mindStatBefore = %DI");
+					printstatebefore.setDI(mindStatBefore);
+					asCreatureObject()->sendSystemMessage(printstatebefore);
+					//0 | 1000 | 1000
+
+					StringIdChatParameter printpercentincrease("Test", "mindPercentageIncrease = %DF");
+					printpercentincrease.setDF(mindPercentageIncrease);
+					asCreatureObject()->sendSystemMessage(printpercentincrease);
+					//0.0 | 1.0 | 1.0
+					
+					
 					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindPercentageIncrease, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
 					Locker locker(mindBuff);
 					asCreatureObject()->addBuff(mindBuff);
@@ -3314,21 +3336,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					asCreatureObject()->subtractCashCredits(buffPrice);
 					chargeTotal += buffPrice;
 
-					StringIdChatParameter printbuffstr("Test", "oldMindBuffStrength = %DI");
-					printbuffstr.setDI(oldMindBuffStrength);
-					asCreatureObject()->sendSystemMessage(printbuffstr);
-
-					StringIdChatParameter printbuffmod("Test", "oldMindBuffModifier = %DI");
-					printbuffmod.setDI(oldMindBuffModifier);
-					asCreatureObject()->sendSystemMessage(printbuffmod);
-
-					StringIdChatParameter printstatebefore("Test", "mindStatBefore = %DI");
-					printstatebefore.setDI(mindStatBefore);
-					asCreatureObject()->sendSystemMessage(printstatebefore);
-
-					StringIdChatParameter printpercentincrease("Test", "mindPercentageIncrease = %DI");
-					printpercentincrease.setDI(mindPercentageIncrease);
-					asCreatureObject()->sendSystemMessage(printpercentincrease);
+					
 				}
 
 				//FOCUS
