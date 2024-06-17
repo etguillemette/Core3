@@ -3303,7 +3303,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 				//(0 + 0 /  0) = 0 + .05 - 1.0 = 
 				//Actual mind = 1000 / 2000 / 2000
-				mindPercentageIncrease = ((mindStatBefore + oldMindBuffModifier)/ mindStatBefore) + cantinaMindBuffTickStrength - 1.0; //0.0 | 1.0 | 1.0
+				mindPercentageIncrease = (mindStatBefore / (mindStatBefore - oldMindBuffModifier)) + cantinaMindBuffTickStrength - 1.0; //0.0 | 1.0 | 1.0
 				if(mindPercentageIncrease > cantinaMindBuffPoolStrength){
 					mindPercentageIncrease = cantinaMindBuffPoolStrength;
 				}
@@ -3337,8 +3337,6 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					locker.release();
 					asCreatureObject()->subtractCashCredits(buffPrice);
 					chargeTotal += buffPrice;
-
-					
 				}
 
 				//FOCUS
@@ -3355,7 +3353,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				}
 
 				focusStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS);
-				focusPercentageIncrease = ((focusStatBefore + oldFocusBuffModifier) / focusStatBefore) + cantinaMindBuffTickStrength - 1.0;
+				focusPercentageIncrease = (focusStatBefore / (focusStatBefore - oldFocusBuffModifier)) + cantinaMindBuffTickStrength - 1.0;
 				if(focusPercentageIncrease > cantinaMindBuffAttrStrength){
 					focusPercentageIncrease = cantinaMindBuffAttrStrength;
 				}
@@ -3382,7 +3380,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					oldWillpowerBuffModifier = oldWillpowerBuff->getAttributeModifierValue(CreatureAttribute::WILLPOWER);
 				}
 				willpowerStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS) - oldWillpowerBuffModifier;
-				willpowerPercentageIncrease = ((willpowerStatBefore + oldWillpowerBuffModifier) / willpowerStatBefore) + cantinaMindBuffTickStrength - 1.0;
+				willpowerPercentageIncrease = (willpowerStatBefore / (willpowerStatBefore - oldWillpowerBuffModifier)) + cantinaMindBuffTickStrength - 1.0;
 				if(willpowerPercentageIncrease > cantinaMindBuffAttrStrength){
 					willpowerPercentageIncrease = cantinaMindBuffAttrStrength;
 				}
