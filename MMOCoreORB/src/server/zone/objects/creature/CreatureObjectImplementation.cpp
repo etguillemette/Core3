@@ -3288,66 +3288,75 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				int chargeTotal = 0;
 
 				//MIND
-				uint32 oldMindBuffStrength = 0.0; //0
+				uint32 mindBuffStrength = 0.0; //0
 				uint32 mindBuffCRC = STRING_HASHCODE("performance_enhance_dance_mind");
-				uint32 oldMindBuffModifier = 0; //0
-				uint32 mindStatBefore = 0; //0
-				float mindPercentageIncrease = 0.0; //0
+				uint32 mindBuffModifier = 0; //0
+				uint32 mindStat = 0; //0
+				float mindBuffIncrease = 0.0; //0
 
-				mindStatBefore = asCreatureObject()->getHAM(CreatureAttribute::MIND); //1000 | 1050 | 1050
+				mindStat = asCreatureObject()->getHAM(CreatureAttribute::MIND); //1000 | 1050 | 1050
 
 				if (asCreatureObject()->hasBuff(mindBuffCRC)) {
 					StringIdChatParameter printhasbuff("Test", "Has buff");
 					asCreatureObject()->sendSystemMessage(printhasbuff);
 
-					ManagedReference<PerformanceBuff*> oldMindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC)); //
-					oldMindBuffStrength = oldMindBuff->getBuffStrength(); //0.0 | 0.00 | 0.0
-					oldMindBuffModifier = oldMindBuff->getAttributeModifierValue(CreatureAttribute::MIND); //0 | 50 | 50???
+					ManagedReference<PerformanceBuff*> mindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC)); //
+					mindBuffStrength = mindBuff->getBuffStrength(); //0.0 | 0.00 | 0.0
+					mindBuffModifier = mindBuff->getAttributeModifierValue(CreatureAttribute::MIND); //0 | 50 | 50???
 				}
 				
-				StringIdChatParameter printstatebefore("Test", "mindStatBefore = %DI");
-				printstatebefore.setDI(mindStatBefore);
+				StringIdChatParameter printstatebefore("Test", "mindStat (current HAM total) = %DI");
+				printstatebefore.setDI(mindStat);
 				asCreatureObject()->sendSystemMessage(printstatebefore);
-				//0 | 1000 | 1000
 				
-				StringIdChatParameter printbuffmod("Test", "oldMindBuffModifier = %DI");
-				printbuffmod.setDI(oldMindBuffModifier);
+				StringIdChatParameter printbuffmod("Test", "mindBuffModifier (HAM bonus) = %DI");
+				printbuffmod.setDI(mindBuffModifier);
 				asCreatureObject()->sendSystemMessage(printbuffmod);
-				//0 | 0 | 1000
 
-				//(0 + 0 /  0) = 0 + .05 - 1.0 = 
-				//Actual mind = 1000 / 1050 / 1050
-				float oldMindBuffStrengthTest = (mindStatBefore / (mindStatBefore - oldMindBuffModifier));
+				uint32 mindBaseStat = (mindStat - mindBuffModifier);
 
-				StringIdChatParameter printbuffstr("Test", "oldMindBuffStrength = %DF");
-				printbuffstr.setDF(oldMindBuffStrengthTest);
+				StringIdChatParameter printbasestat("Test", "mindBaseStat (mindStat - mindBuffModifier) = %DI");
+				printbasestat.setDI(mindBaseStat);
+				asCreatureObject()->sendSystemMessage(printbasestat);
+
+				float mindBuffStrengthTest = (mindStat / mindBaseStat);
+
+				StringIdChatParameter printbuffstr("Test", "mindBuffStrengthTest (mindStat / mindBaseStat) = %DF");
+				printbuffstr.setDF(mindBuffStrengthTest);
 				asCreatureObject()->sendSystemMessage(printbuffstr);
-				//0 | 0 | 1.0
 
-				mindPercentageIncrease = (mindStatBefore / (mindStatBefore - oldMindBuffModifier)) + cantinaMindBuffTickStrength - 1.0; //0.05 | 0.05 | 0.05
+				StringIdChatParameter printtick("Test", "cantinaMindBuffTickStrength (should be 0.05) = %DF");
+				printtick.setDF(cantinaMindBuffTickStrength);
+				asCreatureObject()->sendSystemMessage(printtick);
+
+				float mindAdjustedStrength = mindBuffStrengthTest + cantinaMindBuffTickStrength;
+
+				StringIdChatParameter printadjstrength("Test", "mindAdjustedStrength (mindBuffStrengthTest + cantinaMindBuffTickStrength) = %DF");
+				printadjstrength.setDF(mindAdjustedStrength);
+				asCreatureObject()->sendSystemMessage(printadjstrength);
+
+				mindBuffIncrease = mindBuffStrengthTest - 1.0;
 				
-				StringIdChatParameter printpercentincrease("Test", "mindPercentageIncrease = %DF");
-				printpercentincrease.setDF(mindPercentageIncrease);
-				asCreatureObject()->sendSystemMessage(printpercentincrease);
-				//0.0 | 1.0 | 1.0
+				StringIdChatParameter printbuffincrease("Test", "mindBuffIncrease (mindBuffStrengthTest - 1.0) = %DF");
+				printbuffincrease.setDF(mindBuffIncrease);
+				asCreatureObject()->sendSystemMessage(printbuffincrease);
 
-				if(mindPercentageIncrease > cantinaMindBuffPoolStrength){
-					mindPercentageIncrease = cantinaMindBuffPoolStrength;
+				if(mindBuffIncrease > cantinaMindBuffPoolStrength){
+					mindBuffIncrease = cantinaMindBuffPoolStrength;
 				}
 
 
-				if (asCreatureObject()->isPlayerCreature() && mindPercentageIncrease <= cantinaMindBuffPoolStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindPercentageIncrease, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
+				if (asCreatureObject()->isPlayerCreature() && mindBuffIncrease <= cantinaMindBuffPoolStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindBuffIncrease, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
 					Locker locker(mindBuff);
 					asCreatureObject()->addBuff(mindBuff);
 					locker.release();
 					asCreatureObject()->subtractCashCredits(buffPrice);
 					chargeTotal += buffPrice;
 
-					StringIdChatParameter printstateafter("Test", "Post buff: mindStatBefore = %DI");
-					printstateafter.setDI(mindStatBefore);
+					StringIdChatParameter printstateafter("Test", "Post buff: mindStat = %DI");
+					printstateafter.setDI(mindStat);
 					asCreatureObject()->sendSystemMessage(printstateafter);
-					//0 | 1000 | 1000
 				}
 
 				//FOCUS
