@@ -3294,16 +3294,20 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				uint32 mindStatBefore = 0; //0
 				float mindPercentageIncrease = 0.0; //0
 
-				mindStatBefore = asCreatureObject()->getHAM(CreatureAttribute::MIND); //1000 | 2000 | 2000
+				mindStatBefore = asCreatureObject()->getHAM(CreatureAttribute::MIND); //1000 | 1050 | 1050
 
 				if (asCreatureObject()->hasBuff(mindBuffCRC)) {
+					StringIdChatParameter printhasbuff("Test", "Has buff");
+					asCreatureObject()->sendSystemMessage(printhasbuff);
+
 					ManagedReference<PerformanceBuff*> oldMindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC)); //
-					oldMindBuffStrength = oldMindBuff->getBuffStrength(); //0 | 1.00 | 1.0
-					oldMindBuffModifier = oldMindBuff->getAttributeModifierValue(CreatureAttribute::MIND); //0 | 1000 | 1000
+					oldMindBuffStrength = oldMindBuff->getBuffStrength(); //0.0 | 0.00 | 0.0
+					oldMindBuffModifier = oldMindBuff->getAttributeModifierValue(CreatureAttribute::MIND); //0 | 50 | 50???
 				}
 				//(0 + 0 /  0) = 0 + .05 - 1.0 = 
-				//Actual mind = 1000 / 2000 / 2000
-				mindPercentageIncrease = (mindStatBefore / (mindStatBefore - oldMindBuffModifier)) + cantinaMindBuffTickStrength - 1.0; //0.0 | 1.0 | 1.0
+				//Actual mind = 1000 / 1050 / 1050
+				oldMindBuffStrength = (mindStatBefore / (mindStatBefore - oldMindBuffModifier));
+				mindPercentageIncrease = (mindStatBefore / (mindStatBefore - oldMindBuffModifier)) + cantinaMindBuffTickStrength - 1.0; //0.05 | 0.05 | 0.05
 				if(mindPercentageIncrease > cantinaMindBuffPoolStrength){
 					mindPercentageIncrease = cantinaMindBuffPoolStrength;
 				}
@@ -3337,6 +3341,11 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 					locker.release();
 					asCreatureObject()->subtractCashCredits(buffPrice);
 					chargeTotal += buffPrice;
+
+					StringIdChatParameter printstateafter("Test", "Post buff: mindStatBefore = %DI");
+					printstateafter.setDI(mindStatBefore);
+					asCreatureObject()->sendSystemMessage(printstateafter);
+					//0 | 1000 | 1000
 				}
 
 				//FOCUS
