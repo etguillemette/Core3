@@ -3317,10 +3317,10 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 				//(0 + 0 /  0) = 0 + .05 - 1.0 = 
 				//Actual mind = 1000 / 1050 / 1050
-				oldMindBuffStrength = (mindStatBefore / (mindStatBefore - oldMindBuffModifier));
+				float oldMindBuffStrengthTest = (mindStatBefore / (mindStatBefore - oldMindBuffModifier));
 
 				StringIdChatParameter printbuffstr("Test", "oldMindBuffStrength = %DF");
-				printbuffstr.setDF(oldMindBuffStrength);
+				printbuffstr.setDF(oldMindBuffStrengthTest);
 				asCreatureObject()->sendSystemMessage(printbuffstr);
 				//0 | 0 | 1.0
 
