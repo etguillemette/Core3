@@ -3335,7 +3335,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				printadjstrength.setDF(mindAdjustedStrength);
 				asCreatureObject()->sendSystemMessage(printadjstrength);
 
-				mindBuffIncrease = mindBuffStrengthTest - 1.0;
+				mindBuffIncrease = mindAdjustedStrength - 1.0;
 				
 				StringIdChatParameter printbuffincrease("Test", "mindBuffIncrease (mindBuffStrengthTest - 1.0) = %DF");
 				printbuffincrease.setDF(mindBuffIncrease);
@@ -3347,7 +3347,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 
 				if (asCreatureObject()->isPlayerCreature() && mindBuffIncrease <= cantinaMindBuffPoolStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindBuffIncrease, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
+					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindBuffStrength + cantinaMindBuffTickStrength, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
 					Locker locker(mindBuff);
 					asCreatureObject()->addBuff(mindBuff);
 					locker.release();
