@@ -3489,6 +3489,50 @@ int GCWManagerImplementation::countContrabandItems(CreatureObject* player) {
 	return numberOfContrabandItems;
 }
 
+//Ethan egit 6-19-24 (SMUGGLING SYSTEM)
+bool GCWManagerImplementation::isResourceItem(SceneObject* item) {
+	if (item->isTangibleObject()) {
+		ManagedReference<TangibleObject*> tangibleItem = item->asTangibleObject();
+		if (tangibleItem->isResourceContainer()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+int GCWManagerImplementation::countResourceItemsInContainer(SceneObject* container) {
+	int numberOfResourceItems = 0;
+	int containerSize = container->getContainerObjectsSize();
+	if (containerSize > 1) {
+		for (int i = 0; i < containerSize; i++) {
+			numberOfResourceItems += countResourceItemsInContainer(container->getContainerObject(i));
+		}
+	}
+	if (isContraband(container)) {
+		numberOfResourceItems++;
+	}
+	return numberOfResourceItems;
+}
+
+int GCWManagerImplementation::countResourceItems(CreatureObject* player) {
+	VectorMap<String, ManagedReference<SceneObject*>> slots;
+	player->getSlottedObjects(slots);
+
+	int numberOfSlots = slots.size();
+	int numberOfResourceItems = 0;
+
+	for (int i = 0; i < numberOfSlots; i++) {
+		VectorMapEntry<String, ManagedReference<SceneObject*>> container = slots.elementAt(i);
+		if (container.getKey() != "bank" && container.getKey() != "datapad") {
+			numberOfResourceItems += countResourceItemsInContainer(container.getValue());
+		}
+	}
+
+	return numberOfResourceItems;
+}
+//End Ethan egit 6-19-24 (SMUGGLING SYSTEM)
+
+
 void GCWManagerImplementation::spawnBaseTerminals(BuildingObject* bldg) {
 	String baseName = bldg->getObjectTemplate()->getTemplateFileName();
 

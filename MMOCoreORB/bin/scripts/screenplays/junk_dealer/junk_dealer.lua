@@ -129,7 +129,7 @@ function JunkDealer:sellAllItems(pPlayer, pSui, pInventory)
 
 	CreatureObject(pPlayer):addCashCredits(amount, true)
 
-	CreatureObject(pPlayer):awardExperience("merchant", amount/10, true) --Ethan edit 6-11-24 (JUNK DEALER BUYER)
+	CreatureObject(pPlayer):awardExperience("merchant", amount, true) --Ethan edit 6-11-24 (JUNK DEALER BUYER)
 
 	local messageString = LuaStringIdChatParameter("@loot_dealer:prose_sold_all_junk") -- You sell all of your loot to %TT for %DI credits
 	messageString:setTT(name)

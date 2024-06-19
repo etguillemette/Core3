@@ -906,6 +906,18 @@ void BuildingObjectImplementation::onEnter(CreatureObject* player) {
 
 	Locker accessLock(&paidAccessListMutex);
 
+	//Ethan edit 6-19-24 (SMUGGLING SYSTEM) TEST
+	/*
+	SharedObjectTemplate* thisTemplate = getTemplate();
+
+	if (thisTemplate != nullptr && thisTemplate->getGameObjectType() == SceneObjectType::STARPORTBUILDING) {
+		if(GCWManager::countResourceItems(player) > 0){
+			ejectObject(player);
+		}
+	}
+	*/
+	//End Ethan edit 6-19-24 (SMUGGLING SYSTEM) TEST
+
 	// Player GCW Bases, check for player entry permissions
 	if (isGCWBase() && factionBaseType != GCWManager::STATICFACTIONBASE) {
 		if (!checkContainerPermission(player, ContainerPermissions::WALKIN)) {

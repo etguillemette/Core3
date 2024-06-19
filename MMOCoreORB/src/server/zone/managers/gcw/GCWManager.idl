@@ -320,6 +320,12 @@ class GCWManager extends ManagedService implements Logger {
 	private native int countContrabandItemsInContainer(SceneObject container);
 	public native int countContrabandItems(CreatureObject player);
 
+	//Ethan edit 6-19-24 (SMUGGLING SYSTEM)
+	private native boolean isResourceItem(SceneObject item);
+	private native int countResourceItemsInContainer(SceneObject container);
+	public native int countResourceItems(CreatureObject player);
+	//End Ethan edit 6-19-24 (SMUGGLING SYSTEM)
+
 	private native void spawnBaseTerminals(BuildingObject building);
 	private native void despawnBaseTerminals(BuildingObject building);
 
