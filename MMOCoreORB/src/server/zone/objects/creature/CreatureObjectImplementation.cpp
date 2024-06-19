@@ -3012,6 +3012,8 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 	/// Health wound regen
 	int healthRegen = getSkillMod("private_med_wound_health");
+	int medicalBuffChargeTotal = 0;
+	int medicalWoundChargeTotal = 0;
 
 	if(healthRegen > 0) {
 		healthWoundHeal += (int)(healthRegen * 0.2); 
@@ -3037,14 +3039,11 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				int strengthWoundAfter = wounds.get(CreatureAttribute::STRENGTH);
 				int constitutionWoundAfter = wounds.get(CreatureAttribute::CONSTITUTION);
 
-				int woundHealTotal = (healthWoundBefore - healthWoundAfter) + (strengthWoundBefore - strengthWoundBefore) + (constitutionWoundBefore - constitutionWoundAfter);
-
-				asCreatureObject()->subtractBankCredits(healPrice * woundHealTotal);
-				StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for health wound treatment");
-				ptnsfw.setDI(healPrice * woundHealTotal);
-				asCreatureObject()->sendSystemMessage(ptnsfw);
+				int healthWoundTotal = (healthWoundBefore - healthWoundAfter) + (strengthWoundBefore - strengthWoundBefore) + (constitutionWoundBefore - constitutionWoundAfter);
+				medicalWoundChargeTotal += healthWoundTotal;
 			}
 
+			//HEALTH BUFFS
 			if(autoDoctor == true && docStr == "false" && healthWoundTotal == 0){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
@@ -3055,8 +3054,6 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 				if (playerMan == nullptr)
 				return;
-				
-				int chargeTotal = 0;
 
 				//HEALTH
 				uint32 heacurrentBuff = 0;
@@ -3069,8 +3066,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && heacurrentBuff < hospitalMedBuffPoolStrength && buffPrice < cash) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::HEALTH, heacurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);
-					chargeTotal += buffPrice;
+					medicalBuffChargeTotal += buffPrice;
 				}
 
 				//CONSTITUTION
@@ -3084,8 +3080,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && concurrentBuff < hospitalMedBuffAttrStrength && buffPrice < cash) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::CONSTITUTION, concurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);
-					chargeTotal += buffPrice;
+					medicalBuffChargeTotal += buffPrice;
 				}
 
 				//STRENGTH
@@ -3099,16 +3094,8 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && strcurrentBuff < hospitalMedBuffAttrStrength && buffPrice < cash) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STRENGTH, strcurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractBankCredits(buffPrice);
-					chargeTotal += buffPrice;
+					medicalBuffChargeTotal += buffPrice;
 				}
-
-				if(chargeTotal > 0){
-					StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for health medical enhancements");
-					ptnsfw.setDI(chargeTotal);
-					asCreatureObject()->sendSystemMessage(ptnsfw);
-				}
-
 			}
 			//End Ethan edit 6-7-24 (AUTO DOCTOR)
 			healthWoundHeal -= 100;
@@ -3144,12 +3131,9 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				int quicknessWoundAfter = wounds.get(CreatureAttribute::QUICKNESS);
 				int staminaWoundAfter = wounds.get(CreatureAttribute::STAMINA);
 
-				int actionWoundHealTotal = (actionWoundBefore - actionWoundAfter) + (quicknessWoundBefore - quicknessWoundAfter) + (staminaWoundBefore - staminaWoundAfter);
+				int actionhealthWoundTotal = (actionWoundBefore - actionWoundAfter) + (quicknessWoundBefore - quicknessWoundAfter) + (staminaWoundBefore - staminaWoundAfter);
 
-				asCreatureObject()->subtractBankCredits(healPrice * actionWoundHealTotal);
-				StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for action wound treatment");
-				ptnsfw.setDI(healPrice * actionWoundHealTotal);
-				asCreatureObject()->sendSystemMessage(ptnsfw);
+				medicalWoundChargeTotal += actionhealthWoundTotal;
 			}
 
 			//BUFFS
@@ -3164,7 +3148,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				if (playerMan == nullptr)
 				return;
 
-				int chargeTotal = 0;
+				int cantinaBuffChargeTotal = 0;
 				
 				//ACTION
 				uint32 actcurrentBuff = 0;
@@ -3177,8 +3161,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && actcurrentBuff < hospitalMedBuffPoolStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::ACTION, actcurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractCashCredits(buffPrice);
-					chargeTotal += buffPrice;					
+					medicalBuffChargeTotal += buffPrice;					
 				}
 
 				//QUICKNESS
@@ -3192,8 +3175,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && quicurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::QUICKNESS, quicurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractCashCredits(buffPrice);
-					chargeTotal += buffPrice;
+					medicalBuffChargeTotal += buffPrice;	
 				}
 
 				//STAMINA
@@ -3207,21 +3189,29 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				
 				if (asCreatureObject()->isPlayerCreature() && stacurrentBuff < hospitalMedBuffAttrStrength && cash > buffPrice) {
 					uint32 amountEnhanced = playerMan->healEnhance(asCreatureObject(), asCreatureObject(), CreatureAttribute::STAMINA, stacurrentBuff + hospitalMedBuffTickStrength, hospitalMedBuffDuration, 0); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
-					asCreatureObject()->subtractCashCredits(buffPrice);
-					chargeTotal += buffPrice;
 				}
-
-				if(chargeTotal > 0){
-					StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for action medical enhancements");
-					ptnsfw.setDI(chargeTotal);
-					asCreatureObject()->sendSystemMessage(ptnsfw);
-				}
-
 			}
+			
 			//End Ethan edit 6-7-24 (AUTO DOCTOR)
 			actionWoundHeal -= 100;
 		}
 	}
+
+	//Ethan edit 6-19-24 (AUTO DOCTOR)
+	if(medicalWoundChargeTotal > 0){
+		asCreatureObject()->subtractBankCredits(healPrice * medicalWoundChargeTotal);
+		StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for wound treatment");
+		ptnsfw.setDI(healPrice * medicalWoundChargeTotal);
+		asCreatureObject()->sendSystemMessage(ptnsfw);
+	}
+			
+	if(medicalBuffChargeTotal > 0){
+		asCreatureObject()->subtractCashCredits(medicalBuffChargeTotal);
+		StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for medical enhancements");
+		ptnsfw.setDI(medicalBuffChargeTotal);
+		asCreatureObject()->sendSystemMessage(ptnsfw);
+	}
+	//End Ethan edit 6-19-24 (AUTO DOCTOR)
 
 	/// Mind wound regen
 	int mindRegen = getSkillMod("private_med_wound_mind");
@@ -3266,11 +3256,11 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				int willpowerWoundAfter = wounds.get(CreatureAttribute::STAMINA);
 				int shockWoundAfter = shockWounds;
 
-				int mindWoundHealTotal = (mindWoundBefore - mindWoundAfter) + (focusWoundBefore - focusWoundAfter) + (willpowerWoundBefore - willpowerWoundAfter) + (shockWoundBefore - shockWoundAfter);
+				int mindWoundTotal = abs(mindWoundBefore - mindWoundAfter) + abs(focusWoundBefore - focusWoundAfter) + abs(willpowerWoundBefore - willpowerWoundAfter) + abs(shockWoundBefore - shockWoundAfter);
 
-				asCreatureObject()->subtractBankCredits(healPrice * mindWoundHealTotal);
+				asCreatureObject()->subtractBankCredits(healPrice * mindWoundTotal);
 				StringIdChatParameter ptnsfw("Cover Charge", "You pay %DI credits to relax your battle fatigue.");
-				ptnsfw.setDI(healPrice * mindWoundHealTotal);
+				ptnsfw.setDI(healPrice * mindWoundTotal);
 				asCreatureObject()->sendSystemMessage(ptnsfw);
 			}
 			//BUFFS
@@ -3285,138 +3275,87 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				if (playerMan == nullptr)
 				return;
 
-				int chargeTotal = 0;
+				int cantinaBuffChargeTotal = 0;
 
 				//MIND
-				uint32 mindBuffStrength = 0.0; //0
 				uint32 mindBuffCRC = STRING_HASHCODE("performance_enhance_dance_mind");
-				uint32 mindBuffModifier = 0; //0
-				uint32 mindStat = 0; //0
-				float mindBuffIncrease = 0.0; //0
-
-				mindStat = asCreatureObject()->getHAM(CreatureAttribute::MIND); //1000 | 1050 | 1050
+				float mindBuffModifier = 0.0;
+				float mindStat = static_cast<float>(asCreatureObject()->getHAM(CreatureAttribute::MIND));
+				float mindBuffIncrease = 0.0;
 
 				if (asCreatureObject()->hasBuff(mindBuffCRC)) {
-					StringIdChatParameter printhasbuff("Test", "Has buff");
-					asCreatureObject()->sendSystemMessage(printhasbuff);
-
-					ManagedReference<PerformanceBuff*> mindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC)); //
-					mindBuffStrength = mindBuff->getBuffStrength(); //0.0 | 0.00 | 0.0
-					mindBuffModifier = mindBuff->getAttributeModifierValue(CreatureAttribute::MIND); //0 | 50 | 50???
+					ManagedReference<PerformanceBuff*> mindBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(mindBuffCRC));
+					mindBuffModifier = mindBuff->getAttributeModifierValue(CreatureAttribute::MIND);
 				}
 				
-				StringIdChatParameter printstatebefore("Test", "mindStat (current HAM total) = %DI");
-				printstatebefore.setDI(mindStat);
-				asCreatureObject()->sendSystemMessage(printstatebefore);
-				
-				StringIdChatParameter printbuffmod("Test", "mindBuffModifier (HAM bonus) = %DI");
-				printbuffmod.setDI(mindBuffModifier);
-				asCreatureObject()->sendSystemMessage(printbuffmod);
-
-				uint32 mindBaseStat = (mindStat - mindBuffModifier);
-
-				StringIdChatParameter printbasestat("Test", "mindBaseStat (mindStat - mindBuffModifier) = %DI");
-				printbasestat.setDI(mindBaseStat);
-				asCreatureObject()->sendSystemMessage(printbasestat);
-
-				float mindBuffStrengthTest = (mindStat / mindBaseStat);
-
-				StringIdChatParameter printbuffstr("Test", "mindBuffStrengthTest (mindStat / mindBaseStat) = %DF");
-				printbuffstr.setDF(mindBuffStrengthTest);
-				asCreatureObject()->sendSystemMessage(printbuffstr);
-
-				StringIdChatParameter printtick("Test", "cantinaMindBuffTickStrength (should be 0.05) = %DF");
-				printtick.setDF(cantinaMindBuffTickStrength);
-				asCreatureObject()->sendSystemMessage(printtick);
-
-				float mindAdjustedStrength = mindBuffStrengthTest + cantinaMindBuffTickStrength;
-
-				StringIdChatParameter printadjstrength("Test", "mindAdjustedStrength (mindBuffStrengthTest + cantinaMindBuffTickStrength) = %DF");
-				printadjstrength.setDF(mindAdjustedStrength);
-				asCreatureObject()->sendSystemMessage(printadjstrength);
-
-				mindBuffIncrease = mindAdjustedStrength - 1.0;
-				
-				StringIdChatParameter printbuffincrease("Test", "mindBuffIncrease (mindBuffStrengthTest - 1.0) = %DF");
-				printbuffincrease.setDF(mindBuffIncrease);
-				asCreatureObject()->sendSystemMessage(printbuffincrease);
+				mindBuffIncrease = ((mindStat / (mindStat - mindBuffModifier)) + cantinaMindBuffTickStrength) - 1.0 ;
 
 				if(mindBuffIncrease > cantinaMindBuffPoolStrength){
 					mindBuffIncrease = cantinaMindBuffPoolStrength;
 				}
 
-
-				if (asCreatureObject()->isPlayerCreature() && mindBuffIncrease <= cantinaMindBuffPoolStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindBuffStrength + cantinaMindBuffTickStrength, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
+				if (asCreatureObject()->isPlayerCreature() && mindBuffIncrease < cantinaMindBuffPoolStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(asCreatureObject(), mindBuffCRC, mindBuffIncrease, cantinaMindBuffDuration, PerformanceBuffType::DANCE_MIND);
 					Locker locker(mindBuff);
 					asCreatureObject()->addBuff(mindBuff);
 					locker.release();
-					asCreatureObject()->subtractCashCredits(buffPrice);
-					chargeTotal += buffPrice;
-
-					StringIdChatParameter printstateafter("Test", "Post buff: mindStat = %DI");
-					printstateafter.setDI(mindStat);
-					asCreatureObject()->sendSystemMessage(printstateafter);
+					cantinaBuffChargeTotal += buffPrice;
 				}
 
 				//FOCUS
-				uint32 oldFocusBuffStrength = 0;
 				uint32 focusBuffCRC = BuffCRC::PERFORMANCE_ENHANCE_MUSIC_FOCUS;
-				uint32 oldFocusBuffModifier = 0;
-				uint32 focusStatBefore = 0;
-				float focusPercentageIncrease = 0.0;
-
+				float focusBuffModifier = 0;
+				float focusStat = static_cast<float>(asCreatureObject()->getHAM(CreatureAttribute::FOCUS));
+				float focusBuffIncrease = 0.0;
+				
 				if (asCreatureObject()->hasBuff(focusBuffCRC)) {
-					ManagedReference<PerformanceBuff*> oldFocusBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(focusBuffCRC));
-					oldFocusBuffStrength = oldFocusBuff->getBuffStrength();
-					oldFocusBuffModifier = oldFocusBuff->getAttributeModifierValue(CreatureAttribute::FOCUS);
+					ManagedReference<PerformanceBuff*> focusBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(focusBuffCRC));
+					focusBuffModifier = static_cast<float>(focusBuff->getAttributeModifierValue(CreatureAttribute::FOCUS));
 				}
 
-				focusStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS);
-				focusPercentageIncrease = (focusStatBefore / (focusStatBefore - oldFocusBuffModifier)) + cantinaMindBuffTickStrength - 1.0;
-				if(focusPercentageIncrease > cantinaMindBuffAttrStrength){
-					focusPercentageIncrease = cantinaMindBuffAttrStrength;
+				focusBuffIncrease = ((focusStat / (focusStat - focusBuffModifier)) + cantinaMindBuffTickStrength) - 1.0;
+				
+				if(focusBuffIncrease > cantinaMindBuffAttrStrength){
+					focusBuffIncrease = cantinaMindBuffAttrStrength;
 				}
 				
-				if (asCreatureObject()->isPlayerCreature() && focusPercentageIncrease < cantinaMindBuffAttrStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> focusBuff = new PerformanceBuff(asCreatureObject(), focusBuffCRC, focusPercentageIncrease, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_FOCUS);
+				if (asCreatureObject()->isPlayerCreature() && focusBuffIncrease < cantinaMindBuffAttrStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> focusBuff = new PerformanceBuff(asCreatureObject(), focusBuffCRC, focusBuffIncrease, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_FOCUS);
 					Locker locker(focusBuff);
 					asCreatureObject()->addBuff(focusBuff);
 					locker.release();
-					asCreatureObject()->subtractCashCredits(buffPrice);
-					chargeTotal += buffPrice;
+					cantinaBuffChargeTotal += buffPrice;
 				}
 
 				//WILLPOWER
-				uint32 oldWillpowerBuffStrength = 0;
 				uint32 willpowerBuffCRC = BuffCRC::PERFORMANCE_ENHANCE_MUSIC_WILLPOWER;
-				uint32 oldWillpowerBuffModifier = 0;
-				uint32 willpowerStatBefore = 0;
-				float willpowerPercentageIncrease = 0.0;
+				float willpowerModifier = 0.0;
+				float willpowerStat = static_cast<float>(asCreatureObject()->getHAM(CreatureAttribute::FOCUS));
+				float willpowerBuffIncrease = 0.0;
 
 				if (asCreatureObject()->hasBuff(willpowerBuffCRC)) {
-					ManagedReference<PerformanceBuff*> oldWillpowerBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(willpowerBuffCRC));
-					oldWillpowerBuffStrength = oldWillpowerBuff->getBuffStrength();
-					oldWillpowerBuffModifier = oldWillpowerBuff->getAttributeModifierValue(CreatureAttribute::WILLPOWER);
+					ManagedReference<PerformanceBuff*> willpowerBuff = cast<PerformanceBuff*>(asCreatureObject()->getBuff(willpowerBuffCRC));
+					willpowerModifier = static_cast<float>(willpowerBuff->getAttributeModifierValue(CreatureAttribute::WILLPOWER));
 				}
-				willpowerStatBefore = asCreatureObject()->getHAM(CreatureAttribute::FOCUS) - oldWillpowerBuffModifier;
-				willpowerPercentageIncrease = (willpowerStatBefore / (willpowerStatBefore - oldWillpowerBuffModifier)) + cantinaMindBuffTickStrength - 1.0;
-				if(willpowerPercentageIncrease > cantinaMindBuffAttrStrength){
-					willpowerPercentageIncrease = cantinaMindBuffAttrStrength;
+				
+				willpowerBuffIncrease = ((willpowerStat / (willpowerStat - willpowerModifier)) + cantinaMindBuffTickStrength) - 1.0;
+				
+				if(willpowerBuffIncrease > cantinaMindBuffAttrStrength){
+					willpowerBuffIncrease = cantinaMindBuffAttrStrength;
 				}
 
-				if (asCreatureObject()->isPlayerCreature() && willpowerPercentageIncrease < cantinaMindBuffAttrStrength && cash > buffPrice) {
-					ManagedReference<PerformanceBuff*> willpowerBuff = new PerformanceBuff(asCreatureObject(), willpowerBuffCRC, willpowerPercentageIncrease, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_WILLPOWER);
+				if (asCreatureObject()->isPlayerCreature() && willpowerBuffIncrease < cantinaMindBuffAttrStrength && cash > buffPrice) {
+					ManagedReference<PerformanceBuff*> willpowerBuff = new PerformanceBuff(asCreatureObject(), willpowerBuffCRC, willpowerBuffIncrease, cantinaMindBuffDuration, PerformanceBuffType::MUSIC_WILLPOWER);
 					Locker locker(willpowerBuff);
 					asCreatureObject()->addBuff(willpowerBuff);
 					locker.release();
-					asCreatureObject()->subtractCashCredits(buffPrice);
-					chargeTotal += buffPrice;
+					cantinaBuffChargeTotal += buffPrice;
 				}
 
-				if(chargeTotal > 0){
+				if(cantinaBuffChargeTotal > 0){
+					asCreatureObject()->subtractCashCredits(cantinaBuffChargeTotal);
 					StringIdChatParameter ptnsfw("Cover Charge", "You have been charged %DI credits for entertainer buffs.");
-					ptnsfw.setDI(chargeTotal);
+					ptnsfw.setDI(cantinaBuffChargeTotal);
 					asCreatureObject()->sendSystemMessage(ptnsfw);
 				}
 			}
