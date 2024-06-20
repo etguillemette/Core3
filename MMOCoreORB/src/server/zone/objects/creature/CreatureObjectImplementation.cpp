@@ -3251,14 +3251,14 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, healBonus, true, false);
 				addShockWounds(-(healBonus), true, false);
 				
-				int mindWoundAfter = wounds.get(CreatureAttribute::ACTION);
-				int focusWoundAfter = wounds.get(CreatureAttribute::QUICKNESS);
-				int willpowerWoundAfter = wounds.get(CreatureAttribute::STAMINA);
+				int mindWoundAfter = wounds.get(CreatureAttribute::MIND);
+				int focusWoundAfter = wounds.get(CreatureAttribute::FOCUS);
+				int willpowerWoundAfter = wounds.get(CreatureAttribute::WILLPOWER);
 				int shockWoundAfter = shockWounds;
 
 				int mindWoundTotal = abs(mindWoundBefore - mindWoundAfter) + abs(focusWoundBefore - focusWoundAfter) + abs(willpowerWoundBefore - willpowerWoundAfter) + abs(shockWoundBefore - shockWoundAfter);
 
-				if (mindWoundAfter > 0){
+				if (mindWoundTotal > 0){
 					asCreatureObject()->subtractBankCredits(healPrice * mindWoundTotal);
 					StringIdChatParameter ptnsfw("Cover Charge", "You pay %DI credits to relax your battle fatigue.");
 					ptnsfw.setDI(healPrice * mindWoundTotal);
