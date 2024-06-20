@@ -24,8 +24,6 @@ NPCVendor = {
 --Calls up a sale menu
 function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
-	
-
 	if (pPlayer == nil or pNpc == nil) then
 		return
 	end
@@ -34,6 +32,9 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 	writeStringData(CreatureObject(pPlayer):getObjectID() .. ":npc_vendor_purchase", screenID)
 	local suiManager = LuaSuiManager()
 	local waresData = self:getWaresTable(screenID)
+
+	print(screenID)
+
 
 	--Filter inventory based on the planet the vendor is on, with certain higher level planets receiving more advanced inventory
 	local zoneName = CreatureObject(pPlayer):getZoneName()
@@ -262,6 +263,8 @@ function NPCVendor:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 	if (waresData == nil or purchaseIndex < 1 or purchaseIndex > #waresData) then
 		return
 	end
+
+	print(purchaseCategory)
 
 	local itemData = waresData[purchaseIndex]
 

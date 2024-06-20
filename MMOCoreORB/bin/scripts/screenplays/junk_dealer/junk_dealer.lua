@@ -129,9 +129,14 @@ function JunkDealer:sellAllItems(pPlayer, pSui, pInventory)
 
 	CreatureObject(pPlayer):addCashCredits(amount, true)
 
-	if CreatureObject(pPlayer):hasSkill("crafting_artisan_business_04") then --Ethan edit 6-11-24 (JUNK DEALER BUYER)
-		CreatureObject(pPlayer):awardExperience("merchant", amount/10, true) --Ethan edit 6-11-24 (JUNK DEALER BUYER)
-	end --Ethan edit 6-11-24 (JUNK DEALER BUYER)
+	--Ethan edit 6-11-24 (JUNK DEALER BUYER)
+	if CreatureObject(pPlayer):hasSkill("crafting_artisan_business_04") then 
+		local xpValue = math.floor(amount/10)
+		if(xpValue > 0) then
+			CreatureObject(pPlayer):awardExperience("merchant", xpValue, true)
+		end
+	end 
+	--End Ethan edit 6-11-24 (JUNK DEALER BUYER)
 
 	local messageString = LuaStringIdChatParameter("@loot_dealer:prose_sold_all_junk") -- You sell all of your loot to %TT for %DI credits
 	messageString:setTT(name)
@@ -168,9 +173,14 @@ function JunkDealer:sellItem(pPlayer, pSui, rowIndex, pInventory)
 
 	CreatureObject(pPlayer):addCashCredits(value, true)
 
-	if CreatureObject(pPlayer):hasSkill("crafting_artisan_business_04") then --Ethan edit 6-11-24 (JUNK DEALER BUYER)
-		CreatureObject(pPlayer):awardExperience("merchant", value/10, true) --Ethan edit 6-11-24 (JUNK DEALER BUYER)
-	end --Ethan edit 6-11-24 (JUNK DEALER BUYER)
+	--Ethan edit 6-11-24 (JUNK DEALER BUYER)
+	if CreatureObject(pPlayer):hasSkill("crafting_artisan_business_04") then 
+		local xpValue = math.floor(value/10)
+		if(xpValue > 0) then
+			CreatureObject(pPlayer):awardExperience("merchant", xpValue, true)
+		end
+	end 
+	--End Ethan edit 6-11-24 (JUNK DEALER BUYER)
 
 	local messageString = LuaStringIdChatParameter("@loot_dealer:prose_sold_junk") -- You sell %TT for %DI credits.
 	messageString:setTT(name)
