@@ -1878,6 +1878,10 @@ genericWaresData = {
         { template = "object/intangible/pet/pet_control.iff", cost = 15000, controlledObjectTemplate="brawler_master", displayName = "@mob/creature_names:brawler", quantity = 1},
     },
 
+    hiresMedic = {
+        { template = "object/intangible/pet/pet_control.iff", cost = 5000, controlledObjectTemplate="medic_novice", displayName = "@mob/creature_names:medic", quantity = 1},
+    },
+
 --------------------------------------------
 --RESOURCE----------------------------------
 

@@ -1120,6 +1120,7 @@ vendor_hireling = ConvoScreen:new {
 	options = {
 		{"I was looking for a marksman.", "hires_marksman"},
 		{"I was looking for a brawler.", "hires_brawler"},
+		{"I was looking for a medic.", "hires_medic"},
 		{"Actually, I don't need anything right now.","no_loot"},
 	}
 }
@@ -1141,6 +1142,13 @@ hires_brawler = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(hires_brawler);
 
+hires_medic = ConvoScreen:new {
+	id = "hires_medic",
+	customDialogText = "Here are the medic contracts I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(hires_medic);
 
 --RESOURCES-----------------------------------
 ----------------------------------------------

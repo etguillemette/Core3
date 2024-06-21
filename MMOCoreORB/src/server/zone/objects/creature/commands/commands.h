@@ -836,6 +836,7 @@
 #include "InspacereloadCommand.h"
 #include "InspacerrCommand.h"
 #include "RequestSpaceTrainerCommand.h"
+#include "MedicQuickHealCommand.h" //Ethan edit 6-21-24 (HIRELING) (MEDIC)
 
 
 
