@@ -48,15 +48,16 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 
 	local endIndex = math.ceil(inventoryTable.inventoryEndIndex * #waresData)
 	
-	local quantity = waresData[i].quantity
-
-	if(quantity == nil) then
-		quantity = 1
-	end
-
 	local options = { }
 	--	for i = 1, #waresData, 1 do --TESTING
 	for i = startIndex, endIndex, 1 do
+		
+		local quantity = waresData[i].quantity
+
+		if(quantity == nil) then
+			quantity = 1
+		end
+
 		local itemCost = waresData[i].cost * NPCVendor.globalPriceModifier
 		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. (itemCost) .. ") Qty: (x" .. waresData[i].quantity .. ")", 0}
 		table.insert(options, ware)
