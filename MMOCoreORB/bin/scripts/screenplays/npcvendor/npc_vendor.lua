@@ -324,10 +324,32 @@ function NPCVendor:giveItem(pPlayer, itemData)
 	CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
 
 
-	local templatePath
+	local templatePath = itemData.template
+	local newSerial = itemData.serial
+	local quantity = itemData.quantity
+	
+	if(quantity == nil) then
+		quantity = 1
+	end
 
-	templatePath = itemData.template
+	if(templatePath ~= nil) then
+		for i = 1, quantity do
+			local pItem = giveItem(pInventory, templatePath, -1)
+			local tano = TangibleObject(pItem)
+			if(newSerial ~= nil) then
+				tano:setSerialNumber(newSerial)
+			end
 
+			if(SceneObject(pInventory):isContainerFullRecursive() == false && pItem ~= nil) then
+				PlayerObject(pGhost):addEventPerk(pItem)
+			else
+				CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
+			end
+
+		end	
+	end
+
+	--[[
 	local pItem = giveItem(pInventory, templatePath, -1)
 
 	local newSerial = itemData.serial
@@ -358,6 +380,7 @@ function NPCVendor:giveItem(pPlayer, itemData)
 			end
 		end
 	end
+	--]]
 end
 
 
@@ -468,7 +491,5 @@ function NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
 	--suiManager:sendListBox(pNpc, pPlayer, "@veteran:resource_title", "@veteran:choose_class", 3, "@cancel", "@back", "@ok", "Resources", "ResourceDeedSuiCallback", 32, "Resources")
 	--suiManager:sendResourceSaleSui(pPlayer)
 end
-
-
 
 return NPCVendor

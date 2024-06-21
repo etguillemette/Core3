@@ -1876,6 +1876,9 @@ genericWaresData = {
         { template = "object/intangible/pet/pet_control.iff", cost = 5000, controlledObjectTemplate="brawler_novice", displayName = "@mob/creature_names:brawler", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 10000, controlledObjectTemplate="brawler_mid", displayName = "@mob/creature_names:brawler", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 15000, controlledObjectTemplate="brawler_master", displayName = "@mob/creature_names:brawler", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 25000, controlledObjectTemplate="unarmed_novice", displayName = "@mob/creature_names:teras_kasi_master", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="unarmed_mid", displayName = "@mob/creature_names:teras_kasi_master", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="unarmed_master", displayName = "@mob/creature_names:teras_kasi_master", quantity = 1},
     },
 
     hiresMedic = {
