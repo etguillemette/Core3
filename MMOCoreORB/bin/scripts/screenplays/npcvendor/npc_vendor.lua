@@ -339,13 +339,13 @@ function NPCVendor:giveItem(pPlayer, itemData)
 			if(newSerial ~= nil) then
 				tano:setSerialNumber(newSerial)
 			end
-
-			if(SceneObject(pInventory):isContainerFullRecursive() == false && pItem ~= nil) then
-				PlayerObject(pGhost):addEventPerk(pItem)
+			if(pItem ~= nil) then
+				if(SceneObject(pInventory):isContainerFullRecursive() == false) then
+					PlayerObject(pGhost):addEventPerk(pItem)
+				end
 			else
 				CreatureObject(pPlayer):sendSystemMessage("@event_perk:promoter_full_inv")
 			end
-
 		end	
 	end
 
