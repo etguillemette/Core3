@@ -29,6 +29,14 @@
 #include "server/zone/managers/loot/LootManager.h"
 #include "server/zone/objects/transaction/TransactionLog.h"
 #include "server/zone/managers/ship/ShipManager.h"
+//Ethan edit 6-22-24 (RESOURCE VENDOR)
+#include "server/zone/objects/tangible/deed/resource/ResourceDeed.h"
+#include "server/zone/managers/resource/ResourceManager.h"
+#include "server/zone/objects/player/sui/callbacks/ResourceDeedSuiCallback.h"
+#include "server/zone/objects/player/sui/callbacks/ResourcePurchaseSuiCallback.h"
+//End Ethan edit 6-22-24 (RESOURCE VENDOR)
+
+#include "server/zone/packets/object/ObjectMenuResponse.h"
 
 SuiManager::SuiManager() : Logger("SuiManager") {
 	server = nullptr;
@@ -821,7 +829,6 @@ int32 SuiManager::sendSuiPage(CreatureObject* creature, SuiPageData* pageData, c
 }
 
 //Ethan edit 6-14-24 (RESOURCE VENDOR)
-/*
 void SuiManager::sendResourceListBox(SceneObject* player, const String& title, const String& text, const String& cancelButton, const String& otherButton, const String& okButton, const String& screenplay, const String& callback, const float& forceCloseDist) {
 	if (player == nullptr || !player->isCreatureObject())
 		return;
@@ -831,14 +838,12 @@ void SuiManager::sendResourceListBox(SceneObject* player, const String& title, c
 	PlayerObject* playerObject = creature->getPlayerObject();
 
 	if (playerObject != nullptr) {
-		ManagedReference<SuiListBox*> box = nullptr;
-
-		box = new SuiListBox(creature, 0x00, SuiListBox::HANDLETHREEBUTTON);
+		ManagedReference<SuiListBox*> box = new SuiListBox(creature, SuiWindowType::FREE_RESOURCE);
 		box->setCancelButton(true, cancelButton);
 		box->setOtherButton(true, otherButton);
 		box->setOkButton(true, okButton);
 
-		//box->setCallback(new ResourcePurchaseSuiCallback(server->getZoneServer(), "Resource"));
+		box->setCallback(new ResourcePurchaseSuiCallback(server->getZoneServer(), "Resource"));
 		box->setPromptTitle(title);
 		box->setPromptText(text);
 		box->setForceCloseDistance(forceCloseDist);
@@ -852,4 +857,3 @@ void SuiManager::sendResourceListBox(SceneObject* player, const String& title, c
 		creature->sendMessage(box->generateMessage());
 	}
 }
-*/

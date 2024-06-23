@@ -58,7 +58,7 @@ namespace server {
 	  	void sendListBox(SceneObject* usingObject, SceneObject* player, const String& title, const String& text, const uint8& numOfButtons, const String& cancelButton, const String& otherButton, const String& okButton, LuaObject& options, const String& screenplay, const String& callback, const float& forceCloseDist);
 	  	void sendTransferBox(SceneObject* usingObject, SceneObject* player, const String& title, const String& text, LuaObject& optionsAddFrom, LuaObject& optionsAddTo, const String& screenplay, const String& callback);
 	  	int32 sendSuiPage(CreatureObject* creature, SuiPageData* pageData, const String& play, const String& callback, unsigned int windowType);
-		//void sendResourceListBox(SceneObject* player, const String& title, const String& text, const String& cancelButton, const String& otherButton, const String& okButton, const String& screenplay, const String& callback, const float& forceCloseDist); //Ethan edit 6-14-24 (RESOURCE VENDOR)
+		void sendResourceListBox(SceneObject* player, const String& title, const String& text, const String& cancelButton, const String& otherButton, const String& okButton, const String& screenplay, const String& callback, const float& forceCloseDist); //Ethan edit 6-14-24 (RESOURCE VENDOR)
 
 	  	void setZoneProcessServer(ZoneProcessServer* srv) {
 	  		server = srv;

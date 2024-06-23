@@ -486,7 +486,8 @@ function NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
 
 	writeStringData(CreatureObject(pPlayer):getObjectID() .. ":npc_vendor_purchase", screenID)
 	local suiManager = LuaSuiManager()
-
+	--sendResourceListBox(SceneObject* player, const String& title, const String& text, const String& cancelButton, const String& otherButton, const String& okButton, const String& screenplay, const String& callback, const float& forceCloseDist);
+	suiManager:sendResourceListBox(pPlayer,"@veteran:resource_title","@veteran:choose_class","@cancel","@back","@ok","NPCVendor","ResourceDeedSuiCallback",32)
 	--suiManager:sendListBox(pNpc, pPlayer, "Title", "Description", 3, "@cancel", "@back", "&ok", "Resources", "ResourceDeedCallback", 32, options);
 	--suiManager:sendListBox(pNpc, pPlayer, "@veteran:resource_title", "@veteran:choose_class", 3, "@cancel", "@back", "@ok", "Resources", "ResourceDeedSuiCallback", 32, "Resources")
 	--suiManager:sendResourceSaleSui(pPlayer)

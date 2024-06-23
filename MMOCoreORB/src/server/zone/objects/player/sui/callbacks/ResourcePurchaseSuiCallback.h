@@ -8,6 +8,8 @@
 #ifndef RESOURCEPURCHASESUICALLBACK_H_
 #define RESOURCEPURCHASESUICALLBACK_H_
 
+#pragma once
+
 #include "server/zone/objects/player/sui/SuiCallback.h"
 
 
