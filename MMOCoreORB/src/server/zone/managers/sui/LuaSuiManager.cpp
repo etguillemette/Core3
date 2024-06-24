@@ -191,7 +191,7 @@ int LuaSuiManager::sendResourceListBox(lua_State* L) {
 	String callback = lua_tostring(L, -2);
 	float forceCloseDist = lua_tonumber(L, -1);
 
-	//realObject->sendListBox(creature, title, text, cancelButton, otherButton, okButton, screenplay, callback, forceCloseDist);
+	realObject->sendResourceListBox(creature, title, text, cancelButton, otherButton, okButton, screenplay, callback, forceCloseDist);
 
 	return 0;
 }
