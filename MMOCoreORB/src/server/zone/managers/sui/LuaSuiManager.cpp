@@ -20,6 +20,7 @@ Luna<LuaSuiManager>::RegType LuaSuiManager::Register[] = {
 		{ "sendListBox", &LuaSuiManager::sendListBox },
 		{ "sendTransferBox", &LuaSuiManager::sendTransferBox },
 		{ "sendSuiPage", &LuaSuiManager::sendSuiPage },
+		{ "sendResourceListBox", &LuaSuiManager::sendResourceListBox},
 		{ 0, 0 }
 };
 

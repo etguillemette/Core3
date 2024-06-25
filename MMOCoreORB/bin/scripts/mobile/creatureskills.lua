@@ -58,4 +58,4 @@ forcewielder = { {"forcelightningsingle1",""},{"mindblast1",""},{"forceweaken1",
 --Server Administrator NPC skill trees place below
 
 --Ethan edit 5-18-24 (HIRELING) adding medic class:
-medicnovice = {{"medicQuickHeal",""}}
+medicnovice = {{"totalhealself",""}, {"healallother2", ""}, {"healallself2",""}}

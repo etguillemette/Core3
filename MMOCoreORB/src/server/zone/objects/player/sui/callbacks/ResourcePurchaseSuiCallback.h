@@ -18,7 +18,7 @@ class ResourcePurchaseSuiCallback : public SuiCallback {
 	bool purchaseScreen;
 
 public:
-	ResourcePurchaseSuiCallback(ZoneServer* serv, const String& name) : SuiCallback(serv) { //Ethan edit 6-4-24 (RESOURCE VENDOR) ..(added quantity)
+	ResourcePurchaseSuiCallback(ZoneServer* serv, const String& name) : SuiCallback(serv) {
 		nodeName = name;
 		purchaseScreen = false;
 	}
@@ -31,19 +31,10 @@ public:
 
 		SuiListBox* listBox = cast<SuiListBox*>( sui);
 
-		ManagedReference<SceneObject*> obj = sui->getUsingObject().get();
-
-		if (obj == nullptr)
-			return;
-
-		ResourceDeed* deed = cast<ResourceDeed*>( obj.get());
-
-		if (deed == nullptr)
-			return;
 
 		ManagedReference<SceneObject*> inventory = creature->getSlottedObject("inventory");
 
-		if (inventory == nullptr || !deed->isASubChildOf(inventory)) //No longer in inventory.
+		if (inventory == nullptr) //No longer in inventory.
 			return;
 
 		ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
@@ -157,9 +148,9 @@ public:
 					return;
 				}
 				else {
-					Locker clocker(deed, creature); //Ethan edit moved this here
-					deed->destroyDeed(); //Ethan edit moved this here
-					clocker.release(); //Ethan edit moved this here
+					//Locker clocker(deed, creature); //Ethan edit moved this here
+					//deed->destroyDeed(); //Ethan edit moved this here
+					//clocker.release(); //Ethan edit moved this here
 
 					StringIdChatParameter ptnsfw("Purchase Successful", "You successfully purchase a crate of %TT for %DI credits"); //You successfully purchase a %TT for %DI credits.
 					ptnsfw.setTT(nodeName);
