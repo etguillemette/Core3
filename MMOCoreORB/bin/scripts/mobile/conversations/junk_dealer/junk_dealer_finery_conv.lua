@@ -44,23 +44,7 @@ start_vendor = ConvoScreen:new {
 	customDialogText = "Of course! I have plenty of odds and ends for the discerning buyer... What exactly were you looking for?",
 	stopConversation = "false",
 	options = {
-		{"I am looking for a weapon.", "vendor_weapon"},
-		{"I am looking for some armor.", "vendor_armor"},
 		{"I am looking for some clothing.", "vendor_wearables"},
-		{"I am looking for some medicine.", "vendor_medicine"},
-		{"I am looking for some food and drink.", "vendor_chef"},
-		{"I am looking for some crafting components", "vendor_component"},
-		{"I am looking for some scout equipment.", "vendor_scout"},
-		{"I am looking for some structures.", "vendor_installation"},
-		{"I am looking for some bio-engineered goods.", "vendor_bio"},
-		{"I am looking for some droid goods.", "vendor_droid"},
-		{"I am looking for some miscellaneous goods.", "vendor_misc"},
-		{"I am looking for some... Uh... 'Kitchenware'...", "vendor_smuggler"},
-		{"I am looking for some ship components.", "vendor_ship"},
-		{"I am looking for some entertainer goods.", "vendor_entertainer"},
-		{"I am looking for some vehicle goods.", "vendor_vehicle"},
-		{"I am looking for a mercenary.", "vendor_hireling"},
-		{"I am looking for some resources.", "resource_resource"},
 		{"Actually, I don't need anything right now.", "no_loot"}
 	}
 }
