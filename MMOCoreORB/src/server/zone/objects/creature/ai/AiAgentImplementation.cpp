@@ -626,6 +626,11 @@ void AiAgentImplementation::respawn(Zone* zone, int level) {
 	info(true) << "respawn called for - " << getDisplayedName() << " ID: " << getObjectID() << " Inventory Size: " << inventory->getContainerObjectsSize();
 #endif
 
+	// Remove the object flag for baby
+	if (creatureBitmask & ObjectFlag::BABY) {
+		removeObjectFlag(ObjectFlag::BABY);
+	}
+
 	// Clear the agents blackboard
 	blackboard.removeAll();
 
@@ -687,7 +692,7 @@ void AiAgentImplementation::respawn(Zone* zone, int level) {
 				// Now reload the template for baby stats
 				creature->loadTemplateDataForBaby(npcTemplate);
 
-				// info(true) << getDisplayedName() << " ID: " << getObjectID() << " Loc: " << getWorldPosition().toString() << " SPAWNED AS BABY" << " Inventory Size: " << inventory->getContainerObjectsSize();
+				// info(true) << getDisplayedName() << " ID: " << getObjectID() << " Loc: " << getWorldPosition().toString() << " SPAWNED AS BABY";
 			}
 		}
 	}
@@ -2625,14 +2630,15 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 
 	PathFinderManager* pathFinder = PathFinderManager::instance();
 
-	if (pathFinder == nullptr)
+	if (pathFinder == nullptr) {
 		return false;
+	}
 
 	/*
 	*	STEP 1: If we do not already have a path referenced, find a new path
 	*/
 
-	Reference<Vector<WorldCoordinates>* > path;
+	Reference<Vector<WorldCoordinates>* > path = nullptr;
 	ManagedReference<SceneObject*> currentParent = getParent().get();
 
 	PatrolPoint currentPoint(currentPosition);
@@ -2647,8 +2653,9 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 
 		path = currentFoundPath = static_cast<CurrentFoundPath*>(pathFinder->findPath(currentPoint.getCoordinates(), endMovementCoords, getZoneUnsafe()));
 	} else {
-		if (currentParent != nullptr && !currentParent->isCellObject())
+		if (currentParent != nullptr && !currentParent->isCellObject()) {
 			currentParent = nullptr;
+		}
 
 		if ((movementState == AiAgent::FOLLOWING || movementState == AiAgent::PATHING_HOME || movementState == AiAgent::NOTIFY_ALLY || movementState == AiAgent::MOVING_TO_HEAL || movementState == AiAgent::WATCHING || movementState == AiAgent::CRACKDOWN_SCANNING)
 			&& endMovementCell == nullptr && currentParent == nullptr && currentFoundPath->get(currentFoundPath->size() - 1).getWorldPosition().squaredDistanceTo(endMovementCoords.getWorldPosition()) > 4 * 4) {
@@ -2660,8 +2667,14 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 		}
 	}
 
-	if (path == nullptr || path->size() < 2) {
+	if (path == nullptr) {
 		currentFoundPath = nullptr;
+
+		return false;
+	} else if (path->size() < 2) {
+		currentFoundPath = nullptr;
+		path == nullptr;
+
 		return false;
 	}
 
@@ -2673,8 +2686,9 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 #endif
 
 	// Filter out duplicate path points
-	if (currentParent != nullptr && endMovementCell != nullptr)
+	if (currentParent != nullptr && endMovementCell != nullptr) {
 		pathFinder->filterPastPoints(path, asAiAgent());
+	}
 
 	// the farthest we will move is one point in the path, and the movement update time will change to reflect that
 	WorldCoordinates nextMovementPosition;
@@ -2689,6 +2703,7 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 		} else {
 			path = nullptr;
 			currentFoundPath = nullptr;
+
 			return false;
 		}
 	}
@@ -2697,8 +2712,9 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 	uint64 currentParentID = currentParent != nullptr ? currentParent->getObjectID() : 0;
 	uint64 nextParentID = nextMovementCell != nullptr ? nextMovementCell->getObjectID() : 0;
 
-	if (currentParentID != nextParentID && nextParentID > 0)
+	if (currentParentID != nextParentID && nextParentID > 0) {
 		currentPosition = PathFinderManager::transformToModelSpace(currentPosition, nextMovementCell->getParent().get());
+	}
 
 	Vector3 movementDiff(currentWorldPos - nextMovementPosition.getWorldPosition());
 
@@ -4615,17 +4631,6 @@ void AiAgentImplementation::sendDefaultConversationTo(SceneObject* player) {
 
 void AiAgentImplementation::selectConversationOption(int option, SceneObject* obj) {
 }
-
-bool AiAgentImplementation::isVendor() {
-	auto data = getDataObjectComponent()->get();
-
-	if (data == nullptr || !data->isVendorData() || !(getOptionsBitmask() & OptionBitmask::VENDOR)) {
-		return false;
-	}
-
-	return true;
-}
-
 
 AiAgent* AiAgentImplementation::asAiAgent() {
 	return _this.getReferenceUnsafeStaticCast();

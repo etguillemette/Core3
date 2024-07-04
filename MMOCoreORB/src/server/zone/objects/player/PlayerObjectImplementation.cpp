@@ -1401,12 +1401,15 @@ void PlayerObjectImplementation::setTitle(const String& characterTitle, bool not
 void PlayerObjectImplementation::notifyOnline() {
 	ManagedReference<SceneObject*> parent = getParent().get();
 
-	if (parent == nullptr)
+	if (parent == nullptr) {
 		return;
+	}
 
 	CreatureObject* playerCreature = parent->asCreatureObject();
-	if (playerCreature == nullptr)
+
+	if (playerCreature == nullptr) {
 		return;
+	}
 
 	miliSecsSession = 0;
 
@@ -3396,7 +3399,7 @@ bool PlayerObjectImplementation::isInPvpArea(bool checkTimer) {
 	for (int i = 0; i < areas.size(); ++i) {
 		ManagedReference<ActiveArea*>& area = areas.get(i);
 
-		if (area->isPvpArea()) {
+		if (area != nullptr && area->isPvpArea()) {
 			return true;
 		}
 	}

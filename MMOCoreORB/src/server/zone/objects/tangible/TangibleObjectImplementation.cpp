@@ -1463,6 +1463,25 @@ void TangibleObjectImplementation::sendTo(SceneObject* player, bool doClose, boo
 	SceneObjectImplementation::sendTo(player, doClose, forceLoadContainer);
 }
 
+void TangibleObjectImplementation::notifyInsert(TreeEntry* object) {
+	if (object == nullptr)
+		return;
+
+	SceneObjectImplementation::notifyInsert(object);
+
+	if (isCreatureObject()) {
+		return;
+	}
+
+	auto sceneO = static_cast<SceneObject*>(object);
+
+	if (sceneO == nullptr || !sceneO->isPlayerCreature()) {
+		return;
+	}
+
+	sendTo(sceneO, true, false);
+}
+
 bool TangibleObjectImplementation::isCityStreetLamp() const {
 	return (templateObject != nullptr && templateObject->getFullTemplateString().contains("object/tangible/furniture/city/streetlamp"));
 }
@@ -1507,6 +1526,16 @@ bool TangibleObjectImplementation::isInNavMesh() {
 	}
 
 	return false;
+}
+
+bool TangibleObjectImplementation::isVendor() {
+	auto data = getDataObjectComponent()->get();
+
+	if (data == nullptr || !data->isVendorData() || (isAiAgent() && !(getOptionsBitmask() & OptionBitmask::VENDOR))) {
+		return false;
+	}
+
+	return true;
 }
 
 TangibleObject* TangibleObject::asTangibleObject() {

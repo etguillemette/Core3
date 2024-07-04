@@ -4327,7 +4327,7 @@ String PlayerManagerImplementation::banAccount(PlayerObject* admin, Account* acc
 
 	Time expireTime;
 
-	expireTime.addMiliTime(seconds * 1000);
+	expireTime.addMiliTime((uint64)seconds * 1000);
 
 	banResult << "Account \"" + account->getUsername() + "\" successfully banned until " << expireTime.getFormattedTime() + " server time";
 
@@ -5901,7 +5901,7 @@ void PlayerManagerImplementation::disconnectAllPlayers() {
 		}
 	}
 
-	auto elapsedMs = profile.stopMs();
+	auto elapsedMs = Math::max((uint64)1, profile.stopMs());
 	auto ps = countDisconnected / (elapsedMs / 1000.0f);
 	info(true) << "Finished disconnecting " << commas << countDisconnected << " players (" << ps << "/s)";
 }
