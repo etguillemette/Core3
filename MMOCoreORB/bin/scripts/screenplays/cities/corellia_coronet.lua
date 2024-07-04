@@ -166,9 +166,9 @@ CorelliaCoronetScreenPlay = CityScreenPlay:new {
 		{1, -64.8198, 28, -4398.56, 247.888, 0, ""},
 		{1, -78.7157, 28, -4286.4, 22.2156, 0, ""},
 		{1, -71.0095, 28, -4325.21, 60.8559, 0, ""},
-		{1, -87.6481, 28, -4302.16, 97.3912, 0, ""},
+		{1, -87.6481, 28, -4302.16, 97.3912, 0, ""}, --Rancher
 		{1, -112.646, 28, -4310.7, 151.383, 0, ""},
-		{1, -118.993, 28, -4285.29, 181.854, 0, ""},
+		{1, -118.993, 28, -4285.29, 181.854, 0, ""}, --Mercenary
 		{1, -54.3716, 28, -4304.72, 97.2405, 0, ""},
 		{1, -56.7639, 28, -4229.33, 47.6277, 0, ""},
 		{1, -103.047, 28, -4182.61, 84.8143, 0, ""},
@@ -378,6 +378,13 @@ function CorelliaCoronetScreenPlay:spawnMobiles()
 	if pNpc ~= nil then
 		AiAgent(pNpc):setConvoTemplate("junkDealerArmsConvoTemplate")
 	end
+	--Ethan edit 7-4-24 (NPC VENDOR)
+	pNpc = spawnMobile(self.planet, "medic", 0, -35, -2, 25, 100, 0)
+	if pNpc ~= nil then
+		AiAgent(pNpc):setConvoTemplate("NPCVendorMedicineConvoTemplate")
+	end
+	--End Ethan edit 7-4-24 (NPC VENDOR)
+
 
 	--Outside Misc
 	pNpc = spawnMobile(self.planet, "commoner", 60, -51.7918, 28, -4662.65, 360.011, 0)
