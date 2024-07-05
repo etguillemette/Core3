@@ -894,7 +894,6 @@ void CraftingSessionImplementation::initialAssembly(int clientCounter) {
 
 	prototype->setComplexity(manufactureSchematic->getComplexity());
 
-
 	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): Adding functionality so that junk dealers will buy crafted goods
     prototype->setJunkDealerNeeded(1); // JUNKGENERIC
     
@@ -912,8 +911,6 @@ void CraftingSessionImplementation::initialAssembly(int clientCounter) {
 		prototype->setJunkValue(1);
 	}
 	//Ethan edit 5-1-24 (JUNK DEALER BUYERS) end: 
-
-
 
 	// Start DMSCO3 ***********************************************************
 	// Sends the updated values to the crafting screen
@@ -1170,11 +1167,8 @@ void CraftingSessionImplementation::experiment(int rowsAttempted, const String& 
         prototype->setJunkValue( prototype->getJunkValue() * valueAdjustment);
         //Ethan edit 5-1-24 end
 
-
-
-
-		// Make sure to store the lowest roll to display (Effect the multiline rolls
-		if (lowestExpSuccess < experimentationResult)
+		// Make sure to store the lowest roll to display (Effect the multiline rolls)
+		if (lowestExpSuccess < experimentationResult) {
 			lowestExpSuccess = experimentationResult;
 		}
 

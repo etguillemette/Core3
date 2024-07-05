@@ -37,8 +37,6 @@ class ResourceDeed extends Deed {
 
 	public native int useObject(CreatureObject player);
 
-	public native int useObjectPurchase(CreatureObject player); //Ethan  edit 6-1-24 (RESOURCE VENDOR)
-
 	/**
 	 * Removes this object from parent container
 	 * @pre { this object is locked, player is locked }
