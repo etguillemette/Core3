@@ -15,7 +15,7 @@ NPCVendor = {
 		TEMPLATEPATHERROR = 6, GIVEERROR = 7, DATAPADFULL = 8, DATAPADERROR = 9, TOOMANYHIRELINGS = 10, SCHEMATICERROR = 11,
 	},
 
-	globalPriceModifier = 2.0,
+	globalPriceModifier = 1.0,
 }
 
 
