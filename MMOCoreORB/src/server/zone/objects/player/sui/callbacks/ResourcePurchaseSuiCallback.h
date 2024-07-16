@@ -62,7 +62,7 @@ public:
 			if(purchaseScreen == true){
 				//return;
 				listBox->removeAllMenuItems();
-				resourceManager->addNodeToListBox(listBox, nodeName);
+				nodeName = resourceManager->addParentNodeToListBox(listBox, nodeName);
 			}
 			else{
 				listBox->setPromptTitle("@veteran:resource_title");

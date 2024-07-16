@@ -80,6 +80,9 @@ playerStructureLowestCondition = 0.5 --This is the lowest damage level a structu
 factoryExp = true --Ethan edit 6-14-24 (FACTORY XP) Enables xp gain for making items from a manufacturing schematic
 factoryExpRate = 0.75 --Ethan edit 6-14-24 (FACTORY XP) The percentage of the xp gain for creating a factory object compared to hand-crafting
 
+npcBuyerBonus = 50 --Ethan edit 7-16-24 (NPC BUYER) Bonus payout for selling crafted goods to an NPC
+npcBuyerRate = 1.0 --Ethan edit 7-16-24 (NPC BUYER) Base amount of credits a player can sell an item to an NPC for, per unit of resources used
+
 soloMedicExp = true --Ethan edit 6-14-24 (SOLO MEDIC) Enables exp for healing oneself or a pet
 autoDoctor = true --Ethan edit 6-7-24 (AUTO DOCTOR) Enables automatic healing/buffs in a hospital
 hospitalMedBuffDuration = 3600 --Ethan edit 6-7-24 (AUTO DOCTOR) Duration in seconds for automatic hospital buffs

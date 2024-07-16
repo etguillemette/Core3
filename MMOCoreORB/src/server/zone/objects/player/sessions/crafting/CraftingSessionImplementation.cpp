@@ -897,6 +897,12 @@ void CraftingSessionImplementation::initialAssembly(int clientCounter) {
 	//Ethan edit 5-1-24 (JUNK DEALER BUYERS): Adding functionality so that junk dealers will buy crafted goods
     prototype->setJunkDealerNeeded(1); // JUNKGENERIC
     
+	Lua* lua = new Lua(); //Testing 7-16-24
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
+
     // Add a value to the item, based on 1 Credit per unit, OQ, DR, and crafter skill
     // CraftingManagerImplementation::calculateFinalJunkValue calculates final price and calls...
     // SharedLabratory::getJunkValue which calculates quality/quantity of resources used
@@ -908,7 +914,7 @@ void CraftingSessionImplementation::initialAssembly(int clientCounter) {
 	}
 	else
 	{
-		prototype->setJunkValue(1);
+		prototype->setJunkValue(1 + npcBuyerBonus);
 	}
 	//Ethan edit 5-1-24 (JUNK DEALER BUYERS) end: 
 

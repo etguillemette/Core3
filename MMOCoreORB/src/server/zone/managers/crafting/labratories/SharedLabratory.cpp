@@ -212,7 +212,13 @@ int SharedLabratory::calculateAssemblySuccess(CreatureObject* player,DraftSchema
 //Ethan addition 5-1-24 (JUNK DEALER BUYER) - Adding functionality to sell crafted goods to a junk dealer
 float SharedLabratory::getJunkValue(ManufactureSchematic* manufactureSchematic) 
 {
-    float junkValue = 1.0f;
+    Lua* lua = new Lua(); //Testing 7-16-24
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	float npcBuyerBonus = lua->getGlobalFloat("npcBuyerRate");
+	
+	float junkValue = 1.0f;
     int resQuant = 0;
 
     for (int i = 0; i < manufactureSchematic->getSlotCount(); ++i) 
@@ -262,7 +268,7 @@ float SharedLabratory::getJunkValue(ManufactureSchematic* manufactureSchematic)
 
     if (junkValue != 0)
     {
-        junkValue += resQuant;
+        junkValue += (resQuant * npcBuyerBonus);
     }
 
     return junkValue;

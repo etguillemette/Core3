@@ -103,6 +103,9 @@ class PlayerManager extends Observer implements Logger {
 	public boolean factoryExp; //Ethan edit 6-14-24 (FACTORY XP)
 	public float factoryExpRate; //Ethan edit 6-14-24 (FACTORY XP)
 
+	public int npcBuyerBonus; //Ethan edit 7-16-24 (NPC BUYER) Bonus payout for selling crafted goods to an NPC
+	public float npcBuyerRate; //Ethan edit 7-16-24 (NPC BUYER) Base amount of credits a player can sell an item to an NPC for, per unit of resources used
+
 	public boolean autoDoctor; //Ethan edit 6-7-24 (AUTO DOCTOR)
 	public float hospitalMedBuffDuration; //Ethan edit 6-7-24 (AUTO DOCTOR)
 	public float hospitalMedBuffTickStrength; //Ethan edit 6-7-24 (AUTO DOCTOR)
