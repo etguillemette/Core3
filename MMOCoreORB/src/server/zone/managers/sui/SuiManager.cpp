@@ -854,8 +854,8 @@ void SuiManager::sendResourceListBox(SceneObject* player, const String& title, c
 		box->setPromptText(text);
 		box->setForceCloseDistance(forceCloseDist);
 
-		creature->sendMessage(box->generateMessage());
-		playerObject->addSuiBox(box);
+		//creature->sendMessage(box->generateMessage());
+		//playerObject->addSuiBox(box);
 
 		ManagedReference<ResourceManager*> resourceManager = server->getZoneServer()->getResourceManager();
 		resourceManager->addNodeToListBox(box, "resource");

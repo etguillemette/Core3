@@ -60,9 +60,7 @@ public:
 				return;
 
 			if(purchaseScreen == true){
-				//return;
-				listBox->removeAllMenuItems();
-				nodeName = resourceManager->addParentNodeToListBox(listBox, nodeName);
+				return;
 			}
 			else{
 				listBox->setPromptTitle("@veteran:resource_title");
@@ -127,7 +125,7 @@ public:
 					//creature->sendSystemMessage(ptnsfw);
 				}
 				
-				int cash = creature->getBankCredits();
+				int cash = creature->getCashCredits();
 				spawn = resourceManager->getResourceSpawn(nodeName);
 
 				int price = 0;
@@ -143,7 +141,7 @@ public:
 				}
 
 				if (price > cash && price > 0) {
-					StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in your bank."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
+					StringIdChatParameter ptnsfw("Purchase Failed", "You were unable to purchase %TO, because you do not have at least %DI credits in cash."); // You were unable to purchase %TO. Perhaps you do not have enough credits?
 					ptnsfw.setTO("crate of "+ nodeName);
 					ptnsfw.setDI(price);
 					creature->sendSystemMessage(ptnsfw);
@@ -158,12 +156,15 @@ public:
 					ptnsfw.setTT(nodeName);
 					ptnsfw.setDI(price);
 					creature->sendSystemMessage(ptnsfw);
-					creature->subtractBankCredits(price);
+					creature->subtractCashCredits(price);
 					resourceManager->givePlayerResource(creature, nodeName, purchaseQuantity); ////Ethan edit 6-4-24 (RESOURCE VENDOR) This section was moved here, also changed the quantity from "ResourceManager::RESOURCE_DEED_QUANTITY"
-					return;
+					
+					purchaseScreen = false;
+					screenStr = "false";
+					//return; --Edit 7-20-24
 				}
 
-				purchaseScreen = false;
+				//purchaseScreen = false; --Edit 7-20-24
 			}
 
 			//"Spawn" exists because we're on the "SHOW STATS" screen, we're not on the quantity list screen, and have hit OK
@@ -201,7 +202,7 @@ public:
 
 			//Hit OK, but we're not on a spawn, so we're on a resource tree node.. 
 			//There are list options, and we hit an option that's at least 0 and no more than the max menu item size
-			if(index >= 0 && index < listBox->getMenuSize()) {
+			if(index >= 0 && index < listBox->getMenuSize() && purchaseScreen == false) { //edit 7-21-24 added the "purchaseScreenFalse"
 
 				//StringIdChatParameter ptnsfwi("Test","index is bigger than 0. Qty index = %TT");
 				//ptnsfwi.setTT(qtyIndex);
@@ -221,7 +222,7 @@ public:
 
 				spawn = resourceManager->getResourceSpawn(nodeName); //Check again, this means they are looking at stats.
 				
-				//The spawn name, with the " (" removed exists, so we much be looking at stats
+				//The spawn name, with the " (" removed exists, so we must be looking at stats
 				if (spawn != nullptr) {
 					//StringIdChatParameter ptnsfw("Test","Looking at stats");
 					//creature->sendSystemMessage(ptnsfw);

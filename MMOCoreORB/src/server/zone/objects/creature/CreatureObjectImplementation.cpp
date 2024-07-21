@@ -3006,7 +3006,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	int healPrice = lua->getGlobalInt("healPrice"); 
 	int healBonus = lua->getGlobalInt("healBonus"); 
 
-	int cash = asCreatureObject()->getBankCredits(); 
+	int cash = asCreatureObject()->getCashCredits(); 
 	bool isDoctor = asCreatureObject()->hasSkill("science_doctor_novice");
 
 	String docStr;
@@ -3039,7 +3039,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			
 			int healthWoundTotal = healthWoundBefore + strengthWoundBefore + constitutionWoundBefore;
 
-			if(autoDoctor == true && docStr == "false" && healthWoundTotal > 0 && cash > (healPrice * healthWoundTotal)){
+			if(autoDoctor == true && docStr == "false" && healthWoundTotal > 0 && cash > (healPrice * healthWoundTotal) && isSitting()){
 				healWound(asCreatureObject(), CreatureAttribute::HEALTH, healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
 				healWound(asCreatureObject(), CreatureAttribute::STRENGTH, healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
 				healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
@@ -3053,7 +3053,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			}
 
 			//HEALTH BUFFS
-			if(autoDoctor == true && docStr == "false" && healthWoundTotal == 0){
+			if(autoDoctor == true && docStr == "false" && healthWoundTotal == 0  && isSitting()){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
 				if (zoneServer == nullptr)
@@ -3130,7 +3130,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			int actionWoundTotal = actionWoundBefore + quicknessWoundBefore + staminaWoundBefore;
 			
 			//Extra healing enabled (will not charge for base passive healing)
-			if(autoDoctor == true && docStr == "false" && actionWoundTotal > 0 && cash > (actionWoundTotal * healPrice)){
+			if(autoDoctor == true && docStr == "false" && actionWoundTotal > 0 && cash > (actionWoundTotal * healPrice) && isSitting()){
 				
 				healWound(asCreatureObject(), CreatureAttribute::ACTION, healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
 				healWound(asCreatureObject(), CreatureAttribute::QUICKNESS,healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
@@ -3146,7 +3146,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			}
 
 			//BUFFS
-			if(autoDoctor == true && docStr == "false" && actionWoundTotal == 0){
+			if(autoDoctor == true && docStr == "false" && actionWoundTotal == 0 && isSitting()){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
 				if (zoneServer == nullptr)
@@ -3208,7 +3208,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 	//Ethan edit 6-19-24 (AUTO DOCTOR)
 	if(medicalWoundChargeTotal > 0){
-		asCreatureObject()->subtractBankCredits(healPrice * medicalWoundChargeTotal);
+		asCreatureObject()->subtractCashCredits(healPrice * medicalWoundChargeTotal);
 		StringIdChatParameter ptnsfw("Medical Charge", "You have been charged %DI credits for wound treatment");
 		ptnsfw.setDI(healPrice * medicalWoundChargeTotal);
 		asCreatureObject()->sendSystemMessage(ptnsfw);
@@ -3254,7 +3254,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			int mindWoundTotal = mindWoundBefore + focusWoundBefore + willpowerWoundBefore + shockWoundBefore;
 
 			//Extra healing enabled (will not charge for base passive healing)
-			if(autoEntertainer == true && entStr == "false" && cash > (healPrice * mindWoundTotal)){
+			if(autoEntertainer == true && entStr == "false" && cash > (healPrice * mindWoundTotal) && isSitting()){
 				healWound(asCreatureObject(), CreatureAttribute::MIND, healBonus, true, false);
 				healWound(asCreatureObject(), CreatureAttribute::FOCUS, healBonus, true, false);
 				healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, healBonus, true, false);
@@ -3268,14 +3268,14 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 				int mindWoundTotal = abs(mindWoundBefore - mindWoundAfter) + abs(focusWoundBefore - focusWoundAfter) + abs(willpowerWoundBefore - willpowerWoundAfter) + abs(shockWoundBefore - shockWoundAfter);
 
 				if (mindWoundTotal > 0){
-					asCreatureObject()->subtractBankCredits(healPrice * mindWoundTotal);
+					asCreatureObject()->subtractCashCredits(healPrice * mindWoundTotal);
 					StringIdChatParameter ptnsfw("Cover Charge", "You pay %DI credits to relax your battle fatigue.");
 					ptnsfw.setDI(healPrice * mindWoundTotal);
 					asCreatureObject()->sendSystemMessage(ptnsfw);
 				}
 			}
 			//BUFFS
-			if(autoEntertainer == true && entStr == "false" && mindWoundTotal == 0){
+			if(autoEntertainer == true && entStr == "false" && mindWoundTotal == 0 && isSitting()){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
 				if (zoneServer == nullptr)

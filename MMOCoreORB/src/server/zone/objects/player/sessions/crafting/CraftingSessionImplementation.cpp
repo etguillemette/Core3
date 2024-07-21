@@ -910,7 +910,7 @@ void CraftingSessionImplementation::initialAssembly(int clientCounter) {
 
 	if(junkPrice > 0)
 	{
-		prototype->setJunkValue(junkPrice);
+		prototype->setJunkValue(junkPrice + npcBuyerBonus);
 	}
 	else
 	{
