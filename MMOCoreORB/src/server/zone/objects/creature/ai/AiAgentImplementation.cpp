@@ -88,13 +88,14 @@
 #include "server/chat/ChatManager.h"
 #include "server/zone/objects/intangible/tasks/PetControlDeviceStoreTask.h"
 
-//#define DEBUG
-//#define DEBUG_AI_WEAPONS
+// #define DEBUG
+// #define DEBUG_AI_WEAPONS
+// #define DEBUG_AI_HEAL
 
-//#define DEBUG_PATHING
-//#define SHOW_PATH
-//#define SHOW_NEXT_POSITION
-//#define DEBUG_FINDNEXTPOSITION
+// #define DEBUG_PATHING
+// #define SHOW_PATH
+// #define SHOW_NEXT_POSITION
+// #define DEBUG_FINDNEXTPOSITION
 
 void AiAgentImplementation::initializeTransientMembers() {
 	CreatureObjectImplementation::initializeTransientMembers();
@@ -1843,12 +1844,22 @@ void AiAgentImplementation::setDespawnOnNoPlayerInRange(bool val) {
 	}
 }
 
-void AiAgentImplementation::runAway(CreatureObject* target, float range, bool random = false) {
+void AiAgentImplementation::runAway(CreatureObject* target, float range, bool random, bool setTarget) {
 	if (getParent().get() != nullptr || getParentID() > 0 || target == nullptr || target->getParent().get() != nullptr || getZoneUnsafe() == nullptr) {
 		return;
 	}
 
-	setTargetObject(target);
+	auto zone = getZone();
+
+	if (zone == nullptr) {
+		return;
+	}
+
+	if (setTarget) {
+		setTargetObject(target);
+	} else {
+		setTargetObject(nullptr);
+	}
 
 	notifyObservers(ObserverEventType::FLEEING, target);
 	sendReactionChat(target, ReactionManager::FLEE);
@@ -1903,7 +1914,7 @@ void AiAgentImplementation::runAway(CreatureObject* target, float range, bool ra
 	clearPatrolPoints();
 	currentFoundPath = nullptr;
 
-	setNextPosition(runTrajectory.getX(), getZoneUnsafe()->getHeight(runTrajectory.getX(), runTrajectory.getY()), runTrajectory.getY(), getParent().get().castTo<CellObject*>());
+	setNextPosition(runTrajectory.getX(), zone->getHeight(runTrajectory.getX(), runTrajectory.getY()), runTrajectory.getY(), getParent().get().castTo<CellObject*>());
 }
 
 void AiAgentImplementation::leash(bool forcePeace) {
@@ -1985,12 +1996,12 @@ bool AiAgentImplementation::stalkProspect(SceneObject* prospect) {
 	return true;
 }
 
-void AiAgentImplementation::healTarget(CreatureObject* healTarget) {
+void AiAgentImplementation::healCreatureTarget(CreatureObject* healTarget) {
 	if (healTarget == nullptr || healTarget->isDead()) {
 		return;
 	}
 
-#ifdef DEBUG_AIHEAL
+#ifdef DEBUG_AI_HEAL
 	ZoneServer* zoneServer = getZoneServer();
 
 	ChatManager* chatManager = nullptr;
@@ -2009,15 +2020,16 @@ void AiAgentImplementation::healTarget(CreatureObject* healTarget) {
 		if (healTarget->getObjectID() == getObjectID()) {
 			healTarget->playEffect("clienteffect/pl_force_heal_self.cef");
 
-#ifdef DEBUG_AIHEAL
-			if (chatManager != nullptr)
+#ifdef DEBUG_AI_HEAL
+			if (chatManager != nullptr) {
 				chatManager->broadcastChatMessage(asAiAgent(), "Force Healing myself!", 0, 0, asAiAgent()->getMoodID());
+			}
 #endif
 
 		} else {
 			doCombatAnimation(healTarget, STRING_HASHCODE("force_healing_1"), 0, 0xFF);
 
-#ifdef DEBUG_AIHEAL
+#ifdef DEBUG_AI_HEAL
 			if (chatManager != nullptr)
 				chatManager->broadcastChatMessage(asAiAgent(), "Force Healing target!", 0, 0, asAiAgent()->getMoodID());
 #endif
@@ -2026,7 +2038,7 @@ void AiAgentImplementation::healTarget(CreatureObject* healTarget) {
 		if (healTarget->getObjectID() == getObjectID()) {
 			doAnimation("heal_self");
 
-#ifdef DEBUG_AIHEAL
+#ifdef DEBUG_AI_HEAL
 			if (chatManager != nullptr)
 				chatManager->broadcastChatMessage(asAiAgent(), "Healing myself!", 0, 0, asAiAgent()->getMoodID());
 #endif
@@ -2034,7 +2046,7 @@ void AiAgentImplementation::healTarget(CreatureObject* healTarget) {
 		} else {
 			doAnimation("heal_other");
 
-#ifdef DEBUG_AIHEAL
+#ifdef DEBUG_AI_HEAL
 			if (chatManager != nullptr)
 				chatManager->broadcastChatMessage(asAiAgent(), "Healing target!", 0, 0, asAiAgent()->getMoodID());
 #endif
@@ -2042,8 +2054,6 @@ void AiAgentImplementation::healTarget(CreatureObject* healTarget) {
 
 		healTarget->playEffect("clienteffect/healing_healdamage.cef");
 	}
-
-	Locker healLock(healTarget);
 
 	int healthMax = healTarget->getMaxHAM(CreatureAttribute::HEALTH) - healTarget->getWounds(CreatureAttribute::HEALTH);
 	int actionMax = healTarget->getMaxHAM(CreatureAttribute::ACTION) - healTarget->getWounds(CreatureAttribute::ACTION);
@@ -2072,6 +2082,53 @@ void AiAgentImplementation::healTarget(CreatureObject* healTarget) {
 	} else {
 		healTarget->healDamage(asAiAgent(), CreatureAttribute::MIND, healAmount, true, false);
 	}
+}
+
+void AiAgentImplementation::healTangibleTarget(TangibleObject* healTarget) {
+#ifdef DEBUG_AI_HEAL
+	info(true) << "ID: " << getObjectID() << " -- healTangibleTarget called.";
+#endif // DEBUG_AI_HEAL
+
+	if (healTarget == nullptr) {
+		return;
+	}
+
+	if (healTarget->isCreatureObject()) {
+		healCreatureTarget(healTarget->asCreatureObject());
+		return;
+	}
+
+#ifdef DEBUG_AI_HEAL
+	ZoneServer* zoneServer = getZoneServer();
+
+	ChatManager* chatManager = nullptr;
+
+	if (zoneServer != nullptr) {
+		chatManager = zoneServer->getChatManager();
+
+		if (chatManager != nullptr) {
+			StringBuffer msg;
+			msg << "Healing Tangible Target -- " << healTarget->getDisplayedName();
+
+			chatManager->broadcastChatMessage(asAiAgent(), msg.toString(), 0, 0, asAiAgent()->getMoodID());
+		}
+	}
+#endif // DEBUG_AI_HEAL
+
+	// Make the agent do the heal animation
+	playEffect("clienteffect/healing_healdamage.cef", "");
+
+	// Play the heal animation on the targhet
+	healTarget->playEffect("clienteffect/healing_healdamage.cef", "");
+
+	int maxCondition = healTarget->getMaxCondition();
+	int damageToHeal = (maxCondition / 5);
+
+	// Apply the heal to the lair
+	healTarget->healDamage(asAiAgent(), 0, damageToHeal, true);
+
+	// Trigger the observer so the lair knows it has received a heal
+	healTarget->notifyObservers(ObserverEventType::HEALINGRECEIVED, healTarget, damageToHeal);
 }
 
 void AiAgentImplementation::queueDizzyFallEvent() {
@@ -2445,17 +2502,15 @@ void AiAgentImplementation::updateCurrentPosition(PatrolPoint* nextPosition) {
 
 	CellObject* cell = nextPosition->getCell();
 
-	/*StringBuffer reachedPosition;
-	reachedPosition << "(" << nextPosition->getPositionX() << ", " << nextPosition->getPositionY() << ")";
-	info("reached " + reachedPosition.toString(), true);*/
-
-	if (getZoneUnsafe() == nullptr)
+	if (getZoneUnsafe() == nullptr) {
 		return;
+	}
 
-	if (cell != nullptr && cell->getParent().get() != nullptr)
+	if (cell != nullptr && cell->getParent().get() != nullptr) {
 		updateZoneWithParent(cell, false, false);
-	else
+	} else {
 		updateZone(false, false);
+	}
 
 	removeOutOfRangeObjects();
 	broadcastNextPositionUpdate(nextPosition);
@@ -2552,7 +2607,7 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 
 	float newSpeed = runSpeed;
 
-	if (movementState == AiAgent::FLEEING)
+	if (movementState == AiAgent::FLEEING && isInCombat())
 		newSpeed *= 0.7f;
 
 	if ((walk && movementState != AiAgent::FLEEING) || posture == CreaturePosture::PRONE)
@@ -2611,21 +2666,18 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 	updateLocomotion();
 
 #ifdef DEBUG_FINDNEXTPOSITION
-	printf("--- !!!!    findNextPosition -- Start -- !!!! ----- \n");
+	StringBuffer msg1;
 
-	printf("Patrol Points Size = %i \n", patrolPoints.size());
+	msg1 << "\n--- !!!!    findNextPosition -- Start -- !!!! ----- " << endl
+	<< "Patrol Points Size = " << patrolPoints.size() << endl
+	<< "Current World Position X = " << currentWorldPos.getX() << " Z = " << currentWorldPos.getZ() << " Y = " << currentWorldPos.getY() << endl
+	<< "End Movement Position X = " << endMovementPosition.getWorldPosition().getX() << " Z = " << endMovementPosition.getWorldPosition().getZ() << " Y = " << endMovementPosition.getWorldPosition().getY() << endl
 
-	printf("Current World Position x = %f , ", currentWorldPos.getX());
-	printf(" z = %f \n", currentWorldPos.getZ());
-	printf(" y = %f \n", currentWorldPos.getY());
+	<< "endDistanceSq = " << endDistanceSq << endl
+	<< "maxSquared = " << maxSquared << endl
+	<< "max distance = " << maxDistance << endl;
 
-	printf("End Movement Position x = %f , ", endMovementPosition.getWorldPosition().getX());
-	printf(" z = %f \n", endMovementPosition.getWorldPosition().getZ());
-	printf(" y = %f \n", endMovementPosition.getWorldPosition().getY());
-
-	printf("endDistanceSq = %f \n", endDistanceSq);
-	printf("maxSquared = %f \n", maxSquared);
-	printf("max distance = %f \n", maxDistance);
+	info(true) << msg1.toString();
 #endif
 
 	PathFinderManager* pathFinder = PathFinderManager::instance();
@@ -2657,7 +2709,7 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 			currentParent = nullptr;
 		}
 
-		if ((movementState == AiAgent::FOLLOWING || movementState == AiAgent::PATHING_HOME || movementState == AiAgent::NOTIFY_ALLY || movementState == AiAgent::MOVING_TO_HEAL || movementState == AiAgent::WATCHING || movementState == AiAgent::CRACKDOWN_SCANNING)
+		if ((movementState == AiAgent::FOLLOWING || movementState == AiAgent::PATHING_HOME || movementState == AiAgent::NOTIFY_ALLY || movementState == AiAgent::MOVING_TO_HEAL || movementState == AiAgent::WATCHING || movementState == AiAgent::CRACKDOWN_SCANNING || movementState == AiAgent::LAIR_HEALING)
 			&& endMovementCell == nullptr && currentParent == nullptr && currentFoundPath->get(currentFoundPath->size() - 1).getWorldPosition().squaredDistanceTo(endMovementCoords.getWorldPosition()) > 4 * 4) {
 
 			path = currentFoundPath = static_cast<CurrentFoundPath*>(pathFinder->findPath(currentPoint.getCoordinates(), endMovementPosition.getCoordinates(), getZoneUnsafe()));
@@ -2809,8 +2861,11 @@ bool AiAgentImplementation::findNextPosition(float maxDistance, bool walk) {
 #ifdef SHOW_NEXT_POSITION
 		for (int i = 0; i < movementMarkers.size(); ++i) {
 			ManagedReference<SceneObject*> marker = movementMarkers.get(i);
-			Locker clocker(marker, asAiAgent());
-			marker->destroyObjectFromWorld(false);
+
+			Core::getTaskManager()->scheduleTask([marker] {
+				Locker clocker(marker);
+				marker->destroyObjectFromWorld(false);
+			}, "DestroyMarker", 2000);
 		}
 
 		movementMarkers.removeAll();
@@ -3226,8 +3281,15 @@ float AiAgentImplementation::getMaxDistance() {
 						return 1.0f;
 					}
 				} else {
-					if (isPet() && isDroid())
-						return 2.0f;
+					if (isPet()) {
+						auto zone = getZone();
+
+						if (zone != nullptr && zone->isPobShip()) {
+							return 1.f;
+						} else if (isDroid()) {
+							return 2.0f;
+						}
+					}
 
 					return 4.0f;
 				}
@@ -3270,6 +3332,8 @@ float AiAgentImplementation::getMaxDistance() {
 			return 1.0f;
 		case AiAgent::HARVESTING:
 			return 1.0f;
+		case AiAgent::LAIR_HEALING:
+			return 1.5f;
 	}
 
 	return 5.f;
@@ -3303,7 +3367,8 @@ int AiAgentImplementation::setDestination() {
 		if (fleeDiff < 1500) {
 			eraseBlackboard("fleeRange");
 			setMovementState(AiAgent::FOLLOWING);
-			return stateCopy;
+
+			break;
 		}
 
 		break;
@@ -3434,7 +3499,7 @@ int AiAgentImplementation::setDestination() {
 				}
 			}
 		} else {
-			ManagedReference<CreatureObject*> healTarget = readBlackboard("healTarget").get<ManagedReference<CreatureObject*> >().get();
+			ManagedReference<TangibleObject*> healTarget = readBlackboard("healTarget").get<ManagedReference<TangibleObject*> >().get();
 
 			if (healTarget != nullptr) {
 				clearPatrolPoints();
@@ -3470,6 +3535,30 @@ int AiAgentImplementation::setDestination() {
 			setMovementState(AiAgent::FOLLOWING);
 
 		break;
+	}
+	case AiAgent::LAIR_HEALING: {
+		if (!peekBlackboard("healTarget")) {
+			if (!isWaiting()) {
+				if (followCopy != nullptr) {
+					setMovementState(AiAgent::FOLLOWING);
+				} else {
+					setMovementState(AiAgent::PATROLLING);
+				}
+			}
+		} else {
+			ManagedReference<TangibleObject*> healTarget = readBlackboard("healTarget").get<ManagedReference<TangibleObject*> >().get();
+
+			if (healTarget != nullptr) {
+				// Clear current patrol points
+				clearPatrolPoints();
+
+				// Get heal target position and set it as the next movement position
+				Vector3 targetPos = healTarget->getPosition();
+				setNextPosition(targetPos.getX(), targetPos.getZ(), targetPos.getY(), healTarget->getParent().get().castTo<CellObject*>());
+			}
+		}
+		break;
+
 	}
 	default:
 		if (creatureBitmask & ObjectFlag::STATIC || homeLocation.getCell() != nullptr) {
@@ -4340,8 +4429,9 @@ void AiAgentImplementation::setCombatState() {
 
 	ManagedReference<SceneObject*> home = homeObject.get();
 
-	if (home != nullptr)
+	if (home != nullptr) {
 		home->notifyObservers(ObserverEventType::AIMESSAGE, asAiAgent(), ObserverEventType::STARTCOMBAT);
+	}
 
 	notifyObservers(ObserverEventType::STARTCOMBAT, asAiAgent());
 
@@ -4618,6 +4708,10 @@ void AiAgentImplementation::removeObjectFlag(unsigned int flag) {
 	if (creatureBitmask & flag) {
 		creatureBitmask &= ~flag;
 	}
+}
+
+bool AiAgentImplementation::isScoutCreature() const {
+	return (creatureBitmask & ObjectFlag::SCOUT);
 }
 
 void AiAgentImplementation::loadCreatureBitmask() {

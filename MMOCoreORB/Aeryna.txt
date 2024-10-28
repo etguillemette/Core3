@@ -1,0 +1,6 @@
+BACKUPPER & INJECTOR tools for a SWGEmu server.
+
+Aeryna 2024
+
+NGE sucks. I hope you agree.
+
