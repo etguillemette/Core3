@@ -528,13 +528,17 @@ void StructureObjectImplementation::updateStructureStatus() {
 	lua->init();
 
 	lua->runFile("scripts/managers/player_manager.lua");
-	int playerStructureEntropyEnabled = lua->getGlobalInt("playerStructureEntropyEnabled");
-	float lowestPlayerMaintenance = lua->getGlobalInt("playerStructureLowestCondition");
+	bool playerStructureEntropyEnabled = lua->getGlobalBoolean("playerStructureEntropyEnabled");
+	float lowestCondition = lua->getGlobalFloat("playerStructureLowestCondition");
+
+	float debtLimit = -(getMaintenanceRate() * 1000.0 * (1.0 - lowestCondition));
+
 	
-	//Checks if the mainenance due is 500 hours worth, which should be 50% damage, I -THINK-
-	if(playerStructureEntropyEnabled == false && maintenanceDue > (getMaintenanceRate() * lowestPlayerMaintenance * 1000.0))
+	//Checks if the mainenance due is above the debtLimit
+	if(playerStructureEntropyEnabled == false && surplusMaintenance < debtLimit)
 	{
-		maintenanceDue = 0;
+		maintenanceDue = 0.0f;
+		addMaintenance(debtLimit - surplusMaintenance);
 	}
 	//End Ethan edit 5-25-24 (HALT ENTROPY)
 
@@ -650,12 +654,13 @@ int StructureObjectImplementation::getDecayPercentage() {
 		lua->init();
 
 		lua->runFile("scripts/managers/player_manager.lua");
-		int playerStructureEntropyEnabled = lua->getGlobalInt("playerStructureEntropyEnabled");
+		bool playerStructureEntropyEnabled = lua->getGlobalBoolean("playerStructureEntropyEnabled");
+		float lowestCondition = lua->getGlobalFloat("playerStructureLowestCondition");
 			
 		//If entropy is disabled, structures will never get past 50% decay
-		if (playerStructureEntropyEnabled == false && percentage < 50)
+		if (playerStructureEntropyEnabled == false && percentage < (lowestCondition * 100))
 		{
-			percentage = 50; 
+			percentage = (lowestCondition * 100); 
 		}
 
 		//End Ethan edit 5-6-24 (HALT ENTROPY)

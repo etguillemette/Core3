@@ -32,6 +32,8 @@
 #include "server/zone/objects/intangible/PetControlDevice.h"
 #include "server/zone/managers/creature/PetManager.h"
 
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 10-29-24 (HALT ENTROPY)
+
 void InstallationObjectImplementation::loadTemplateData(SharedObjectTemplate* templateData) {
 	StructureObjectImplementation::loadTemplateData(templateData);
 
@@ -762,7 +764,30 @@ void InstallationObjectImplementation::updateStructureStatus() {
 	updateInstallationWork();
 
 	if (surplusMaintenance < 0) {
-		setConditionDamage(-surplusMaintenance, true);
+		
+		//Ethan edit 10-29-24 (HALT ENTROPY)
+		Lua* lua = new Lua();
+		lua->init();
+
+		lua->runFile("scripts/managers/player_manager.lua");
+		bool playerStructureEntropyEnabled = lua->getGlobalBoolean("playerStructureEntropyEnabled");
+		float lowestCondition = lua->getGlobalFloat("playerStructureLowestCondition");
+
+		float debtLimit = -(getMaintenanceRate() * 1000.0 * (1.0 - lowestCondition));
+
+		
+		//Checks if the mainenance due is 500 hours worth, which should be 50% damage, I -THINK-
+		//Below is just testing:
+		//if(playerStructureEntropyEnabled == false && surplusMaintenance < debtLimit)
+		if(playerStructureEntropyEnabled == false && surplusMaintenance < debtLimit)
+		{
+			addMaintenance(debtLimit - surplusMaintenance);
+		}
+		else{
+			setConditionDamage(-surplusMaintenance, true);
+		}
+		//End Ethan edit 10-29-24 (HALT ENTROPY)
+		//setConditionDamage(-surplusMaintenance, true); //Ethan edit 10-29-24 (HALT ENTROPY)
 
 	} else {
 		setConditionDamage(0, true);

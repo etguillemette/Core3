@@ -75,7 +75,7 @@ baseStoredShips = 3
 -----------------------------------
 playerStructureMaintenanceRate = 1.0
 playerStructureEntropyEnabled = false
-playerStructureLowestCondition = 0.5 --This is the lowest damage level a structure can have
+playerStructureLowestCondition = 0.98 --This is the lowest damage level a structure can have
 
 factoryExp = true --Ethan edit 6-14-24 (FACTORY XP) Enables xp gain for making items from a manufacturing schematic
 factoryExpRate = 0.75 --Ethan edit 6-14-24 (FACTORY XP) The percentage of the xp gain for creating a factory object compared to hand-crafting
