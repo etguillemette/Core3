@@ -1,6 +1,8 @@
+includeFile("hireling/brawler_noob.lua")
 includeFile("hireling/brawler_novice.lua")
 includeFile("hireling/brawler_mid.lua")
 includeFile("hireling/brawler_master.lua")
+includeFile("hireling/unarmed_noob.lua")
 includeFile("hireling/unarmed_novice.lua")
 includeFile("hireling/unarmed_mid.lua")
 includeFile("hireling/unarmed_master.lua")

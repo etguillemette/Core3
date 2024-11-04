@@ -1864,6 +1864,7 @@ genericWaresData = {
 
     --Ethan Testing NPC Vendor 5-16-24:
     hiresMarksman = {
+        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="marksman_noob", displayName = "@mob/creature_names:sharpshooter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 5000, controlledObjectTemplate="marksman_novice", displayName = "@mob/creature_names:sharpshooter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 10000, controlledObjectTemplate="marksman_mid", displayName = "@mob/creature_names:sharpshooter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 15000, controlledObjectTemplate="marksman_master", displayName = "@mob/creature_names:sharpshooter", quantity = 1},
@@ -1873,6 +1874,7 @@ genericWaresData = {
     },
 
     hiresBrawler = {
+        { template = "object/intangible/pet/pet_control.iff", cost = 1000, controlledObjectTemplate="brawler_noob", displayName = "@mob/creature_names:brawler", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 5000, controlledObjectTemplate="brawler_novice", displayName = "@mob/creature_names:brawler", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 10000, controlledObjectTemplate="brawler_mid", displayName = "@mob/creature_names:brawler", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 15000, controlledObjectTemplate="brawler_master", displayName = "@mob/creature_names:brawler", quantity = 1},
