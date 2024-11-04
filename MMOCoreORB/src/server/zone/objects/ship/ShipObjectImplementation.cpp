@@ -90,40 +90,36 @@ void ShipObjectImplementation::notifyLoadFromDatabase() {
 
 void ShipObjectImplementation::loadTemplateData(SharedObjectTemplate* templateData) {
 	TangibleObjectImplementation::loadTemplateData(templateData);
-}
 
-void ShipObjectImplementation::loadTemplateData(SharedShipObjectTemplate* ssot) {
-	if (ssot == nullptr) {
+	auto shipTemp = dynamic_cast<SharedShipObjectTemplate*>(templateData);
+
+	if (shipTemp == nullptr) {
 		return;
 	}
 
-	chassisDataName = ssot->getShipName();
+	chassisDataName = shipTemp->getShipName();
 	setShipNameCRC(chassisDataName.hashCode(), false);
 
 	setShipName("", false);
 
-	setShipType(ssot->getShipType(), false);
+	setShipType(shipTemp->getShipType(), false);
 
-	setChassisMaxHealth(ssot->getChassisHitpoints(), false);
-	setCurrentChassisHealth(ssot->getChassisHitpoints(), false);
+	setChassisMaxHealth(shipTemp->getChassisHitpoints(), false);
+	setCurrentChassisHealth(shipTemp->getChassisHitpoints(), false);
 
-	setSlipRate(ssot->getChassisSlipRate(), false);
-	setChassisSpeed(ssot->getChassisSpeed(), false);
-	setChassisMaxMass(ssot->getChassisMass(), false);
+	setSlipRate(shipTemp->getChassisSlipRate(), false);
+	setChassisSpeed(shipTemp->getChassisSpeed(), false);
+	setChassisMaxMass(shipTemp->getChassisMass(), false);
 
-	setShipFaction(ssot->getShipFaction(), false);
-	setShipDifficulty(ssot->getShipDifficulty(), false);
+	setShipFaction(shipTemp->getShipFaction(), false);
+	setShipDifficulty(shipTemp->getShipDifficulty(), false);
 
-	setConversationMessage(ssot->getConversationMessage());
-	setConversationMobile(ssot->getConversationMobile());
-	setConversationTemplate(ssot->getConversationTemplate());
+	setHasWings(shipTemp->shipHasWings());
 
-	setHasWings(ssot->shipHasWings());
+	setChassisCategory(shipTemp->getChassisCategory());
+	setChassisLevel(shipTemp->getChassisLevel());
 
-	setChassisCategory(ssot->getChassisCategory());
-	setChassisLevel(ssot->getChassisLevel());
-
-	auto values = ssot->getAttributeMap();
+	auto values = shipTemp->getAttributeMap();
 
 	for (int i = 0; i < values.size(); ++i) {
 		auto attribute = values.elementAt(i).getKey();
@@ -157,25 +153,27 @@ void ShipObjectImplementation::loadTemplateData(SharedShipObjectTemplate* ssot) 
 		}
 	}
 
-	totalCellNumber = ssot->getTotalCellNumber();
+	totalCellNumber = shipTemp->getTotalCellNumber();
 
-	auto portalLayout = ssot->getPortalLayout();
+	auto portalLayout = shipTemp->getPortalLayout();
 
 	if (portalLayout != nullptr)
 		totalCellNumber = portalLayout->getFloorMeshNumber();
 
 	//info(true) << getDisplayedName() << " loaded a total of " << totalCellNumber << " cells.";
 
-	auto chassisData = ShipManager::instance()->getChassisData(ssot->getShipName());
+	auto chassisData = ShipManager::instance()->getChassisData(shipTemp->getShipName());
 
 	if (chassisData != nullptr) {
 		for (uint32 slot = 0; slot <= Components::FIGHTERSLOTMAX; slot++) {
 			auto slotData = chassisData->getComponentSlotData(slot);
 			setComponentTargetable(slot, slotData ? slotData->isTargetable() : false);
 		}
+
+		wingsOpenSpeed = chassisData->getWingOpenSpeed();
 	}
 
-	auto appearance = ssot->getAppearanceTemplate();
+	auto appearance = shipTemp->getAppearanceTemplate();
 
 	if (appearance != nullptr) {
 		auto volume = appearance->getBoundingVolume();
@@ -1878,11 +1876,11 @@ float ShipObjectImplementation::calculateActualMaxSpeed() {
 
 	float chassisSpeed = getChassisSpeed();
 
-	if (hasShipWings() && (getOptionsBitmask() & OptionBitmask::WINGS_OPEN)) {
+	if (hasShipWings() && (getOptionsBitmask() & OptionBitmask::WINGS_OPEN) && wingsOpenSpeed > 0.f) {
 		auto chassisData = ShipManager::instance()->getChassisData(chassisDataName);
 
 		if (chassisData != nullptr) {
-			chassisSpeed *= chassisData->getWingOpenSpeed();
+			chassisSpeed *= wingsOpenSpeed;
 		}
 	}
 

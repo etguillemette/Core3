@@ -36,6 +36,7 @@
 #include "SpaceSpawnGroup.h"
 #include "server/zone/managers/player/PlayerManager.h"
 #include "server/zone/objects/tangible/threat/ThreatMap.h"
+#include "server/zone/managers/ship/ShipAgentTemplateManager.h"
 
 
 int ShipManager::ERROR_CODE = NO_ERROR;
@@ -464,26 +465,32 @@ void ShipManager::loadShipComponentObjects(ShipObject* ship) {
 
 	for (uint32 slot = 0; slot <= Components::FIGHTERSLOTMAX; slot++) {
 		String slotName = Components::shipComponentSlotToString(slot);
+
 		if (slotName == "") {
 			continue;
 		}
 
 		String dataName = componentNames.get(slotName);
+
 		if (dataName == "") {
 			continue;
 		}
 
 		auto compData = getShipComponent(dataName);
+
 		if (compData == nullptr) {
 			continue;
 		}
 
-		auto compShot = TemplateManager::instance()->getTemplate(compData->getObjectTemplate().hashCode());
+		auto componentTempName = compData->getObjectTemplate();
+		auto compShot = TemplateManager::instance()->getTemplate(componentTempName.hashCode());
+
 		if (compShot == nullptr || !(compShot->getGameObjectType() & SceneObjectType::SHIPATTACHMENT)) {
 			continue;
 		}
 
-		ManagedReference<ShipComponent*> component = ServerCore::getZoneServer()->createObject(compData->getObjectTemplate().hashCode(), ship->getPersistenceLevel()).castTo<ShipComponent*>();
+		ManagedReference<ShipComponent*> component = ServerCore::getZoneServer()->createObject(componentTempName.hashCode(), ship->getPersistenceLevel()).castTo<ShipComponent*>();
+
 		if (component != nullptr) {
 			ship->install(nullptr, component, slot, false);
 		}
@@ -607,15 +614,22 @@ ShipControlDevice* ShipManager::createShipControlDevice(ShipObject* ship) {
 }
 
 ShipAiAgent* ShipManager::createAiShip(const String& shipName) {
-	return createAiShip(shipName.hashCode());
+	// info(true) << "ShipManager::createAiShip -- Create Chassis Name: " << shipName;
+
+	return createAiShip(shipName, shipName.hashCode());
 }
 
-ShipAiAgent* ShipManager::createAiShip(uint32 shipCRC) {
-	//info(true) << "ShipManager::createAiShip -- Create Chassis Name: " << shipName;
+ShipAiAgent* ShipManager::createAiShip(const String& shipName, uint32 shipCRC) {
+	auto shipTemplateManager = ShipAgentTemplateManager::instance();
 
-	auto shipTemp = dynamic_cast<SharedShipObjectTemplate*>(TemplateManager::instance()->getTemplate(shipCRC));
+	if (shipTemplateManager == nullptr) {
+		return nullptr;
+	}
 
-	if (shipTemp == nullptr) {
+	Reference<ShipAgentTemplate*> agentTemplate = shipTemplateManager->getTemplate(shipCRC);
+
+	if (agentTemplate == nullptr) {
+		error() << "Ship Agent template is null -- " << shipName;
 		return nullptr;
 	}
 
@@ -625,15 +639,32 @@ ShipAiAgent* ShipManager::createAiShip(uint32 shipCRC) {
 		return nullptr;
 	}
 
-	ManagedReference<ShipAiAgent*> shipAgent = zoneServer->createObject(shipTemp->getServerObjectCRC(), 0).castTo<ShipAiAgent*>();
+	String shipTemplateName = agentTemplate->getShipTemplate();
+	shipTemplateName =  "object/ship/" + shipTemplateName + ".iff";
+
+	uint32 shipTempHash = shipTemplateName.hashCode();
+
+	auto shipTemp = dynamic_cast<SharedShipObjectTemplate*>(TemplateManager::instance()->getTemplate(shipTempHash));
+
+	if (shipTemp == nullptr) {
+		error() << "Ship Object template is null for: " << shipTemplateName;
+		return nullptr;
+	}
+
+	// info(true) << "Trying to spawn ship object: " << shipTemplateName;
+
+	ManagedReference<ShipAiAgent*> shipAgent = zoneServer->createObject(shipTemplateName.hashCode(), 0).castTo<ShipAiAgent*>();
 
 	if (shipAgent == nullptr) {
 		return nullptr;
 	}
 
-	// info(true) << "ShipManager::createAiShip -- ShipName: " << shipName << " Game Object Type: " << shipTemp->getGameObjectType() << " Ship Hash: " << shipTemp->getServerObjectCRC() << " Full Template: " << shipTemp->getFullTemplateString();
+	Locker lock(shipAgent);
 
-	shipAgent->loadTemplateData(shipTemp);
+	// info(true) << "ShipManager::createAiShip -- ShipName: " << agentTemplate->getTemplateName() << " Game Object Type: " << shipTemp->getGameObjectType() << " Ship Hash: " << shipTemp->getServerObjectCRC() << " Full Template: " << shipTemp->getFullTemplateString();
+
+	// Load data from ShipAgentTemplate
+	shipAgent->loadTemplateData(agentTemplate);
 
 	shipAgent->setShipAiTemplate();
 
@@ -900,6 +931,24 @@ int ShipManager::notifyDestruction(ShipObject* destructorShip, ShipAiAgent* dest
 	}
 
 	try {
+		/* Order of priority
+			1. Credit chip Granted
+			2. Loot Given
+			3. Quest Kill
+			4. Ship Destroyed (killed creature style observer if needed)
+			5. FP Awarded
+			5. XP awarded
+		*/
+
+		// TODO: Grant Credit Chip here
+
+
+
+		// object/tangible/item/loot_credit_chip.iff
+		// 'string/en/space/space_loot.stf', '11', 'looted_credits', '%TT has looted a credit chip worth %DI credits.
+
+
+
 		// Quest Kill Observers
 		SortedVector<ManagedReference<Observer* > > observers = destructedShip->getObservers(ObserverEventType::QUESTKILL);
 
@@ -921,7 +970,7 @@ int ShipManager::notifyDestruction(ShipObject* destructorShip, ShipAiAgent* dest
 		}
 
 
-		// TODO: Killed creature style observer for ship agents
+		// TODO: Grant Loot here
 
 
 		// Handle Awarding XP
@@ -930,9 +979,6 @@ int ShipManager::notifyDestruction(ShipObject* destructorShip, ShipAiAgent* dest
 		if (playerManager != nullptr) {
 			playerManager->disseminateSpaceExperience(destructedShip, &copyThreatMap);
 		}
-
-		// TODO: Award Credit Chip and Loot here
-
 	} catch (Exception& e) {
 		destructedShip->scheduleDespawn(10, true);
 

@@ -89,10 +89,7 @@ public:
 	void initialize();
 	void stop();
 
-	int loadShipSpawnGroups();
-
 	static int checkArgumentCount(lua_State* L, int args);
-
 	static int includeFile(lua_State* L);
 	static int addShipSpawnGroup(lua_State* L);
 
@@ -157,13 +154,13 @@ public:
 	}
 
 private:
+	int loadShipSpawnGroups();
 	void loadShipComponentObjects(ShipObject* ship);
-
 	ShipControlDevice* createShipControlDevice(ShipObject* ship);
 
 public:
 	ShipAiAgent* createAiShip(const String& shipName);
-	ShipAiAgent* createAiShip(uint32 shipCRC);
+	ShipAiAgent* createAiShip(const String& shipName, uint32 shipCRC);
 	ShipObject* createPlayerShip(CreatureObject* owner, const String& shipName, const String& certificationRequired, bool loadComponents = false);
 
 	bool createDeedFromChassis(CreatureObject* owner, ShipChassisComponent* chassisBlueprint, CreatureObject* chassisDealer);
