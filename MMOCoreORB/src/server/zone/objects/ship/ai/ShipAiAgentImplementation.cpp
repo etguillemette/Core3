@@ -18,6 +18,7 @@
 #include <system/util/Vector.h>
 #include <system/util/VectorMap.h>
 
+#include "server/zone/managers/ship/ShipAgentTemplateManager.h"
 #include "server/zone/objects/ship/ai/ShipAgentTemplate.h"
 #include "server/zone/objects/ship/ai/btspace/BehaviorSpace.h"
 #include "server/zone/managers/objectcontroller/ObjectController.h"
@@ -246,6 +247,10 @@ void ShipAiAgentImplementation::loadTemplateData(ShipAgentTemplate* agentTemp) {
 
 	experienceValue = agentTemplate->getExperience();
 
+	lootChance = agentTemplate->getLootChance();
+	lootRolls = agentTemplate->getLootRolls();
+	lootTable = agentTemplate->getLootTable();
+
 	minCredits = agentTemplate->getMinCredits();
 	maxCredits = agentTemplate->getMaxCredits();
 
@@ -321,10 +326,22 @@ void ShipAiAgentImplementation::initializeTransientMembers() {
 }
 
 void ShipAiAgentImplementation::notifyInsertToZone(Zone* zone) {
-	/*
 	// Schedule space agents to activate
 	Reference<ShipAiAgent*> agentRef = asShipAiAgent();
-	int randomTime = (System::random(120) + 120) * 1000;
+
+	int randomTime = 500;
+
+	if (zone != nullptr) {
+		auto zoneServer = zone->getZoneServer();
+
+		if (zoneServer == nullptr) {
+			return;
+		}
+
+		if (zoneServer->isServerLoading()) {
+			randomTime = (System::random(120) + 120) * 1000;
+		}
+	}
 
 	Core::getTaskManager()->scheduleTask([agentRef] () {
 		if (agentRef == nullptr ) {
@@ -335,7 +352,6 @@ void ShipAiAgentImplementation::notifyInsertToZone(Zone* zone) {
 
 		agentRef->activateAiBehavior();
 	}, "activateShipAiLambda", randomTime);
-	*/
 
 	ShipObjectImplementation::notifyInsertToZone(zone);
 }
@@ -366,7 +382,6 @@ void ShipAiAgentImplementation::notifyInsert(TreeEntry* entry) {
 		sendPvpStatusTo(pilot);
 
 	numberOfPlayersInRange.increment();
-	activateAiBehavior();
 }
 
 void ShipAiAgentImplementation::notifyDissapear(TreeEntry* entry) {
@@ -412,8 +427,6 @@ void ShipAiAgentImplementation::notifyDissapear(TreeEntry* entry) {
 			}
 		}
 	}
-
-	activateAiBehavior();
 }
 
 void ShipAiAgentImplementation::notifyDespawn() {
@@ -479,15 +492,9 @@ void ShipAiAgentImplementation::activateAiBehavior(bool reschedule) {
 		return;
 	}
 
-#ifdef DEBUG_SPACE_AI
-	bool alwaysActive = ConfigManager::instance()->getAiAgentLoadTesting();
-#else  // DEBUG_SPACE_AI
-	bool alwaysActive = false;
-#endif // DEBUG_SPACE_AI
-
 	ZoneServer* zoneServer = getZoneServer();
 
-	if ((!alwaysActive && numberOfPlayersInRange.get() <= 0 && getFollowShipObject().get() == nullptr) || zoneServer == nullptr || zoneServer->isServerLoading() || zoneServer->isServerShuttingDown()) {
+	if (zoneServer == nullptr || zoneServer->isServerShuttingDown()) {
 		cancelBehaviorEvent();
 		cancelRecovery();
 
@@ -555,15 +562,11 @@ void ShipAiAgentImplementation::runBehaviorTree() {
 		if (peekBlackboard("aiDebug") && readBlackboard("aiDebug") == true) {
 			info(true) << getDisplayedName() << " - ID: " << getObjectID() << " runBehaviorTree -- called";
 		}
-
-		bool alwaysActive = ConfigManager::instance()->getAiAgentLoadTesting();
-#else  // DEBUG_SHIP_AI
-		bool alwaysActive = false;
 #endif // DEBUG_SHIP_AI
 
 		ZoneServer* zoneServer = getZoneServer();
 
-		if ((!alwaysActive && numberOfPlayersInRange.get() <= 0 && getFollowShipObject().get() == nullptr) || zoneServer == nullptr || zoneServer->isServerLoading() || zoneServer->isServerShuttingDown()) {
+		if (zoneServer == nullptr || zoneServer->isServerShuttingDown()) {
 			cancelBehaviorEvent();
 			cancelRecovery();
 
@@ -1318,7 +1321,7 @@ bool ShipAiAgentImplementation::generatePatrol(int totalPoints, float distance, 
 	}
 
 	if (savedState != ShipAiAgent::PATROLLING && savedState != ShipAiAgent::WATCHING) {
-		patrolPoints.removeAll();
+		clearPatrolPoints();
 		setMovementState(ShipAiAgent::PATROLLING);
 	}
 
@@ -1331,27 +1334,36 @@ bool ShipAiAgentImplementation::generatePatrol(int totalPoints, float distance, 
 		SQUADRON_FOLLOW - Similar to above, but for ships that have to follow another ship while in a squadron.
 	*/
 
+	Locker locker(&targetMutex);
+
 	const Vector3& homePosition = getHomePosition();
 	Vector3 patrolPosition = homePosition;
+	Vector<SpacePatrolPoint> patrolCopy;
 
-	if (shipBitmask & ShipFlag::FIXED_PATROL) {
-		//TODO: Load and set fixed paths using the points on their spawner
-		patrolPosition += Vector3(750, 0, 0);
-		SpacePatrolPoint fixedPoint1(patrolPosition);
+	if (isFixedPatrolShipAgent()) {
+		auto shipAgentTempMan = ShipAgentTemplateManager::instance();
 
-		patrolPosition = homePosition + Vector3(0, 750, 0);
-		SpacePatrolPoint fixedPoint2(patrolPosition);
-		SpacePatrolPoint fixedPoint3(homePosition);
+		if (shipAgentTempMan == nullptr) {
+			return false;
+		}
 
-		patrolPoints.add(fixedPoint1);
-		patrolPoints.add(fixedPoint2);
-		patrolPoints.add(fixedPoint3);
+		const auto zoneNameHash = zone->getZoneName().hashCode();
+		int totalPoints = fixedPatrolPoints.size();
+
+		// Add patrol points from the vector selected at spawn
+		for (int i = 0; i < totalPoints; i++) {
+			const uint32 pointHash = fixedPatrolPoints.get(i);
+			SpacePatrolPoint patrolPoint = shipAgentTempMan->getSpacePatrolPoint(zoneNameHash, pointHash);
+
+			patrolCopy.add(patrolPoint);
+		}
+
+		patrolPoints.removeAll(totalPoints, totalPoints);
+		patrolPoints.addAll(patrolCopy);
 	} else if (shipBitmask & ShipFlag::GUARD_PATROL) {
 		float minimumGuardPatrol = getMinimumGuardPatrol();
 		float maximumGuardPatrol = getMaximumGuardPatrol();
 		int randomPatrol = System::random((int)(maximumGuardPatrol - minimumGuardPatrol)) + minimumGuardPatrol;
-
-		Vector<SpacePatrolPoint> patrolCopy;
 
 		patrolCopy = ShipAiPatrolPathFinder::generatePatrolSphere(Sphere(patrolPosition, randomPatrol), Matrix4(), totalPoints);
 
@@ -1363,8 +1375,6 @@ bool ShipAiAgentImplementation::generatePatrol(int totalPoints, float distance, 
 
 		patrolPosition = ShipAiPatrolPathFinder::getRandomPosition(homePosition, radiusMin, radiusMax);
 		float patrolRadius = distance - qSqrt((homePosition - patrolPosition).squaredLength());
-
-		Vector<SpacePatrolPoint> patrolCopy;
 
 		switch (pathShape) {
 			case ShipAiPatrolPathFinder::PathShape::SPHERE: {
@@ -1387,6 +1397,18 @@ bool ShipAiAgentImplementation::generatePatrol(int totalPoints, float distance, 
 
 void ShipAiAgentImplementation::updatePatrolPoints() {
 	float inRangeDistance = Math::sqr(getMaxDistance());
+
+	// Fixed patrol point ships move from point to point
+	if (isFixedPatrolShipAgent() && (getMovementState() == ShipAiAgent::PATROLLING)) {
+		const auto& nextPosition = patrolPoints.get(0).getWorldPosition();
+		const auto& thisPosition = getPosition();
+
+		if (thisPosition.squaredDistanceTo(nextPosition) < inRangeDistance) {
+			patrolPoints.remove(0);
+		}
+
+		return;
+	}
 
 	for (int i = patrolPoints.size(); -1 < --i;) {
 		const auto& nextPosition = patrolPoints.get(i).getWorldPosition();
@@ -1753,6 +1775,40 @@ void ShipAiAgentImplementation::setDefender(ShipObject* defender) {
 	setMovementState(ShipAiAgent::ATTACKING);
 
 	defender->addDefender(asShipAiAgent());
+
+	// Add Ship to enemy list
+	if (addEnemyShip(defender->getObjectID()) && defender->isPlayerShip()) {
+		broadcastPvpStatusBitmask();
+	}
+}
+
+bool ShipAiAgentImplementation::addEnemyShip(uint64 enemyShipID) {
+	Locker locker(&enemyListMutex);
+
+	if (enemyShipList.contains(enemyShipID)) {
+		return false;
+	}
+
+	enemyShipList.add(enemyShipID);
+	return true;
+}
+
+bool ShipAiAgentImplementation::removeEnemyShip(uint64 enemyShipID) {
+	Locker locker(&enemyListMutex);
+
+	if (!enemyShipList.contains(enemyShipID)) {
+		return false;
+	}
+
+	enemyShipList.removeElement(enemyShipID);
+
+	return true;
+}
+
+bool ShipAiAgentImplementation::isEnemyShip(uint64 shipID) {
+	Locker locker(&enemyListMutex);
+
+	return enemyShipList.contains(shipID);
 }
 
 bool ShipAiAgentImplementation::isAggressiveTo(TangibleObject* target) {
@@ -1844,7 +1900,7 @@ bool ShipAiAgentImplementation::isAggressive(TangibleObject* target) {
 	}
 
 	// ShipAgent is not aggressive due to faction or standing, remaining aggressive check based on pvpStatusBitmask
-	return pvpStatusBitmask & ObjectFlag::AGGRESSIVE;
+	return (pvpStatusBitmask & ObjectFlag::AGGRESSIVE) || isEnemyShip(target->getObjectID());
 }
 
 // This will handle checks for other ShipAgents or tangible objects
@@ -2119,14 +2175,18 @@ void ShipAiAgentImplementation::removeTree(const BehaviorTreeSlotSpace& slot) {
 	setTree(nullptr, slot);
 }
 
-void ShipAiAgentImplementation::addShipFlag(unsigned int flag) {
+void ShipAiAgentImplementation::addShipFlag(uint32 flag) {
 	if (!(shipBitmask & flag))
 		shipBitmask |= flag;
 }
 
-void ShipAiAgentImplementation::removeShipFlag(unsigned int flag) {
+void ShipAiAgentImplementation::removeShipFlag(uint32 flag) {
 	if (shipBitmask & flag)
 		shipBitmask &= ~flag;
+}
+
+void ShipAiAgentImplementation::addFixedPatrolPoint(uint32 pointHash) {
+	fixedPatrolPoints.add(pointHash);
 }
 
 void ShipAiAgentImplementation::initializeTransform(const Vector3& position, const Quaternion& direction) {
@@ -2196,8 +2256,16 @@ String ShipAiAgentImplementation::getShipAgentTemplateName() {
 	return templateName;
 }
 
+String ShipAiAgentImplementation::getLootTable() {
+	return lootTable;
+}
+
 bool ShipAiAgentImplementation::checkLineOfSight(SceneObject* obj) {
 	return CollisionManager::checkLineOfSight(asShipAiAgent(), obj);
+}
+
+bool ShipAiAgentImplementation::isFixedPatrolShipAgent() const {
+	return (shipBitmask & ShipFlag::FIXED_PATROL);
 }
 
 void ShipAiAgentImplementation::handleException(const Exception& ex, const String& context) {

@@ -185,18 +185,33 @@ class ShipAiAgent extends FighterShipObject {
 
 	protected transient int experienceValue;
 
+	protected transient float lootChance;
+	protected transient int lootRolls;
+
+	@dereferenced
+	protected transient string lootTable;
+
 	protected transient int minCredits;
 	protected transient int maxCredits;
 
 	protected transient int imperialFactionReward;
 	protected transient int rebelFactionReward;
 
-	protected unsigned int conversationTemplate;
-	protected unsigned int conversationMobile;
-	protected unsigned int conversationMessage;
+	protected transient unsigned int conversationTemplate;
+	protected transient unsigned int conversationMobile;
+	protected transient unsigned int conversationMessage;
 
-	protected float minGuardPatrol;
-	protected float maxGuardPatrol;
+	protected transient float minGuardPatrol;
+	protected transient float maxGuardPatrol;
+
+	@dereferenced
+	protected transient Vector<unsigned int> fixedPatrolPoints;
+
+	@dereferenced
+	private transient Mutex enemyListMutex;
+
+	@dereferenced
+	protected transient Vector<unsigned long> enemyShipList;
 
 	public ShipAiAgent() {
 		movementState = OBLIVIOUS;
@@ -214,6 +229,28 @@ class ShipAiAgent extends FighterShipObject {
 
 		coordinateMin = -8192;
 		coordinateMax = 8192;
+
+		agentTemplate = null;
+
+		experienceValue = 0;
+
+		lootChance = 0;
+		lootRolls = 0;
+
+		lootTable = "";
+
+		minCredits = 0;
+		maxCredits = 0;
+
+		imperialFactionReward = 0;
+		rebelFactionReward = 0;
+
+		conversationTemplate = 0;
+		conversationMobile = 0;
+		conversationMessage = 0;
+
+		minGuardPatrol = 0;
+		maxGuardPatrol = 0;
 	}
 
 	/**
@@ -452,6 +489,13 @@ class ShipAiAgent extends FighterShipObject {
 	@dirty
 	public native boolean isAttackableBy(CreatureObject object);
 
+	public native boolean addEnemyShip(unsigned long enemyShipID);
+
+	public native boolean removeEnemyShip(unsigned long enemyShipID);
+
+	@dirty
+	public native boolean isEnemyShip(unsigned long shipID);
+
 	/**
 	 * Evaluates if this creature is aggresive to the object
 	 * @pre { }
@@ -549,6 +593,9 @@ class ShipAiAgent extends FighterShipObject {
 		shipBitmask = mask;
 	}
 
+	@read
+	public native boolean isFixedPatrolShipAgent();
+
 	@dirty
 	public void setConversationTemplate(unsigned int convoTemplateCrc) {
 		conversationTemplate = convoTemplateCrc;
@@ -577,6 +624,9 @@ class ShipAiAgent extends FighterShipObject {
 
 	@preLocked
 	public native void removeShipFlag(unsigned int option);
+
+	@preLocked
+	public native void addFixedPatrolPoint(unsigned int pointHash);
 
 	@preLocked
 	public void destroyObjectFromWorld(boolean sendSelfDestroy) {
@@ -620,6 +670,17 @@ class ShipAiAgent extends FighterShipObject {
 	public int getExperienceValue() {
 		return experienceValue;
 	}
+
+	public float getLootChance() {
+		return lootChance;
+	}
+
+	public int getLootRolls() {
+		return lootRolls;
+	}
+
+	@dereferenced
+	public native string getLootTable();
 
 	public int getMinLootCredits() {
 		return minCredits;
