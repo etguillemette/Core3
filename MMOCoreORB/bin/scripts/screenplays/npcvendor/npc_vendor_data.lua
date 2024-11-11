@@ -1,7 +1,7 @@
 genericWaresData = {
 
     planetInventory = {
-        corellia = { inventoryStartIndex = 0.0, inventoryEndIndex = 1.0},
+        corellia = { inventoryStartIndex = 0.0, inventoryEndIndex = 0.5},
 		naboo = {inventoryStartIndex = 0.0, inventoryEndIndex = 0.5},
 		tatooine = {inventoryStartIndex = 0.0, inventoryEndIndex = 0.5},
 
@@ -1891,7 +1891,7 @@ genericWaresData = {
 --RESOURCE----------------------------------
 
     waresResource = {
-        { template = "object/tangible/veteran_reward/shared_resource_purchase_deed.iff", cost = 1000, displayName = "@item_n:free_resource"},
+        { template = "object/tangible/veteran_reward/shared_resource_purchase_deed.iff", cost = 100000, displayName = "@item_n:free_resource"},
     },
 
     --Ethan End testing NPC vendor 5-16-24

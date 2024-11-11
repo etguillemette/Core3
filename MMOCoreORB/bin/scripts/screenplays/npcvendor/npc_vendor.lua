@@ -15,7 +15,7 @@ NPCVendor = {
 		TEMPLATEPATHERROR = 6, GIVEERROR = 7, DATAPADFULL = 8, DATAPADERROR = 9, TOOMANYHIRELINGS = 10, SCHEMATICERROR = 11,
 	},
 
-	globalPriceModifier = 1.0,
+	globalPriceModifier = 0.5,
 }
 
 
@@ -414,6 +414,10 @@ function NPCVendor:awardData(pPlayer, itemData)
 		return self.errorCodes.DATAPADFULL
 	end
 
+	CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
+		return
+	end
+
 	local transferResult = self:transferData(pPlayer, pDatapad, itemData)
 
 	if(transferResult ~= self.errorCodes.SUCCESS) then
@@ -421,9 +425,6 @@ function NPCVendor:awardData(pPlayer, itemData)
 	end
 
 	if (CreatureObject(pPlayer):getCashCredits() < itemCost) then
-		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
-		return
-	end
 
 	CreatureObject(pPlayer):subtractCashCredits(itemCost)
 

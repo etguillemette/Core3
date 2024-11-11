@@ -78,7 +78,7 @@ playerStructureEntropyEnabled = false
 playerStructureLowestCondition = 0.98 --This is the lowest damage level a structure can have
 
 factoryExp = true --Ethan edit 6-14-24 (FACTORY XP) Enables xp gain for making items from a manufacturing schematic
-factoryExpRate = 5.0 --Ethan edit 6-14-24 (FACTORY XP) The percentage of the xp gain for creating a factory object compared to hand-crafting
+factoryExpRate = 4.0 --Ethan edit 6-14-24 (FACTORY XP) The percentage of the xp gain for creating a factory object compared to hand-crafting
 
 npcBuyerBonus = 50 --Ethan edit 7-16-24 (NPC BUYER) Bonus payout for selling crafted goods to an NPC
 npcBuyerRate = 2.0 --Ethan edit 7-16-24 (NPC BUYER) Base amount of credits a player can sell an item to an NPC for, per unit of resources used
@@ -97,7 +97,7 @@ cantinaMindBuffTickStrength = 0.05 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Buff b
 cantinaMindBuffPoolStrength = 1.00 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max modifier bonus for Mind !!!AS A PERCENTAGE OF BASE MIND STAT!!! for automatic cantina buffs (Ex. 1.0 = double mind)
 cantinaMindBuffAttrStrength = 1.00 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max modifier bonus for Focus/Willpower !!!AS A PERCENTAGE OF BASE MIND STAT!!! for automatic cantina buffs (Ex. 1.0 = double focus/willpower)
 
-buffPrice = 250 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Price "per tick" of buffs
+buffPrice = 100 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Price "per tick" of buffs
 healPrice = 2 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Price per point of wounds healed
 healBonus = 9 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Amount of extra wound healing enabled per tick if autoDoctor and/or autoEntertainer are enabled
 -----------------------------------
