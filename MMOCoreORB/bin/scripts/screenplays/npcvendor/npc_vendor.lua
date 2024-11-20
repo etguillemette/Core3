@@ -414,7 +414,8 @@ function NPCVendor:awardData(pPlayer, itemData)
 		return self.errorCodes.DATAPADFULL
 	end
 
-	CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
+	if (CreatureObject(pPlayer):getCashCredits() < itemCost) then
+		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
 		return
 	end
 
@@ -425,6 +426,9 @@ function NPCVendor:awardData(pPlayer, itemData)
 	end
 
 	if (CreatureObject(pPlayer):getCashCredits() < itemCost) then
+		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
+		return
+	end
 
 	CreatureObject(pPlayer):subtractCashCredits(itemCost)
 
