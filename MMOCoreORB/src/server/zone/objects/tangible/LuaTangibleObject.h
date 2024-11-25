@@ -68,7 +68,7 @@ namespace tangible {
 		int setSerialNumber(lua_State* L); //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 		int getConditionDamage(lua_State* L);
 		int isActivated(lua_State* L);
-
+		
 	protected:
 		TangibleObject* realObject;
 	};

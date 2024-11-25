@@ -435,7 +435,6 @@ int LuaTangibleObject::getMainDefender(lua_State* L) {
 	return 1;
 }
 
-<<<<<<< HEAD
 //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 
 int LuaTangibleObject::setSerialNumber(lua_State* L){
@@ -447,7 +446,6 @@ int LuaTangibleObject::setSerialNumber(lua_State* L){
 }
 
 //END Ethan edit 5-28-24 (JUNK DEALER VENDOR)
-=======
 int LuaTangibleObject::getConditionDamage(lua_State* L){
 	int conditionDamage = realObject->getConditionDamage();
 
@@ -463,4 +461,3 @@ int LuaTangibleObject::isActivated(lua_State* L){
 
 	return 1;
 }
->>>>>>> aa118977a50937724c5875b9e29e3a421f418011

@@ -416,7 +416,7 @@ function NPCVendor:awardData(pPlayer, itemData)
 
 	if (CreatureObject(pPlayer):getCashCredits() < itemCost) then
 		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
-		return
+		return self.errorCodes.NOTENOUGHCREDITS
 	end
 
 	local transferResult = self:transferData(pPlayer, pDatapad, itemData)
