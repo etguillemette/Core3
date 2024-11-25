@@ -40,7 +40,7 @@
 void ShipObjectImplementation::initializeTransientMembers() {
 	hyperspacing = false;
 
-	if (shipRecoveryEvent == nullptr) {
+	if (shipRecoveryEvent == nullptr && !isShipAiAgent()) {
 		shipRecoveryEvent = new ShipRecoveryEvent(asShipObject());
 	}
 
@@ -860,7 +860,7 @@ void ShipObjectImplementation::doRecovery(int mselapsed) {
 	updateComponentFlags(false, deltaVector);
 
 	if (deltaVector != nullptr) {
-		deltaVector->sendMessages(asShipObject(), pilot);
+		deltaVector->sendMessages(asShipObject());
 	}
 
 	auto targetVector = getTargetVector();
@@ -1122,7 +1122,7 @@ void ShipObjectImplementation::repairShip(float value, bool decay) {
 	}
 
 	if (deltaVector != nullptr) {
-		deltaVector->sendMessages(asShipObject(), pilot);
+		deltaVector->sendMessages(asShipObject());
 	}
 
 #ifdef DEBUG_SHIP_REPAIR
@@ -1168,7 +1168,7 @@ void ShipObjectImplementation::addComponentFlag(uint32 slot, uint32 value, bool 
 	setComponentOptions(slot, componentFlag, nullptr, DeltaMapCommands::SET, deltaVector);
 
 	if (deltaVector != nullptr && notifyClient) {
-		deltaVector->sendMessages(asShipObject(), getPilot());
+		deltaVector->sendMessages(asShipObject());
 	}
 }
 
@@ -1188,7 +1188,7 @@ void ShipObjectImplementation::removeComponentFlag(uint32 slot, uint32 value, bo
 	setComponentOptions(slot, componentFlag, nullptr, DeltaMapCommands::SET, deltaVector);
 
 	if (deltaVector != nullptr && notifyClient) {
-		deltaVector->sendMessages(asShipObject(), getPilot());
+		deltaVector->sendMessages(asShipObject());
 	}
 }
 
@@ -1222,7 +1222,7 @@ void ShipObjectImplementation::resetComponentFlag(uint32 slot, bool notifyClient
 	setComponentOptions(slot, componentFlag, nullptr, DeltaMapCommands::SET, deltaVector);
 
 	if (deltaVector != nullptr && notifyClient) {
-		deltaVector->sendMessages(asShipObject(), getPilot());
+		deltaVector->sendMessages(asShipObject());
 	}
 }
 
@@ -1255,7 +1255,7 @@ void ShipObjectImplementation::setComponentDemolished(uint32 slot, bool notifyCl
 	}
 
 	if (deltaVector != nullptr && notifyClient) {
-		deltaVector->sendMessages(asShipObject(),getPilot());
+		deltaVector->sendMessages(asShipObject());
 	}
 }
 
@@ -1510,66 +1510,62 @@ void ShipObjectImplementation::destroyObjectFromDatabase(bool destroyContainedOb
 
 	SortedVector<ManagedReference<SceneObject*>> players;
 
+	// Get the Launch location
+	auto launchZone = getSpaceLaunchZone();
+	auto launchLoc = getSpaceLaunchLocation();
+
+	// This should not be an empty string, but just in case it is, send them to Coronet
+	if (launchZone.isEmpty()) {
+		launchZone = "corellia";
+		launchLoc.set(-66, 28, -4711);
+	}
+
 	// Check slotted objects for players
 	for (int i = slotted.size() - 1; i >= 0 ; --i) {
 		auto object = slotted.get(i);
 
-		if (object == nullptr || !object->isPlayerCreature())
+		if (object == nullptr || !object->isPlayerCreature()) {
 			continue;
+		}
 
-		players.put(object);
+		Locker clock(object, thisShip);
+
+		object->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
+
+		if (hasObjectInContainer(object->getObjectID())) {
+			removeObject(object, nullptr, false);
+		}
 	}
 
 	// Check container for players
 	for (int i = getContainerObjectsSize() - 1; i >= 0 ; --i) {
 		auto object = getContainerObject(i);
 
-		if (object == nullptr || !object->isPlayerCreature())
+		if (object == nullptr || !object->isPlayerCreature()) {
 			continue;
+		}
 
-		players.put(object);
-	}
+		Locker clock(object, thisShip);
 
-	// Kick all the players to the ground zone
-	for (int i = players.size() - 1; i >= 0 ; --i) {
-		auto object = players.get(i);
+		object->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
 
-		if (object == nullptr)
-			continue;
-
-		auto player = object->asCreatureObject();
-
-		if (player == nullptr)
-			continue;
-
-		Locker clock(player, thisShip);
-
-		auto ghost = player->getPlayerObject();
-
-		if (ghost == nullptr)
-			continue;
-
-		auto launchZone = ghost->getSpaceLaunchZone();
-
-		if (launchZone.isEmpty())
-			launchZone = "tatooine";
-
-		auto launchLoc = ghost->getSpaceLaunchLocation();
-
-		player->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
+		if (hasObjectInContainer(object->getObjectID())) {
+			removeObject(object, nullptr, false);
+		}
 	}
 
 	// Remove and destroy all the components
-	auto pilot = owner.get();
+	auto playerOwner = owner.get();
 
 	for (uint32 slot = 0; slot <= Components::FIGHTERSLOTMAX; ++slot) {
 		auto component = components.get(slot);
+
 		if (component == nullptr) {
 			continue;
 		}
 
-		if (pilot != nullptr && !destroyContainedObjects) {
-			uninstall(pilot, slot, true);
+		if (playerOwner != nullptr && !destroyContainedObjects) {
+			uninstall(playerOwner, slot, true);
 			component = components.get(slot);
 		}
 
@@ -1579,8 +1575,9 @@ void ShipObjectImplementation::destroyObjectFromDatabase(bool destroyContainedOb
 		}
 	}
 
-	if (getLocalZone() != nullptr)
+	if (getLocalZone() != nullptr) {
 		destroyObjectFromWorld(true);
+	}
 
 	TangibleObjectImplementation::destroyObjectFromDatabase(destroyContainedObjects);
 }
@@ -1598,11 +1595,31 @@ CreatureObject* ShipObjectImplementation::getPilot() {
 CreatureObject* ShipObjectImplementation::getShipOperator() {
 	auto chair = getOperationsChair().get();
 
-	if (chair != nullptr) {
-		return chair->getSlottedObject("ship_operations_station").castTo<CreatureObject*>();
+	if (chair == nullptr) {
+		return nullptr;
 	}
 
-	return getSlottedObject("ship_operations_station").castTo<CreatureObject*>();
+	return chair->getSlottedObject("ship_operations_station").castTo<CreatureObject*>();
+}
+
+CreatureObject* ShipObjectImplementation::getTurretOperatorTop() {
+	auto turretLadder = getTurretLadder().get();
+
+	if (turretLadder == nullptr) {
+		return nullptr;
+	}
+
+	return turretLadder->getSlottedObject("ship_gunner0_pob").castTo<CreatureObject*>();
+}
+
+CreatureObject* ShipObjectImplementation::getTurretOperatorBottom() {
+	auto turretLadder = getTurretLadder().get();
+
+	if (turretLadder == nullptr) {
+		return nullptr;
+	}
+
+	return turretLadder->getSlottedObject("ship_gunner1_pob").castTo<CreatureObject*>();
 }
 
 void ShipObjectImplementation::setRotationMatrix(const Quaternion& value) {
@@ -1836,16 +1853,35 @@ void ShipObjectImplementation::awardLootItems(ShipAiAgent* destructedShip, int p
 	// Main Loot TransactionLog
 	TransactionLog trx(TrxCode::NPCLOOT, destructedShip);
 
-	auto creditChip = zoneServer->createObject(STRING_HASHCODE("object/tangible/item/loot_credit_chip.iff"), 1).castTo<CreditChipObject*>();
+	CreditChipObject* creditChip = nullptr;
+	uint32 creditChipHash = STRING_HASHCODE("object/tangible/item/loot_credit_chip.iff");
+
+	for (int i = 0; i < inventory->getContainerObjectsSize(); i++) {
+		auto sceneO = inventory->getContainerObject(i);
+
+		if (sceneO == nullptr || sceneO->getServerObjectCRC() != creditChipHash) {
+			continue;
+		}
+
+		creditChip = sceneO.castTo<CreditChipObject*>();
+		break;
+	}
+
+	// No existing credit chip was found, create a new one
+	if (creditChip == nullptr) {
+		creditChip = zoneServer->createObject(creditChipHash, 1).castTo<CreditChipObject*>();
+	}
 
 	if (creditChip != nullptr) {
 		Locker creditsClock(creditChip, destructedShip);
 
-		// Set the CreditChip value
-		creditChip->setUseCount(payout);
-
 		// Create CreditChip TransactionLog
 		TransactionLog trxChip(TrxCode::CREDITCHIP, pilot, creditChip, true);
+
+		// Set the CreditChip value
+		creditChip->setUseCount(payout + creditChip->getUseCount());
+
+		trxChip.addState("addedValue", payout);
 
 		// Transfer to Pilots inventory
 		if (inventory->transferObject(creditChip, -1, false)) {
@@ -1921,10 +1957,15 @@ bool ShipObjectImplementation::isShipLaunched() {
 int ShipObjectImplementation::getReceiverFlags() const {
 	int type = CloseObjectsVector::SHIPTYPE;
 
-	if (ownerID > 0)
+	if (ownerID > 0) {
 		type = type | CloseObjectsVector::PLAYERSHIPTYPE;
+	}
 
 	return type | TangibleObjectImplementation::getReceiverFlags();
+}
+
+float ShipObjectImplementation::getOutOfRangeDistance() const {
+	return ZoneServer::SPACECLOSEOBJECTRANGE;
 }
 
 bool ShipObjectImplementation::isComponentInstalled(uint32 slot) {
@@ -2041,7 +2082,7 @@ void ShipObjectImplementation::updateSpeedRotationValues(bool notifyClient, Ship
 	}
 
 	if (deltaVector != nullptr && notifyClient) {
-		deltaVector->sendMessages(asShipObject(), getPilot());
+		deltaVector->sendMessages(asShipObject());
 	}
 }
 
@@ -2100,7 +2141,7 @@ void ShipObjectImplementation::updateActualEngineValues(bool notifyClient, ShipD
 	}
 
 	if (deltaVector != nullptr && notifyClient) {
-		deltaVector->sendMessages(asShipObject(), getPilot());
+		deltaVector->sendMessages(asShipObject());
 	}
 }
 
@@ -2150,7 +2191,7 @@ void ShipObjectImplementation::updateComponentFlags(bool notifyClient, ShipDelta
 		componentOptions.update(Components::REACTOR, componentFlag, nullptr, DeltaMapCommands::SET, deltaVector);
 
 		if (deltaVector != nullptr && notifyClient) {
-			deltaVector->sendMessages(asShipObject(), getPilot());
+			deltaVector->sendMessages(asShipObject());
 		}
 	}
 }

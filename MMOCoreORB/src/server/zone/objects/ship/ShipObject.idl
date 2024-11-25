@@ -427,6 +427,8 @@ class ShipObject extends TangibleObject {
 
 		super.objectVisible = 1;
 
+		ownerID = 0;
+
 		super.closeobjects = new CloseObjectsVector();
 		super.closeobjects.setNoDuplicateInsertPlan();
 
@@ -444,6 +446,8 @@ class ShipObject extends TangibleObject {
 		speedRotationFactorOptimal = 0.5f;
 
 		chassisSpeed.set(1.f);
+
+		certificationRequired = "";
 	}
 
 	public native void notifyLoadFromDatabase();
@@ -1617,6 +1621,10 @@ class ShipObject extends TangibleObject {
 
 	public native CreatureObject getShipOperator();
 
+	public native CreatureObject getTurretOperatorTop();
+
+	public native CreatureObject getTurretOperatorBottom();
+
 	/**
 	 * Evaluates if this can be attacked by object
 	 * @pre { }
@@ -1708,6 +1716,9 @@ class ShipObject extends TangibleObject {
 	public native float calculateActualDecelerationRate();
 
 	public native float calculateActualMaxSpeed();
+
+	@read
+	public native abstract float getOutOfRangeDistance();
 
 	@preLocked
 	@local

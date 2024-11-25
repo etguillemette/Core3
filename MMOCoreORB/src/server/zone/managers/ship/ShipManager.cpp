@@ -50,6 +50,9 @@ ShipManager::ShipManager() : Logger("ShipManger") {
 
 	lua->registerFunction("includeFile", includeFile);
 	lua->registerFunction("addShipSpawnGroup", addShipSpawnGroup);
+
+	updateTransformTask = new ShipAiAgentUpdateTransformTask(this);
+	updateTransformTask->schedule(60000);
 }
 
 void ShipManager::initialize() {
@@ -716,6 +719,9 @@ ShipObject* ShipManager::createPlayerShip(CreatureObject* owner, const String& s
 
 	Locker shipLock(ship, owner);
 
+	// Set ship owner
+	ship->setOwner(owner);
+
 	// Load ship template data
 	ship->loadTemplateData(shipTemp);
 
@@ -755,8 +761,6 @@ ShipObject* ShipManager::createPlayerShip(CreatureObject* owner, const String& s
 	}
 
 	owner->sendSystemMessage("@chassis_npc:succeed"); // You successfully add a ship control device to your datapad.
-
-	ship->setOwner(owner);
 
 	shipControlDevice->sendTo(owner, true);
 
@@ -864,7 +868,7 @@ bool ShipManager::createDeedFromChassis(CreatureObject* player, ShipChassisCompo
 		auto planetManager = zone->getPlanetManager();
 
 		if (planetManager != nullptr) {
-			auto travelPoint = planetManager->getNearestPlanetTravelPoint(player->getWorldPosition(), 128.f);
+			auto travelPoint = planetManager->getNearestPlanetTravelPoint(player->getWorldPosition());
 
 			if (travelPoint != nullptr) {
 				auto travelPointName = travelPoint->getPointName();

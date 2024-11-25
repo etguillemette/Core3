@@ -385,6 +385,10 @@ public:
 	const static int SHIPWEAPONLAUNCHER = 0x4000000F;
 	const static int SHIPCOUNTERMEASURELAUNCHER = 0x40000010;
 
+	// Not in client ************
+	const static int SHIPINTERIORCOMPONENT = 0x40000011;
+	const static int SHIPPLASMACONDUIT= 0x40000012;
+
 public:
 	static const String typeToString(int gameObjectType);
 };

@@ -56,6 +56,8 @@ Luna<LuaTangibleObject>::RegType LuaTangibleObject::Register[] = {
 		{ "isNoTrade", &LuaTangibleObject::isNoTrade},
 		{ "getMainDefender", &LuaTangibleObject::getMainDefender},
 		{ "setSerialNumber", &LuaTangibleObject::setSerialNumber}, //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
+		{ "getConditionDamage", &LuaTangibleObject::getConditionDamage},
+		{ "isActivated", &LuaTangibleObject::isActivated},
 		{ 0, 0 }
 };
 
@@ -433,6 +435,7 @@ int LuaTangibleObject::getMainDefender(lua_State* L) {
 	return 1;
 }
 
+<<<<<<< HEAD
 //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 
 int LuaTangibleObject::setSerialNumber(lua_State* L){
@@ -444,3 +447,20 @@ int LuaTangibleObject::setSerialNumber(lua_State* L){
 }
 
 //END Ethan edit 5-28-24 (JUNK DEALER VENDOR)
+=======
+int LuaTangibleObject::getConditionDamage(lua_State* L){
+	int conditionDamage = realObject->getConditionDamage();
+
+	lua_pushinteger(L, conditionDamage);
+
+	return 1;
+}
+
+int LuaTangibleObject::isActivated(lua_State* L){
+	bool isActivated = (realObject->getOptionsBitmask() & OptionBitmask::ACTIVATED);
+
+	lua_pushboolean(L, isActivated);
+
+	return 1;
+}
+>>>>>>> aa118977a50937724c5875b9e29e3a421f418011

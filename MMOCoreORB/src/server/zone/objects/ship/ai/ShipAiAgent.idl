@@ -110,6 +110,12 @@ class ShipAiAgent extends FighterShipObject {
 	@dereferenced
 	protected transient AtomicInteger numberOfPlayersInRange;
 
+	@dereferenced
+	protected transient AtomicInteger behaviorIntervalSchedule;
+
+	@dereferenced
+	protected transient AtomicInteger behaviorIntervalIterator;
+
 	protected transient DespawnAiShipOnNoPlayersInRange despawnEvent;
 
 	@dereferenced
@@ -146,6 +152,10 @@ class ShipAiAgent extends FighterShipObject {
 
 	protected unsigned int shipBitmask;
 
+	protected transient unsigned long updateZoneTime;
+
+	protected transient float lastDeltaTime;
+
 	protected transient float deltaTime;
 
 	protected transient float missileLockTime;
@@ -153,7 +163,10 @@ class ShipAiAgent extends FighterShipObject {
 	@weakReference
 	protected SceneObject homeObject;
 
-	public static final int BEHAVIORINTERVAL = 200; // msec
+	public static final int UPDATEZONEINTERVAL = 2000; // msec
+	public static final int BEHAVIORINTERVALMAX = 1000; // msec
+	public static final int BEHAVIORINTERVAL = 500; // msec
+	public static final int BEHAVIORINTERVALMIN = 200; // msec
 
 	public static final float DEFAULTAGGRORADIUS = 768.f;
 	public static final float MAX_ATTACK_DISTANCE = 1280.f;
@@ -389,7 +402,11 @@ class ShipAiAgent extends FighterShipObject {
 
 	public native void setNextPosition();
 
+	public native void updateTransform(boolean lightUpdate = true);
+
 	public native void setDeltaTime();
+
+	public native int getNextBehaviorInterval();
 
 	@preLocked
 	public abstract native boolean findNextPosition(int maxDistance);
@@ -850,6 +867,10 @@ class ShipAiAgent extends FighterShipObject {
 	@dereferenced
 	public native Vector3 getHomePosition();
 
+	@local
+	@dereferenced
+	public native Vector3 getNextStepPosition();
+
 	@read
 	@local
 	@dereferenced
@@ -884,4 +905,7 @@ class ShipAiAgent extends FighterShipObject {
 	public native float getLastSpeed();
 
 	public native string getShipAgentTemplateName();
+
+	@read
+	public native abstract float getOutOfRangeDistance();
 }

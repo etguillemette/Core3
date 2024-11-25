@@ -101,6 +101,8 @@ Luna<LuaSceneObject>::RegType LuaSceneObject::Register[] = {
 		{ "getPlayersInRange", &LuaSceneObject::getPlayersInRange },
 		{ "isInNavMesh", &LuaSceneObject::isInNavMesh },
 		{ "checkInConversationRange", &LuaSceneObject::checkInConversationRange },
+		{ "isShipComponent", &LuaSceneObject::isShipComponent },
+		{ "isShipComponentRepairKit", &LuaSceneObject::isShipComponentRepairKit },
 		{ 0, 0 }
 
 };
@@ -671,6 +673,22 @@ int LuaSceneObject::isShipObject(lua_State* L) {
 
 int LuaSceneObject::isShipAiAgent(lua_State* L) {
 	bool val = realObject->isShipAiAgent();
+
+	lua_pushboolean(L, val);
+
+	return 1;
+}
+
+int LuaSceneObject::isShipComponent(lua_State* L) {
+	bool val = realObject->isShipComponentObject();
+
+	lua_pushboolean(L, val);
+
+	return 1;
+}
+
+int LuaSceneObject::isShipComponentRepairKit(lua_State* L) {
+	bool val = realObject->isShipComponentRepairKit();
 
 	lua_pushboolean(L, val);
 
