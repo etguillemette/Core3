@@ -1642,11 +1642,11 @@ genericWaresData = {
 --SMUGGLER--------------------------
 
     waresSlicing = {
-        { template = "object/tangible/slicing/slicing_laser_knife.iff", cost = 10100, displayName = "@item_n:laser_knife", serial = "aserknife", quantity = 1},
-        { template = "object/tangible/slicing/slicing_armor_upgrade_kit.iff", cost = 10200, displayName = "@item_n:armor_upgrade_kit", serial = "pgradekit", quantity = 1},
-        { template = "object/tangible/slicing/slicing_weapon_upgrade_kit.iff", cost = 10200, displayName = "@item_n:weapon_upgrade_kit", serial = "pgradekit", quantity = 1},
-        { template = "object/tangible/slicing/slicing_flow_analyzer.iff", cost = 26400, displayName = "@item_n:flow_analyzer", serial = "wanalyzer", quantity = 1},
-        { template = "object/tangible/slicing/slicing_molecular_clamp.iff", cost = 28700, displayName = "@item_n:molecular_clamp", serial = "ularclamp", quantity = 1},
+        { template = "object/tangible/slicing/slicing_laser_knife.iff", cost = 10100, displayName = "@item_n:laser_knife", serial = "aserknife", quantity = 10},
+        { template = "object/tangible/slicing/slicing_armor_upgrade_kit.iff", cost = 10200, displayName = "@item_n:armor_upgrade_kit", serial = "pgradekit", quantity = 10},
+        { template = "object/tangible/slicing/slicing_weapon_upgrade_kit.iff", cost = 10200, displayName = "@item_n:weapon_upgrade_kit", serial = "pgradekit", quantity = 10},
+        { template = "object/tangible/slicing/slicing_flow_analyzer.iff", cost = 26400, displayName = "@item_n:flow_analyzer", serial = "wanalyzer", quantity = 10},
+        { template = "object/tangible/slicing/slicing_molecular_clamp.iff", cost = 28700, displayName = "@item_n:molecular_clamp", serial = "ularclamp", quantity = 10},
     },
 
     waresSpice = {
