@@ -161,7 +161,7 @@ start_vendor = ConvoScreen:new {
 		{"I am looking for some ship components.", "vendor_ship"},
 		{"I am looking for some entertainer goods.", "vendor_entertainer"},
 		{"I am looking for some vehicle goods.", "vendor_vehicle"},
-		{"I am looking for a mercenary.", "vendor_hireling"},
+		{"I am looking for a mercenary contract.", "vendor_hireling"},
 		{"I am looking for some resources.", "resource_resource"},
 		{"Actually, I don't need anything right now.", "no_loot"}
 	}
@@ -1115,11 +1115,11 @@ junkDealerGenericConvoTemplate:addScreen(wares_vehicle);
 
 vendor_hireling = ConvoScreen:new {
 	id = "vendor_hireling",
-	customDialogText = "What kind of a contract were you looking for?",
+	customDialogText = "What kind of a mercenary contract were you looking for?",
 	stopConversation = "false",
 	options = {
-		{"I was looking for a marksman.", "hires_marksman"},
-		{"I was looking for a brawler.", "hires_brawler"},
+		{"I was looking for a ranged specialist.", "hires_marksman"},
+		{"I was looking for a melee specialist.", "hires_brawler"},
 		{"I was looking for a medic.", "hires_medic"},
 		{"Actually, I don't need anything right now.","no_loot"},
 	}
@@ -1128,7 +1128,7 @@ junkDealerGenericConvoTemplate:addScreen(vendor_hireling);
 
 hires_marksman = ConvoScreen:new {
 	id = "hires_marksman",
-	customDialogText = "Here are the marksman contracts I have available.",
+	customDialogText = "Here are the ranged specialists contracts I have available.",
 	stopConversation = "true",
 	options = {}
 }
@@ -1136,7 +1136,7 @@ junkDealerGenericConvoTemplate:addScreen(hires_marksman);
 
 hires_brawler = ConvoScreen:new {
 	id = "hires_brawler",
-	customDialogText = "Here are the brawler contracts I have available.",
+	customDialogText = "Here are the melee specialists contracts I have available.",
 	stopConversation = "true",
 	options = {}
 }
