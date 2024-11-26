@@ -28,7 +28,7 @@ marksman_master = Creature:new {
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
-	templates = {"commoner"},
+	templates = {"object/mobile/dressed_marksman_trainer_03.iff"},
 	lootGroups = {},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)

@@ -28,7 +28,7 @@ unarmed_mid = Creature:new {
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
-	templates = {"commoner"},
+	templates = {"object/mobile/dressed_unarmed_trainer_02.iff"},
 	lootGroups = {},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
