@@ -1,5 +1,5 @@
 pike_novice = Creature:new {
-	objectName = "@mob/creature_names:bodyguard",
+	objectName = "@mob/creature_names:outlaw",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
 	mobType = MOB_NPC,
@@ -28,7 +28,7 @@ pike_novice = Creature:new {
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_tatooine_desert_demon_bodyguard.iff"},
+	templates = {"object/mobile/dressed_polearm_trainer_01.iff"},
 	lootGroups = {},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)

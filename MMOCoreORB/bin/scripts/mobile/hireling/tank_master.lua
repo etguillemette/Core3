@@ -1,19 +1,19 @@
-2h_novice = Creature:new {
-	objectName = "@mob/creature_names:roughneck",
+tank_master = Creature:new {
+	objectName = "@mob/creature_names:bodyguard",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
-	level = 25,
+	level = 20,
 	chanceHit = 0.5,
-	damageMin = 70,
-	damageMax = 440,
+	damageMin = 10,
+	damageMax = 190,
 	baseXp = 62,
-	baseHAM = 2500,
-	baseHAMmax = 3500,
+	baseHAM = 2750,
+	baseHAMmax = 3750,
 	armor = 0,
-	resists = {60,60,60,60,60,60,60,-1,-1},
+	resists = {45,45,45,45,45,45,45,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -28,21 +28,21 @@
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_criminal_slicer_human_male_01.iff},
+	templates = {"object/mobile/wookiee_male.iff"},
 	lootGroups = {},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
-	primaryWeapon = "general_sword",
-	secondaryWeapon = "none",
+	primaryWeapon = "melee_weapons",
+	secondaryWeapon = "unarmed",
 	conversationTemplate = "",
     reactionStf = "@npc_reaction/slang",
 
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = swordsmannovice,
+	primaryAttacks = tankmaster,
 	secondaryAttacks = { }
 }
 
-CreatureTemplates:addCreatureTemplate(2h_novice, "2h_novice")
+CreatureTemplates:addCreatureTemplate(tank_master, "tank_master")

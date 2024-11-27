@@ -238,8 +238,8 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.hiresMarksman
 	elseif category == "hires_brawler" then
 		return genericWaresData.hiresBrawler
-	elseif category == "hires_medic" then
-		return genericWaresData.hiresMedic
+	elseif category == "hires_tank" then
+		return genericWaresData.hiresTank
 	elseif category == "wares_resource" then
 		return genericWaresData.waresResource
 	end

@@ -1,5 +1,5 @@
-pike_mid = Creature:new {
-	objectName = "@mob/creature_names:outlaw",
+cc_mid = Creature:new {
+	objectName = "@mob/creature_names:bodyguard",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
 	mobType = MOB_NPC,
@@ -7,11 +7,11 @@ pike_mid = Creature:new {
 	faction = "",
 	level = 30,
 	chanceHit = 0.5,
-	damageMin = 342,
-	damageMax = 600,
+	damageMin = 171,
+	damageMax = 300,
 	baseXp = 62,
-	baseHAM = 2750,
-	baseHAMmax = 3750,
+	baseHAM = 3250,
+	baseHAMmax = 4250,
 	armor = 0,
 	resists = {75,75,75,75,75,75,75,-1,-1},
 	meatType = "",
@@ -33,16 +33,16 @@ pike_mid = Creature:new {
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
-	primaryWeapon = "general_polearm",
-	secondaryWeapon = "none",
+	primaryWeapon = "melee_weapons",
+	secondaryWeapon = "unarmed",
 	conversationTemplate = "",
     reactionStf = "@npc_reaction/slang",
 
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = pikemanmid,
+	primaryAttacks = ccmid,
 	secondaryAttacks = { }
 }
 
-CreatureTemplates:addCreatureTemplate(pike_mid, "pike_mid")
+CreatureTemplates:addCreatureTemplate(cc_mid, "cc_mid")

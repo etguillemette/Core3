@@ -58,4 +58,12 @@ forcewielder = { {"forcelightningsingle1",""},{"mindblast1",""},{"forceweaken1",
 --Server Administrator NPC skill trees place below
 
 --Ethan edit 5-18-24 (HIRELING) adding medic class:
-medicnovice = {{"totalhealself",""}, {"healallother2", ""}, {"healallself2",""}}
+medicnovice = {{"totalhealself",""},{"healallother2", ""},{"healallself2",""}}
+
+--Ethan edit 11-26-24 (HIRELING) adding tank class:
+tanknovice = {{"taunt",""},{"warcry1",""},{"melee1hlunge1",""},{"melee2hlunge1",""},{"polearmlunge1",""},{"unarmedlunge1",""}}
+tankmid = {{"taunt",""},{"warcry1",""},{"melee1hdizzyhit1",""},{"unarmedstun1",""},{"unarmedblind1",""},{"polearmstun1",""},{"melee2hsweep1",""},}
+tankmaster = {{"taunt",""},{"warcry2",""},{"warcry2",""},{"melee1hdizzyhit1",""},{"melee1hspinattack1",""},{"melee2hsweep1",""},{"melee2hspinattack1",""},{"unarmedstun1",""},{"unarmedblind1",""},{"unarmedspinattack1",""},{"polearmstun1",""}}
+ccnovice = {{"taunt",""},{"warcry2",""},{"warcry2",""},{"melee1hdizzyhit1",""},{"melee1hspinattack1",""},{"melee1hblindhit1",""},{"melee2hsweep1",""},{"melee2hspinattack1",""},{"unarmedstun1",""},{"unarmedblind1",""},{"unarmedspinattack1",""},{"unarmeddizzy1",""},{"unarmedknockdown1",""},{"polearmstun2",""},{"polearmsweep1",""}}
+ccmid = {{"taunt",""},{"warcry2",""},{"warcry2",""},{"melee1hdizzyhit2",""},{"melee1hspinattack1",""},{"melee1hblindhit2",""},{"melee2hsweep2",""},{"melee2hspinattack1",""},{"unarmedstun1",""},{"unarmedblind1",""},{"unarmedspinattack1",""},{"unarmeddizzy1",""},{"unarmedknockdown1",""},{"polearmstun2",""},{"polearmsweep2",""}}
+ccmaster = {{"taunt",""},{"warcry2",""},{"warcry2",""},{"melee1hdizzyhit2",""},{"melee1hspinattack1",""},{"melee1hblindhit2",""},{"melee2hsweep2",""},{"melee2hspinattack1",""},{"unarmedstun1",""},{"unarmedblind1",""},{"unarmedspinattack1",""},{"unarmeddizzy1",""},{"unarmedknockdown2",""},{"polearmstun2",""},{"polearmsweep2",""}}
