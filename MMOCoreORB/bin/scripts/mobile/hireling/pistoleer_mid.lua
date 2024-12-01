@@ -1,19 +1,19 @@
-rifleman_master = Creature:new {
-	objectName = "@mob/creature_names:bith_sniper",
+pistoleer_mid = Creature:new {
+	objectName = "@mob/creature_names:scoundrel",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
-	level = 35,
+	level = 30,
 	chanceHit = 0.5,
-	damageMin = 270,
-	damageMax = 800,
+	damageMin = 20,
+	damageMax = 580,
 	baseXp = 62,
-	baseHAM = 2500,
-	baseHAMmax = 3500,
+	baseHAM = 2250,
+	baseHAMmax = 3250,
 	armor = 0,
-	resists = {90,90,90,90,90,90,90,-1,-1},
+	resists = {75,75,75,75,75,75,75,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -28,12 +28,12 @@ rifleman_master = Creature:new {
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_brigade_gunner_bith_male_01.iff"},
+	templates = {"object/mobile/dressed_pistol_trainer_02.iff"},
 	lootGroups = {},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
-	primaryWeapon = "general_rifle",
+	primaryWeapon = "general_pistol",
 	secondaryWeapon = "none",
 	conversationTemplate = "",
     reactionStf = "@npc_reaction/slang",
@@ -41,8 +41,8 @@ rifleman_master = Creature:new {
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = riflemanmaster,
+	primaryAttacks = pistoleermid,
 	secondaryAttacks = { }
 }
 
-CreatureTemplates:addCreatureTemplate(rifleman_master, "rifleman_master")
+CreatureTemplates:addCreatureTemplate(pistoleer_mid, "pistoleer_mid")

@@ -29,7 +29,7 @@ CanyonCorsairsStrongholdScreenPlay = ScreenPlay:new {
 		}					
 	},
 	
-	lootContainerRespawn = 1200 -- 20 minutes
+	lootContainerRespawn = 600, -- 30 minutes ETHAN EDIT 11/29/24: Making slicing grind less shitty
 }
 
 registerScreenPlay("CanyonCorsairsStrongholdScreenPlay", true)

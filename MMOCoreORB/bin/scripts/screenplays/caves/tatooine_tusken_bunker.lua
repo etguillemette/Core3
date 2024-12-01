@@ -26,7 +26,7 @@ TuskenBunkerScreenPlay = ScreenPlay:new {
 		}
 	},
 
-	lootContainerRespawn = 1800
+	lootContainerRespawn = 600, --Ethan Edit 11/29/24 (Making slicing suck less)
 }
 
 registerScreenPlay("TuskenBunkerScreenPlay", true)

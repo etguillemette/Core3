@@ -25,7 +25,7 @@ WoolamanderTempleScreenPlay = ScreenPlay:new {
 		}					
 	},
 	
-	lootContainerRespawn = 1800 -- 30 minutes
+	lootContainerRespawn = 600, -- 30 minutes ETHAN EDIT 11/29/24: Making slicing grind less shitty
 }
 
 registerScreenPlay("WoolamanderTempleScreenPlay", true)

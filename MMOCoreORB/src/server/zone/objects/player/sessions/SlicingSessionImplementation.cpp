@@ -578,7 +578,7 @@ void SlicingSessionImplementation::handleSliceDamage(uint8 percent) {
 
 	weap->setDamageSlice(percent / 100.f);
 	weap->setSliced(true);
-
+	weap->setJunkValue(weap->getJunkValue() * (100.f + ((percent * 2) / 100.f))); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
 	StringIdChatParameter params;
 	params.setDI(percent);
 	params.setStringId("@slicing/slicing:dam_mod");
@@ -603,7 +603,7 @@ void SlicingSessionImplementation::handleSliceSpeed(uint8 percent) {
 
 	weap->setSpeedSlice(percent / 100.f);
 	weap->setSliced(true);
-
+	weap->setJunkValue(weap->getJunkValue() * (100.f + ((percent * 2) / 100.f))); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
 	StringIdChatParameter params;
 	params.setDI(percent);
 	params.setStringId("@slicing/slicing:spd_mod");
@@ -663,7 +663,7 @@ void SlicingSessionImplementation::handleSliceEncumbrance(uint8 percent) {
 
 	armor->setEncumbranceSlice(percent / 100.f);
 	armor->setSliced(true);
-
+	armor->setJunkValue(armor->getJunkValue() * (100.f + ((percent * 2) / 100.f))); //Ethan edit 11-30-24 Adding increased value for armor if sliced
 	StringIdChatParameter params;
 	params.setDI(percent);
 	params.setStringId("@slicing/slicing:enc_mod");
@@ -684,7 +684,7 @@ void SlicingSessionImplementation::handleSliceEffectiveness(uint8 percent) {
 
 	armor->setEffectivenessSlice(percent / 100.f);
 	armor->setSliced(true);
-
+	armor->setJunkValue(armor->getJunkValue() * (100.f + ((percent * 2) / 100.f))); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
 	StringIdChatParameter params;
 	params.setDI(percent);
 	params.setStringId("@slicing/slicing:eff_mod");

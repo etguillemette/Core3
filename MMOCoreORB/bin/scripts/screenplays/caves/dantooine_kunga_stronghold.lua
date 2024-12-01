@@ -26,7 +26,7 @@ KungaStrongholdScreenPlay = ScreenPlay:new {
 		}					
 	},
 	
-	lootContainerRespawn = 1800 
+	lootContainerRespawn = 600, -- 10 minutes --ETHAN EDIT 11/29/24 - Making Slicing grinding less retarded
 }
 
 registerScreenPlay("KungaStrongholdScreenPlay", true)

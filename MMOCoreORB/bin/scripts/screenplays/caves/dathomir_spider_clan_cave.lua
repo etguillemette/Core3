@@ -32,7 +32,7 @@ SpiderClanCaveScreenPlay = ScreenPlay:new {
 		}
 	},
 
-	lootContainerRespawn = 1800 -- 30 minutes
+	lootContainerRespawn = 600, -- 10 minutes --ETHAN EDIT 11/29/24 - Making Slicing grinding less retarded
 }
 
 registerScreenPlay("SpiderClanCaveScreenPlay", true)
