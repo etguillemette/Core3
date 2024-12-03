@@ -578,7 +578,22 @@ void SlicingSessionImplementation::handleSliceDamage(uint8 percent) {
 
 	weap->setDamageSlice(percent / 100.f);
 	weap->setSliced(true);
-	weap->setJunkValue(weap->getJunkValue() * (100.f + ((percent * 2) / 100.f))); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
+	
+	//Ethan edit 12-2-24 - (SLICING REVAMP)
+	Lua* lua = new Lua(); //Testing 7-16-24
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
+
+	int junkValue = weap->getJunkValue();
+	//If this weapon is purchased from an NPC, we'll set the value of it to at least 100 credits
+	if(junkValue < npcBuyerBonus){
+		weap->setJunkValue(npcBuyerBonus);
+	}
+	weap->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 (SLICING REVAMP) Adding increased value for weapons if sliced
+	//End Ethan edit 12-2-24
+
 	StringIdChatParameter params;
 	params.setDI(percent);
 	params.setStringId("@slicing/slicing:dam_mod");
@@ -603,7 +618,23 @@ void SlicingSessionImplementation::handleSliceSpeed(uint8 percent) {
 
 	weap->setSpeedSlice(percent / 100.f);
 	weap->setSliced(true);
-	weap->setJunkValue(weap->getJunkValue() * (100.f + ((percent * 2) / 100.f))); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
+
+	//Ethan edit 12-2-24 - (SLICING REVAMP)
+	Lua* lua = new Lua(); //Testing 7-16-24
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
+
+	int junkValue = weap->getJunkValue();
+	//If this weapon is purchased from an NPC, we'll set the value of it to at least 100 credits
+	if(junkValue < npcBuyerBonus){
+		weap->setJunkValue(npcBuyerBonus);
+	}
+
+	weap->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
+	//End Ethan edit 12-2-24
+
 	StringIdChatParameter params;
 	params.setDI(percent);
 	params.setStringId("@slicing/slicing:spd_mod");
@@ -663,7 +694,20 @@ void SlicingSessionImplementation::handleSliceEncumbrance(uint8 percent) {
 
 	armor->setEncumbranceSlice(percent / 100.f);
 	armor->setSliced(true);
-	armor->setJunkValue(armor->getJunkValue() * (100.f + ((percent * 2) / 100.f))); //Ethan edit 11-30-24 Adding increased value for armor if sliced
+	//Ethan edit 12-2-24 - (SLICING REVAMP)
+	Lua* lua = new Lua(); //Testing 7-16-24
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
+	int junkValue = armor->getJunkValue();
+	//If this armor is purchased from an NPC, we'll set the value of it to at least 100 credits
+	if(junkValue < npcBuyerBonus){
+		armor->setJunkValue(npcBuyerBonus);
+	}
+
+	armor->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for armor if sliced
+	//End Ethan edit 12-2-24
 	StringIdChatParameter params;
 	params.setDI(percent);
 	params.setStringId("@slicing/slicing:enc_mod");
@@ -684,7 +728,20 @@ void SlicingSessionImplementation::handleSliceEffectiveness(uint8 percent) {
 
 	armor->setEffectivenessSlice(percent / 100.f);
 	armor->setSliced(true);
-	armor->setJunkValue(armor->getJunkValue() * (100.f + ((percent * 2) / 100.f))); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
+	//Ethan edit 12-2-24 - (SLICING REVAMP)
+	Lua* lua = new Lua(); //Testing 7-16-24
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
+	int junkValue = armor->getJunkValue();
+	//If this armor is purchased from an NPC, we'll set the value of it to at least 100 credits
+	if(junkValue < npcBuyerBonus){
+		armor->setJunkValue(npcBuyerBonus);
+	}
+
+	armor->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for armor if sliced
+	//End Ethan edit 12-2-24
 	StringIdChatParameter params;
 	params.setDI(percent);
 	params.setStringId("@slicing/slicing:eff_mod");

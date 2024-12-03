@@ -3042,12 +3042,27 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	else{
 		docStr = "false";
 	}
+
+
+	int healthWoundBefore = wounds.get(CreatureAttribute::HEALTH);
+	int strengthWoundBefore = wounds.get(CreatureAttribute::STRENGTH);
+	int constitutionWoundBefore = wounds.get(CreatureAttribute::CONSTITUTION);
+
+	int actionWoundBefore = wounds.get(CreatureAttribute::ACTION);
+	int quicknessWoundBefore = wounds.get(CreatureAttribute::QUICKNESS);
+	int staminaWoundBefore = wounds.get(CreatureAttribute::STAMINA);
+
+	int healthWoundTotal = healthWoundBefore + strengthWoundBefore + constitutionWoundBefore;
+	int actionWoundTotal = actionWoundBefore + quicknessWoundBefore + staminaWoundBefore;
 	//End Ethan edit 6-9-24 (AUTO DOC)
 
 	/// Health wound regen
 	int healthRegen = getSkillMod("private_med_wound_health");
 	int medicalBuffChargeTotal = 0;
 	int medicalWoundChargeTotal = 0;
+
+
+	
 
 	if(healthRegen > 0) {
 		healthWoundHeal += (int)(healthRegen * 0.2); 
@@ -3058,12 +3073,8 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1, true, false); 
 			
 			//Ethan edit 6-7-24 (AUTO DOCTOR)
-			int healthWoundBefore = wounds.get(CreatureAttribute::HEALTH);
-			int strengthWoundBefore = wounds.get(CreatureAttribute::STRENGTH);
-			int constitutionWoundBefore = wounds.get(CreatureAttribute::CONSTITUTION);
 			
-			int healthWoundTotal = healthWoundBefore + strengthWoundBefore + constitutionWoundBefore;
-
+			
 			if(autoDoctor == true && healthWoundTotal > 0 && cash > (healPrice * healthWoundTotal) && isSitting()){
 				healWound(asCreatureObject(), CreatureAttribute::HEALTH, healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
 				healWound(asCreatureObject(), CreatureAttribute::STRENGTH, healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
@@ -3078,7 +3089,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			}
 
 			//HEALTH BUFFS
-			if(autoDoctor == true && healthWoundTotal == 0  && isSitting()){
+			if(autoDoctor == true && healthWoundTotal == 0  && actionWoundTotal == 0 && isSitting()){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
 				if (zoneServer == nullptr)
@@ -3148,12 +3159,6 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
 
 			//Ethan edit 6-7-24 (AUTO DOCTOR)
-			int actionWoundBefore = wounds.get(CreatureAttribute::ACTION);
-			int quicknessWoundBefore = wounds.get(CreatureAttribute::QUICKNESS);
-			int staminaWoundBefore = wounds.get(CreatureAttribute::STAMINA);
-
-			int actionWoundTotal = actionWoundBefore + quicknessWoundBefore + staminaWoundBefore;
-			
 			//Extra healing enabled (will not charge for base passive healing)
 			if(autoDoctor == true && actionWoundTotal > 0 && cash > (actionWoundTotal * healPrice) && isSitting()){
 				
@@ -3171,7 +3176,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			}
 
 			//BUFFS
-			if(autoDoctor == true && actionWoundTotal == 0 && isSitting()){
+			if(autoDoctor == true && actionWoundTotal == 0 && healthWoundTotal == 0 && isSitting()){
 				ZoneServer* zoneServer = getZoneServer(); //Ethan edit 6-7-24 (SINGLE PLAYER ENTERTAINER)
 			
 				if (zoneServer == nullptr)

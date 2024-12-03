@@ -260,8 +260,22 @@ function NPCVendor:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 
 	local playerID = SceneObject(pPlayer):getObjectID()
 	local purchaseCategory = readStringData(playerID .. ":npc_vendor_purchase")
-	local purchaseIndex = arg0 + 1
 	local waresData = self:getWaresTable(purchaseCategory)
+	--Ethan testing 12-1-24 START
+	local zoneName = CreatureObject(pPlayer):getZoneName()
+	local inventoryTable = genericWaresData.planetInventory[zoneName]
+	
+	local startIndex = math.floor(inventoryTable.inventoryStartIndex * #waresData)
+
+	if (startIndex > 0) then
+		startIndex = startIndex -1
+	end
+	
+	local purchaseIndex = arg0 + 1 + startIndex
+	--Ethan testing 12-1-24 END
+
+	print(startIndex)
+	print(purchaseIndex)
 	
 	if (waresData == nil or purchaseIndex < 1 or purchaseIndex > #waresData) then
 		return
@@ -338,6 +352,7 @@ function NPCVendor:giveItem(pPlayer, itemData)
 			local tano = TangibleObject(pItem)
 			if(newSerial ~= nil) then
 				tano:setSerialNumber(newSerial)
+				tano:setJunkValue(itemCost / (2 * quantity)) --Ethan edit 12-3-24 (SLICING REVAMP) - Makes it so that you can sell back used gear for half its cost, OR slice them to increase their value.
 			end
 			if(pItem ~= nil) then
 				if(SceneObject(pInventory):isContainerFullRecursive() == false) then
