@@ -10,7 +10,8 @@ JunkDealer = {
 		{"jedi", 32},
 		{"jawa", 64},
 		{"gungan", 128},
-		{"corsec", 256}
+		{"corsec", 256},
+		{"underworld", 512} --Ethan edit 12-5-24 (SMUGGLER REVAMP) (SLICING REVAMP)
 	}
 }
 
@@ -135,7 +136,7 @@ function JunkDealer:sellAllItems(pPlayer, pSui, pInventory)
 		if(xpValue > 0) then
 			CreatureObject(pPlayer):awardExperience("merchant", xpValue, true)
 		end
-	end 
+	end
 	--End Ethan edit 6-11-24 (JUNK DEALER BUYER)
 
 	local messageString = LuaStringIdChatParameter("@loot_dealer:prose_sold_all_junk") -- You sell all of your loot to %TT for %DI credits
