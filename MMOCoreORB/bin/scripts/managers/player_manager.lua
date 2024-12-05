@@ -104,6 +104,19 @@ healBonus = 9 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Amount of extra wound healing e
 --END SINGLE PLAYER CONFIG
 -----------------------------------
 
+-----------------------------------
+--START COMBAT UPGRADE CONFIG
+-----------------------------------
+
+cuArmor = false --Should armor have diminishing returns, like the Combat Upgrade system?
+cuDisablePiercing = false --Should armor piercing be disabled?
+cuLevels = false --Should characters gain health points via leveling up?
+cuHAM = false --Should all damage be on the Health bar, and all ability costs come from the action bar?
+
+-----------------------------------
+--END COMBAT UPGRADE CONFIG
+-----------------------------------
+
 
 
 -----------------------------------
