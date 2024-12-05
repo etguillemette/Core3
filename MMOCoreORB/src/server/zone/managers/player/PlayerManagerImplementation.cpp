@@ -245,6 +245,8 @@ void PlayerManagerImplementation::loadLuaConfig() {
 
 	globalExpMultiplier = lua->getGlobalFloat("globalExpMultiplier");
 
+	fullGroupExp = lua->getGlobalBoolean("fullGroupExp");
+
 	baseStoredCreaturePets = lua->getGlobalInt("baseStoredCreaturePets");
 	baseStoredFactionPets = lua->getGlobalInt("baseStoredFactionPets");
 	baseStoredDroids = lua->getGlobalInt("baseStoredDroids");
@@ -2116,6 +2118,12 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 
 				xpAmount *= (float) damage / totalDamage;
 
+				//Ethan edit 12-5-24 (GROUP XP) If enabled, players get full xp for participating in combat, regardless of damage done
+				if(fullGroupExp == true){
+					xpAmount = baseXp;
+				}
+				//End ethan edit 12-5-24
+				
 				//Cap xp based on level
 				xpAmount = Math::min(xpAmount, playerLevel * 300.f);
 
