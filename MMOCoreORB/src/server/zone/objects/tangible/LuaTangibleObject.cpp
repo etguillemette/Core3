@@ -56,6 +56,7 @@ Luna<LuaTangibleObject>::RegType LuaTangibleObject::Register[] = {
 		{ "isNoTrade", &LuaTangibleObject::isNoTrade},
 		{ "getMainDefender", &LuaTangibleObject::getMainDefender},
 		{ "setSerialNumber", &LuaTangibleObject::setSerialNumber}, //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
+		{ "setJunkValue", &LuaTangibleObject::setJunkValue}, //Ethan edit 12-4-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
 		{ "getConditionDamage", &LuaTangibleObject::getConditionDamage},
 		{ "isActivated", &LuaTangibleObject::isActivated},
 		{ 0, 0 }
@@ -441,6 +442,14 @@ int LuaTangibleObject::setSerialNumber(lua_State* L){
 	String serial = lua_tostring(L, -1);
 
 	realObject->setSerialNumber(serial);
+
+	return 0;
+}
+
+int LuaTangibleObject::setJunkValue(lua_State* L){
+	int junkValue = lua_tonumber(L, -1);
+
+	realObject->setJunkValue(junkValue);
 
 	return 0;
 }

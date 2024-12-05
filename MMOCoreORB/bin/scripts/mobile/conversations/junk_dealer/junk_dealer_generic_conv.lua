@@ -194,14 +194,14 @@ junkDealerGenericConvoTemplate:addScreen(vendor_weapon);
 
 	wares_pistol = ConvoScreen:new {
 		id = "wares_pistol",
-		customDialogText = "Here are the wares_pistol I have available.",
+		customDialogText = "Here are the pistols I have available.",
 		stopConversation = "true",	options = {}
 	}
 	junkDealerGenericConvoTemplate:addScreen(wares_pistol);
 
 	wares_rifle = ConvoScreen:new {
 		id = "wares_rifle",
-		customDialogText = "Here are the wares_rifle I have available.",
+		customDialogText = "Here are the rifles I have available.",
 		stopConversation = "true",
 		options = {}
 	}
@@ -209,7 +209,7 @@ junkDealerGenericConvoTemplate:addScreen(vendor_weapon);
 	
 	wares_carbine = ConvoScreen:new {
 		id = "wares_carbine",
-		customDialogText = "Here are the wares_carbine I have available.",
+		customDialogText = "Here are the carbines I have available.",
 		stopConversation = "true",
 		options = {}
 	}
@@ -217,49 +217,49 @@ junkDealerGenericConvoTemplate:addScreen(vendor_weapon);
 	
 	wares_onehanded = ConvoScreen:new {
 		id = "wares_onehanded",
-		customDialogText = "Here are the wares_onehanded I have available.",
+		customDialogText = "Here are the one-handed weapons I have available.",
 		stopConversation = "true",
 		options = {}
 	}junkDealerGenericConvoTemplate:addScreen(wares_onehanded);
 	
 	wares_polearm = ConvoScreen:new {
 		id = "wares_polearm",
-		customDialogText = "Here are the wares_polearm I have available.",
+		customDialogText = "Here are the polearms I have available.",
 		stopConversation = "true",
 		options = {}
 	}junkDealerGenericConvoTemplate:addScreen(wares_polearm);
 	
 	wares_twohanded = ConvoScreen:new {
 		id = "wares_twohanded",
-		customDialogText = "Here are the wares_twohanded I have available.",
+		customDialogText = "Here are the two-handed weapons I have available.",
 		stopConversation = "true",
 		options = {}
 	}junkDealerGenericConvoTemplate:addScreen(wares_twohanded);
 	
 	wares_unarmed = ConvoScreen:new {
 		id = "wares_unarmed",
-		customDialogText = "Here are the wares_unarmed I have available.",
+		customDialogText = "Here are the unarmed weapons I have available.",
 		stopConversation = "true",
 		options = {}
 	}junkDealerGenericConvoTemplate:addScreen(wares_unarmed);
 	
 	wares_heavyweapon = ConvoScreen:new {
 		id = "wares_heavyweapon",
-		customDialogText = "Here are the wares_heavyweapon I have available.",
+		customDialogText = "Here are the heavy weapons I have available.",
 		stopConversation = "true",
 		options = {}
 	}junkDealerGenericConvoTemplate:addScreen(wares_heavyweapon);
 	
 	wares_munition = ConvoScreen:new {	
 		id = "wares_munition",
-		customDialogText = "Here are the wares_munition I have available.",
+		customDialogText = "Here are the munitions I have available.",
 		stopConversation = "true",
 		options = {}
 	}junkDealerGenericConvoTemplate:addScreen(wares_munition);
 	
 	wares_powerup = ConvoScreen:new {
 		id = "wares_powerup",
-		customDialogText = "Here are the wares_powerup I have available.",
+		customDialogText = "Here are the powerups I have available.",
 		stopConversation = "true",
 		options = {}
 	}junkDealerGenericConvoTemplate:addScreen(wares_powerup);

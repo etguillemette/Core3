@@ -587,11 +587,13 @@ void SlicingSessionImplementation::handleSliceDamage(uint8 percent) {
 	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
 
 	int junkValue = weap->getJunkValue();
+	//print('item junk init value = '+junkValue);
 	//If this weapon is purchased from an NPC, we'll set the value of it to at least 100 credits
 	if(junkValue < npcBuyerBonus){
 		weap->setJunkValue(npcBuyerBonus);
 	}
 	weap->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 (SLICING REVAMP) Adding increased value for weapons if sliced
+	//print('item final junk value = '+weap->getJunkValue());
 	//End Ethan edit 12-2-24
 
 	StringIdChatParameter params;
@@ -627,12 +629,14 @@ void SlicingSessionImplementation::handleSliceSpeed(uint8 percent) {
 	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
 
 	int junkValue = weap->getJunkValue();
+	//print('item junk init value = '+junkValue);
 	//If this weapon is purchased from an NPC, we'll set the value of it to at least 100 credits
 	if(junkValue < npcBuyerBonus){
 		weap->setJunkValue(npcBuyerBonus);
 	}
 
 	weap->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
+	//print('item final junk value = '+weap->getJunkValue());
 	//End Ethan edit 12-2-24
 
 	StringIdChatParameter params;
@@ -701,12 +705,14 @@ void SlicingSessionImplementation::handleSliceEncumbrance(uint8 percent) {
 	lua->runFile("scripts/managers/player_manager.lua");
 	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
 	int junkValue = armor->getJunkValue();
+	//print('item junk init value = '+junkValue);
 	//If this armor is purchased from an NPC, we'll set the value of it to at least 100 credits
 	if(junkValue < npcBuyerBonus){
 		armor->setJunkValue(npcBuyerBonus);
 	}
 
 	armor->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for armor if sliced
+	//print('item final junk value = '+armor->getJunkValue());
 	//End Ethan edit 12-2-24
 	StringIdChatParameter params;
 	params.setDI(percent);
@@ -735,12 +741,14 @@ void SlicingSessionImplementation::handleSliceEffectiveness(uint8 percent) {
 	lua->runFile("scripts/managers/player_manager.lua");
 	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
 	int junkValue = armor->getJunkValue();
+	//print('item junk init value = '+junkValue);
 	//If this armor is purchased from an NPC, we'll set the value of it to at least 100 credits
 	if(junkValue < npcBuyerBonus){
 		armor->setJunkValue(npcBuyerBonus);
 	}
 
 	armor->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for armor if sliced
+	//print('item final junk value = '+armor->getJunkValue());
 	//End Ethan edit 12-2-24
 	StringIdChatParameter params;
 	params.setDI(percent);

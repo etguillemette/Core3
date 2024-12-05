@@ -352,7 +352,10 @@ function NPCVendor:giveItem(pPlayer, itemData)
 			local tano = TangibleObject(pItem)
 			if(newSerial ~= nil) then
 				tano:setSerialNumber(newSerial)
-				tano:setJunkValue(itemCost / (2 * quantity)) --Ethan edit 12-3-24 (SLICING REVAMP) - Makes it so that you can sell back used gear for half its cost, OR slice them to increase their value.
+				local junkValue = tonumber(itemCost / (2 * quantity))
+				print(junkValue)
+				tano:setJunkValue(junkValue) --Ethan edit 12-3-24 (SLICING REVAMP) - Makes it so that you can sell back used gear for half its cost, OR slice them to increase their value.
+				print(tano:getJunkValue());
 			end
 			if(pItem ~= nil) then
 				if(SceneObject(pInventory):isContainerFullRecursive() == false) then
