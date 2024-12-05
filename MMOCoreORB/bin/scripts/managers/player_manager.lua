@@ -80,6 +80,8 @@ playerStructureLowestCondition = 0.98 --This is the lowest damage level a struct
 factoryExp = true --Ethan edit 6-14-24 (FACTORY XP) Enables xp gain for making items from a manufacturing schematic
 factoryExpRate = 4.0 --Ethan edit 6-14-24 (FACTORY XP) The percentage of the xp gain for creating a factory object compared to hand-crafting
 
+fullGroupExp = true --Ethan edit 12-5-24 (GROUP XP) Enables full xp when grouped with hirelings
+
 npcBuyerBonus = 50 --Ethan edit 7-16-24 (NPC BUYER) Bonus payout for selling crafted goods to an NPC
 npcBuyerRate = 2.0 --Ethan edit 7-16-24 (NPC BUYER) Base amount of credits a player can sell an item to an NPC for, per unit of resources used
 
