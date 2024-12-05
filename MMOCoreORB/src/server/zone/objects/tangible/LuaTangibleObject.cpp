@@ -58,6 +58,7 @@ Luna<LuaTangibleObject>::RegType LuaTangibleObject::Register[] = {
 		{ "setSerialNumber", &LuaTangibleObject::setSerialNumber}, //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 		{ "setJunkValue", &LuaTangibleObject::setJunkValue}, //Ethan edit 12-4-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
 		{ "setJunkDealerNeeded", &LuaTangibleObject::setJunkDealerNeeded}, //Ethan edit 12-5-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
+		{ "getIsSpice", &LuaTangibleObject::getIsSpice}, //Ethan edit 12-5-24 (JUNK DEALER VENDOR) (SMUGGLER REVAMP)
 		{ "getConditionDamage", &LuaTangibleObject::getConditionDamage},
 		{ "isActivated", &LuaTangibleObject::isActivated},
 		{ 0, 0 }
@@ -461,6 +462,13 @@ int LuaTangibleObject::setJunkDealerNeeded(lua_State* L){
 
 	return 0;
 }
+
+int LuaTangibleObject::getIsSpice(lua_State* L){
+	lua_pushboolean(L, realObject->isSpice());
+
+	return 1;
+}
+
 //END Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 
 int LuaTangibleObject::getConditionDamage(lua_State* L){
