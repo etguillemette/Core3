@@ -206,3 +206,11 @@ JunkDealerJawaFineryConvoHandler = JunkDealerJawaConvoHandler:new {
 JunkDealerJawaTuskenConvoHandler = JunkDealerJawaConvoHandler:new {
 	junkType = "tusken"
 }
+
+--Ethan edit 12-5-24 (SLICING REVAMP) (SMUGGLER REVAMP)
+JunkDealerUnderworldConvoHandler = JunkDealerConvoHandler:new {
+	junkType = "underworld",
+	noLootText = "@conversation/junk_dealer_arms:s_370a03c",
+	startSaleText = "@conversation/junk_dealer_arms:s_c86eba88"
+}
+--End Ethan edit 12-5-24
