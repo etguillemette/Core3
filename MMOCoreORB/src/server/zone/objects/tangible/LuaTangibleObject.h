@@ -68,7 +68,6 @@ namespace tangible {
 		int setSerialNumber(lua_State* L); //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 		int setJunkValue(lua_State* L); //Ethan edit 12-4-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
 		int setJunkDealerNeeded(lua_State* L); //Ethan edit 12-4-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
-		int getIsSpice(lua_State* L); //Ethan edit 12-5-24 (JUNK DEALER VENDOR) (SMUGGLER REVAMP)
 		int getConditionDamage(lua_State* L);
 		int isActivated(lua_State* L);
 		
