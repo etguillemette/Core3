@@ -78,7 +78,7 @@ function DathomirTradeOutpostScreenPlay:spawnMobiles()
 		local pMobile = spawnMobile(self.planet, mob[1], mob[2], mob[3], mob[4], mob[5], mob[6], mob[7])
 
 		--Ethan edit 12-3-24 (NPC VENDOR) Adding vendors to adventure planets
-		local pNpc = spawnMobile("dathomir", "junk_dealer", 60, 580, 6, 3052, 0, 3605972)
+		local pNpc = spawnMobile(self.planet, "junk_dealer", 60, 580, 6, 3052, 0, 3605972)
 		if pNpc ~= nil then
 			AiAgent(pNpc):setConvoTemplate("junkDealerGenericConvoTemplate")
 		end
