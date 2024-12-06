@@ -2118,9 +2118,9 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 
 				xpAmount *= (float) damage / totalDamage;
 
-				//Ethan edit 12-5-24 (GROUP XP) If enabled, players get full xp for participating in combat, regardless of damage done
-				if(fullGroupExp == true){
-					xpAmount = baseXp;
+				//Ethan edit 12-5-24 (GROUP XP) If enabled, players get at least half xp for participating in combat, regardless of damage done
+				if(fullGroupExp == true && xpAmount < (baseXp/2)){
+					xpAmount = baseXp/2;
 				}
 				//End ethan edit 12-5-24
 				
