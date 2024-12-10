@@ -95,11 +95,11 @@ hospitalMedBuffAttrStrength = 1500 --Ethan edit 6-7-24 (AUTO DOCTOR) Max attribu
 soloEntertainerExp = true --Ethan edit 5-25-24 (ENTERTAINER SELF EXP) Enables entertainer healing xp gain without having to heal another player
 autoEntertainer = true --Ethan edit 6-7-24 (AUTO ENTERTAINER) Enables automatic healing and buffs in a cantina
 cantinaMindBuffDuration = 3600 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Duration in seconds for automatic cantina buffs
-cantinaMindBuffTickStrength = 0.05 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Buff bonus with each "tick" of an automatic cantina buff
-cantinaMindBuffPoolStrength = 1.00 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max modifier bonus for Mind !!!AS A PERCENTAGE OF BASE MIND STAT!!! for automatic cantina buffs (Ex. 1.0 = double mind)
-cantinaMindBuffAttrStrength = 1.00 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max modifier bonus for Focus/Willpower !!!AS A PERCENTAGE OF BASE MIND STAT!!! for automatic cantina buffs (Ex. 1.0 = double focus/willpower)
+cantinaMindBuffTickStrength = 0.15 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Buff bonus with each "tick" of an automatic cantina buff
+cantinaMindBuffPoolStrength = 1.25 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max modifier bonus for Mind !!!AS A PERCENTAGE OF BASE MIND STAT!!! for automatic cantina buffs (Ex. 1.0 = double mind)
+cantinaMindBuffAttrStrength = 1.25 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max modifier bonus for Focus/Willpower !!!AS A PERCENTAGE OF BASE MIND STAT!!! for automatic cantina buffs (Ex. 1.0 = double focus/willpower)
 
-buffPrice = 100 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Price "per tick" of buffs
+buffPrice = 50 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Price "per tick" of buffs
 healPrice = 2 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Price per point of wounds healed
 healBonus = 9 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Amount of extra wound healing enabled per tick if autoDoctor and/or autoEntertainer are enabled
 -----------------------------------
