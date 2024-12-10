@@ -78,6 +78,13 @@ end
 function DathomirScienceOutpostScreenPlay:spawnMobiles()
 	local mobiles = self.mobiles
 
+	--Ethan edit 12-3-24 (NPC VENDOR) Adding vendors to adventure planets
+	local pNpc = spawnMobile(self.planet, "junk_dealer", 0, -107, 18, -1564, 0, 493758)
+	if pNpc ~= nil then
+		AiAgent(pNpc):setConvoTemplate("junkDealerUnderworldConvoTemplate")
+	end
+	--End Ethan edit 12-3-24
+
 	for i = 1, #mobiles, 1 do
 		local mob = mobiles[i]
 

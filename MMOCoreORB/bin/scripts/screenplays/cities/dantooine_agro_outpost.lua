@@ -88,18 +88,19 @@ end
 function DantooineAgroOutpostScreenPlay:spawnMobiles()
 	local mobiles = self.mobiles
 
+
+	--Ethan edit 12-3-24 (NPC VENDOR) Adding vendors to adventure planets
+	local pNpc = spawnMobile(self.planet, "junk_dealer", 0, 1547, 4, -6441, 0, 294503)
+	if pNpc ~= nil then
+		AiAgent(pNpc):setConvoTemplate("junkDealerGenericConvoTemplate")
+	end
+	--End Ethan edit 12-3-24
+
 	for i = 1, #mobiles, 1 do
 		local mob = mobiles[i]
 
 		-- {template, respawn, x, z, y, direction, cell, mood}
 		local pMobile = spawnMobile(self.planet, mob[1], mob[2], mob[3], mob[4], mob[5], mob[6], mob[7])
-
-		--Ethan edit 12-3-24 (NPC VENDOR) Adding vendors to adventure planets
-		local pNpc = spawnMobile(self.planet, "junk_dealer", 60, 1547, 4, -6441, 0, 3605972)
-		if pNpc ~= nil then
-			AiAgent(pNpc):setConvoTemplate("junkDealerGenericConvoTemplate")
-		end
-		--End Ethan edit 12-3-24
 
 		if (pMobile ~= nil) then
 			if mob[8] ~= "" then

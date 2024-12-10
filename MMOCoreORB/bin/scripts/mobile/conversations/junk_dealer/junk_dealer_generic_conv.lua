@@ -327,7 +327,7 @@ junkDealerGenericConvoTemplate:addScreen(wares_armoraccessory);
 
 vendor_wearables = ConvoScreen:new {
 	id = "vendor_wearables",
-	customDialog = "Of course! What kind of clothing were you looking for?",
+	customDialogText = "Of course! What kind of clothing were you looking for?",
 	stopConversation = "false",
 	options = {
 		{"I was looking for an apron.", "wares_clothingapron"},

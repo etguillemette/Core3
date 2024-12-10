@@ -10,7 +10,7 @@ genericWaresData = {
         dantooine = {inventoryStartIndex = 0.25, inventoryEndIndex = 0.75},
 		lok = {inventoryStartIndex = 0.25, inventoryEndIndex = 0.75},
 
-        yavin = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
+        yavin4 = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
         endor = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
         dathomir = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
 

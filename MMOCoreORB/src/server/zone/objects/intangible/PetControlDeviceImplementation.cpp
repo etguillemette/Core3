@@ -198,9 +198,9 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 		}
 
 	} else if (petType == PetManager::FACTIONPET){
-		maxPets = 3;
+		maxPets = 5;
 	} else if (petType == PetManager::HIRELING){ //Ethan edit 5-20-24 (HIRELING)
-		maxPets = 3; //Ethan edit 5-20-24 (HIRELING)
+		maxPets = 5; //Ethan edit 5-20-24 (HIRELING)
 	} //Ethan edit 5-20-24 (HIRELING)
 
 	for (int i = 0; i < ghost->getActivePetsSize(); ++i) {

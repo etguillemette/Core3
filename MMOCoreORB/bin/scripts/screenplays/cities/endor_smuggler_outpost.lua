@@ -76,11 +76,12 @@ function EndorSmugglerOutpostScreenPlay:spawnMobiles()
 	end
 
 	
+	--{patrolPoints, template, x, z, y, direction, cell, mood, combatPatrol}
 
 	--Ethan edit 12-3-24 (NPC VENDOR) Adding vendors to adventure planets
-	local pNpc = spawnMobile("endor", "junk_dealer", 60, -860, 80, 1547, 0, 3605972)
+	local pNpc = spawnMobile("endor", "junk_dealer", 0, -860, 80, 1547, 0, 2958374)
 	if pNpc ~= nil then
-		AiAgent(pNpc):setConvoTemplate("junkDealerGenericConvoTemplate")
+		AiAgent(pNpc):setConvoTemplate("junkDealerUnderworldConvoTemplate")
 	end
 	--End Ethan edit 12-3-24
 

@@ -75,7 +75,7 @@ end
 
 function EndorResearchOutpostScreenPlay:spawnMobiles()
 	--tavern building
-	pNpc = spawnMobile("endor", "kilnstrider",60,-3.44448,0.624999,-6.82681,331.362,9925367)
+	pNpc = spawnMobile("endor", "kilnstrider",60,-3.44448,0.624999,-6.82681,331.362,953461)
 	if pNpc ~= nil then
 		self:setMoodString(pNpc, "npc_imperial")
 
@@ -83,4 +83,11 @@ function EndorResearchOutpostScreenPlay:spawnMobiles()
 			CreatureObject(pNpc):clearOptionBit(AIENABLED)
 		end
 	end
+
+	--Ethan edit 12-3-24 (NPC VENDOR) Adding vendors to adventure planets
+	local pNpc = spawnMobile("endor", "junk_dealer", 0, 3275, 24, -3454, 0, 957385)
+	if pNpc ~= nil then
+		AiAgent(pNpc):setConvoTemplate("junkDealerUnderworldConvoTemplate")
+	end
+	--End Ethan edit 12-3-24
 end
