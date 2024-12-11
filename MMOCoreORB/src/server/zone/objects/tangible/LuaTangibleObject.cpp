@@ -58,6 +58,10 @@ Luna<LuaTangibleObject>::RegType LuaTangibleObject::Register[] = {
 		{ "setSerialNumber", &LuaTangibleObject::setSerialNumber}, //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 		{ "setJunkValue", &LuaTangibleObject::setJunkValue}, //Ethan edit 12-4-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
 		{ "setJunkDealerNeeded", &LuaTangibleObject::setJunkDealerNeeded}, //Ethan edit 12-5-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
+		{ "getIllegalContraband", &LuaTangibleObject::getIllegalContraband}, //Ethan edit 12-11-24 (SMUGGLER REVAMP) - Used to get the status of whether or not an item is contraband (this is separate from "isSpice or isSliced")
+		{ "setIllegalContraband", &LuaTangibleObject::setIllegalContraband}, //Ethan edit 12-11-24 (SMUGGLER REVAMP) - Used to set the status of an object as contraband (separate fom isSpice or isSliced)
+		{ "setTaxStatus", &LuaTangibleObject::setTaxStatus}, //Ethan edit 12-11-24 (SMUGGLER REVAMP) - Used to get the status of whether or not an imported resource has been taxed yet
+		{ "getTaxStatus", &LuaTangibleObject::getTaxStatus}, //Ethan edit 12-11-24 (SMUGGLER REVAMP) - Used to set the status of an imported resource has been taxed yet
 		{ "getConditionDamage", &LuaTangibleObject::getConditionDamage},
 		{ "isActivated", &LuaTangibleObject::isActivated},
 		{ 0, 0 }
@@ -463,6 +467,42 @@ int LuaTangibleObject::setJunkDealerNeeded(lua_State* L){
 }
 
 //END Ethan edit 5-28-24 (JUNK DEALER VENDOR)
+
+//Ethan edit 12-11-24 (SMUGGLER REVAMP)
+
+int LuaTangibleObject::setIllegalContraband(lua_State* L){
+	int illegalContraband = lua_tointeger(L, -1);
+
+	realObject->setIllegalContraband(illegalContraband);
+
+	return 0;
+}
+
+int LuaTangibleObject::setTaxStatus(lua_State* L){
+	int taxStatus = lua_tointeger(L, -1);
+
+	realObject->setTaxStatus(taxStatus);
+
+	return 0;
+}
+
+int LuaTangibleObject::getIllegalContraband(lua_State* L){
+	int illegalContraband = realObject->getIllegalContraband();
+
+	lua_pushinteger(L, illegalContraband);
+
+	return 1;
+}
+
+int LuaTangibleObject::getTaxStatus(lua_State* L){
+	int taxStatus = realObject->getTaxStatus();
+
+	lua_pushinteger(L, taxStatus);
+
+	return 1;
+}
+
+//End Ethan edit 12-11-24 (SMUGGLER REVAMP
 
 int LuaTangibleObject::getConditionDamage(lua_State* L){
 	int conditionDamage = realObject->getConditionDamage();

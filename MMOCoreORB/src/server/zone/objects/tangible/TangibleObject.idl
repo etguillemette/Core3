@@ -76,6 +76,9 @@ class TangibleObject extends SceneObject {
 	protected int junkDealerNeeded;
 	protected int junkValue;
 
+	protected int taxStatus; //Ethan edit 12-11-24 (SMUGGLER REVAMP)
+	protected int illegalContraband; //Ethan edit 12-11-24 (SMUGGLER REVAMP)
+
 	protected string objectSerial;
 
 	@transactional
@@ -147,6 +150,15 @@ class TangibleObject extends SceneObject {
 		threatMap = null;
 		junkDealerNeeded = 0;
 		junkValue = 0;
+
+		/** 
+		Ethan edit 12-11-24 (SMUGGLER REVAMP)
+		*/
+		taxStatus = 0;
+		illegalContraband = false;
+		/** 
+		End Ethan edit 12-11-24 (SMUGGLER REVAMP)
+		*/
 	}
 
 	/**
@@ -789,6 +801,32 @@ class TangibleObject extends SceneObject {
 	public abstract int getJunkValue() {
 		return junkValue;
 	}
+
+	/** 
+	Ethan edit 12-11-24 (SMUGGLER REVAMP)
+	*/
+
+	public void setIllegalContraband(boolean iContra) {
+		illegalContraband = iContra;
+	}
+
+	@dirty
+	public abstract boolean getIllegalContraband() {
+		return illegalContraband;
+	}
+
+	public void setTaxStatus(int tStatus) {
+		taxStatus = tStatus;
+	}
+
+	@read
+	public abstract int getTaxStatus() {
+		return taxStatus;
+	}
+
+	/** 
+	End Ethan edit 12-11-24
+	*/
 
 	public native void setSerialNumber(final string serial);
 

@@ -45,6 +45,9 @@ SharedTangibleObjectTemplate::SharedTangibleObjectTemplate() {
 	junkDealerNeeded = 0;
 	junkValue = 0;
 
+	illegalContraband; //Ethan edit 12-11-24 (SMUGGLER REVAMP) - determines whether an item is illegal contraband
+	taxStatus; //Ethan edit 12-11-24 (SMUGGLER REVAMP) - determines if an item is 0 - fully taxed for import tarrifs, 1 - raw, or 2 - in a state of being smugg
+
 	resourceWeights = new Vector<Reference<ResourceWeight* > >();
 
 	skillMods.setNoDuplicateInsertPlan();
@@ -132,7 +135,17 @@ void SharedTangibleObjectTemplate::parseVariableData(const String& varName, LuaO
 		junkDealerNeeded = Lua::getIntParameter(state);
 	} else if (varName == "junkValue") {
 		junkValue = Lua::getIntParameter(state);
-	} else if (varName == "invisible") {
+	} 
+	
+	//Ethan edit 12-11-24 (SMUGGLER REVAMP)
+	  else if (varName == "illegalContraband") { 
+		illegalContraband = Lua::getBooleanParameter(state);
+	}
+	  else if (varName == "taxStatus") { 
+		taxStatus = Lua::getIntParameter(state);
+	}  
+	//End Ethan edit 12-11-24
+		else if (varName == "invisible") {
 		invisible = (bool) Lua::getByteParameter(state);
 	} else if (varName == "playerRaces") {
 		LuaObject races(state);

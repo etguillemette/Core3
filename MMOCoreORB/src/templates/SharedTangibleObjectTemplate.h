@@ -50,6 +50,9 @@ protected:
 	int junkDealerNeeded;
 	int junkValue;
 
+	bool illegalContraband; //Ethan edit 12-11-24 (SMUGGLER REVAMP) - determines whether an item is illegal contraband
+	int taxStatus; //Ethan edit 12-11-24 (SMUGGLER REVAMP) - determines if an item is 0 - fully taxed for import tarrifs, 1 - raw, or 2 - in a state of being smuggled
+
 	VectorMap<String, int> skillMods;
 
 	Vector<short>* numberExperimentalProperties;
@@ -134,6 +137,18 @@ public:
 	inline int getJunkValue() const {
 		return junkValue;
 	}
+
+	//Ethan edit 12-11-24 (SMUGGLER REVAMP)
+
+	inline int getTaxStatus() const {
+		return taxStatus;
+	}
+
+	inline bool getIllegalContraband() const {
+		return illegalContraband;
+	}
+
+	//End Ethan edit 12-11-24
 
 	inline const StructureFootprint* getStructureFootprint() const {
 		return structureFootprint;

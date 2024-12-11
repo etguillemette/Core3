@@ -68,6 +68,10 @@ namespace tangible {
 		int setSerialNumber(lua_State* L); //Ethan edit 5-28-24 (JUNK DEALER VENDOR)
 		int setJunkValue(lua_State* L); //Ethan edit 12-4-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
 		int setJunkDealerNeeded(lua_State* L); //Ethan edit 12-4-24 (JUNK DEALER VENDOR) (SLICING REVAMP)
+		int getTaxStatus(lua_State* L); //Ethan edit 12-11-24 (SMUGGLER REVAMP) - Used to get the status of whether or not an imported resource has been taxed yet
+		int setTaxStatus(lua_State* L); //Ethan edit 12-11-24 (SMUGGLER REVAMP) - Used to set the status of whether or not an imported resource has been taxed yet
+		int getIllegalContraband(lua_State* L); //Ethan edit 12-11-24 (SMUGGLER REVAMP) - Used to get the status of whether or not an item is contraband (this is separate from "isSpice or isSliced")
+		int setIllegalContraband(lua_State* L); //Ethan edit 12-11-24 (SMUGGLER REVAMP) - Used to set the status of an object as contraband (separate fom isSpice or isSliced)
 		int getConditionDamage(lua_State* L);
 		int isActivated(lua_State* L);
 		

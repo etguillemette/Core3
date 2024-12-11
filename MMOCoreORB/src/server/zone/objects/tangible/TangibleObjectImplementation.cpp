@@ -80,6 +80,9 @@ void TangibleObjectImplementation::loadTemplateData(SharedObjectTemplate* templa
 	junkDealerNeeded = tanoData->getJunkDealerNeeded();
 	junkValue = tanoData->getJunkValue();
 
+	taxStatus = tanoData->getTaxStatus(); //Ethan edit 12-11-24 (SMUGGLER REVAMP)
+	illegalContraband = tanoData->getIllegalContraband(); //Ethan edit 12-11-24 (SMUGGLER REVAMP)
+
 	threatMap = nullptr;
 }
 
