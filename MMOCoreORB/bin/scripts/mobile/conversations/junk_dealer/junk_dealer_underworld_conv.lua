@@ -3,7 +3,7 @@
 junkDealerUnderworldConvoTemplate = ConvoTemplate:new {
 	initialScreen = "ask_for_loot",
 	templateType = "Lua",
-	luaClassHandler = "junkDealerUnderworldConvoTemplate",
+	luaClassHandler = "junkDealerUnderworldConvoHandler",
 	screens = {}
 }
 

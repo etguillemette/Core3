@@ -16,6 +16,7 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 	local clonedScreen = LuaConversationScreen(pConvScreen)
 
 	if screenID == "ask_for_loot" then
+		print(junkType); --Ethan edit 12-11-24 TESTING
 		if self.isJawa then
 			if not CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_01") then
 				CreatureObject(pPlayer):sendSystemMessage("@jawa_trader:cant_understand") -- You do not understand what this Jawa is saying.

@@ -68,7 +68,7 @@ function JunkDealer:getEligibleJunk(pPlayer, dealerType, skipItem)
 
 			if sceno:getObjectID() ~= skipItem then
 				--Ethan edit 5-11-24 (JUNK DEALER VENDOR): removing the line "and tano:getCraftersName() == "" below... 11-30-24 Also removing the non-sliced requirement
-				if tano:getJunkDealerNeeded() & dealerNum > 0 and not tano:isBroken() and (not tano:isSliced() or dealerNum == 512) and not tano:isNoTrade() and sceno:getContainerObjectsSize() == 0 then
+				if tano:getJunkDealerNeeded() & dealerNum > 0 and not tano:isBroken() and (not tano:getIllegalContraband() or dealerNum == 512) and not tano:isNoTrade() and sceno:getContainerObjectsSize() == 0 then
 					--End Ethan edit 5-11-24 (JUNK DEALER VENDOR):					
 					local name = sceno:getDisplayedName()
 					local value = tano:getJunkValue()
