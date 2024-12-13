@@ -13,7 +13,7 @@ fencer03 = Creature:new {
 	baseHAM = 2250,
 	baseHAMmax = 3250,
 	armor = 0,
-	resists = {75,75,75,75,75,75,75,-1,-1},
+	resists = {66,66,66,66,66,66,66,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -26,7 +26,7 @@ fencer03 = Creature:new {
 	pvpBitmask = NONE,
 	creatureBitmask = HERD,
 	optionsBitmask = AIENABLED,
-	armor = 0,
+	armor = 1,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_1handsword_trainer_01.iff"},

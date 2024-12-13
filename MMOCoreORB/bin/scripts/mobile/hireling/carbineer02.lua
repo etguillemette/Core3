@@ -13,7 +13,7 @@ carbineer02 = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 2500,
 	armor = 0,
-	resists = {50,50,50,50,50,50,50,-1,-1},
+	resists = {10,10,10,10,10,10,10,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -26,7 +26,7 @@ carbineer02 = Creature:new {
 	pvpBitmask = NONE,
 	creatureBitmask = HERD,
 	optionsBitmask = AIENABLED,
-	armor = 0,
+	armor = 1,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_carbine_trainer_01.iff"},

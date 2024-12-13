@@ -13,7 +13,7 @@ pistoleer03 = Creature:new {
 	baseHAM = 1750,
 	baseHAMmax = 2750,
 	armor = 0,
-	resists = {66,66,66,66,66,66,66,-1,-1},
+	resists = {50,50,50,50,50,50,50,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -26,7 +26,7 @@ pistoleer03 = Creature:new {
 	pvpBitmask = NONE,
 	creatureBitmask = HERD,
 	optionsBitmask = AIENABLED,
-	armor = 0,
+	armor = 1,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_pistol_trainer_01.iff"},

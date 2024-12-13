@@ -13,7 +13,7 @@ bountyhunter05 = Creature:new {
 	baseHAM = 2250,
 	baseHAMmax = 3250,
 	armor = 0,
-	resists = {80,80,80,80,80,80,80,-1,-1},
+	resists = {75,75,75,75,75,75,75,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -26,7 +26,7 @@ bountyhunter05 = Creature:new {
 	pvpBitmask = NONE,
 	creatureBitmask = HERD,
 	optionsBitmask = AIENABLED,
-	armor = 0,
+	armor = 1,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_bountyhunter_trainer_01.iff"},

@@ -13,7 +13,7 @@ teraskasi04 = Creature:new {
 	baseHAM = 2500,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {80,80,80,80,80,80,80,-1,-1},
+	resists = {75,75,75,75,75,75,75,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -26,7 +26,7 @@ teraskasi04 = Creature:new {
 	pvpBitmask = NONE,
 	creatureBitmask = HERD,
 	optionsBitmask = AIENABLED,
-	armor = 0,
+	armor = 1,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_unarmed_trainer_01.iff"},
