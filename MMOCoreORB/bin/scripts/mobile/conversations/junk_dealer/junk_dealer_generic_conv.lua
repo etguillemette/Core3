@@ -1120,7 +1120,7 @@ vendor_hireling = ConvoScreen:new {
 	options = {
 		{"I was looking for a ranged specialist.", "hires_marksman"},
 		{"I was looking for a melee specialist.", "hires_brawler"},
-		{"I was looking for a bodyguard.", "hires_tank"},
+		--{"I was looking for a bodyguard.", "hires_tank"},
 		{"Actually, I don't need anything right now.","no_loot"},
 	}
 }
