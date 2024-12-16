@@ -134,3 +134,26 @@ includeFile("weapon/groups/tusken_weapons.lua")
 
 -- tutorial
 includeFile("weapon/groups/tutorial_bandit.lua")
+
+-- Ethan edit 12-13-24 (HIRELINGS)
+includeFile("weapon/groups/pistol_dl44_metal.lua")
+includeFile("weapon/groups/carbine_e11.lua")
+includeFile("weapon/groups/rifle_laser.lua")
+includeFile("weapon/groups/pistol_fwg5.lua")
+includeFile("weapon/groups/carbine_ee3.lua")
+includeFile("weapon/groups/carbine_elite.lua")
+includeFile("weapon/groups/rifle_t21.lua")
+includeFile("weapon/groups/rifle_lightning.lua")
+includeFile("weapon/groups/rifle_flame_thrower.lua")
+includeFile("weapon/groups/baton_gaderiffi.lua")
+includeFile("weapon/groups/th_sword_scythe.lua")
+includeFile("weapon/groups/lance_staff_metal.lua")
+includeFile("weapon/groups/unarmed.lua")
+includeFile("weapon/groups/sword_blade_ryyk.lua")
+includeFile("weapon/groups/polearm_vibro_axe.lua")
+includeFile("weapon/groups/baton_stun.lua")
+includeFile("weapon/groups/th_sword_maul.lua")
+includeFile("weapon/groups/lance_vibrolance.lua")
+includeFile("weapon/groups/vibroknuckler.lua")
+
+-- End Ethan edit 12-13-24

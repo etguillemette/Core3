@@ -34,8 +34,8 @@ teraskasi04 = Creature:new {
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesnt use weapons, in which case "unarmed" should be put primary and "none" as secondary
-	primaryWeapon = "vibroknuckler",
-	secondaryWeapon = "none",
+	primaryWeapon = "general_unarmed",
+	secondaryWeapon = "unarmed",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/slang",
 
