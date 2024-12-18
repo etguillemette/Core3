@@ -126,6 +126,9 @@ class PlayerManager extends Observer implements Logger {
 	public int buffPrice; //Ethan edit 6-11-24 (AUTO DOCTOR)/(AUTO ENTERTAINER)
 	public int healPrice; //Ethan edit 6-11-24 (AUTO DOCTOR)/(AUTO ENTERTAINER)
 	public int healBonus; //Ethan edit 6-11-24 (AUTO DOCTOR)/(AUTO ENTERTAINER)
+
+	public boolean imageDesignFullExp; //Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+	public boolean squadLeaderFullExp; //Ethan edit 12-18-24 (SQUAD LEADER FULL EXP)
 	/*
 	-----------------------------------
 	--END SINGLE PLAYER CONFIG
