@@ -21661,6 +21661,32 @@ resources = {
 	},
 
 	{
+		name = "Beviomoide",
+		type = "aluminum_phrik",
+		classes = {
+			{"Inorganic", "inorganic"},
+			{"Mineral", "mineral"},
+			{"Metal", "metal"},
+			{"Non-Ferrous Metal", "metal_nonferrous"},
+			{"Aluminum", "aluminum"},
+			{"Phrik Aluminum", "aluminum_phrik"},
+		},
+		attributes = {
+			{"res_cold_resist", 698},
+			{"res_conductivity", 757},
+			{"res_decay_resist", 719},
+			{"res_heat_resist", 695},
+			{"res_malleability", 910},
+			{"res_quality", 457},
+			{"res_shock_resistance", 858},
+			{"res_toughness", 855},
+		},
+		zoneRestriction = "",
+		surveyToolType = 6,
+		containerCRC = 3684838486,
+	},
+
+	{
 		name = "Bevvebo",
 		type = "meat_carnivore_endor",
 		classes = {
@@ -54757,6 +54783,28 @@ resources = {
 		zoneRestriction = "yavin4",
 		surveyToolType = 3,
 		containerCRC = 822551481,
+	},
+
+	{
+		name = "Crosri",
+		type = "meat_insect_endor",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Food", "creature_food"},
+			{"Meat", "meat"},
+			{"Insect Meat", "meat_insect"},
+			{"Endorian Insect Meat", "meat_insect_endor"},
+		},
+		attributes = {
+			{"res_decay_resist", 390},
+			{"res_flavor", 228},
+			{"res_potential_energy", 617},
+			{"res_quality", 202},
+		},
+		zoneRestriction = "endor",
+		surveyToolType = -1,
+		containerCRC = 1349101341,
 	},
 
 	{
@@ -101415,6 +101463,29 @@ resources = {
 	},
 
 	{
+		name = "Feleo",
+		type = "wheat_wild_corellia",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Cereal", "cereal"},
+			{"Wheat", "wheat"},
+			{"Wild Wheat", "wheat_wild"},
+			{"Corellian Wild Wheat", "wheat_wild_corellia"},
+		},
+		attributes = {
+			{"res_decay_resist", 555},
+			{"res_flavor", 547},
+			{"res_potential_energy", 401},
+			{"res_quality", 71},
+		},
+		zoneRestriction = "corellia",
+		surveyToolType = 3,
+		containerCRC = 1890507922,
+	},
+
+	{
 		name = "Feli",
 		type = "vegetable_fungi_dantooine",
 		classes = {
@@ -105619,6 +105690,29 @@ resources = {
 		zoneRestriction = "corellia",
 		surveyToolType = -1,
 		containerCRC = 1001781097,
+	},
+
+	{
+		name = "Firqea",
+		type = "fruit_fruits_tatooine",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Seeds", "seeds"},
+			{"Fruit", "fruit"},
+			{"Fruits", "fruit_fruits"},
+			{"Tatooinian Fruit", "fruit_fruits_tatooine"},
+		},
+		attributes = {
+			{"res_decay_resist", 965},
+			{"res_flavor", 656},
+			{"res_potential_energy", 875},
+			{"res_quality", 899},
+		},
+		zoneRestriction = "tatooine",
+		surveyToolType = 3,
+		containerCRC = 1808675396,
 	},
 
 	{
@@ -125933,6 +126027,29 @@ resources = {
 	},
 
 	{
+		name = "Giwio",
+		type = "corn_wild_corellia",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Cereal", "cereal"},
+			{"Corn", "corn"},
+			{"Wild Corn", "corn_wild"},
+			{"Corellian Wild Corn", "corn_wild_corellia"},
+		},
+		attributes = {
+			{"res_decay_resist", 453},
+			{"res_flavor", 906},
+			{"res_potential_energy", 559},
+			{"res_quality", 813},
+		},
+		zoneRestriction = "corellia",
+		surveyToolType = 3,
+		containerCRC = 2868134971,
+	},
+
+	{
 		name = "Giwroz",
 		type = "bone_mammal_yavin4",
 		classes = {
@@ -126960,6 +127077,26 @@ resources = {
 		zoneRestriction = "dantooine",
 		surveyToolType = -1,
 		containerCRC = 1349101341,
+	},
+
+	{
+		name = "Glielvonoium",
+		type = "petrochem_fuel_solid_type1",
+		classes = {
+			{"Inorganic", "inorganic"},
+			{"Mineral", "mineral"},
+			{"Solid Petrochem Fuel", "fuel_petrochem_solid"},
+			{"Known Solid Petrochem Fuel", "fuel_petrochem_solid_known"},
+			{"Class 1 Solid Petro Fuel", "petrochem_fuel_solid_type1"},
+		},
+		attributes = {
+			{"res_decay_resist", 16},
+			{"res_potential_energy", 402},
+			{"res_quality", 509},
+		},
+		zoneRestriction = "",
+		surveyToolType = 6,
+		containerCRC = 2431128978,
 	},
 
 	{
@@ -188778,6 +188915,29 @@ resources = {
 	},
 
 	{
+		name = "Kitho",
+		type = "softwood_conifer_talus",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Structural", "flora_structural"},
+			{"Wood", "wood"},
+			{"Soft Wood", "softwood"},
+			{"Talusian Conifer Wood", "softwood_conifer_talus"},
+		},
+		attributes = {
+			{"res_decay_resist", 374},
+			{"res_malleability", 695},
+			{"res_quality", 168},
+			{"res_shock_resistance", 369},
+			{"res_toughness", 76},
+		},
+		zoneRestriction = "talus",
+		surveyToolType = 3,
+		containerCRC = 1001781097,
+	},
+
+	{
 		name = "Kithyi",
 		type = "bone_avian_tatooine",
 		classes = {
@@ -211152,6 +211312,29 @@ resources = {
 			{"res_quality", 6},
 		},
 		zoneRestriction = "naboo",
+		surveyToolType = -1,
+		containerCRC = 1349101341,
+	},
+
+	{
+		name = "Locha",
+		type = "seafood_fish_endor",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Food", "creature_food"},
+			{"Meat", "meat"},
+			{"Seafood", "seafood"},
+			{"Fish", "seafood_fish"},
+			{"Endorian Fish Meat", "seafood_fish_endor"},
+		},
+		attributes = {
+			{"res_decay_resist", 740},
+			{"res_flavor", 791},
+			{"res_potential_energy", 346},
+			{"res_quality", 167},
+		},
+		zoneRestriction = "endor",
 		surveyToolType = -1,
 		containerCRC = 1349101341,
 	},
@@ -248174,6 +248357,31 @@ resources = {
 		zoneRestriction = "dathomir",
 		surveyToolType = -1,
 		containerCRC = 1349101341,
+	},
+
+	{
+		name = "Noli",
+		type = "crystalline_green_diamond",
+		classes = {
+			{"Inorganic", "inorganic"},
+			{"Mineral", "mineral"},
+			{"Gemstone", "gemstone"},
+			{"Crystalline Gemstone", "gemstone_crystalline"},
+			{"Green Diamond Crystalline Gemstone", "crystalline_green_diamond"},
+		},
+		attributes = {
+			{"entangle_resistance", 661},
+			{"res_cold_resist", 253},
+			{"res_decay_resist", 340},
+			{"res_heat_resist", 804},
+			{"res_malleability", 88},
+			{"res_quality", 25},
+			{"res_shock_resistance", 467},
+			{"res_toughness", 526},
+		},
+		zoneRestriction = "",
+		surveyToolType = 6,
+		containerCRC = 3684838486,
 	},
 
 	{
@@ -344276,6 +344484,28 @@ resources = {
 	},
 
 	{
+		name = "Sragini",
+		type = "milk_domesticated_dathomir",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Food", "creature_food"},
+			{"Milk", "milk"},
+			{"Domesticated Milk", "milk_domesticated"},
+			{"Dathomirian  Domesticated Milk", "milk_domesticated_dathomir"},
+		},
+		attributes = {
+			{"res_decay_resist", 114},
+			{"res_flavor", 452},
+			{"res_potential_energy", 624},
+			{"res_quality", 967},
+		},
+		zoneRestriction = "dathomir",
+		surveyToolType = -1,
+		containerCRC = 2928137621,
+	},
+
+	{
 		name = "Sraiecedi",
 		type = "meat_wild_naboo",
 		classes = {
@@ -401806,6 +402036,32 @@ resources = {
 	},
 
 	{
+		name = "Vote",
+		type = "iron_axidite",
+		classes = {
+			{"Inorganic", "inorganic"},
+			{"Mineral", "mineral"},
+			{"Metal", "metal"},
+			{"Ferrous Metal", "metal_ferrous"},
+			{"Iron", "iron"},
+			{"Axidite Iron", "iron_axidite"},
+		},
+		attributes = {
+			{"res_cold_resist", 207},
+			{"res_conductivity", 191},
+			{"res_decay_resist", 573},
+			{"res_heat_resist", 636},
+			{"res_malleability", 239},
+			{"res_quality", 874},
+			{"res_shock_resistance", 564},
+			{"res_toughness", 534},
+		},
+		zoneRestriction = "",
+		surveyToolType = 6,
+		containerCRC = 3684838486,
+	},
+
+	{
 		name = "Voth",
 		type = "iron_colat",
 		classes = {
@@ -428455,6 +428711,28 @@ resources = {
 	},
 
 	{
+		name = "Xeiana",
+		type = "milk_wild_talus",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Food", "creature_food"},
+			{"Milk", "milk"},
+			{"Wild Milk", "milk_wild"},
+			{"Talusian Wild Milk", "milk_wild_talus"},
+		},
+		attributes = {
+			{"res_decay_resist", 207},
+			{"res_flavor", 477},
+			{"res_potential_energy", 640},
+			{"res_quality", 556},
+		},
+		zoneRestriction = "talus",
+		surveyToolType = -1,
+		containerCRC = 2928137621,
+	},
+
+	{
 		name = "Xeih",
 		type = "meat_insect_dantooine",
 		classes = {
@@ -440510,6 +440788,29 @@ resources = {
 		zoneRestriction = "dathomir",
 		surveyToolType = 3,
 		containerCRC = 485919638,
+	},
+
+	{
+		name = "Yelo",
+		type = "corn_domesticated_talus",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Cereal", "cereal"},
+			{"Corn", "corn"},
+			{"Domesticated Corn", "corn_domesticated"},
+			{"Talusian Domesticated Corn", "corn_domesticated_talus"},
+		},
+		attributes = {
+			{"res_decay_resist", 474},
+			{"res_flavor", 252},
+			{"res_potential_energy", 688},
+			{"res_quality", 578},
+		},
+		zoneRestriction = "talus",
+		surveyToolType = 3,
+		containerCRC = 2868134971,
 	},
 
 	{
