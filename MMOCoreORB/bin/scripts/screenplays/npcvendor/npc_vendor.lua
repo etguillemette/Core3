@@ -58,7 +58,10 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 			quantity = 1
 		end
 
-		local itemCost = waresData[i].cost * NPCVendor.globalPriceModifier
+
+		local smugglerBonus = 1.0 + (getSmugglerBonus(pPlayer) / 100)
+		local itemCost = math.floor(waresData[i].cost * NPCVendor.globalPriceModifier * smugglerBonus)
+		
 		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. (itemCost) .. ") Qty: (x" .. waresData[i].quantity .. ")", 0}
 		table.insert(options, ware)
 	end
@@ -315,7 +318,9 @@ function NPCVendor:giveItem(pPlayer, itemData)
 	if (pGhost == nil) then
 		return
 	end
-	local itemCost = itemData.cost * NPCVendor.globalPriceModifier
+	
+	local smugglerBonus = 1.0 - (getSmugglerBonus(pPlayer) / 100)
+	local itemCost = math.floor(itemData.cost * NPCVendor.globalPriceModifier * smugglerBonus)
 	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
 	if (pInventory == nil) then
@@ -403,6 +408,40 @@ function NPCVendor:giveItem(pPlayer, itemData)
 end
 
 
+--Ethan edit 12-18-24 (SMUGGLER BONUS)
+function NPCVendor:getSmugglerBonus(pPlayer)
+	
+	local smugglerBonus = 0
+
+	if CreatureObject(pPlayer):hasSkill("combat_smuggler_novice") then 
+		smugglerBonus += 4
+	end
+
+	if CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_01") then 
+		smugglerBonus += 3
+	end
+
+	if CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_02") then 
+		smugglerBonus += 3
+	end
+
+	if CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_03") then 
+		smugglerBonus += 3
+	end
+
+	if CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_04") then 
+		smugglerBonus += 3
+	end
+
+	if CreatureObject(pPlayer):hasSkill("combat_smuggler_master") then 
+		smugglerBonus += 4
+	end
+
+	return smugglerBonus
+end
+--End Ethan edit 12-18-24 (SMUGGLER BONUS)
+
+
 --HIRELINGS-------------------------------------------------
 ------------------------------------------------------------
 
@@ -421,7 +460,8 @@ function NPCVendor:awardData(pPlayer, itemData)
 		return self.errorCodes.DATAPADERROR
 	end
 
-	local itemCost = itemData.cost * NPCVendor.globalPriceModifier
+	local smugglerBonus = 1.0 + (getSmugglerBonus(pPlayer) / 100)
+	local itemCost = math.floor(itemData.cost * NPCVendor.globalPriceModifier * smugglerBonus)
 
 	if itemCost == nil then
 		return self.errorCodes.ITEMCOST
