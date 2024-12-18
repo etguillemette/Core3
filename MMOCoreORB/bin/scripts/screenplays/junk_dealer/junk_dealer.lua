@@ -129,7 +129,7 @@ function JunkDealer:sellAllItems(pPlayer, pSui, pInventory)
 	end
 
 	--Ethan edit 12-18-24 (MERCHANT BONUS) - Adding value to goods sold based on the skill of the merchant
-	local merchantBonus = getMerchantSkill(pPlayer) / 100;
+	local merchantBonus = 1.0 + (getMerchantSkill(pPlayer) / 100);
 	amount = math.floor(amount * merchantBonus);
 	--Ethan edit 12-18-24 (MERCHANT BONUS)
 	
