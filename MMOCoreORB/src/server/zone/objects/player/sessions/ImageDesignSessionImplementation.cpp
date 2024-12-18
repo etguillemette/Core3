@@ -17,6 +17,7 @@
 #include "server/zone/packets/object/ImageDesignMessage.h"
 #include "server/zone/objects/player/PlayerObject.h"
 #include "server/zone/objects/transaction/TransactionLog.h"
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
 
 // #define DEBUG_ID
 
