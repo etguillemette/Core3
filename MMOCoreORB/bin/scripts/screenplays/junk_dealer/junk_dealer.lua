@@ -66,12 +66,16 @@ function JunkDealer:getEligibleJunk(pPlayer, dealerType, skipItem)
 			local tano = TangibleObject(pItem)
 			local sceno = SceneObject(pItem)
 
+			--Ethan edit 12-18-24 (MERCHANT BONUS)
+			local merchantBonus = 1.0 - (getMerchantBonus(pPlayer)/100)
+			--End Ethan edit 12-18-24 (MERCHANT BONUS)
+
 			if sceno:getObjectID() ~= skipItem then
 				--Ethan edit 5-11-24 (JUNK DEALER VENDOR): removing the line "and tano:getCraftersName() == "" below... 11-30-24 Also removing the non-sliced requirement
 				if tano:getJunkDealerNeeded() & dealerNum > 0 and not tano:isBroken() and (not tano:getIllegalContraband() or dealerNum == 512) and not tano:isNoTrade() and sceno:getContainerObjectsSize() == 0 then
 					--End Ethan edit 5-11-24 (JUNK DEALER VENDOR):					
 					local name = sceno:getDisplayedName()
-					local value = tano:getJunkValue()
+					local value = math.floor(tano:getJunkValue() * merchantBonus) --Ethan edit 12-18-24 (MERCHANT BONUS)
 					local textTable = {"[" .. value .. "] " .. name, sceno:getObjectID()}
 					table.insert(junkList, textTable)
 				end
