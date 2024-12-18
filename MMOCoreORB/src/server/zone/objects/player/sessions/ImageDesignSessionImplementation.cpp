@@ -306,8 +306,16 @@ void ImageDesignSessionImplementation::updateImageDesign(CreatureObject* updater
 		// Award XP.
 		PlayerManager* playerManager = strongReferenceDesigner->getZoneServer()->getPlayerManager();
 
+		//Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+			Lua* lua = new Lua();
+			lua->init();
+
+			lua->runFile("scripts/managers/player_manager.lua");
+			int soloImageDesignExp = lua->getGlobalBoolean("imageDesignFullExp"); //Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+		//End Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+		
 		if (playerManager != nullptr && xpGranted > 0) {
-			if (strongReferenceDesigner == strongReferenceTarget) {
+			if (strongReferenceDesigner == strongReferenceTarget || soloImageDesign == true) { //Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
 				xpGranted /= 2;
 			}
 
