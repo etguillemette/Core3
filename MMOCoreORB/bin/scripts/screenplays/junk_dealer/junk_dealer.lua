@@ -128,6 +128,11 @@ function JunkDealer:sellAllItems(pPlayer, pSui, pInventory)
 		end
 	end
 
+	--Ethan edit 12-18-24 (MERCHANT BONUS) - Adding value to goods sold based on the skill of the merchant
+	local merchantBonus = getMerchantSkill(pPlayer) / 100;
+	amount = math.floor(amount * merchantBonus);
+	--Ethan edit 12-18-24 (MERCHANT BONUS)
+	
 	CreatureObject(pPlayer):addCashCredits(amount, true)
 
 	--Ethan edit 6-11-24 (JUNK DEALER BUYER)
@@ -172,6 +177,11 @@ function JunkDealer:sellItem(pPlayer, pSui, rowIndex, pInventory)
 
 	createEvent(10, "JunkDealer", "destroyItem", pItem, "")
 
+	--Ethan edit 12-18-24 (MERCHANT BONUS) - Adding value to goods sold based on the skill of the merchant
+	local merchantBonus = getMerchantSkill(pPlayer) / 100;
+	value = math.floor(value * merchantBonus);
+	--Ethan edit 12-18-24 (MERCHANT BONUS)
+
 	CreatureObject(pPlayer):addCashCredits(value, true)
 
 	--Ethan edit 6-11-24 (JUNK DEALER BUYER)
@@ -192,4 +202,87 @@ function JunkDealer:sellItem(pPlayer, pSui, rowIndex, pInventory)
 	self:sendSellJunkSelection(pPlayer, pNpc, dealerType, skipItem)
 end
 
+--Ethan edit 12-18-24 (MERCHANT BONUS)
+function JunkDealer:getMerchantSkill(pPlayer)
+	
+	local merchantBonus = 0
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_novice") then 
+		merchantBonus += 4
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_advertising_01") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_advertising_02") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_advertising_03") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_advertising_04") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_sales_01") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_sales_02") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_sales_03") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_sales_04") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_hiring_01") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_hiring_02") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_hiring_03") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_hiring_04") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_management_01") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_management_02") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_management_03") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_management_04") then 
+		merchantBonus += 2
+	end
+
+	if CreatureObject(pPlayer):hasSkill("crafting_merchant_master") then 
+		merchantBonus += 4
+	end
+
+	return merchantBonus
+end
+--End Ethan edit 12-18-24 (MERCHANT BONUS)
+
 return JunkDealer
+
+
