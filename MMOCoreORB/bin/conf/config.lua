@@ -147,11 +147,11 @@ Core3 = {
 	},
 
 	------TRE config------
-	TrePath = "/home/ethan/Desktop/swgemu",
+	TrePath = "/home/Ethan/Desktop/swgemu",
 	TreFiles = {
-		"footprint_mod_00.tre",
-		"patch_smuggler_revamp.tre",
-		"default_patch.tre",
+        "footprint_mod_00.tre",
+		"patch_smuggler_revamp.tre",		
+        "default_patch.tre",
 		"patch_sku1_14_00.tre",
 		"patch_14_00.tre",
 		"patch_sku1_13_00.tre",
