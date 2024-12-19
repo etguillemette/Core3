@@ -414,27 +414,27 @@ function NPCVendor:getSmugglerBonus(pPlayer)
 	local smugglerBonus = 0
 
 	if CreatureObject(pPlayer):hasSkill("combat_smuggler_novice") then 
-		smugglerBonus += 4
+		smugglerBonus = smugglerBonus + 4
 	end
 
 	if CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_01") then 
-		smugglerBonus += 3
+		smugglerBonus = smugglerBonus + 3
 	end
 
 	if CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_02") then 
-		smugglerBonus += 3
+		smugglerBonus = smugglerBonus + 3
 	end
 
 	if CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_03") then 
-		smugglerBonus += 3
+		smugglerBonus = smugglerBonus + 3
 	end
 
 	if CreatureObject(pPlayer):hasSkill("combat_smuggler_underworld_04") then 
-		smugglerBonus += 3
+		smugglerBonus = smugglerBonus + 3
 	end
 
 	if CreatureObject(pPlayer):hasSkill("combat_smuggler_master") then 
-		smugglerBonus += 4
+		smugglerBonus = smugglerBonus + 4
 	end
 
 	return smugglerBonus
