@@ -316,7 +316,7 @@ void ImageDesignSessionImplementation::updateImageDesign(CreatureObject* updater
 		//End Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
 		
 		if (playerManager != nullptr && xpGranted > 0) {
-			if (strongReferenceDesigner == strongReferenceTarget || soloImageDesign == true) { //Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+			if (strongReferenceDesigner == strongReferenceTarget || soloImageDesignExp == true) { //Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
 				xpGranted /= 2;
 			}
 
