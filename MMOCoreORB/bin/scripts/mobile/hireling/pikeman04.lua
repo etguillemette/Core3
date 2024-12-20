@@ -29,7 +29,7 @@ pikeman04 = Creature:new {
 	armor = 1,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_polearm_trainer_01.iff"},
+	templates = {"object/mobile/dressed_polearm_trainer_02.iff"},
 	lootGroups = {},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)

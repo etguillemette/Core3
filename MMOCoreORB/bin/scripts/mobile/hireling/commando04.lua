@@ -29,7 +29,7 @@ commando04 = Creature:new {
 	armor = 1,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_commando_trainer_human_male_01.iff"},
+	templates = {"object/mobile/dressed_commando_trainer_rodian_male_01.iff"},
 	lootGroups = {},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
