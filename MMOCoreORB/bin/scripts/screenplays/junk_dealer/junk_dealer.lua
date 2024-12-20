@@ -67,7 +67,7 @@ function JunkDealer:getEligibleJunk(pPlayer, dealerType, skipItem)
 			local sceno = SceneObject(pItem)
 
 			--Ethan edit 12-18-24 (MERCHANT BONUS)
-			local merchantBonus = 1.0 - (getMerchantBonus(pPlayer)/100)
+			local merchantBonus = 1.0 - (getMerchantSkill(pPlayer)/100)
 			--End Ethan edit 12-18-24 (MERCHANT BONUS)
 
 			if sceno:getObjectID() ~= skipItem then

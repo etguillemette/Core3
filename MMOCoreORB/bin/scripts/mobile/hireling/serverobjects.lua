@@ -83,3 +83,7 @@ includeFile("hireling/bountyhunter05.lua")
 includeFile("hireling/commando03.lua")
 includeFile("hireling/commando04.lua")
 includeFile("hireling/commando05.lua")
+
+includeFile("hireling/squadleader03.lua")
+includeFile("hireling/squadleader04.lua")
+includeFile("hireling/squadleader05.lua")

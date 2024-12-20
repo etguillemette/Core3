@@ -110,3 +110,8 @@ bountyhunter05 = { {"headshot3",""},{"strafeshot2",""},{"mindshot2",""},{"flushi
 commando03 = { {"flamesingle1",""},{"fireacidsingle1",""} }
 commando04 = { {"flamecone1",""},{"flamesingle1",""},{"fireacidcone1",""},{"fireacidsingle1",""} }
 commando05 = { {"firelightningcone1",""},{"firelightningcone2",""},{"firelightningsingle1",""},{"firelightningsingle2",""},{"bleedingshot",""},{"underhandshot",""},{"eyeshot",""},{"knockdownfire",""},{"torsoshot",""},{"confusionshot",""},{"fastblast",""},{"sprayshot",""} }
+
+--Ethan edit 12-19-24 (HIRELING) Adding squad leader abilities
+squadleadernovice = {{"rally",""},{"steadyaim",""},}
+squadleadermid = {{"rally",""},{"steadyaim",""},{"volleyfire",""}}
+squadleadermaster = {{"rally",""},{"steadyaim",""},{"volleyfire",""},{"boostmorale",""}}
