@@ -59,7 +59,7 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 		end
 
 
-		local smugglerBonus = 1.0 + (getSmugglerBonus(pPlayer) / 100)
+		local smugglerBonus = 1.0 - (self:getSmugglerBonus(pPlayer) / 100)
 		local itemCost = math.floor(waresData[i].cost * NPCVendor.globalPriceModifier * smugglerBonus)
 		
 		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. (itemCost) .. ") Qty: (x" .. waresData[i].quantity .. ")", 0}
@@ -319,7 +319,7 @@ function NPCVendor:giveItem(pPlayer, itemData)
 		return
 	end
 	
-	local smugglerBonus = 1.0 - (getSmugglerBonus(pPlayer) / 100)
+	local smugglerBonus = 1.0 - (self:getSmugglerBonus(pPlayer) / 100)
 	local itemCost = math.floor(itemData.cost * NPCVendor.globalPriceModifier * smugglerBonus)
 	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
@@ -460,7 +460,7 @@ function NPCVendor:awardData(pPlayer, itemData)
 		return self.errorCodes.DATAPADERROR
 	end
 
-	local smugglerBonus = 1.0 + (getSmugglerBonus(pPlayer) / 100)
+	local smugglerBonus = 1.0 - (self:getSmugglerBonus(pPlayer) / 100)
 	local itemCost = math.floor(itemData.cost * NPCVendor.globalPriceModifier * smugglerBonus)
 
 	if itemCost == nil then
