@@ -55,6 +55,8 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 	elseif string.find(screenID, "hires_") ~= nil then
 		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID) --Ethan edit 5-15-24 (NPC VENDOR HIRES) testing
+	elseif string.find(screenID, "faction_") ~= nil then
+		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID) --Ethan edit 12-27-24 (FACTION BROKER)
 	elseif string.find(screenID, "resource_") ~= nil then
 		NPCVendor:sendResourceSaleSui(pNpc,pPlayer,screenID);
 	elseif string.find(screenID, "give_") ~= nil then

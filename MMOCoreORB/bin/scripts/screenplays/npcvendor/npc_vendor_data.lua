@@ -18,6 +18,7 @@ genericWaresData = {
         mustafar = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
     },
 
+
 --WEAPONS-------------------------
 
     waresPistol = {
@@ -1911,6 +1912,71 @@ genericWaresData = {
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="swordsman05", displayName = "@mob/creature_names:roughneck", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="pikeman05", displayName = "@mob/creature_names:outlaw", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="teraskasi05", displayName = "@mob/creature_names:brawler", quantity = 1},
+    },
+
+---------------------------------------------
+--FACTION------------------------------------
+
+    waresFaction = {
+        --Tatooine
+        { displayName = "Jabba", faction = "jabba", cost = 25000, quantity = 500},
+        { displayName = "Hutts", faction = "hutt", cost = 25000, quantity = 500},
+        { displayName = "Lady Valarian", faction = "valarian", cost = 25000, quantity = 500},
+        { displayName = "Alkhara", faction = "alkhara", cost = 25000, quantity = 500},
+        { displayName = "Jawa", faction = "jawa", cost = 25000, quantity = 500},
+        { displayName = "Desert Demon", faction = "desert_demon", cost = 25000, quantity = 500},
+        { displayName = "Swoop Gangs", faction = "swoop", cost = 25000, quantity = 500},
+        { displayName = "Tusken Raider", faction = "tusken_raider", cost = 25000, quantity = 500},
+
+        --Corellia
+        { displayName = "Afarathu", faction = "afarathu", cost = 25000, quantity = 500},
+        { displayName = "Binayre", faction = "binayre", cost = 25000, quantity = 500},
+        { displayName = "Corsec", faction = "corsec", cost = 25000, quantity = 500},
+        { displayName = "Followers of Nyax", faction = "followers_of_lord_nyax", cost = 25000, quantity = 500},
+        { displayName = "Beldonna's League", faction = "beldonnas_league", cost = 25000, quantity = 500},
+
+        --Naboo
+        { displayName = "Borvo", faction = "borvo", cost = 25000, quantity = 500},
+        { displayName = "Gungans", faction = "gungan", cost = 25000, quantity = 500},
+        { displayName = "Kobola", faction = "kobola", cost = 25000, quantity = 500},
+        { displayName = "Naboo Security Forces", faction = "naboo_security_force", cost = 25000, quantity = 500},
+        { displayName = "Naboo Pirates", faction = "naboo_pirate", cost = 25000, quantity = 500},
+
+        --Talus
+        { displayName = "Aa'kuans", faction = "aakuans", cost = 25000, quantity = 500},
+        { displayName = "Fed Dub", faction = "fed_dub", cost = 25000, quantity = 500},
+        { displayName = "Talus Liberation Party", faction = "liberation_party", cost = 25000, quantity = 500},
+        { displayName = "Lost Aqualish", faction = "lost_aqualish", cost = 25000, quantity = 500},
+        { displayName = "Sif", faction = "sif", cost = 25000, quantity = 500},
+        
+        --Rori
+        { displayName = "Rorgungan", faction = "rorgungan", cost = 25000, quantity = 500},
+        { displayName = "Cobral", faction = "cobral", cost = 25000, quantity = 500},
+        { displayName = "Garyn Raiders", faction = "garyn", cost = 25000, quantity = 500},
+        { displayName = "Restuss Brigade", faction = "restuss", cost = 25000, quantity = 500},
+        
+        --Lok
+        { displayName = "Nym", faction = "nym", cost = 25000, quantity = 500},
+        { displayName = "Canyon Corsairs", faction = "canyon_corsair", cost = 25000, quantity = 500},
+        { displayName = "Bloodrazor", faction = "bloodrazor", cost = 25000, quantity = 500},
+
+        --Dantooine
+        { displayName = "Janta Tribe", faction = "janta_tribe", cost = 25000, quantity = 500},
+        { displayName = "Dantari Raiders", faction = "dantari_raiders", cost = 25000, quantity = 500},
+        { displayName = "Mokk Tribe", faction = "mokk_tribe", cost = 25000, quantity = 500},
+        { displayName = "Kunga Tribe", faction = "kunga_tribe", cost = 25000, quantity = 500},
+
+        --Endor
+        { displayName = "Endor Marauder", faction = "endor_marauder", cost = 25000, quantity = 500},
+        { displayName = "Gondula Tribe", faction = "gondula_tribe", cost = 25000, quantity = 500},
+        { displayName = "Panshee Tribe", faction = "panshee_tribe", cost = 25000, quantity = 500},
+        { displayName = "Pubam", faction = "pubam", cost = 25000, quantity = 500},
+        { displayName = "Gorax", faction = "gorax", cost = 25000, quantity = 500},
+
+        --Dathomir
+        { displayName = "Nightsister Clan", faction = "nightsister", cost = 25000, quantity = 500},
+        { displayName = "Singing Mountain Clan", faction = "mtn_clan", cost = 25000, quantity = 500},
+        
     },
 
 --------------------------------------------

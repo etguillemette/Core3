@@ -11,6 +11,7 @@ ask_for_loot = ConvoScreen:new {
 	stopConversation = "false",
 	options = {
 		{"Do you by chance have any equipment I could purchase?", "start_vendor"}, --Ethan edit 5-11-24 (JUNK DEALER VENDOR)
+		{"I'd like to pay off some debts with a faction.", "faction_start"}, --Ethan edit 12-27-24 (FACTION BROKER)
 		--{"@conversation/junk_dealer_generic:s_54fab04f", "start_sale"}, -- I have some things that you might be interested in.
 		--{"@conversation/junk_dealer_generic:s_cd7a3f41", "no_loot"}, -- I am sorry but I don't think I have anything you would want.
 		--{"@conversation/junk_dealer_generic:s_3aa18b2d", "inventor"}, -- What sort of items do you have that you are looking to get rid of?
@@ -136,6 +137,17 @@ give_sculpture = ConvoScreen:new {
 	options = {}
 }
 junkDealerGenericConvoTemplate:addScreen(give_sculpture);
+
+--FACTION BROKER----------------------------
+--------------------------------------------
+--Ethan edit 12-27-24 (FACTION BROKER)
+faction_start = ConvoScreen:new {
+	id = "faction_start",
+	customDialogText = "I may be able to call in some favors with some of my contacts...",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(faction_start);
 
 --VENDOR------------------------------------
 --------------------------------------------

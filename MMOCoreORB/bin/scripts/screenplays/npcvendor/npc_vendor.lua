@@ -62,11 +62,22 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 		local smugglerBonus = 1.0 - (self:getSmugglerBonus(pPlayer) / 100)
 		local itemCost = math.floor(waresData[i].cost * NPCVendor.globalPriceModifier * smugglerBonus)
 		
-		local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. (itemCost) .. ") Qty: (x" .. waresData[i].quantity .. ")", 0}
-		table.insert(options, ware)
+		if string.find(screenID, "faction_") ~= nil then
+			local ware = {(waresData[i].displayName) .. " (Cost: " .. (itemCost) .. ") Faction: (+" .. waresData[i].quantity .. ")", 0}
+			table.insert(options, ware)
+		else
+			local ware = {getStringId(waresData[i].displayName) .. " (Cost: " .. (itemCost) .. ") Qty: (x" .. waresData[i].quantity .. ")", 0}
+			table.insert(options, ware)
+		end
+
+		
 	end
 
 	suiManager:sendListBox(pNpc, pPlayer, "@event_perk:pro_show_list_title", "@event_perk:pro_show_list_desc", 2, "@cancel", "", "@ok", "NPCVendor", "handleSuiPurchase", 32, options)
+end
+
+function NPCVendor:getFactionTable()
+	return genericWaresData.factionList
 end
 
 function NPCVendor:getWaresTable(category)
@@ -245,6 +256,8 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.hiresTank
 	elseif category == "wares_resource" then
 		return genericWaresData.waresResource
+	elseif category == "faction_start" then
+		return genericWaresData.waresFaction
 	end
 end
 
@@ -297,6 +310,12 @@ function NPCVendor:handleSuiPurchase(pPlayer, pSui, eventIndex, arg0)
 		deleteStringData(playerID .. ":npc_vendor_purchase")
 		self:awardData(pPlayer,itemData)
 	end
+
+	if string.find(purchaseCategory, "faction_") ~= nil then
+		deleteStringData(playerID .. ":npc_vendor_purchase")
+		self:awardFaction(pPlayer,itemData)
+	end
+
 
 	if string.find(purchaseCategory, "services_") ~= nil then
 		deleteStringData(playerID .. ":npc_vendor_purchase")
@@ -556,6 +575,87 @@ function NPCVendor:sendResourceSaleSui(pNpc, pPlayer, screenID)
 	--suiManager:sendListBox(pNpc, pPlayer, "Title", "Description", 3, "@cancel", "@back", "&ok", "Resources", "ResourceDeedCallback", 32, options);
 	--suiManager:sendListBox(pNpc, pPlayer, "@veteran:resource_title", "@veteran:choose_class", 3, "@cancel", "@back", "@ok", "Resources", "ResourceDeedSuiCallback", 32, "Resources")
 	--suiManager:sendResourceSaleSui(pPlayer)
+end
+
+
+--FACTION-------------------------------------------------
+------------------------------------------------------------
+
+
+--Essentially checks that all the data is valid before creating the control device for a hireling
+function NPCVendor:awardFaction(pPlayer, factionData)
+	local pGhost = CreatureObject(pPlayer):getPlayerObject()
+
+	if (pGhost == nil) then
+		return self.errorCodes.DATAPADERROR
+	end
+
+	local pDatapad = SceneObject(pPlayer):getSlottedObject("datapad")
+
+	if pDatapad == nil then
+		return self.errorCodes.DATAPADERROR
+	end
+
+	local smugglerBonus = 1.0 - (self:getSmugglerBonus(pPlayer) / 100)
+	local itemCost = math.floor(factionData.cost * NPCVendor.globalPriceModifier * smugglerBonus)
+
+	local faction = factionData.faction
+	local factionStanding = PlayerObject(pGhost):getFactionStanding(faction)
+
+	if factionStanding == nil then
+		return self.errorCodes.GENERALERROR
+	end
+
+	if factionStanding > -1 then
+		CreatureObject(pPlayer):sendSystemMessage("You do not have negative standing in that faction")
+		return self.errorCodes.GENERALERROR
+	end
+
+	if itemCost == nil then
+		return self.errorCodes.ITEMCOST
+	end
+
+	if (CreatureObject(pPlayer):getCashCredits() < itemCost) then
+		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
+		return self.errorCodes.NOTENOUGHCREDITS
+	end
+
+	local transferResult = self:transferFaction(pPlayer, factionData)
+
+	if(transferResult ~= self.errorCodes.SUCCESS) then
+		return transferResult
+	end
+
+	if (CreatureObject(pPlayer):getCashCredits() < itemCost) then
+		CreatureObject(pPlayer):sendSystemMessage("@dispenser:insufficient_funds")
+		return
+	end
+
+	CreatureObject(pPlayer):subtractCashCredits(itemCost)
+
+	local messageString = LuaStringIdChatParameter("You have paid paid %DI credits to improve your %TT faction standing") -- The %TT is now under your command.
+	messageString:setTT(factionData.faction)
+	messageString:setDI(factionData.cost)
+
+	return self.errorCodes.SUCCESS
+end
+
+
+--This function actually gives the data (hireling) to the player. It is called by function awardData()
+function NPCVendor:transferFaction(pPlayer, itemData)
+	local pGhost = CreatureObject(pPlayer):getPlayerObject()
+	local faction = itemData.faction
+	
+	if pGhost == nil then
+		return self.errorCodes.GENERALERROR
+	end
+
+	if faction ~= nil then
+		PlayerObject(pGhost):increaseFactionStanding(faction, itemData.quantity)
+	end
+
+
+	return self.errorCodes.SUCCESS
 end
 
 return NPCVendor
