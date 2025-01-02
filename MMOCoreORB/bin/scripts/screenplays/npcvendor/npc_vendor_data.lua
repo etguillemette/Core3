@@ -1876,19 +1876,25 @@ genericWaresData = {
         { template = "object/intangible/pet/pet_control.iff", cost = 10000, controlledObjectTemplate="rifleman03", displayName = "@mob/creature_names:sharpshooter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 10000, controlledObjectTemplate="bountyhunter03", displayName = "@mob/creature_names:bounty_hunter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 10000, controlledObjectTemplate="commando03", displayName = "@mob/creature_names:commando", quantity = 1},
-        { template = "object/intangible/pet/pet_control.iff", cost = 10000, controlledObjectTemplate="squadleader03", displayName = "@mob/creature_names:brigand_leader", quantity = 1},
+        --{ template = "object/intangible/pet/pet_control.iff", cost = 10000, controlledObjectTemplate="squadleader03", displayName = "@mob/creature_names:brigand_leader", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 25000, controlledObjectTemplate="pistoleer04", displayName = "@mob/creature_names:scoundrel", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 25000, controlledObjectTemplate="carbineer04", displayName = "@mob/creature_names:fringer", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 25000, controlledObjectTemplate="rifleman04", displayName = "@mob/creature_names:sharpshooter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 25000, controlledObjectTemplate="bountyhunter04", displayName = "@mob/creature_names:bounty_hunter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 25000, controlledObjectTemplate="commando04", displayName = "@mob/creature_names:commando", quantity = 1},
-        { template = "object/intangible/pet/pet_control.iff", cost = 25000, controlledObjectTemplate="squadleader04", displayName = "@mob/creature_names:brigand_leader", quantity = 1},
+        --{ template = "object/intangible/pet/pet_control.iff", cost = 25000, controlledObjectTemplate="squadleader04", displayName = "@mob/creature_names:brigand_leader", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="pistoleer05", displayName = "@mob/creature_names:scoundrel", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="carbineer05", displayName = "@mob/creature_names:fringer", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="rifleman05", displayName = "@mob/creature_names:sharpshooter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="bountyhunter05", displayName = "@mob/creature_names:bounty_hunter", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="commando05", displayName = "@mob/creature_names:commando", quantity = 1},
-        { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="squadleader05", displayName = "@mob/creature_names:brigand_leader", quantity = 1}
+        --{ template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="squadleader05", displayName = "@mob/creature_names:brigand_leader", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="pistoleer06", displayName = "@mob/creature_names:scoundrel", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="carbineer06", displayName = "@mob/creature_names:fringer", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="rifleman06", displayName = "@mob/creature_names:sharpshooter", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="bountyhunter06", displayName = "@mob/creature_names:bounty_hunter", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="commando06", displayName = "@mob/creature_names:commando", quantity = 1},
+        --{ template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="squadleader06", displayName = "@mob/creature_names:brigand_leader", quantity = 1},
     },
 
     hiresBrawler = {
@@ -1912,6 +1918,11 @@ genericWaresData = {
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="swordsman05", displayName = "@mob/creature_names:roughneck", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="pikeman05", displayName = "@mob/creature_names:outlaw", quantity = 1},
         { template = "object/intangible/pet/pet_control.iff", cost = 50000, controlledObjectTemplate="teraskasi05", displayName = "@mob/creature_names:brawler", quantity = 1},
+
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="fencer06", displayName = "@mob/creature_names:brigand", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="swordsman06", displayName = "@mob/creature_names:roughneck", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="pikeman06", displayName = "@mob/creature_names:outlaw", quantity = 1},
+        { template = "object/intangible/pet/pet_control.iff", cost = 75000, controlledObjectTemplate="teraskasi06", displayName = "@mob/creature_names:brawler", quantity = 1}
     },
 
 ---------------------------------------------

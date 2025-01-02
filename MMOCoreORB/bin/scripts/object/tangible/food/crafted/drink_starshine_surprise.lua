@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_starshine_surprise = object_tangible_food_cra
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 36,
+	duration = 1,
+	nutrition = 36,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {OBJECTDESTRUCTION},
 

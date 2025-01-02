@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_travel_biscuits = object_tangible_food_crafted
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 11,
+	duration = 720,
+	nutrition = 12,
+	useCount = 7,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 4,
 
 	fillingMin = 11,

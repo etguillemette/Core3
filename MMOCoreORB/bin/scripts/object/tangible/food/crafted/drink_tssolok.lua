@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_tssolok = object_tangible_food_crafted_shared
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 46,
+	duration = 360,
+	nutrition = 24,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 2,
 
 	fillingMin = 46,

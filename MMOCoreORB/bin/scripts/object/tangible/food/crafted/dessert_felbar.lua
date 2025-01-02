@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_felbar = object_tangible_food_crafted_share
 	filling = 10,
 	nutrition = 1000,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 23,
+	duration = 1800,
+	nutrition = 1250,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 1,
 
 	fillingMin = 23,

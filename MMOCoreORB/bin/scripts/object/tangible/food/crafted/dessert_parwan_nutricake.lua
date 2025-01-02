@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_parwan_nutricake = object_tangible_food_cra
 	filling = 10,
 	nutrition = 50,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 29,
+	duration = 40,
+	nutrition = 88,
+	useCount = 5,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 0,
 
 	fillingMin = 29,

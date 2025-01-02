@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_almond_kwevvu_crisp_munchies = object_tangi
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 23,
+	duration = 720,
+	nutrition = 12,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 4,
 
 	fillingMin = 23,

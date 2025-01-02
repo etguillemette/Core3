@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_gorrnar = object_tangible_food_crafted_shar
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 30,
+	duration = 960,
+	nutrition = 17,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {PLAYERCLONED},
 

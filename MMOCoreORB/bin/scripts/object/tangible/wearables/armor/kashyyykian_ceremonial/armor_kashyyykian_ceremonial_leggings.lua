@@ -69,6 +69,28 @@ object_tangible_wearables_armor_kashyyykian_ceremonial_armor_kashyyykian_ceremon
 	cold = 15,
 	acid = 15,
 	lightSaber = 0,
+	
+
+	--Ethan edit 1-1-25 (NPC VENDOR)
+
+	vulnerability = ACID + STUN + LIGHTSABER,
+	healthEncumbrance = 48,
+	actionEncumbrance = 99,
+	mindEncumbrance = 29,
+	maxCondition = 29500,
+	rating = LIGHT,
+	kinetic = 23,
+	energy = 23,
+	electricity = 23,
+	stun = 0,
+	blast = 23,
+	heat = 23,
+	cold = 23,
+	acid = 0,
+	lightSaber = 0,
+	--End Ethan edit 1-1-25 (NPC VENDOR)
+
+
 
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},

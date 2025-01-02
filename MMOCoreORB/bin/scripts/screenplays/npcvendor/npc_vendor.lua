@@ -602,6 +602,7 @@ function NPCVendor:awardFaction(pPlayer, factionData)
 	local faction = factionData.faction
 	local factionStanding = PlayerObject(pGhost):getFactionStanding(faction)
 
+
 	if factionStanding == nil then
 		return self.errorCodes.GENERALERROR
 	end
@@ -609,6 +610,10 @@ function NPCVendor:awardFaction(pPlayer, factionData)
 	if factionStanding > -1 then
 		CreatureObject(pPlayer):sendSystemMessage("You do not have negative standing in that faction")
 		return self.errorCodes.GENERALERROR
+	end
+
+	if factionStanding > -500 then
+		quantity = (1 - factionStanding)
 	end
 
 	if itemCost == nil then

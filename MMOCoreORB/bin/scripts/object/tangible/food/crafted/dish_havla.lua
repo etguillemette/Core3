@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_havla = object_tangible_food_crafted_shared_di
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 35,
+	duration = 17,
+	nutrition = 60,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {MEDPACKUSED},
 

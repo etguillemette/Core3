@@ -101,6 +101,29 @@ object_tangible_wearables_armor_ubese_armor_ubese_helmet = object_tangible_weara
 	acid = 15,
 	lightSaber = 0,
 
+
+	--Ethan edit 1-1-25 (NPC VENDOR)
+
+	vulnerability = LIGHTSABER + HEAT + STUN + COLD,
+	specialResists = KINETIC,
+	healthEncumbrance = 14,
+	actionEncumbrance = 17,
+	mindEncumbrance = 185,
+	maxCondition = 29500,
+	rating = LIGHT,
+	kinetic = 63,
+	energy = 26.5,
+	electricity = 26.5,
+	stun = 0,
+	blast = 26.5,
+	heat = 0,
+	cold = 0,
+	acid = 26.5,
+	lightSaber = 0,
+
+	--End Ethan edit 1-1-25 (NPC VENDOR):
+
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

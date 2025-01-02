@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_vercupti_of_agazza_boleruuee = object_tangible
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 72,
+	duration = 360,
+	nutrition = 600,
+	useCount = 2,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 1,
 
 	fillingMin = 72,

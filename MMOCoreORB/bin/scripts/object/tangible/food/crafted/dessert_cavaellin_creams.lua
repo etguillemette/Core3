@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_cavaellin_creams = object_tangible_food_cra
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 29,
+	duration = 1,
+	nutrition = 72,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {OBJECTDESTRUCTION},
 

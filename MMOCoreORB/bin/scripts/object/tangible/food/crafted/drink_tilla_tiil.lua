@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_tilla_tiil = object_tangible_food_crafted_sha
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 90,
+	duration = 0,
+	nutrition = 19,
+	useCount = 1,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 0,
 
 	fillingMin = 90,

@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_karkan_ribenes = object_tangible_food_crafted_
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 3,
+	duration = 0,
+	nutrition = 90,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 0,
 
 	fillingMin = 3,

@@ -98,6 +98,29 @@ object_tangible_wearables_armor_zam_armor_zam_wesell_helmet = object_tangible_we
 	acid = 15,
 	lightSaber = 0,
 
+
+	--Ethan edit 1-1-25 (NPC VENDOR)
+
+	vulnerability = LIGHTSABER + ENERGY + STUN + ACID,
+	specialResists = BLAST + HEAT,
+	healthEncumbrance = 9,
+	actionEncumbrance = 7,
+	mindEncumbrance = 56,
+	maxCondition = 24500,
+	rating = LIGHT,
+	kinetic = 16.5,
+	energy = 0,
+	electricity = 16.5,
+	stun = 0,
+	blast = 48,
+	heat = 48,
+	cold = 16.5,
+	acid = 0,
+	lightSaber = 0,
+	--End Ethan edit 1-1-25 (NPC VENDOR)
+
+
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

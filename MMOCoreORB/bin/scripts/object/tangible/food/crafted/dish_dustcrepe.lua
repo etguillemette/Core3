@@ -47,6 +47,13 @@ templateType = CONSUMABLE,
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 29,
+	duration = 540,
+	nutrition = 18,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 0,
 
 	fillingMin = 29,

@@ -99,6 +99,29 @@ object_tangible_wearables_armor_chitin_armor_chitin_s01_helmet = object_tangible
 	acid = 15,
 	lightSaber = 0,
 
+
+	--Ethan edit 1-1-25 (NPC VENDOR)
+
+	vulnerability = STUN + HEAT + COLD + ELECTRICITY + LIGHTSABER,
+	specialResists = KINETIC,
+	healthEncumbrance = 17,
+	actionEncumbrance = 17,
+	mindEncumbrance = 159,
+	maxCondition = 29500,
+	rating = LIGHT,
+	kinetic = 64,
+	energy = 25.5,
+	electricity = 0,
+	stun = 0,
+	blast = 25.5,
+	heat = 0,
+	cold = 0,
+	acid = 25.5,
+	lightSaber = 0,
+	--End Ethan edit 1-1-25 (NPC VENDOR)
+
+
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

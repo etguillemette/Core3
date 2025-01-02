@@ -49,6 +49,13 @@ object_tangible_food_crafted_dish_thakitillo = object_tangible_food_crafted_shar
 	filling = 49,
 	nutrition = 80,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 47,
+	duration = 540,
+	nutrition = 50,
+	useCount = 2,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 4,
 
 	fillingMin = 47,

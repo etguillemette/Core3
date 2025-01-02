@@ -70,6 +70,25 @@ object_tangible_wearables_armor_kashyyykian_black_mtn_armor_kashyyykian_black_mt
 	acid = 15,
 	lightSaber = 0,
 
+	--Ethan edit 1-1-25 (NPC VENDOR)
+
+	vulnerability = HEAT + COLD + STUN + LIGHTSABER,
+	healthEncumbrance = 193,
+	actionEncumbrance = 122,
+	mindEncumbrance = 299,
+	maxCondition = 34500,
+	rating = LIGHT,
+	kinetic = 26.5,
+	energy = 26.5,
+	electricity = 26.5,
+	stun = 0,
+	blast = 26.5,
+	heat = 0,
+	cold = 0,
+	acid = 26.5,
+	lightSaber = 0,
+	--End Ethan edit 1-1-25 (NPC VENDOR)
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

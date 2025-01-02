@@ -49,6 +49,13 @@ object_tangible_food_crafted_dish_rations = object_tangible_food_crafted_shared_
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 18,
+	duration = 15,
+	nutrition = 30,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 0,
 
 	fillingMin = 18,

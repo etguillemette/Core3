@@ -108,6 +108,28 @@ object_tangible_wearables_armor_tantel_armor_tantel_skreej_chest_plate = object_
 	acid = 15,
 	lightSaber = 0,
 
+
+	--Ethan edit 1-1-25 (NPC VENDOR)
+
+	vulnerability = LIGHTSABER,
+	healthEncumbrance = 80,
+	actionEncumbrance = 32,
+	mindEncumbrance = 12,
+	maxCondition = 24500,
+	rating = LIGHT,
+	kinetic = 13.5,
+	energy = 13.5,
+	electricity = 13.5,
+	stun = 13.5,
+	blast = 13.5,
+	heat = 13.5,
+	cold = 13.5,
+	acid = 13.5,
+	lightSaber = 0,
+	--End Ethan edit 1-1-25 (NPC VENDOR)
+
+
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

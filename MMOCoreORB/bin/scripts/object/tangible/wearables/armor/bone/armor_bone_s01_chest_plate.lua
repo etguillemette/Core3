@@ -108,6 +108,29 @@ object_tangible_wearables_armor_bone_armor_bone_s01_chest_plate = object_tangibl
 	acid = 0,
 	lightSaber = 0,
 
+
+	--Ethan edit 1-1-25 (NPC VENDOR)
+
+	vulnerability = KINETIC + BLAST + STUN + HEAT + COLD + LIGHTSABER,
+	specialResists = ENERGY,
+	healthEncumbrance = 49,
+	actionEncumbrance = 23,
+	mindEncumbrance = 6,
+	maxCondition = 19500,
+	rating = LIGHT,
+	kinetic = 0,
+	energy = 47,
+	electricity = 18.5,
+	stun = 0,
+	blast = 0,
+	heat = 0,
+	cold = 0,
+	acid = 18.5,
+	lightSaber = 0,
+	--End Ethan edit 1-1-25 (NPC VENDOR)
+
+
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

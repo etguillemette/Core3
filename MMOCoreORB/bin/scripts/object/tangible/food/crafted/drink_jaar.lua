@@ -49,6 +49,13 @@ object_tangible_food_crafted_drink_jaar = object_tangible_food_crafted_shared_dr
   filling = 11,
   nutrition = 10,
 
+  --Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 11,
+	duration = 0,
+	nutrition = 30,
+	useCount = 5,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
   effectType = 0,
 
   fillingMin = 11,

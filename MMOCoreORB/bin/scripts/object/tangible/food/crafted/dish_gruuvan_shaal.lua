@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_gruuvan_shaal = object_tangible_food_crafted_s
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 35,
+	duration = 1800,
+	nutrition = 240,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 1,
 
 	fillingMin = 35,

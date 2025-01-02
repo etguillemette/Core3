@@ -49,6 +49,13 @@ object_tangible_food_crafted_dessert_citros_snow_cake = object_tangible_food_cra
 	filling = 34,
 	nutrition = 32,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 30,
+	duration = 960,
+	nutrition = 24,
+	useCount = 5,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 2,
 
 	fillingMin = 30,

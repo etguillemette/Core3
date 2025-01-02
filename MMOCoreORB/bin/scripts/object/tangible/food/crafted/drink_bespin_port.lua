@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_bespin_port = object_tangible_food_crafted_sh
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 25,
+	duration = 1,
+	nutrition = 12,
+	useCount = 5,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {CRAFTINGEXPERIMENTATION},
 

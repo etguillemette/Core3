@@ -108,6 +108,29 @@ object_tangible_wearables_armor_padded_armor_padded_s01_chest_plate = object_tan
 	acid = 15,
 	lightSaber = 0,
 
+
+	--Ethan edit 1-1-25 (NPC VENDOR)
+
+	vulnerability = STUN + HEAT + ACID + LIGHTSABER,
+	specialResists = BLAST,
+	healthEncumbrance = 142,
+	actionEncumbrance = 59,
+	mindEncumbrance = 22,
+	maxCondition = 34500,
+	rating = LIGHT,
+	kinetic = 26.5,
+	energy = 26.5,
+	electricity = 26.5,
+	stun = 0,
+	blast = 63,
+	heat = 0,
+	cold = 26.5,
+	acid = 0,
+	lightSaber = 0,
+	--End Ethan edit 1-1-25 (NPC VENDOR)
+
+
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

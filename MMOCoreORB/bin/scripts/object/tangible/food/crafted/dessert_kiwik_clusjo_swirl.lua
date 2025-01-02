@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_kiwik_clusjo_swirl = object_tangible_food_c
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 41,
+	duration = 450,
+	nutrition = 375,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 1,
 
 	fillingMin = 41,

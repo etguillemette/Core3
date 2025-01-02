@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_ruby_bliel = object_tangible_food_crafted_sha
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 22,
+	duration = 12,
+	nutrition = 35,
+	useCount = 4,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {MEDPACKUSED},
 

@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_smugglers_delight = object_tangible_food_cr
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 29,
+	duration = 1,
+	nutrition = 50,
+	useCount = 1,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {SPICEDOWNERACTIVATED}, -- Event unneeded, buff removed on spice active
 

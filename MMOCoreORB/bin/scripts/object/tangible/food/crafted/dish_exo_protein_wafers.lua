@@ -50,6 +50,13 @@ object_tangible_food_crafted_dish_exo_protein_wafers = object_tangible_food_craf
 	filling = 8,
 	nutrition = 20,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 5,
+	duration = 10,
+	nutrition = 18,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {DAMAGERECEIVED},
 

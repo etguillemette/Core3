@@ -49,6 +49,13 @@ object_tangible_food_crafted_dessert_pikatta_pie = object_tangible_food_crafted_
 	filling = 34,
 	nutrition = 35,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 29,
+	duration = 960,
+	nutrition = 30,
+	useCount = 5,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 2,
 
 	fillingMin = 29,

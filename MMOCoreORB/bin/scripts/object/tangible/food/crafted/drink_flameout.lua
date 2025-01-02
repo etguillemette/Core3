@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_flameout = object_tangible_food_crafted_share
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 72,
+	duration = 3,
+	nutrition = 100,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {DAMAGERECEIVED},
 

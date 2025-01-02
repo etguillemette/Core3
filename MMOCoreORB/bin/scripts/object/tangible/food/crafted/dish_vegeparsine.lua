@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_vegeparsine = object_tangible_food_crafted_sha
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 29,
+	duration = 1200,
+	nutrition = 12,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 4,
 
 	fillingMin = 29,

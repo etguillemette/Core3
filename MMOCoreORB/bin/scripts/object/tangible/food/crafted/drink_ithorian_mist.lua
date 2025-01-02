@@ -49,6 +49,13 @@ object_tangible_food_crafted_drink_ithorian_mist = object_tangible_food_crafted_
 	filling = 21,
 	nutrition = 15,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 17,
+	duration = 720,
+	nutrition = 12,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 4,
 
 	fillingMin = 17,

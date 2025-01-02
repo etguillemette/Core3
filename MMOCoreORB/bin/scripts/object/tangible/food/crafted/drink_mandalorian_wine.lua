@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_mandalorian_wine = object_tangible_food_craft
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 71,
+	duration = 360,
+	nutrition = 600,
+	useCount = 3,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 1,
 	
 	fillingMin = 71,

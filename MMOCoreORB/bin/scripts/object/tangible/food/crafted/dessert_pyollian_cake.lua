@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_pyollian_cake = object_tangible_food_crafte
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 13,
+	duration = 1,
+	nutrition = 10,
+	useCount = 5,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {CRAFTINGASSEMBLY},
 

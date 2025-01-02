@@ -49,6 +49,13 @@ object_tangible_food_crafted_dish_synthsteak = object_tangible_food_crafted_shar
 	filling = 34,
 	nutrition = 35,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 29,
+	duration = 22,
+	nutrition = 31,
+	useCount = 4,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {DAMAGERECEIVED},
 

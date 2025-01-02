@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_blue_milk = object_tangible_food_crafted_shar
 	filling = 30,
 	nutrition = 450,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 6,
+	duration = 0,
+	nutrition = 495,
+	useCount = 4,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 6,
 
 	fillingMin = 36,

@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_veghash = object_tangible_food_crafted_shared_
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 16,
+	duration = 540,
+	nutrition = 18,
+	useCount = 4,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 4,
 
 	fillingMin = 16,

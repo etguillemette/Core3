@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_teltier_noodles = object_tangible_food_crafted
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 17,
+	duration = 1800,
+	nutrition = 60,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 1,
 
 	fillingMin = 17,

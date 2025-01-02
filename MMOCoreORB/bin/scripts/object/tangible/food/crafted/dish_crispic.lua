@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_crispic = object_tangible_food_crafted_shared_
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 17,
+	duration = 540,
+	nutrition = 18,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 2,
 
 	fillingMin = 17,

@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_air_cake = object_tangible_food_crafted_sha
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 11,
+	duration = 720,
+	nutrition = 25,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 2,
 
 	fillingMin = 11,

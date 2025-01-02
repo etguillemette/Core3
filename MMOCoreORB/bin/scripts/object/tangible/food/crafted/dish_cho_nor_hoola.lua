@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_cho_nor_hoola = object_tangible_food_crafted_s
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 17,
+	duration = 1200,
+	nutrition = 20,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 2,
 
 	fillingMin = 17,

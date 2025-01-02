@@ -48,6 +48,13 @@ object_tangible_food_crafted_dish_ormachek = object_tangible_food_crafted_shared
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 90,
+	duration = 160,
+	nutrition = 5,
+	useCount = 1,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 3, -- Event Based Buff
 	eventTypes = {XPAWARDED},
 

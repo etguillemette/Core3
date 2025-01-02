@@ -48,6 +48,13 @@ object_tangible_food_crafted_drink_aitha = object_tangible_food_crafted_shared_d
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 18,
+	duration = 6600,
+	nutrition = 180,
+	useCount = 4,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 6,
 
 	fillingMin = 18,

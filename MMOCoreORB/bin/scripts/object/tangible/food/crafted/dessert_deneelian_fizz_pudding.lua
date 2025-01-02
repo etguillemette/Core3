@@ -48,6 +48,13 @@ object_tangible_food_crafted_dessert_deneelian_fizz_pudding = object_tangible_fo
 	filling = 10,
 	nutrition = 10,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 75,
+	duration = 60,
+	nutrition = 45,
+	useCount = 2,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 2,
 
 	fillingMin = 75,

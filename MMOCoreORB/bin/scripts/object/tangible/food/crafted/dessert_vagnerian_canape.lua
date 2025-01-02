@@ -49,6 +49,13 @@ object_tangible_food_crafted_dessert_vagnerian_canape = object_tangible_food_cra
 	filling = 34,
 	nutrition = 550,
 
+	--Ethan edit 1-2-25 (NPC VENDOR)
+	filling = 41,
+	duration = 450,
+	nutrition = 375,
+	useCount = 6,
+	--End Ethan edit 1-2-26 (NPC VENDOR)
+
 	effectType = 1,
 
 	fillingMin = 41,
