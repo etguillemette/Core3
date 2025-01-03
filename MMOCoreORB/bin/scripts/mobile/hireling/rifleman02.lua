@@ -26,7 +26,7 @@ rifleman02 = Creature:new {
 	pvpBitmask = NONE,
 	creatureBitmask = HERD,
 	optionsBitmask = AIENABLED,
-	armor = 1,
+	armor = 0,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_rifleman_trainer_01.iff"},
