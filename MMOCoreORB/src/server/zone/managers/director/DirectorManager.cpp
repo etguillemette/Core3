@@ -12,6 +12,7 @@
 #include "server/zone/objects/scene/LuaSceneObject.h"
 #include "server/zone/objects/building/LuaBuildingObject.h"
 #include "server/zone/objects/intangible/LuaIntangibleObject.h"
+#include "server/zone/objects/mission/LuaMissionObject.h"
 #include "server/zone/objects/intangible/ControlDevice.h"
 #include "server/zone/objects/intangible/PetControlDevice.h"
 #include "server/zone/objects/player/LuaPlayerObject.h"
@@ -546,6 +547,8 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	// JTL
 	luaEngine->registerFunction("generateShipDeed", generateShipDeed);
 	luaEngine->registerFunction("sellSpaceLoot", sellSpaceLoot);
+	luaEngine->registerFunction("isJtlEnabled", isJtlEnabled);
+	luaEngine->registerFunction("grantStarterShip", grantStarterShip);
 
 	//Navigation Mesh Management
 	luaEngine->registerFunction("createNavMesh", createNavMesh);
@@ -804,6 +807,17 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->setGlobalInt("SHIP_TARGETING_STATION", Components::TARGETING_STATION);
 	luaEngine->setGlobalInt("SHIP_WEAPON_START", Components::WEAPON_START);
 
+	// Pilot Squadrons
+	luaEngine->setGlobalInt("CORSEC_SQUADRON", PlayerManager::CORSEC_SQUADRON);
+	luaEngine->setGlobalInt("RSF_SQUADRON", PlayerManager::RSF_SQUADRON);
+	luaEngine->setGlobalInt("SMUGGLER_SQUADRON", PlayerManager::SMUGGLER_SQUADRON);
+	luaEngine->setGlobalInt("BLACK_EPSILON_SQUADRON", PlayerManager::BLACK_EPSILON_SQUADRON);
+	luaEngine->setGlobalInt("STORM_SQUADRON", PlayerManager::STORM_SQUADRON);
+	luaEngine->setGlobalInt("INQUISITION_SQUADRON", PlayerManager::INQUISITION_SQUADRON);
+	luaEngine->setGlobalInt("CRIMSON_PHOENIX_SQUADRON", PlayerManager::CRIMSON_PHOENIX_SQUADRON);
+	luaEngine->setGlobalInt("VORTEX_SQUADRON", PlayerManager::VORTEX_SQUADRON);
+	luaEngine->setGlobalInt("HAVOC_SQUADRON", PlayerManager::HAVOC_SQUADRON);
+
 	// Badges
 	const auto badges = BadgeList::instance()->getMap();
 	for (const auto& entry : *badges) {
@@ -829,6 +843,7 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	Luna<LuaConversationSession>::Register(luaEngine->getLuaState());
 	Luna<LuaConversationTemplate>::Register(luaEngine->getLuaState());
 	Luna<LuaIntangibleObject>::Register(luaEngine->getLuaState());
+	Luna<LuaMissionObject>::Register(luaEngine->getLuaState());
 	Luna<LuaControlDevice>::Register(luaEngine->getLuaState());
 	Luna<LuaPlayerObject>::Register(luaEngine->getLuaState());
 	Luna<LuaAiAgent>::Register(luaEngine->getLuaState());
@@ -5297,3 +5312,103 @@ int DirectorManager::sellSpaceLoot(lua_State* L) {
 
 	return 0;
 }
+
+int DirectorManager::isJtlEnabled(lua_State* L) {
+	bool result = ConfigManager::instance()->isJtlEnabled();
+
+	lua_pushboolean(L, result);
+
+	return 1;
+}
+
+int DirectorManager::grantStarterShip(lua_State* L) {
+	if (checkArgumentCount(L, 2) == 1) {
+		String err = "incorrect number of arguments passed to DirectorManager::grantStarterShip";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	CreatureObject* player = (CreatureObject*)lua_touserdata(L, -2);
+	String factionName = lua_tostring(L, -1);
+
+	if (player == nullptr || factionName.isEmpty()) {
+		return 0;
+	}
+
+	String generatedObjectTemplate = "";
+
+	if (factionName == "neutral") {
+		generatedObjectTemplate = "object/ship/player/player_prototype_hutt_light.iff";
+	} else if (factionName == "rebel") {
+		generatedObjectTemplate = "object/ship/player/player_prototype_z95.iff";
+	} else if (factionName == "imperial") {
+		generatedObjectTemplate = "object/ship/player/player_prototype_tiefighter.iff";
+	} else {
+		return 0;
+	}
+
+	auto zoneServer = player->getZoneServer();
+
+	if (zoneServer == nullptr) {
+		return 0;
+	}
+
+	auto zone = player->getZone();
+
+	if (zone == nullptr) {
+		return 0;
+	}
+
+	auto planetManager = zone->getPlanetManager();
+
+	if (planetManager == nullptr) {
+		return 0;
+	}
+
+	auto travelPoint = planetManager->getNearestPlanetTravelPoint(player->getWorldPosition(), 16000.f, true);
+
+	if (travelPoint == nullptr) {
+		return 0;
+	}
+
+	Locker lock(player);
+
+	ManagedReference<ShipObject*> ship = ShipManager::instance()->createPlayerShip(player, generatedObjectTemplate, "", true);
+
+	if (ship == nullptr) {
+		player->error() << "Failed to generate ship object from template: " << generatedObjectTemplate;
+		return 1;
+	}
+
+	// Player is locked, cross lock the ship to the player
+	Locker slocker(ship, player);
+
+	ship->setComponentMass(Components::REACTOR, 1500.f);
+	ship->setReactorGenerationRate(8000.f, false);
+	ship->setComponentMass(Components::ENGINE, 1500.f);
+	ship->setComponentMass(Components::SHIELD0, 1500.f);
+	ship->setComponentMass(Components::ARMOR0, 1500.f);
+	ship->setComponentMass(Components::ARMOR1, 1500.f);
+	ship->setComponentMass(Components::CAPACITOR, 1500.f);
+	ship->setCapacitorMaxEnergy(2000.f, false);
+	ship->setComponentMass(Components::WEAPON_START, 1500.f);
+
+	ManagedReference<ShipControlDevice*> shipControlDevice = cast<ShipControlDevice*>(zoneServer->getObject(ship->getControlDeviceID()).get());
+
+	if (shipControlDevice == nullptr) {
+		ship->destroyObjectFromDatabase(true);
+		ship->destroyObjectFromWorld(true);
+
+		player->error() << "grantStarterShip - null control device: " << generatedObjectTemplate;
+
+		return 0;
+	}
+
+	Locker deviceLock(shipControlDevice, player);
+
+	shipControlDevice->setParkingLocation(travelPoint->getPointName());
+
+	return 0;
+}
+

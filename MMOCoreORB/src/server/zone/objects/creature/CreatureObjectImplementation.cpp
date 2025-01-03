@@ -162,8 +162,6 @@ void CreatureObjectImplementation::initializeMembers() {
 	performanceType = 0;
 	tradeTargetID = 0;
 
-	pilotTier = 0;
-
 	optionsBitmask = 0x80;
 
 	moodString = "neutral";
