@@ -1085,7 +1085,7 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 					String healxptype("entertainer_healing");
 					playerManager->awardExperience(player, healxptype, xpAmount, true);
 
-					int tipAmount = round(xpAmount/10);
+					int tipAmount = xpAmount;
 
 					if(tipAmount < 1){
 						tipAmount = 1;
