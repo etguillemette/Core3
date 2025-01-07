@@ -74,6 +74,9 @@ object_weapon_ranged_pistol_pistol_de_10 = object_weapon_ranged_pistol_shared_pi
 
 	-- NONE, LIGHT, MEDIUM, HEAVY
 	armorPiercing = LIGHT,
+	--Ethan edit 1-7-25 (WEAPON REBALANCE)
+	armorPiercing = MEDIUM,
+	--End Ethan edit 1-7-25 (WEAPON REBALANCE)
 
 	-- combat_rangedspecialize_bactarifle, combat_rangedspecialize_rifle, combat_rangedspecialize_pistol, combat_rangedspecialize_heavy, combat_rangedspecialize_carbine
 	-- combat_meleespecialize_unarmed, combat_meleespecialize_twohand, combat_meleespecialize_polearm, combat_meleespecialize_onehand, combat_general,
@@ -121,6 +124,29 @@ object_weapon_ranged_pistol_pistol_de_10 = object_weapon_ranged_pistol_shared_pi
 	attackSpeed = 4,
 
 	woundsRatio = 15,
+
+	--Ethan edit 1-7-25 (WEAPON REBALANCE)
+	healthAttackCost = 36,
+	actionAttackCost = 68,
+	mindAttackCost = 36,
+	forceCost = 0,
+
+	pointBlankAccuracy = 0,
+	pointBlankRange = 0,
+
+	idealRange = 20,
+	idealAccuracy = 40,
+
+	maxRange = 64,
+	maxRangeAccuracy = -80,
+
+	minDamage = 148,
+	maxDamage = 236,
+
+	attackSpeed = 4,
+
+	woundsRatio = 15,
+	--End Ethan edit 1-7-25 (WEAPON REBALANCE)
 
 	numberExperimentalProperties = {1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2},
 	experimentalProperties = {"XX", "XX", "CD", "OQ", "CD", "OQ", "CD", "OQ", "CD", "OQ", "CD", "OQ", "CD", "OQ", "XX", "XX", "CD", "OQ", "CD", "OQ", "CD", "OQ", "CD", "OQ"},

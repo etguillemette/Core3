@@ -37,6 +37,7 @@ genericWaresData = {
         { template = "object/weapon/ranged/pistol/pistol_republic_blaster.iff", cost = 51900, displayName = "@weapon_name:pistol_republic_blaster", serial = "icblaster", quantity = 1},
         { template = "object/weapon/ranged/pistol/pistol_dx2.iff", cost = 53000, displayName = "@weapon_name:pistol_dx2", serial = "rupterdx2", quantity = 1},
         { template = "object/weapon/ranged/pistol/pistol_tangle.iff", cost = 53200, displayName = "@weapon_name:pistol_tangle", serial = "anglegun7", quantity = 1},
+        { template = "object/weapon/ranged/pistol/pistol_de_10.iff", cost = 200000, displayName = "@weapon_name:pistol_de_10", serial = "de10pisto", quantity = 1},
 	},
 
     waresRifle = {

@@ -1416,6 +1416,14 @@ int CombatManager::applyDamage(TangibleObject* attacker, WeaponObject* weapon, C
 		return 0;
 	}
 
+	//Ethan edit 1-7-25 (CU CHANGES)
+	Lua* lua = new Lua();
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	bool cuHAM = lua->getGlobalBoolean("cuHAM");
+	//End Ethan edit 1-7-25 (CU CHANGES)
+
 	float ratio = weapon->getWoundsRatio();
 	float healthDamage = 0.f, actionDamage = 0.f, mindDamage = 0.f;
 
@@ -1526,9 +1534,20 @@ int CombatManager::applyDamage(TangibleObject* attacker, WeaponObject* weapon, C
 #ifdef DEBUG_SPILL_DAMAGE
 		spillOverDebug << " Action Spill Over Amount: " << spilledDamage << "\n";
 #endif
-
+		//Ethan edit 1-7-25 (CU CHANGES)
+		if(cuHAM == true){
+			defender->inflictDamage(attacker, CreatureAttribute::HEALTH, (int)actionDamage, true, xpType, true, true);
+		}
+		else
+		//End Ethan edit 1-7-25 (CU CHANGES)
 		defender->inflictDamage(attacker, CreatureAttribute::ACTION, (int)actionDamage, true, xpType, true, true);
 
+		//Ethan edit 1-7-25 (CU CHANGES)
+		if(cuHAM == true){
+			poolsToWound.add(CreatureAttribute::HEALTH);
+		}
+		else
+		//End Ethan edit 1-7-25 (CU CHANGES)
 		poolsToWound.add(CreatureAttribute::ACTION);
 	}
 
@@ -1560,9 +1579,20 @@ int CombatManager::applyDamage(TangibleObject* attacker, WeaponObject* weapon, C
 #ifdef DEBUG_SPILL_DAMAGE
 		spillOverDebug << " Mind Spill Over Amount: " << spilledDamage << "\n";
 #endif
-
+		//Ethan edit 1-7-25 (CU CHANGES)
+		if(cuHAM == true){
+			defender->inflictDamage(attacker, CreatureAttribute::HEALTH, (int)actionDamage, true, xpType, true, true);
+		}
+		else
+		//End Ethan edit 1-7-25 (CU CHANGES)
 		defender->inflictDamage(attacker, CreatureAttribute::MIND, (int)mindDamage, true, xpType, true, true);
 
+		//Ethan edit 1-7-25 (CU CHANGES)
+		if(cuHAM == true){
+			poolsToWound.add(CreatureAttribute::HEALTH);
+		}
+		else
+		//End Ethan edit 1-7-25 (CU CHANGES)
 		poolsToWound.add(CreatureAttribute::MIND);
 	}
 
@@ -2439,6 +2469,15 @@ int CombatManager::getArmorVehicleReduction(VehicleObject* defender, int damageT
 int CombatManager::getArmorReduction(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, DefenderHitList* hitList, float damage, int hitLocation, const CreatureAttackData& data) const {
 	int damageType = 0, armorPiercing = 1;
 
+
+	//Ethan edit 1-7-25 (CU CHANGES)
+	Lua* lua = new Lua();
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	bool cuArmor = lua->getGlobalBoolean("cuArmor");
+	//End Ethan edit 1-7-25 (CU CHANGES)
+
 	if (hitList == nullptr) {
 		return 0;
 	}
@@ -2460,8 +2499,14 @@ int CombatManager::getArmorReduction(TangibleObject* attacker, WeaponObject* wea
 			damage *= getArmorPiercing(cast<AiAgent*>(defender), armorPiercing);
 
 		if (armorReduction > 0) {
-			damage *= (1.f - (armorReduction / 100.f));
-
+			//Ethan edit 1-7-25 (CU CHANGES)
+			if(cuArmor == true ){
+				damage *= (0.2f + ((armorReduction - 20.0f) / (1.0f + ((armorReduction - 20.0f)/100.0f))/100.0f)); //New CU armor diminishing returns
+			}
+			else
+			//End Ethan edit 1-7-25 (CU CHANGES)
+			damage *= (1.f - (armorReduction / 100.f)); //Original line
+			
 			if (!defender->isPet())
 				defender->addUnmitigatedDamage(damage);
 		}
@@ -2474,7 +2519,13 @@ int CombatManager::getArmorReduction(TangibleObject* attacker, WeaponObject* wea
 			damage *= getArmorPiercing(cast<VehicleObject*>(defender), armorPiercing);
 
 		if (armorReduction > 0)
-			damage *= (1.f - (armorReduction / 100.f));
+			//Ethan edit 1-7-25 (CU CHANGES)
+			if(cuArmor == true ){
+				damage *= (0.2f + ((armorReduction - 20.0f) / (1.0f + ((armorReduction - 20.0f)/100.0f))/100.0f)); //New CU armor diminishing returns
+			}
+			else
+			//End Ethan edit 1-7-25 (CU CHANGES)
+			damage *= (1.f - (armorReduction / 100.f)); //Original line
 
 		return damage;
 	}
@@ -2547,8 +2598,14 @@ int CombatManager::getArmorReduction(TangibleObject* attacker, WeaponObject* wea
 		damage *= getArmorPiercing(psg, armorPiercing);
 
 		if (armorReduction > 0)
-			damage *= 1.f - (armorReduction / 100.f);
-
+			//Ethan edit 1-7-25 (CU CHANGES)
+			if(cuArmor == true ){
+				damage *= (0.2f + ((armorReduction - 20.0f) / (1.0f + ((armorReduction - 20.0f)/100.0f))/100.0f)); //New CU armor diminishing returns
+			}
+			else
+			//End Ethan edit 1-7-25 (CU CHANGES)
+			damage *= (1.f - (armorReduction / 100.f));
+			
 		dmgAbsorbed -= damage;
 		if (dmgAbsorbed > 0) {
 			int psgMit = hitList->getPsgMitigation();
@@ -2575,7 +2632,14 @@ int CombatManager::getArmorReduction(TangibleObject* attacker, WeaponObject* wea
 		damage *= getArmorPiercing(armor, armorPiercing);
 
 		if (armorReduction > 0) {
-			damage *= (1.f - (armorReduction / 100.f));
+			//Ethan edit 1-7-25 (CU CHANGES)
+			if(cuArmor == true ){
+				damage *= (0.2f + ((armorReduction - 20.0f) / (1.0f + ((armorReduction - 20.0f)/100.0f))/100.0f)); //New CU armor diminishing returns
+			}
+			else{
+				damage *= (1.f - (armorReduction / 100.f)); //Original line
+			}
+			//End Ethan edit 1-7-25 (CU CHANGES)
 			dmgAbsorbed -= damage;
 
 			int armorMit = hitList->getArmorMitigation();
@@ -2673,9 +2737,9 @@ float CombatManager::getArmorPiercing(TangibleObject* defender, int armorPiercin
 	if(cuDisablePiercing == true)
 	{
 		if (armorPiercing > armorReduction)
-			return pow(1.1, armorPiercing - armorReduction);
+			return pow(1.0, armorPiercing - armorReduction);
 		else
-			return pow(0.90, armorReduction - armorPiercing);
+			return pow(1.0, armorReduction - armorPiercing);
 	}
 	//End Ethan edit 1-5-25 (CU CHANGES)
 
@@ -2827,9 +2891,9 @@ float CombatManager::calculateWeaponAttackSpeed(CreatureObject* attacker, Weapon
 	if(cuSpeed == true)
 	{
 		if (weaponMask == WeaponType::PISTOLWEAPON) {
-			speedCap = 1.0f;
+			speedCap = 0.5f;
 		} else if (weaponMask == WeaponType::CARBINEWEAPON) {
-			speedCap = 1.5f;
+			speedCap = 0.75f;
 		} else if (weaponMask == WeaponType::RIFLEWEAPON) {
 			speedCap = 2.0f;
 		} else if (weaponMask == WeaponType::THROWNWEAPON) {
@@ -2843,7 +2907,7 @@ float CombatManager::calculateWeaponAttackSpeed(CreatureObject* attacker, Weapon
 		} else if (weaponMask == WeaponType::UNARMEDWEAPON) {
 			speedCap = 1.0f;
 		} else if (weaponMask == WeaponType::ONEHANDMELEEWEAPON) {
-			speedCap = 1.0f;
+			speedCap = 0.5f;
 		} else if (weaponMask == WeaponType::TWOHANDMELEEWEAPON) {
 			speedCap = 2.0f;
 		} else if (weaponMask == WeaponType::POLEARMWEAPON) {
@@ -2853,24 +2917,19 @@ float CombatManager::calculateWeaponAttackSpeed(CreatureObject* attacker, Weapon
 		} else if (weaponMask == WeaponType::LIGHTNINGRIFLEWEAPON) {
 			speedCap = 4.0f;
 		} else if (weaponMask == WeaponType::ONEHANDJEDIWEAPON) {
-			speedCap = 1.0f;
+			speedCap = 0.75f;
 		} else if (weaponMask == WeaponType::TWOHANDJEDIWEAPON) {
 			speedCap = 2.0f;
 		} else if (weaponMask == WeaponType::POLEARMJEDIWEAPON) {
 			speedCap = 1.75f;
 		}		  
 	}
-
-	if(attackSpeed < speedCap)
-	{
-		attackSpeed = speedCap;
-	}
 	//End Ethan edit 1-6-25 (CU CHANGES)
 
 	if (jediSpeed > 0)
 		attackSpeed = attackSpeed - (attackSpeed * jediSpeed);
 
-	return Math::max(attackSpeed, 1.0f);
+	return Math::max(attackSpeed, speedCap); //Ethan edit 1-7-25 (CU CHANGES) changed from: return Math::max(attackSpeed, 1.0f)
 }
 
 // Fly Text - Miss, Counterattack, Block, Hit Location

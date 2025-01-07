@@ -117,7 +117,7 @@ cuArmor = false --Should armor have diminishing returns, like the Combat Upgrade
 cuDisablePiercing = true --Should armor piercing be disabled?
 cuLevels = false --Should characters gain health points via leveling up?
 cuHAM = false --Should all damage be on the Health bar, and all ability costs come from the action bar?
-cuSpeed = false --Should speed be capped based on weapon type?
+cuSpeed = true --Should speed be capped based on weapon type?
 
 -----------------------------------
 --END COMBAT UPGRADE CONFIG
