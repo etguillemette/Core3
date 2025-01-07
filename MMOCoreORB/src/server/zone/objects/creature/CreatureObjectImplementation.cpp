@@ -106,6 +106,38 @@
 
 float CreatureObjectImplementation::DEFAULTRUNSPEED = 5.376f;
 
+//Ethan edit 1-5-25 (SOLO DOC/SOLO ENT) - Refactoring some stuff
+void CreatureObjectImplementation::initialize(){
+	loadLuaConfig();
+}
+
+void CreatureObjectImplementation::loadLuaConfig() {
+
+	Lua* lua = new Lua();
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	bool autoDoctor = lua->getGlobalBoolean("autoDoctor");
+	float hospitalMedBuffDuration = lua->getGlobalFloat("hospitalMedBuffDuration");
+	float hospitalMedBuffTickStrength = lua->getGlobalFloat("hospitalMedBuffTickStrength");
+	float hospitalMedBuffPoolStrength = lua->getGlobalFloat("hospitalMedBuffPoolStrength");
+	float hospitalMedBuffAttrStrength = lua->getGlobalFloat("hospitalMedBuffAttrStrength");
+	
+	bool autoEntertainer = lua->getGlobalBoolean("autoEntertainer");
+	float cantinaMindBuffDuration = lua->getGlobalFloat("cantinaMindBuffDuration");
+	float cantinaMindBuffTickStrength = lua->getGlobalFloat("cantinaMindBuffTickStrength");
+	float cantinaMindBuffPoolStrength = lua->getGlobalFloat("cantinaMindBuffPoolStrength");
+	float cantinaMindBuffAttrStrength = lua->getGlobalFloat("cantinaMindBuffAttrStrength");
+
+	int buffPrice = lua->getGlobalInt("buffPrice");
+	int healPrice = lua->getGlobalInt("healPrice"); 
+	int healBonus = lua->getGlobalInt("healBonus");
+
+	delete lua;
+	lua = nullptr;
+}
+//End Ethan edit 1-5-25 (SOLO DOC/SOLO ENT) - Refactoring some stuff
+
 void CreatureObjectImplementation::initializeTransientMembers() {
 	TangibleObjectImplementation::initializeTransientMembers();
 
@@ -3012,25 +3044,51 @@ void CreatureObjectImplementation::activateHAMRegeneration(int latency) {
 void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	
 	//Ethan edit 5-25-24 (AUTO ENTERTAINER)/(AUTO DOCTOR)
+		
+	bool autoDoctor = false;
+	float hospitalMedBuffDuration = 0;
+	float hospitalMedBuffTickStrength = 0;
+	float hospitalMedBuffPoolStrength = 0;
+	float hospitalMedBuffAttrStrength = 0;
+
+	bool autoEntertainer = false;
+	float cantinaMindBuffDuration = 0;
+	float cantinaMindBuffTickStrength = 0;
+	float cantinaMindBuffPoolStrength = 0;
+	float cantinaMindBuffAttrStrength = 0;
+
+	int buffPrice = 0;
+	int healPrice = 0;
+	int healBonus = 0;
+
+	//loadLuaConfig();
+
+	
 	Lua* lua = new Lua();
 	lua->init();
 
 	lua->runFile("scripts/managers/player_manager.lua");
-	bool autoDoctor = lua->getGlobalBoolean("autoDoctor");
-	float hospitalMedBuffDuration = lua->getGlobalFloat("hospitalMedBuffDuration");
-	float hospitalMedBuffTickStrength = lua->getGlobalFloat("hospitalMedBuffTickStrength");
-	float hospitalMedBuffPoolStrength = lua->getGlobalFloat("hospitalMedBuffPoolStrength");
-	float hospitalMedBuffAttrStrength = lua->getGlobalFloat("hospitalMedBuffAttrStrength");
+	autoDoctor = lua->getGlobalBoolean("autoDoctor");
+	hospitalMedBuffDuration = lua->getGlobalFloat("hospitalMedBuffDuration");
+	hospitalMedBuffTickStrength = lua->getGlobalFloat("hospitalMedBuffTickStrength");
+	hospitalMedBuffPoolStrength = lua->getGlobalFloat("hospitalMedBuffPoolStrength");
+	hospitalMedBuffAttrStrength = lua->getGlobalFloat("hospitalMedBuffAttrStrength");
 	
-	bool autoEntertainer = lua->getGlobalBoolean("autoEntertainer");
-	float cantinaMindBuffDuration = lua->getGlobalFloat("cantinaMindBuffDuration");
-	float cantinaMindBuffTickStrength = lua->getGlobalFloat("cantinaMindBuffTickStrength");
-	float cantinaMindBuffPoolStrength = lua->getGlobalFloat("cantinaMindBuffPoolStrength");
-	float cantinaMindBuffAttrStrength = lua->getGlobalFloat("cantinaMindBuffAttrStrength");
+	autoEntertainer = lua->getGlobalBoolean("autoEntertainer");
+	cantinaMindBuffDuration = lua->getGlobalFloat("cantinaMindBuffDuration");
+	cantinaMindBuffTickStrength = lua->getGlobalFloat("cantinaMindBuffTickStrength");
+	cantinaMindBuffPoolStrength = lua->getGlobalFloat("cantinaMindBuffPoolStrength");
+	cantinaMindBuffAttrStrength = lua->getGlobalFloat("cantinaMindBuffAttrStrength");
 
-	int buffPrice = lua->getGlobalInt("buffPrice");
-	int healPrice = lua->getGlobalInt("healPrice"); 
-	int healBonus = lua->getGlobalInt("healBonus"); 
+	buffPrice = lua->getGlobalInt("buffPrice");
+	healPrice = lua->getGlobalInt("healPrice"); 
+	healBonus = lua->getGlobalInt("healBonus");
+
+	delete lua;
+	lua = nullptr;
+	
+	
+	
 
 	int cash = asCreatureObject()->getCashCredits(); 
 	bool isDoctor = asCreatureObject()->hasSkill("science_doctor_novice");

@@ -745,6 +745,9 @@ void FactoryObjectImplementation::createNewObject() {
 		lua->runFile("scripts/managers/player_manager.lua");
 		bool factoryExp = lua->getGlobalBoolean("factoryExp");
 		float factoryExpRate = lua->getGlobalFloat("factoryExpRate");
+
+		delete lua;
+		lua = nullptr;
 		
 		if(factoryExp == true){
 			CreatureObject* owner = getOwnerCreatureObject();

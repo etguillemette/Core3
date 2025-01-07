@@ -277,6 +277,9 @@ public:
 
 			lua->runFile("scripts/managers/player_manager.lua");
 			int soloMedicExp = lua->getGlobalBoolean("soloMedicExp"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+			
+			delete lua;
+			lua = nullptr;
 			//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
 			if (((creatureTarget != creature) || soloMedicExp == 1) && healedWounds > 0) {
 				awardXp(creature, "medical", round(healedWounds * 2.5f));

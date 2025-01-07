@@ -1080,6 +1080,9 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 				lua->runFile("scripts/managers/player_manager.lua");
 				bool soloEntertainerExp = lua->getGlobalBoolean("soloEntertainerExp");
 
+				delete lua;
+				lua = nullptr;
+
 				if(soloEntertainerExp == true)
 				{
 					String healxptype("entertainer_healing");

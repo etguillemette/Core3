@@ -313,6 +313,9 @@ void ImageDesignSessionImplementation::updateImageDesign(CreatureObject* updater
 
 			lua->runFile("scripts/managers/player_manager.lua");
 			int soloImageDesignExp = lua->getGlobalBoolean("imageDesignFullExp"); //Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+
+			delete lua;
+			lua = nullptr;
 		//End Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
 		
 		if (playerManager != nullptr && xpGranted > 0) {

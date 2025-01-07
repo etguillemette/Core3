@@ -903,6 +903,9 @@ void CraftingSessionImplementation::initialAssembly(int clientCounter) {
 	lua->runFile("scripts/managers/player_manager.lua");
 	int npcBuyerBonus = lua->getGlobalInt("npcBuyerBonus");
 
+	delete lua;
+	lua = nullptr;
+
     // Add a value to the item, based on 1 Credit per unit, OQ, DR, and crafter skill
     // CraftingManagerImplementation::calculateFinalJunkValue calculates final price and calls...
     // SharedLabratory::getJunkValue which calculates quality/quantity of resources used

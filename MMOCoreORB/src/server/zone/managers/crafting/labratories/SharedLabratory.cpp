@@ -217,6 +217,8 @@ float SharedLabratory::getJunkValue(ManufactureSchematic* manufactureSchematic)
 
 	lua->runFile("scripts/managers/player_manager.lua");
 	float npcBuyerBonus = lua->getGlobalFloat("npcBuyerRate");
+	delete lua;
+	lua = nullptr;
 	
 	float junkValue = 1.0f;
     int resQuant = 0;

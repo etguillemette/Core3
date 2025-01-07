@@ -144,6 +144,7 @@ class PlayerManager extends Observer implements Logger {
 	public boolean cuDisablePiercing; //Should armor piercing be disabled?
 	public boolean cuLevels; //Should characters gain health points via leveling up?
 	public boolean cuHAM; //Should all damage be on the Health bar, and all ability costs come from the action bar?
+	public boolean cuSpeed; //Should speed be capped based on weapon type?
 	/*
 	-----------------------------------
 	--COMBAT UPGRADE PLAYER CONFIG

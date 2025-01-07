@@ -773,6 +773,9 @@ void InstallationObjectImplementation::updateStructureStatus() {
 		bool playerStructureEntropyEnabled = lua->getGlobalBoolean("playerStructureEntropyEnabled");
 		float lowestCondition = lua->getGlobalFloat("playerStructureLowestCondition");
 
+		delete lua;
+		lua = nullptr;
+
 		float debtLimit = -(getMaintenanceRate() * 1000.0 * (1.0 - lowestCondition));
 
 		

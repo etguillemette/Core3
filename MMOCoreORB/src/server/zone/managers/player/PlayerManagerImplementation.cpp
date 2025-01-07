@@ -245,7 +245,7 @@ void PlayerManagerImplementation::loadLuaConfig() {
 
 	globalExpMultiplier = lua->getGlobalFloat("globalExpMultiplier");
 
-	fullGroupExp = lua->getGlobalBoolean("fullGroupExp");
+	fullGroupExp = lua->getGlobalBoolean("fullGroupExp"); //Ethan edit 12-5-24 (GROUP XP)
 
 	baseStoredCreaturePets = lua->getGlobalInt("baseStoredCreaturePets");
 	baseStoredFactionPets = lua->getGlobalInt("baseStoredFactionPets");

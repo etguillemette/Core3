@@ -48,6 +48,7 @@ include server.zone.objects.creature.CommandQueue;
 include server.zone.objects.ship.ShipObject;
 include system.lang.String;
 
+
 @mock
 @json
 class CreatureObject extends TangibleObject {
@@ -56,6 +57,24 @@ class CreatureObject extends TangibleObject {
 	protected transient WeakReference owner;
 
 	protected CreditObject creditObject;
+
+	//Ethan edit 1-5-25 (AUTO DOC/AUTO ENT)
+	public transient boolean autoDoctor;
+	public transient float hospitalMedBuffDuration;
+	public transient float hospitalMedBuffTickStrength;
+	public transient float hospitalMedBuffPoolStrength;
+	public transient float hospitalMedBuffAttrStrength;
+
+	public transient boolean autoEntertainer;
+	public transient float cantinaMindBuffDuration;
+	public transient float cantinaMindBuffTickStrength;
+	public transient float cantinaMindBuffPoolStrength;
+	public transient float cantinaMindBuffAttrStrength;
+
+	public transient int buffPrice;
+	public transient int healPrice;
+	public transient int healBonus;
+	//End Ethan edit 1-5-25 (AUTO DOC/AUTO ENT)
 
 	// deprectated
 	protected int bankCredits;
@@ -227,6 +246,7 @@ class CreatureObject extends TangibleObject {
 
 	public static final int CONVERSATION_MAX_DISTANCE = 7; // Max range for conversations
 
+
 	/**
 	 * CreatureObject constructor, used to initialized the object
 	 * @pre { templateData is a valid SharedCreatureObjectTemplate LuaObject that contains the necessary values to initialize CreatureObject }
@@ -260,7 +280,12 @@ class CreatureObject extends TangibleObject {
 	 * @pre {transient members are not initialized }
 	 * @post { transient members are initialized }
 	 */
+	public native void initialize();
 	public native void initializeTransientMembers();
+
+	//Ethan edit 1-5-25 (AUTO DOC/AUTO ENT)
+	public native void loadLuaConfig();
+	//End Ethan edit 1-5-25 (AUTO DOC/AUTO ENT)
 
 	@preLocked
 	public native void setIncapacitationTimer(unsigned int newCount, boolean notifyClient = true);

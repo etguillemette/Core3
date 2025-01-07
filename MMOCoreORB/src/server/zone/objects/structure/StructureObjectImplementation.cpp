@@ -333,6 +333,9 @@ float StructureObjectImplementation::getMaintenanceRate() const {
 
 	lua->runFile("scripts/managers/player_manager.lua");
 	int playerStructureMaintenanceRate = lua->getGlobalFloat("playerStructureMaintenanceRate");
+
+	delete lua;
+	lua = nullptr;
 	
 	//If Maintenance Rate global value isn't set to 100%, it will adjust the overall rate
 	if (playerStructureMaintenanceRate != 1.0f)

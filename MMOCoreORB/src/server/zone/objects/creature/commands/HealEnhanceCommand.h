@@ -429,6 +429,9 @@ public:
 
 		lua->runFile("scripts/managers/player_manager.lua");
 		int soloMedicExp = lua->getGlobalBoolean("soloMedicExp"); //Ethan edit 5-6-24 (XP FOR SELF HEALS)
+
+		delete lua;
+		lua = nullptr;
 		//End Ethan edit 5-6-24 (XP FOR SELF HEALS)
 		if ((patient->getObjectID() != enhancer->getObjectID()) || soloMedicExp == true)
 			awardXp(enhancer, "medical", amountEnhanced); // No experience for healing yourself.

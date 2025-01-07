@@ -32,6 +32,10 @@
 #include "server/zone/objects/intangible/PetControlDevice.h"
 #include "server/zone/objects/installation/TurretObject.h"
 
+#include "server/zone/managers/director/DirectorManager.h" //Ethan edit 1-5-25 (CU COMBAT)
+
+
+
 #define COMBAT_SPAM_RANGE 85 // Range at which players will see Combat Log Info
 
 /*
@@ -2659,6 +2663,22 @@ float CombatManager::getArmorPiercing(TangibleObject* defender, int armorPiercin
 		}
 	}
 
+	//Ethan edit 1-5-25 (CU CHANGES)
+	Lua* lua = new Lua();
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	bool cuDisablePiercing = lua->getGlobalBoolean("cuDisablePiercing");
+
+	if(cuDisablePiercing == true)
+	{
+		if (armorPiercing > armorReduction)
+			return pow(1.1, armorPiercing - armorReduction);
+		else
+			return pow(0.90, armorReduction - armorPiercing);
+	}
+	//End Ethan edit 1-5-25 (CU CHANGES)
+
 	if (armorPiercing > armorReduction)
 		return pow(1.25, armorPiercing - armorReduction);
 	else
@@ -2793,6 +2813,59 @@ float CombatManager::calculateWeaponAttackSpeed(CreatureObject* attacker, Weapon
 	float jediSpeed = attacker->getSkillMod("combat_haste") / 100.0f;
 
 	float attackSpeed = (1.0f - ((float)speedMod / 100.0f)) * skillSpeedRatio * weapon->getAttackSpeed();
+
+	//Ethan edit 1-6-25 (CU CHANGES)
+	Lua* lua = new Lua();
+	lua->init();
+
+	lua->runFile("scripts/managers/player_manager.lua");
+	bool cuSpeed = lua->getGlobalBoolean("cuSpeed");
+
+	uint32 weaponMask = weapon->getWeaponBitmask();
+	float speedCap = 1.0f;
+
+	if(cuSpeed == true)
+	{
+		if (weaponMask == WeaponType::PISTOLWEAPON) {
+			speedCap = 1.0f;
+		} else if (weaponMask == WeaponType::CARBINEWEAPON) {
+			speedCap = 1.5f;
+		} else if (weaponMask == WeaponType::RIFLEWEAPON) {
+			speedCap = 2.0f;
+		} else if (weaponMask == WeaponType::THROWNWEAPON) {
+			speedCap = 2.0f;
+		} else if (weaponMask == WeaponType::HEAVYWEAPON) {
+			speedCap = 4.0f;
+		} else if (weaponMask == WeaponType::MINEWEAPON) {
+			speedCap = 4.0f;
+		} else if (weaponMask == WeaponType::SPECIALHEAVYWEAPON) {
+			speedCap = 4.0f;
+		} else if (weaponMask == WeaponType::UNARMEDWEAPON) {
+			speedCap = 1.0f;
+		} else if (weaponMask == WeaponType::ONEHANDMELEEWEAPON) {
+			speedCap = 1.0f;
+		} else if (weaponMask == WeaponType::TWOHANDMELEEWEAPON) {
+			speedCap = 2.0f;
+		} else if (weaponMask == WeaponType::POLEARMWEAPON) {
+			speedCap = 1.75f;
+		} else if (weaponMask == WeaponType::GRENADEWEAPON) {
+			speedCap = 2.0f;
+		} else if (weaponMask == WeaponType::LIGHTNINGRIFLEWEAPON) {
+			speedCap = 4.0f;
+		} else if (weaponMask == WeaponType::ONEHANDJEDIWEAPON) {
+			speedCap = 1.0f;
+		} else if (weaponMask == WeaponType::TWOHANDJEDIWEAPON) {
+			speedCap = 2.0f;
+		} else if (weaponMask == WeaponType::POLEARMJEDIWEAPON) {
+			speedCap = 1.75f;
+		}		  
+	}
+
+	if(attackSpeed < speedCap)
+	{
+		attackSpeed = speedCap;
+	}
+	//End Ethan edit 1-6-25 (CU CHANGES)
 
 	if (jediSpeed > 0)
 		attackSpeed = attackSpeed - (attackSpeed * jediSpeed);
