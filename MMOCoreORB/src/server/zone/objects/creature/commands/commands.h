@@ -837,7 +837,7 @@
 #include "InspacerrCommand.h"
 #include "RequestSpaceTrainerCommand.h"
 #include "MedicQuickHealCommand.h" //Ethan edit 6-21-24 (HIRELING) (MEDIC)
-
+#include "HealDamageNPCCommand.h" //Ethan edit 1-7-25 (HIRELING) (MEDIC)
 
 
 

@@ -59,6 +59,7 @@ forcewielder = { {"forcelightningsingle1",""},{"mindblast1",""},{"forceweaken1",
 
 --Ethan edit 5-18-24 (HIRELING) adding medic class:
 medicnovice = {{"totalhealself",""},{"healallother2", ""},{"healallself2",""}}
+medicmaster = {{"healdamagenpc"}}
 
 --Ethan edit 11-26-24 (HIRELING) adding tank class:
 tanknovice = {{"taunt",""},{"warcry1",""},{"melee1hlunge1",""},{"melee2hlunge1",""},{"polearmlunge1",""},{"unarmedlunge1",""}}
