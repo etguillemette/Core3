@@ -5,8 +5,8 @@ pikeman06 = Creature:new {
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
-	healerType = normal,
-	level = 40,
+	healerType = "normal",
+	level = 30,
 	chanceHit = 1,
 	damageMin = 260,
 	damageMax = 925,
@@ -40,6 +40,9 @@ pikeman06 = Creature:new {
 	thrownWeapon = "none",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/slang",
+
+
+	personalityStf = "none",
 
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon

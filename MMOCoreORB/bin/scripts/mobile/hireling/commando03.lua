@@ -5,8 +5,8 @@ commando03 = Creature:new {
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
-	healerType = normal,
-	level = 25,
+	healerType = "normal",
+	level = 15,
 	chanceHit = 0.3,
 	damageMin = 146,
 	damageMax = 438,
@@ -40,6 +40,9 @@ commando03 = Creature:new {
 	thrownWeapon = "thrown_weapons",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/military",
+
+
+	personalityStf = "thrown_weapons",
 
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon

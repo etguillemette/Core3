@@ -5,8 +5,8 @@ swordsman05 = Creature:new {
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
-	healerType = normal,
-	level = 35,
+	healerType = "normal",
+	level = 25,
 	chanceHit = 1.5,
 	damageMin = 181,
 	damageMax = 543,
@@ -40,6 +40,9 @@ swordsman05 = Creature:new {
 	thrownWeapon = "none",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/slang",
+
+
+	personalityStf = "none",
 
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
