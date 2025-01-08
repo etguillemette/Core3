@@ -158,5 +158,6 @@ includeFile("weapon/groups/pistol_dx2.lua")
 includeFile("weapon/groups/blacksun_razor.lua")
 includeFile("weapon/groups/heavy_lightning_beam.lua")
 includeFile("weapon/groups/carbine_nym_slugthrower.lua")
+includeFile("weapon/groups/heavy_acid_beam.lua")
 
 -- End Ethan edit 12-13-24

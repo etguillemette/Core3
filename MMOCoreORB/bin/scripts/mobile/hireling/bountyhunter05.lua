@@ -5,6 +5,7 @@ bountyhunter05 = Creature:new {
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
+	healerType = normal,
 	level = 35,
 	chanceHit = 1.2,
 	damageMin = 253,
@@ -36,6 +37,7 @@ bountyhunter05 = Creature:new {
 	-- Unarmed should be put on secondary unless the mobile doesnt use weapons, in which case "unarmed" should be put primary and "none" as secondary
 	primaryWeapon = "rifle_lightning",
 	secondaryWeapon = "none",
+	thrownWeapon = "none",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/slang",
 
@@ -44,6 +46,7 @@ bountyhunter05 = Creature:new {
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = merge(marksmanmaster,bountyhuntermaster),
 	secondaryAttacks = { },
+	defaultAttack = "firelightningsingle2",
 }
 
 CreatureTemplates:addCreatureTemplate(bountyhunter05,"bountyhunter05")

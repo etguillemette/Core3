@@ -5,6 +5,7 @@ teraskasi03 = Creature:new {
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
+	healerType = normal,
 	level = 25,
 	chanceHit = 1.2,
 	damageMin = 136,
@@ -36,14 +37,16 @@ teraskasi03 = Creature:new {
 	-- Unarmed should be put on secondary unless the mobile doesnt use weapons, in which case "unarmed" should be put primary and "none" as secondary
 	primaryWeapon = "none",
 	secondaryWeapon = "general_unarmed",
+	thrownWeapon = "none",
 	conversationTemplate = "",
-	reactionStf = "@npc_reaction/slang",
+	reactionStf = "@npc_reaction/fancy",
 
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = { },
 	secondaryAttacks = merge(brawlermaster,tkanovice),
+	defaultAttack = "unarmedspinattack1",
 }
 
 CreatureTemplates:addCreatureTemplate(teraskasi03,"teraskasi03")

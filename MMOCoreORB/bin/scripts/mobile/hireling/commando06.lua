@@ -5,10 +5,11 @@ commando06 = Creature:new {
 	mobType = MOB_NPC,
 	socialGroup = "townsperson",
 	faction = "",
+	healerType = normal,
 	level = 40,
 	chanceHit = 1,
-	damageMin = 682,
-	damageMax = 1535,
+	damageMin = 846,
+	damageMax = 1628,
 	baseXp = 5000,
 	baseHAM = 2500,
 	baseHAMmax = 3500,
@@ -34,16 +35,18 @@ commando06 = Creature:new {
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesnt use weapons, in which case "unarmed" should be put primary and "none" as secondary
-	primaryWeapon = "object/weapon/ranged/heavy/heavy_lightning_beam.iff",
+	primaryWeapon = "heavy_acid_beam",
 	secondaryWeapon = "none",
+	thrownWeapon = "thrown_weapons",
 	conversationTemplate = "",
-	reactionStf = "@npc_reaction/slang",
+	reactionStf = "@npc_reaction/military",
 
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = merge(marksmanmaster,commandomaster),
 	secondaryAttacks = { },
+	defaultAttack = "fireacidsingle1",
 }
 
 CreatureTemplates:addCreatureTemplate(commando06,"commando06")
