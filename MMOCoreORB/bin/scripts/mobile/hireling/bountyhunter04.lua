@@ -13,7 +13,7 @@ bountyhunter04 = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {50,50,50,50,50,50,50,-1,-1},
+	resists = {66,66,66,66,66,66,66,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -42,7 +42,7 @@ bountyhunter04 = Creature:new {
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = bountyhuntermid,
+	primaryAttacks = merge(marksmanmaster,bountyhuntermid),
 	secondaryAttacks = { },
 }
 

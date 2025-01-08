@@ -107,9 +107,11 @@
 float CreatureObjectImplementation::DEFAULTRUNSPEED = 5.376f;
 
 //Ethan edit 1-5-25 (SOLO DOC/SOLO ENT) - Refactoring some stuff
+/*
 void CreatureObjectImplementation::initialize(){
 	loadLuaConfig();
 }
+
 
 void CreatureObjectImplementation::loadLuaConfig() {
 
@@ -136,6 +138,7 @@ void CreatureObjectImplementation::loadLuaConfig() {
 	delete lua;
 	lua = nullptr;
 }
+*/
 //End Ethan edit 1-5-25 (SOLO DOC/SOLO ENT) - Refactoring some stuff
 
 void CreatureObjectImplementation::initializeTransientMembers() {

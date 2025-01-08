@@ -13,7 +13,7 @@ swordsman05 = Creature:new {
 	baseHAM = 2750,
 	baseHAMmax = 3750,
 	armor = 0,
-	resists = {75,75,75,75,75,75,75,-1,-1},
+	resists = {80,80,80,80,80,80,80,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -43,7 +43,7 @@ swordsman05 = Creature:new {
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = { },
-	secondaryAttacks = swordsmanmaster,
+	secondaryAttacks = merge(brawlermaster,swordsmanmaster),
 }
 
 CreatureTemplates:addCreatureTemplate(swordsman05,"swordsman05")

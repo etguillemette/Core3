@@ -7,13 +7,13 @@ commando06 = Creature:new {
 	faction = "",
 	level = 40,
 	chanceHit = 1,
-	damageMin = 3152,
-	damageMax = 7086,
+	damageMin = 682,
+	damageMax = 1535,
 	baseXp = 5000,
 	baseHAM = 2500,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {75,75,75,75,75,75,75,-1,-1},
+	resists = {80,80,80,80,80,80,80,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -34,7 +34,7 @@ commando06 = Creature:new {
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesnt use weapons, in which case "unarmed" should be put primary and "none" as secondary
-	primaryWeapon = "rifle_flame_thrower",
+	primaryWeapon = "heavy_lightning_beam",
 	secondaryWeapon = "none",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/slang",
@@ -42,7 +42,7 @@ commando06 = Creature:new {
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = commandomaster,
+	primaryAttacks = merge(medicmaster,marksmanmaster,commandomaster),
 	secondaryAttacks = { },
 }
 

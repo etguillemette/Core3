@@ -7,8 +7,8 @@ squadleader06 = Creature:new {
 	faction = "",
 	level = 40,
 	chanceHit = 1,
-	damageMin = 206,
-	damageMax = 620,
+	damageMin = 88,
+	damageMax = 267,
 	baseXp = 5000,
 	baseHAM = 2500,
 	baseHAMmax = 3500,
@@ -42,7 +42,7 @@ squadleader06 = Creature:new {
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = merge(marksmanmaster,squadleadermaster),
+	primaryAttacks = merge(medicmaster,marksmanmaster,squadleadermaster),
 	secondaryAttacks = { },
 }
 

@@ -7,13 +7,13 @@ bountyhunter06 = Creature:new {
 	faction = "",
 	level = 40,
 	chanceHit = 1.5,
-	damageMin = 1842,
-	damageMax = 4116,
+	damageMin = 798,
+	damageMax = 1783,
 	baseXp = 5000,
 	baseHAM = 2500,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {75,75,75,75,75,75,75,-1,-1},
+	resists = {80,80,80,80,80,80,80,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -42,7 +42,7 @@ bountyhunter06 = Creature:new {
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = bountyhuntermaster,
+	primaryAttacks = merge(medicmaster,marksmanmaster,bountyhuntermaster),
 	secondaryAttacks = { },
 }
 

@@ -118,6 +118,11 @@ object_weapon_ranged_pistol_pistol_dx2 = object_weapon_ranged_pistol_shared_pist
 	minDamage = 60,
 	maxDamage = 90,
 
+	--Ethan edit 1-7-25
+	minDamage = 78,
+	maxDamage = 117,
+	--End Ethan edit 1-7-25
+
 	attackSpeed = 3.5,
 
 	woundsRatio = 12,

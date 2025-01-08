@@ -59,6 +59,7 @@ class CreatureObject extends TangibleObject {
 	protected CreditObject creditObject;
 
 	//Ethan edit 1-5-25 (AUTO DOC/AUTO ENT)
+	/*
 	public transient boolean autoDoctor;
 	public transient float hospitalMedBuffDuration;
 	public transient float hospitalMedBuffTickStrength;
@@ -74,6 +75,7 @@ class CreatureObject extends TangibleObject {
 	public transient int buffPrice;
 	public transient int healPrice;
 	public transient int healBonus;
+	*/
 	//End Ethan edit 1-5-25 (AUTO DOC/AUTO ENT)
 
 	// deprectated
@@ -280,11 +282,11 @@ class CreatureObject extends TangibleObject {
 	 * @pre {transient members are not initialized }
 	 * @post { transient members are initialized }
 	 */
-	public native void initialize();
+	//public native void initialize(); //I think this is an Ethan edit...
 	public native void initializeTransientMembers();
 
 	//Ethan edit 1-5-25 (AUTO DOC/AUTO ENT)
-	public native void loadLuaConfig();
+	//public native void loadLuaConfig();
 	//End Ethan edit 1-5-25 (AUTO DOC/AUTO ENT)
 
 	@preLocked

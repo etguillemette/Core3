@@ -7,8 +7,8 @@ pikeman06 = Creature:new {
 	faction = "",
 	level = 40,
 	chanceHit = 1,
-	damageMin = 600,
-	damageMax = 2136,
+	damageMin = 260,
+	damageMax = 925,
 	baseXp = 5000,
 	baseHAM = 3000,
 	baseHAMmax = 4000,
@@ -43,7 +43,7 @@ pikeman06 = Creature:new {
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = { },
-	secondaryAttacks = pikemanmaster,
+	secondaryAttacks = merge(medicmaster,brawlermaster,pikemanmaster),
 }
 
 CreatureTemplates:addCreatureTemplate(pikeman06,"pikeman06")

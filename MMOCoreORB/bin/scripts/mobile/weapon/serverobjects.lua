@@ -154,5 +154,9 @@ includeFile("weapon/groups/baton_stun.lua")
 includeFile("weapon/groups/th_sword_maul.lua")
 includeFile("weapon/groups/lance_vibrolance.lua")
 includeFile("weapon/groups/vibroknuckler.lua")
+includeFile("weapon/groups/pistol_dx2.lua")
+includeFile("weapon/groups/blacksun_razor.lua")
+includeFile("weapon/groups/heavy_lightning_beam.lua")
+includeFile("weapon/groups/carbine_nym_slugthrower.lua")
 
 -- End Ethan edit 12-13-24

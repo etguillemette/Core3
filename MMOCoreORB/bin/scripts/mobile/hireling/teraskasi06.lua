@@ -7,8 +7,8 @@ teraskasi06 = Creature:new {
 	faction = "",
 	level = 40,
 	chanceHit = 2.5,
-	damageMin = 1290,
-	damageMax = 1890,
+	damageMin = 388,
+	damageMax = 564,
 	baseXp = 5000,
 	baseHAM = 3000,
 	baseHAMmax = 4000,
@@ -35,7 +35,7 @@ teraskasi06 = Creature:new {
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesnt use weapons, in which case "unarmed" should be put primary and "none" as secondary
 	primaryWeapon = "none",
-	secondaryWeapon = "general_unarmed",
+	secondaryWeapon = "blacksun_razor",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/slang",
 
@@ -43,7 +43,7 @@ teraskasi06 = Creature:new {
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = { },
-	secondaryAttacks = tkamaster,
+	secondaryAttacks = merge(medicmaster,brawlermaster,tkamaster),
 }
 
 CreatureTemplates:addCreatureTemplate(teraskasi06,"teraskasi06")

@@ -7,13 +7,13 @@ rifleman06 = Creature:new {
 	faction = "",
 	level = 40,
 	chanceHit = 2.2,
-	damageMin = 708,
-	damageMax = 1998,
+	damageMin = 306,
+	damageMax = 865,
 	baseXp = 5000,
 	baseHAM = 2500,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {75,75,75,75,75,75,75,-1,-1},
+	resists = {80,80,80,80,80,80,80,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -42,7 +42,7 @@ rifleman06 = Creature:new {
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
-	primaryAttacks = riflemanmaster,
+	primaryAttacks = merge(medicmaster,marksmanmaster,riflemanmaster),
 	secondaryAttacks = { },
 }
 
