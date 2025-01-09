@@ -14,7 +14,7 @@ pistoleer06 = Creature:new {
 	baseHAM = 2500,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {85,85,85,85,85,85,85,-1,-1},
+	resists = {90,90,90,90,90,90,90,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -49,7 +49,7 @@ pistoleer06 = Creature:new {
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = merge(marksmanmaster,pistoleermaster),
 	secondaryAttacks = { },
-	defaultAttack = "stoppingshot",
+	defaultAttack = "multitargetpistolshot",
 }
 
 CreatureTemplates:addCreatureTemplate(pistoleer06,"pistoleer06")

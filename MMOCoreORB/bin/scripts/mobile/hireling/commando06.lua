@@ -35,7 +35,7 @@ commando06 = Creature:new {
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesnt use weapons, in which case "unarmed" should be put primary and "none" as secondary
-	primaryWeapon = "heavy_acid_beam",
+	primaryWeapon = "rifle_flame_thrower",
 	secondaryWeapon = "none",
 	thrownWeapon = "thrown_weapons",
 	conversationTemplate = "",
@@ -49,7 +49,7 @@ commando06 = Creature:new {
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = merge(marksmanmaster,commandomaster),
 	secondaryAttacks = { },
-	defaultAttack = "fireacidsingle1",
+	defaultAttack = "flamecone2",
 }
 
 CreatureTemplates:addCreatureTemplate(commando06,"commando06")

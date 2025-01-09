@@ -49,7 +49,7 @@ commando05 = Creature:new {
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = merge(marksmanmaster,commandomaster),
 	secondaryAttacks = { },
-	defaultAttack = "flamesingle2",
+	defaultAttack = "flamecone2",
 }
 
 CreatureTemplates:addCreatureTemplate(commando05,"commando05")

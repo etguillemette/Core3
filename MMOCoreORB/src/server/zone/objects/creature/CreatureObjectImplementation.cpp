@@ -3094,17 +3094,6 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	
 
 	int cash = asCreatureObject()->getCashCredits(); 
-	bool isDoctor = asCreatureObject()->hasSkill("science_doctor_novice");
-
-	String docStr;
-
-	if(isDoctor == true){
-		docStr = "true";
-	}
-	else{
-		docStr = "false";
-	}
-
 
 	int healthWoundBefore = wounds.get(CreatureAttribute::HEALTH);
 	int strengthWoundBefore = wounds.get(CreatureAttribute::STRENGTH);
@@ -3123,9 +3112,6 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	int medicalBuffChargeTotal = 0;
 	int medicalWoundChargeTotal = 0;
 
-
-	
-
 	if(healthRegen > 0) {
 		healthWoundHeal += (int)(healthRegen * 0.2); 
 		if(healthWoundHeal >= 100) {
@@ -3135,7 +3121,14 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 1, true, false); 
 			
 			//Ethan edit 6-7-24 (AUTO DOCTOR)
-			
+
+			//Pet wound healing
+			if(isPet()){
+				healWound(asCreatureObject(), CreatureAttribute::HEALTH, 10, true, false);  
+				healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 10, true, false); 
+				healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 10, true, false); 
+			}
+			//Pet wound healing
 			
 			if(autoDoctor == true && healthWoundTotal > 0 && cash > (healPrice * healthWoundTotal) && isSitting()){
 				healWound(asCreatureObject(), CreatureAttribute::HEALTH, healBonus, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
@@ -3221,6 +3214,15 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			healWound(asCreatureObject(), CreatureAttribute::STAMINA, 1, true, false); //Ethan edit 5-25-24 (AUTO DOCTOR) (added the healBonus) 
 
 			//Ethan edit 6-7-24 (AUTO DOCTOR)
+
+			//Pet wound healing
+			if(isPet()){
+				healWound(asCreatureObject(), CreatureAttribute::ACTION, 10, true, false);  
+				healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 10, true, false); 
+				healWound(asCreatureObject(), CreatureAttribute::STAMINA, 10, true, false); 
+			}
+			//Pet wound healing
+
 			//Extra healing enabled (will not charge for base passive healing)
 			if(autoDoctor == true && actionWoundTotal > 0 && cash > (actionWoundTotal * healPrice) && isSitting()){
 				
@@ -3316,19 +3318,7 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 	/// Mind wound regen
 	int mindRegen = getSkillMod("private_med_wound_mind");
-	//Ethan edit 6-11-24 (AUTO ENTERTAINER)
-	bool isEntertainer = asCreatureObject()->hasSkill("social_entertainer_novice");
-
-	String entStr;
-	//This shit is really stupid, but for some reason I can't seem to run the check here if I don't convert to a string first
-	if(isEntertainer == true){
-		entStr = "true";
-	}
-	else{
-		entStr = "false";
-	}
-	//End Ethan edit 6-11-24 (AUTO ENTERTAINER)
-
+	
 	if(mindRegen > 0) {
 		mindWoundHeal += (int)(mindRegen * 0.2);
 		if(mindWoundHeal >= 100) {
@@ -3338,6 +3328,15 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 			addShockWounds(-(healBonus + 1), true, false); //Ethan edit 6-11-24 (AUTO ENTERTAINER) Moved this here from bottom of if statement, above "mindWoundHeal -= 100;"
 
 			//Ethan edit 6-11-24 (AUTO ENTERTAINER)
+
+			//Pet wound healing
+			if(isPet()){
+				healWound(asCreatureObject(), CreatureAttribute::MIND, 10, true, false);  
+				healWound(asCreatureObject(), CreatureAttribute::FOCUS, 10, true, false); 
+				healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 10, true, false); 
+			}
+			//Pet wound healing
+
 			int mindWoundBefore = wounds.get(CreatureAttribute::MIND);
 			int focusWoundBefore = wounds.get(CreatureAttribute::FOCUS);
 			int willpowerWoundBefore = wounds.get(CreatureAttribute::WILLPOWER);

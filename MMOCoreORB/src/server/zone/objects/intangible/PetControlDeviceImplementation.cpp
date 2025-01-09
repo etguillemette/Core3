@@ -198,9 +198,9 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 		}
 
 	} else if (petType == PetManager::FACTIONPET){
-		maxPets = 5;
+		maxPets = 7;
 	} else if (petType == PetManager::HIRELING){ //Ethan edit 5-20-24 (HIRELING)
-		maxPets = 5; //Ethan edit 5-20-24 (HIRELING)
+		maxPets = 7; //Ethan edit 5-20-24 (HIRELING)
 	} //Ethan edit 5-20-24 (HIRELING)
 
 	for (int i = 0; i < ghost->getActivePetsSize(); ++i) {
@@ -274,7 +274,7 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 		server->getZoneServer()->getPlayerManager()->handleAbortTradeMessage(player);
 	}
 
-	if (player->getCurrentCamp() == nullptr && player->getCityRegion() == nullptr && !ghost->isPrivileged()) {
+	if (player->getCurrentCamp() == nullptr && player->getCityRegion() == nullptr && !ghost->isPrivileged() && !petType == PetManager::HIRELING) { //Ethan edit 1-9-25 (HIRELING) - Added "&& !petType == PetManager::HIRELING" 
 
 		Reference<CallPetTask*> callPet = new CallPetTask(_this.getReferenceUnsafeStaticCast(), player, "call_pet");
 
