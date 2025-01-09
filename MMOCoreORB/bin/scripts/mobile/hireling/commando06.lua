@@ -30,7 +30,7 @@ commando06 = Creature:new {
 	armor = 1,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_commando_trainer_trandoshan_male_01.iff"},
+	templates = {"hireling_ranged"},
 	lootGroups = {},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)

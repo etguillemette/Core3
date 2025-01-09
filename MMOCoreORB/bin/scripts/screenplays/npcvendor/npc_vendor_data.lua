@@ -939,6 +939,7 @@ genericWaresData = {
         { template = "object/tangible/food/crafted/drink_tilla_tiil.iff", cost = 30200, displayName = "@food_name:tilla_tiil", serial = "tillatiil", quantity = 1},
         { template = "object/tangible/food/crafted/drink_flameout.iff", cost = 51100, displayName = "@food_name:flameout", serial = "kflameout", quantity = 1},
         { template = "object/tangible/food/crafted/drink_breath_of_heaven.iff", cost = 51300, displayName = "@food_name:breath_of_heaven", serial = "hofheaven", quantity = 1},
+        { template = "object/tangible/food/crafted/drink_mandalorian_wine.iff", cost = 51300, displayName = "@food_name:mandalorian_wine.iff", serial = "orianwine", quantity = 1},
     },
 
 --------------------------------------------------
