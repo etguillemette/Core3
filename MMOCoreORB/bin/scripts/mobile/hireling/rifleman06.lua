@@ -8,8 +8,8 @@ rifleman06 = Creature:new {
 	healerType = "normal",
 	level = 30,
 	chanceHit = 2.2,
-	damageMin = 306,
-	damageMax = 865,
+	damageMin = 512,
+	damageMax = 1220,
 	baseXp = 5000,
 	baseHAM = 2500,
 	baseHAMmax = 3500,
@@ -35,7 +35,7 @@ rifleman06 = Creature:new {
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesnt use weapons, in which case "unarmed" should be put primary and "none" as secondary
-	primaryWeapon = "rifle_t21",
+	primaryWeapon = "rifle_dxr6.lua",
 	secondaryWeapon = "none",
 	thrownWeapon = "none",
 	conversationTemplate = "",
@@ -49,7 +49,7 @@ rifleman06 = Creature:new {
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
 	primaryAttacks = merge(marksmanmaster,riflemanmaster),
 	secondaryAttacks = { },
-	defaultAttack = "overchargeshot2",
+	defaultAttack = "strafeshot2",
 }
 
 CreatureTemplates:addCreatureTemplate(rifleman06,"rifleman06")

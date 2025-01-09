@@ -72,7 +72,6 @@ smugglernovice = {{"panicshot",""}}
 smugglermaster = {{"panicshot",""},{"lowblow",""}}
 smugglermaster = {{"panicshot",""},{"lastditch",""},{"lowblow",""}}
 
-
 --Ethan edit 12-19-24 (HIRELING) Adding squad leader abilities
 squadleadernovice = {{"rally",""},{"steadyaim",""},}
 squadleadermid = {{"rally",""},{"steadyaim",""},{"volleyfire",""}}

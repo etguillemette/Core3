@@ -274,7 +274,7 @@ void PetControlDeviceImplementation::callObject(CreatureObject* player) {
 		server->getZoneServer()->getPlayerManager()->handleAbortTradeMessage(player);
 	}
 
-	if (player->getCurrentCamp() == nullptr && player->getCityRegion() == nullptr && !ghost->isPrivileged() && !petType == PetManager::HIRELING) { //Ethan edit 1-9-25 (HIRELING) - Added "&& !petType == PetManager::HIRELING" 
+	if (player->getCurrentCamp() == nullptr && player->getCityRegion() == nullptr && !ghost->isPrivileged() && petType != PetManager::HIRELING) { //Ethan edit 1-9-25 (HIRELING) - Added "&& !petType == PetManager::HIRELING" 
 
 		Reference<CallPetTask*> callPet = new CallPetTask(_this.getReferenceUnsafeStaticCast(), player, "call_pet");
 
