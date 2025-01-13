@@ -62,7 +62,7 @@ function CorvetteTicketGiverConvoHandler:runScreenHandlers(pConvoTemplate, pPlay
 		removeQuestStatus(playerID .. ":heardLocation2")
 		removeQuestStatus(playerID .. ":heardLocation3")
 		setQuestStatus(playerID .. ":activeCorvetteStep", "2")
-		self.ticketGiver:removeIntel(pPlayer, 3)
+		--self.ticketGiver:removeIntel(pPlayer, 3) --Ethan edit 1-11-25 (QUESTS) Just making it easier to do repeated Corvette missions without having to get the documents after each time
 		self.ticketGiver:giveTicket(pPlayer)
 		pConvoScreen = self:handleScreenGoodIntel(pConvoTemplate, pPlayer, pNpc, selectedOption, pConvoScreen)
 	elseif (screenID == "still_here") then
@@ -73,7 +73,7 @@ function CorvetteTicketGiverConvoHandler:runScreenHandlers(pConvoTemplate, pPlay
 		removeQuestStatus(playerID .. ":activeCorvetteQuest")
 		removeQuestStatus(playerID .. ":activeCorvetteStep")
 		removeQuestStatus(playerID .. ":activeCorvetteQuestType")
-		self.ticketGiver:removeDocuments(pPlayer)
+		--self.ticketGiver:removeDocuments(pPlayer) --Ethan edit 1-11-25 (QUESTS) Just making it easier to do repeated Corvette missions without having to get the documents after each time
 		self.ticketGiver:giveReward(pPlayer)
 	end
 	return pConvoScreen

@@ -90,14 +90,14 @@ squadLeaderFullExp = true -- Ethan edit 12-18-24 (SQUAD LEADER FULL EXP)
 
 soloMedicExp = true --Ethan edit 6-14-24 (SOLO MEDIC) Enables exp for healing oneself or a pet
 autoDoctor = true --Ethan edit 6-7-24 (AUTO DOCTOR) Enables automatic healing/buffs in a hospital
-hospitalMedBuffDuration = 3600 --Ethan edit 6-7-24 (AUTO DOCTOR) Duration in seconds for automatic hospital buffs
+hospitalMedBuffDuration = 5400 --Ethan edit 6-7-24 (AUTO DOCTOR) Duration in seconds for automatic hospital buffs
 hospitalMedBuffTickStrength = 50 --Ethan edit 6-14-24 (AUTO DOCTOR) Buff bonus with each "tick" of an automatic hospital buff
 hospitalMedBuffPoolStrength = 2000 --Ethan edit 6-7-24 (AUTO DOCTOR) Max HAM (Health/Action) modifier for automatic hospital buffs
 hospitalMedBuffAttrStrength = 1500 --Ethan edit 6-7-24 (AUTO DOCTOR) Max attribute (Constitution, Strength, Quickness, Stamina) modifier for automatic hospital buffs
 
 soloEntertainerExp = true --Ethan edit 5-25-24 (ENTERTAINER SELF EXP) Enables entertainer healing xp gain without having to heal another player
 autoEntertainer = true --Ethan edit 6-7-24 (AUTO ENTERTAINER) Enables automatic healing and buffs in a cantina
-cantinaMindBuffDuration = 3600 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Duration in seconds for automatic cantina buffs
+cantinaMindBuffDuration = 5400 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Duration in seconds for automatic cantina buffs
 cantinaMindBuffTickStrength = 0.15 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Buff bonus with each "tick" of an automatic cantina buff
 cantinaMindBuffPoolStrength = 1.25 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max modifier bonus for Mind !!!AS A PERCENTAGE OF BASE MIND STAT!!! for automatic cantina buffs (Ex. 1.0 = double mind)
 cantinaMindBuffAttrStrength = 1.25 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max modifier bonus for Focus/Willpower !!!AS A PERCENTAGE OF BASE MIND STAT!!! for automatic cantina buffs (Ex. 1.0 = double focus/willpower)
