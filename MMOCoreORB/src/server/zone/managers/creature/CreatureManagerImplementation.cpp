@@ -697,11 +697,32 @@ int CreatureManagerImplementation::notifyDestruction(TangibleObject* destructor,
 			TransactionLog trx(TrxCode::NPCLOOT, destructedObject);
 			creatureInventory->setContainerOwnerID(ownerID);
 
-			if (lootManager->createLoot(trx, creatureInventory, destructedObject)) {
-				trx.commit(true);
-			} else if (trx.isEnabled() && !trx.isAborted()) {
-				trx.abort() << "createLoot failed for ai object for unknown reason.";
+			//Ethan edit 1-14-25 (LOOT BOOST) If enabled, adds extra loot chances
+			Lua* lua = new Lua();
+			lua->init();
+
+			lua->runFile("scripts/managers/loot_manager.lua");
+			bool lootBoost = lua->getGlobalBoolean("lootBoost");
+			int lootIncrease = lua->getGlobalInt("lootIncrease");
+
+			delete lua;
+			lua = nullptr;
+
+			if(lootBoost == true){
+				for(int i = 0; i < lootIncrease; i++)
+				{	
+			//End Ethan edit 1-14-25 (LOOT BOOST) If enabled, adds extra loot chances
+
+					if (lootManager->createLoot(trx, creatureInventory, destructedObject)) {
+						trx.commit(true);
+					} else if (trx.isEnabled() && !trx.isAborted()) {
+						trx.abort() << "createLoot failed for ai object for unknown reason.";
+					}
+
+			//Ethan edit 1-14-25 (LOOT BOOST) If enabled, adds extra loot chances
+				}
 			}
+			//End Ethan edit 1-14-25 (LOOT BOOST) If enabled, adds extra loot chances
 		}
 
 		// Check to see if we can expedite the despawn of this corpse

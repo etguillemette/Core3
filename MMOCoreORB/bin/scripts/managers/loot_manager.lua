@@ -44,10 +44,10 @@
 levelChance = 100
 
 --Chance dividend for attribute bonus modifiers
-baseChance = 100
-yellowChance = 1000
-exceptionalChance = 100000
-legendaryChance = 1000000
+baseChance = 1 --Ethan edit 1-14-24 (LOOT BOOST) Changed from 100
+yellowChance = 10 --Ethan edit 1-14-24 (LOOT BOOST) Changed from 1000
+exceptionalChance = 100 --Ethan edit 1-14-24 (LOOT BOOST) Changed from 10000
+legendaryChance = 1000 --Ethan edit 1-14-24 (LOOT BOOST) Changed from 100000
 
 --Multiplier values for bonus modifiers
 baseModifier = 1
