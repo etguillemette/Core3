@@ -8,6 +8,7 @@ JUNKJEDI = 32
 JUNKJAWA = 64
 JUNKGUNGAN = 128
 JUNKCORSEC = 256
+JUNKUNDERWORLD = 512 --Ethan edit 1-14-25 (SMUGGLER REVAMP)
 
 --items folder
 includeFile("items/attachment_armor.lua")
