@@ -65,6 +65,9 @@ class LootManager extends ManagedService implements Logger {
 
 	private transient float junkValueModifier;
 
+	public boolean lootBoost; //Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
+	public int lootIncrease; //Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
+
 	@dereferenced
 	private transient SortedVector<int> randomDotAttribute;
 	@dereferenced

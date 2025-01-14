@@ -974,19 +974,42 @@ int DirectorManager::createLoot(lua_State* L) {
 		}
 	}
 
-	TransactionLog trx(TrxCode::LUALOOT, dst);
-	trx.addContextFromLua(L);
-	trx.addState("dstContainer", container->getObjectID());
+	//Ethan edit 1-13-25 (LOOT BOOST)
+	Lua* lua = new Lua();
+	lua->init();
 
-	uint64 lootObjectID = lootManager->createLoot(trx,container, lootGroup, level, maxCondition);
+	lua->runFile("scripts/managers/loot_manager.lua");
+	bool lootBoost = lua->getGlobalBoolean("lootBoost");
+	int lootIncrease = lua->getGlobalInt("lootIncrease");
 
-	if (lootObjectID > 0) {
-		trx.commit(true);
-	} else {
-		trx.abort() << __FUNCTION__ << " failed: lootGroup=" << lootGroup << "; level=" << level << "; maxCondition=" << maxCondition;
+	delete lua;
+	lua = nullptr;
+
+	if(lootBoost == false){
+		lootIncrease == 1;
 	}
+	
+	for(int i = 0; i < lootIncrease; i++)
+	{
+	//End Ethan edit 1-13-25 (LOOT BOOST)
 
-	lua_pushinteger(L, lootObjectID);
+		TransactionLog trx(TrxCode::LUALOOT, dst);
+		trx.addContextFromLua(L);
+		trx.addState("dstContainer", container->getObjectID());
+
+		uint64 lootObjectID = lootManager->createLoot(trx,container, lootGroup, level, maxCondition);
+
+		if (lootObjectID > 0) {
+			trx.commit(true);
+		} else {
+			trx.abort() << __FUNCTION__ << " failed: lootGroup=" << lootGroup << "; level=" << level << "; maxCondition=" << maxCondition;
+		}
+
+		lua_pushinteger(L, lootObjectID);
+
+	//Ethan edit 1-13-25 (LOOT BOOST)
+	}
+	//End Ethan edit 1-13-25 (LOOT BOOST)
 
 	return 1;
 }

@@ -105,6 +105,7 @@ cantinaMindBuffAttrStrength = 1.25 --Ethan edit 6-7-24 (AUTO ENTERTAINER) Max mo
 buffPrice = 50 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Price "per tick" of buffs
 healPrice = 2 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Price per point of wounds healed
 healBonus = 9 --(AUTO DOCTOR)/(AUTO ENTERTAINER) Amount of extra wound healing enabled per tick if autoDoctor and/or autoEntertainer are enabled
+
 -----------------------------------
 --END SINGLE PLAYER CONFIG
 -----------------------------------
