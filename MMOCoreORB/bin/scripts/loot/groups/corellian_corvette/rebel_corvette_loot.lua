@@ -8,7 +8,7 @@ rebel_corvette_loot = {
 		{itemTemplate = "baton_stun", weight = 800000},
 		{itemTemplate = "rifle_lightning", weight = 800000},
 		{itemTemplate = "pistol_fwg5", weight = 800000},
-		{itemTemplate = "veh_power_plant_av21", weight = 500000},
+		{itemTemplate = "veh_power_plant_av21", weight = 2000000}, --Ethan edit 1-14-25 (LOOT BOOST changed from) 500000
 		{itemTemplate = "rifle_e11", weight = 800000},
 		{itemTemplate = "one_handed_ryyk_blade", weight = 800000},
 		{itemTemplate = "spice_giggledust", weight = 1000000},

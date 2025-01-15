@@ -81,8 +81,8 @@ junkValueModifier = 5;
 -----------------------------------
 --SINGLE PLAYER CONFIG
 -----------------------------------
-lootBoost = true --Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
-lootIncrease = 3 --Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
+lootBoost = false --Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
+lootIncrease = 1 --Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
 -----------------------------------
 --END SINGLE PLAYER CONFIG
 -----------------------------------
