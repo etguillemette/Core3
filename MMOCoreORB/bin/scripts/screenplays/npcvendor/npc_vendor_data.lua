@@ -939,7 +939,7 @@ genericWaresData = {
         { template = "object/tangible/food/crafted/drink_tilla_tiil.iff", cost = 30200, displayName = "@food_name:tilla_tiil", serial = "tillatiil", quantity = 1},
         { template = "object/tangible/food/crafted/drink_flameout.iff", cost = 51100, displayName = "@food_name:flameout", serial = "kflameout", quantity = 1},
         { template = "object/tangible/food/crafted/drink_breath_of_heaven.iff", cost = 51300, displayName = "@food_name:breath_of_heaven", serial = "hofheaven", quantity = 1},
-        { template = "object/tangible/food/crafted/drink_mandalorian_wine.iff", cost = 51300, displayName = "@food_name:mandalorian_wine.iff", serial = "orianwine", quantity = 1},
+        { template = "object/tangible/food/crafted/drink_mandalorian_wine.iff", cost = 51300, displayName = "@food_name:mandalorian_wine", serial = "orianwine", quantity = 1},
     },
 
 --------------------------------------------------
@@ -1084,11 +1084,12 @@ genericWaresData = {
         { template = "object/tangible/crafting/station/clothing_repair.iff", cost = 5000, displayName = "@crafting:clothing_repair_name", serial = "tclothing", quantity = 1},
         { template = "object/tangible/crafting/station/armor_repair.iff", cost = 5200, displayName = "@crafting:armor_repair_name", serial = "rkitarmor", quantity = 1},
         { template = "object/tangible/crafting/station/weapon_repair.iff", cost = 5200, displayName = "@crafting:weapon_repair_name", serial = "kitweapon", quantity = 1},
-        { template = "object/tangible/crafting/station/clothing_station.iff", cost = 16100., displayName = "@crafting:clothing_station_name", serial = "ngstation", quantity = 1},
-        { template = "object/tangible/crafting/station/food_station.iff", cost = 16100., displayName = "@crafting:food_station_name", serial = "odstation", quantity = 1},
-        { template = "object/tangible/crafting/station/structure_station.iff", cost = 16100., displayName = "@crafting:structure_station_name", serial = "restation", quantity = 1},
-        { template = "object/tangible/crafting/station/weapon_station.iff", cost = 16100., displayName = "@crafting:weapon_station_name", serial = "onstation", quantity = 1},
-        { template = "object/tangible/crafting/station/space_station.iff", cost = 16100., displayName = "@crafting:space_station_name", serial = "cestation", quantity = 1},
+        { template = "object/tangible/crafting/station/clothing_station.iff", cost = 16100, displayName = "@crafting:clothing_station_name", serial = "ngstation", quantity = 1},
+        { template = "object/tangible/crafting/station/food_station.iff", cost = 16100, displayName = "@crafting:food_station_name", serial = "odstation", quantity = 1},
+        { template = "object/tangible/crafting/station/structure_station.iff", cost = 16100, displayName = "@crafting:structure_station_name", serial = "restation", quantity = 1},
+        { template = "object/tangible/crafting/station/weapon_station.iff", cost = 16100, displayName = "@crafting:weapon_station_name", serial = "onstation", quantity = 1},
+        { template = "object/tangible/crafting/station/space_station.iff", cost = 16100, displayName = "@crafting:space_station_name", serial = "cestation", quantity = 1},
+        { template = "object/tangible/veteran_reward/antidecay.iff", cost = 1000000, displayName = "@veteran_new:antidecay", serial = "antidecay", quantity = 1},
     },
 
     waresCompArtisan = {

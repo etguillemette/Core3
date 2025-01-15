@@ -32,7 +32,7 @@ function CorvetteTicketGiverConvoHandler:runScreenHandlers(pConvoTemplate, pPlay
 		removeQuestStatus(playerID .. ":heardLocation1")
 		removeQuestStatus(playerID .. ":heardLocation2")
 		removeQuestStatus(playerID .. ":heardLocation3")
-		self.ticketGiver:removeDocuments(pPlayer)
+		--self.ticketGiver:removeDocuments(pPlayer) --Ethan edit 1-11-25 (QUESTS) Just making it easier to do repeated Corvette missions without having to get the documents after each time
 	elseif (screenID == "which_planet") or (screenID == "quest_start") then
 		removeQuestStatus(playerID .. ":heardLocation1")
 		removeQuestStatus(playerID .. ":heardLocation2")

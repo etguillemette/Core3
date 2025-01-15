@@ -82,8 +82,8 @@ wildScanLoginDelay = 4 * 60 -- In Seconds, 4 minutes
 wildScanChance = 5 -- % chance for a valid scan target to be scanned
 crackdownPlayerScanCooldown = 48 * 60 * 60  -- In seconds, 48 hour cooldown
 crackdownScannerCooldown = 3 * 60 * 60 -- In seconds, 3 hour cooldown
-crackdownContrabandFineCredits = 2000
-crackdownContrabandFineFactionPoints = 100
+crackdownContrabandFineCredits = 10000 --Ethan edit 1-15-25 (SMUGGLER REVAMP) Edited this value from 2000 credits
+crackdownContrabandFineFactionPoints = 500 --Ethan edit 1-15-25 (SMUGGLER REVAMP) Edited this value from 100 faction points
 crackdownPlanetsWithWildScans = { "corellia", "dantooine", "dathomir", "endor", "lok", "naboo", "rori", "talus", "tatooine", "yavin4"}
 
 -- discount percentage for side losing&winning the gcw.  negative value of increase in price (penality).  positive for a decrease (Bonus)

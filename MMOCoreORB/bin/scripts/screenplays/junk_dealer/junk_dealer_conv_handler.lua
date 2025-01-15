@@ -37,6 +37,12 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 			end
 		end
 
+		--Ethan edit 1-15-25 (SMUGGLER REVAMP) (FACTION BROKER)
+		if CreatureObject(pPlayer):hasSkill("combat_smuggler_novice") then
+			clonedScreen:addOption("I'd like to pay off some debts with a faction.","faction_start")
+		end
+		--End Ethan edit 1-15-25 (SMUGGLER REVAMP) (FACTION BROKER)
+
 		local junkList = JunkDealer:getEligibleJunk(pPlayer, self.junkType)
 
 		if #junkList > 0 then
