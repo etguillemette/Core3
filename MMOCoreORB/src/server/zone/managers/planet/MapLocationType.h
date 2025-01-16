@@ -86,6 +86,8 @@ public:
 	static const int SPACE_STARSHIP_CHASSIS = 61; // ??
 	static const int SPACE_SHIPS = 67; // ??
 
+	static const int FENCE = 68; //Ethan edit 1-16-25 (SMUGGLER REVAMP)
+
 
 	static String getMapLocationName(uint8 maptype) {
 		String name = "";

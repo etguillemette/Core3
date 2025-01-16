@@ -78,10 +78,10 @@ end
 function DathomirScienceOutpostScreenPlay:spawnMobiles()
 	local mobiles = self.mobiles
 
-	--Ethan edit 12-3-24 (NPC VENDOR) Adding vendors to adventure planets
-	local pNpc = spawnMobile(self.planet, "junk_dealer", 0, -107, 18, -1564, 0, 0)
+	--Ethan edit 1-16-25 (SMUGGLER REVAMP) Testing a new fence NPC template
+	local pNpc = spawnMobile(self.planet, "fence", 0, -107, 18, -1564, 0, 0)
 	if pNpc ~= nil then
-		AiAgent(pNpc):setConvoTemplate("junkDealerUnderworldConvoTemplate")
+		AiAgent(pNpc):setConvoTemplate("fenceGenericConvoTemplate")
 	end
 	--End Ethan edit 12-3-24
 

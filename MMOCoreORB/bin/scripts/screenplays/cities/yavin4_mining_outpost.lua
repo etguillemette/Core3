@@ -41,10 +41,10 @@ end
 
 function Yavin4MiningOutpostScreenPlay:spawnMobiles()
 	
-	--Ethan edit 12-3-24 (NPC VENDOR) Adding vendors to adventure planets
-	local pNpc = spawnMobile(self.planet, "junk_dealer", 0, -6934, 73, -5654, 0, 274852)
+	--Ethan edit 1-16-25 (SMUGGLER REVAMP) Testing a new fence NPC template
+	local pNpc = spawnMobile(self.planet, "fence", 0, -6934, 73, -5654, 0, 0)
 	if pNpc ~= nil then
-		AiAgent(pNpc):setConvoTemplate("junkDealerUnderworldConvoTemplate")
+		AiAgent(pNpc):setConvoTemplate("fenceGenericConvoTemplate")
 	end
 	--End Ethan edit 12-3-24
 	

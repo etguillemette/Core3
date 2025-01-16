@@ -596,7 +596,7 @@ void SlicingSessionImplementation::handleSliceDamage(uint8 percent) {
 		weap->setJunkValue(npcBuyerBonus);
 	}
 	weap->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 (SLICING REVAMP) Adding increased value for weapons if sliced
-	weap->setJunkDealerNeeded(4);
+	weap->setJunkDealerNeeded(512);
 	//print('item final junk value = '+weap->getJunkValue());
 	//End Ethan edit 12-2-24
 
@@ -640,7 +640,7 @@ void SlicingSessionImplementation::handleSliceSpeed(uint8 percent) {
 	}
 
 	weap->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for weapons if sliced
-	weap->setJunkDealerNeeded(4);
+	weap->setJunkDealerNeeded(512);
 	//print('item final junk value = '+weap->getJunkValue());
 	//End Ethan edit 12-2-24
 
@@ -717,7 +717,7 @@ void SlicingSessionImplementation::handleSliceEncumbrance(uint8 percent) {
 	}
 
 	armor->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for armor if sliced
-	armor->setJunkDealerNeeded(4);
+	armor->setJunkDealerNeeded(512);
 	//print('item final junk value = '+armor->getJunkValue());
 	//End Ethan edit 12-2-24
 	StringIdChatParameter params;
@@ -754,7 +754,7 @@ void SlicingSessionImplementation::handleSliceEffectiveness(uint8 percent) {
 	}
 
 	armor->setJunkValue(junkValue * (1.f + ((percent * 10) / 100.f)) + ((percent/10) * 1000)); //Ethan edit 11-30-24 Adding increased value for armor if sliced
-	armor->setJunkDealerNeeded(4);
+	armor->setJunkDealerNeeded(512);
 	//print('item final junk value = '+armor->getJunkValue());
 	//End Ethan edit 12-2-24
 	StringIdChatParameter params;

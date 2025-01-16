@@ -51,3 +51,6 @@ includeFile("../custom_scripts/mobile/serverobjects.lua")
 
 -- Hirelings Ethan edit 5-17-24 (HIRELING)
 includeFile("hireling/serverobjects.lua")
+
+-- Hirelings Ethan edit 1-16-25 (SMUGGLER REVAMP)
+includeFile("fence/serverobjects.lua")

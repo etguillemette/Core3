@@ -724,3 +724,7 @@ includeFile("../custom_scripts/screenplays/screenplays.lua")
 
 -- Ethan edit 5-15-24 (NPC VENDOR)
 includeFile("npcvendor/npc_vendor.lua")
+
+-- Ethan edit 5-15-24 (SMUGGLER REVAMP)
+includeFile("fence/fence.lua")
+includeFile("fence/fence_conv_handler.lua")
