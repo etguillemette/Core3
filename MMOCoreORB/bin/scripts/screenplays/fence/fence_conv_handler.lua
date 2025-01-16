@@ -35,6 +35,7 @@ function FenceConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, selec
 		Fence:sendSellJunkSelection(pPlayer, pNpc, self.junkType)
 	elseif string.find(screenID, "faction_") ~= nil then
 		NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
+	end
 	return pConvScreen
 end
 
