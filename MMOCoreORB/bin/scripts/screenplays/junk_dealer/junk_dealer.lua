@@ -144,6 +144,9 @@ function JunkDealer:sellAllItems(pPlayer, pSui, pInventory)
 		local xpValue = math.floor(amount/10)
 		if(xpValue > 0) then
 			CreatureObject(pPlayer):awardExperience("merchant", xpValue, true)
+			local messageString = LuaStringIdChatParameter("You have gained %DI merchant exp")
+			messageString:setDI(xpValue)
+			CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
 		end
 	end
 	--End Ethan edit 6-11-24 (JUNK DEALER BUYER)
@@ -193,6 +196,9 @@ function JunkDealer:sellItem(pPlayer, pSui, rowIndex, pInventory)
 		local xpValue = math.floor(value/10)
 		if(xpValue > 0) then
 			CreatureObject(pPlayer):awardExperience("merchant", xpValue, true)
+			local messageString = LuaStringIdChatParameter("You have gained %DI merchant exp")
+			messageString:setDI(xpValue)
+			CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
 		end
 	end 
 	--End Ethan edit 6-11-24 (JUNK DEALER BUYER)

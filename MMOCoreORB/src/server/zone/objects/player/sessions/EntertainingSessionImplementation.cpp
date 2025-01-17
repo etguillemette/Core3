@@ -31,6 +31,7 @@
 #include "server/zone/packets/scene/PlayClientEffectLocMessage.h"
 
 #include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER)
+#include "server/chat/StringIdChatParameter.h" //Ethan edit 1-17-25 (SINGLE PLAYER ENTERTAINER)
 
 void EntertainingSessionImplementation::doEntertainerPatronEffects() {
 	ManagedReference<CreatureObject*> creo = entertainer.get();
@@ -1095,6 +1096,10 @@ void EntertainingSessionImplementation::awardEntertainerExperience() {
 					}
 
 					player->addCashCredits(tipAmount); //Give single player entertainers some cash
+					StringIdChatParameter ptnsfw("Tip", "You have been tipped %DI credits for your performance");
+					ptnsfw.setDI(tipAmount);
+					player->sendSystemMessage(ptnsfw);
+
 				}
 				//End Ethan edit 5-25-24 (ENTERTAINER SELF EXP)
 			}

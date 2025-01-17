@@ -135,10 +135,13 @@ function Fence:sellAllItems(pPlayer, pSui, pInventory)
 	
 	CreatureObject(pPlayer):addCashCredits(amount, true)
 
-	if CreatureObject(pPlayer):hasSkill("crafting_artisan_business_04") then 
+	if CreatureObject(pPlayer):hasSkill("combat_smuggler_novice") then 
 		local xpValue = math.floor(amount/10)
 		if(xpValue > 0) then
-			CreatureObject(pPlayer):awardExperience("merchant", xpValue, true)
+			CreatureObject(pPlayer):awardExperience("underworld", xpValue, true)
+			local messageString = LuaStringIdChatParameter("You have gained %DI underworld exp")
+			messageString:setDI(xpValue)
+			CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
 		end
 	end
 
@@ -180,10 +183,13 @@ function Fence:sellItem(pPlayer, pSui, rowIndex, pInventory)
 
 	CreatureObject(pPlayer):addCashCredits(value, true)
 
-	if CreatureObject(pPlayer):hasSkill("crafting_artisan_business_04") then 
+	if CreatureObject(pPlayer):hasSkill("combat_smuggler_novice") then 
 		local xpValue = math.floor(value/10)
 		if(xpValue > 0) then
-			CreatureObject(pPlayer):awardExperience("merchant", xpValue, true)
+			CreatureObject(pPlayer):awardExperience("underworld", xpValue, true)
+			local messageString = LuaStringIdChatParameter("You have gained %DI underworld exp")
+			messageString:setDI(xpValue)
+			CreatureObject(pPlayer):sendSystemMessage(messageString:_getObject())
 		end
 	end 
 
