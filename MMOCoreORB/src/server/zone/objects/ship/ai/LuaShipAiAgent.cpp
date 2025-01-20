@@ -36,6 +36,9 @@ Luna<LuaShipAiAgent>::RegType LuaShipAiAgent::Register[] = {
 	{ "setMinimumGuardPatrol", &LuaShipAiAgent::setMinimumGuardPatrol },
 	{ "setMaximumGuardPatrol", &LuaShipAiAgent::setMaximumGuardPatrol },
 	{ "addFixedPatrolPoint", &LuaShipAiAgent::addFixedPatrolPoint },
+	{ "setDefender", &LuaShipAiAgent::setDefender },
+	{ "getShipAgentTemplateName", &LuaShipAiAgent::getShipAgentTemplateName },
+
 	{ 0, 0 }
 };
 
@@ -166,4 +169,40 @@ int LuaShipAiAgent::addFixedPatrolPoint(lua_State* L) {
 	realObject->addFixedPatrolPoint(name.hashCode());
 
 	return 0;
+}
+
+int LuaShipAiAgent::setDefender(lua_State* L) {
+	int numberOfArguments = lua_gettop(L) - 1;
+
+	if (numberOfArguments != 1) {
+		realObject->error() << "Improper number of arguments in LuaShipAiAgent::setDefender.";
+		return 0;
+	}
+
+	SceneObject* shipScene = (SceneObject*) lua_touserdata(L, -1);
+
+	if (shipScene == nullptr || !shipScene->isShipObject()) {
+		return 0;
+	}
+
+	auto shipObject = shipScene->asShipObject();
+
+	if (shipObject == nullptr) {
+		return 0;
+	}
+
+	Locker locker(realObject);
+	Locker clock(shipObject, realObject);
+
+	realObject->setDefender(shipObject);
+
+	return 0;
+}
+
+int LuaShipAiAgent::getShipAgentTemplateName(lua_State* L) {
+	String templateName = realObject->getShipAgentTemplateName();
+
+	lua_pushstring(L, templateName.toCharArray());
+
+	return 1;
 }

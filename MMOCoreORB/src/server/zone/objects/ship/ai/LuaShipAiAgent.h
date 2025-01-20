@@ -40,6 +40,8 @@ public:
 	int setMinimumGuardPatrol(lua_State* L);
 	int setMaximumGuardPatrol(lua_State* L);
 	int addFixedPatrolPoint(lua_State* L);
+	int setDefender(lua_State* L);
+	int getShipAgentTemplateName(lua_State* L);
 
 private:
 	ShipAiAgent* realObject;

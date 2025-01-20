@@ -106,6 +106,8 @@
 #include "server/zone/objects/ship/ai/LuaShipAiAgent.h"
 #include "server/zone/objects/ship/components/LuaShipComponent.h"
 #include "server/zone/objects/ship/components/ShipComponent.h"
+#include "server/zone/objects/area/space/SpaceActiveArea.h"
+#include "server/zone/objects/area/areashapes/SphereAreaShape.h"
 
 int DirectorManager::DEBUG_MODE = 0;
 int DirectorManager::ERROR_CODE = NO_ERROR;
@@ -435,6 +437,7 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->registerFunction("createObserver", createObserver);
 	luaEngine->registerFunction("dropObserver", dropObserver);
 	luaEngine->registerFunction("hasObserver", hasObserver);
+	luaEngine->registerFunction("hasObserverType", hasObserverType);
 	luaEngine->registerFunction("spawnMobile", spawnMobile);
 	luaEngine->registerFunction("spawnEventMobile", spawnEventMobile);
 	luaEngine->registerFunction("spawnShipAgent", spawnShipAgent);
@@ -457,6 +460,7 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->registerFunction("deleteStringVectorSharedMemory", deleteStringVectorSharedMemory);
 	luaEngine->registerFunction("spawnSceneObject", spawnSceneObject);
 	luaEngine->registerFunction("spawnActiveArea", spawnActiveArea);
+	luaEngine->registerFunction("spawnSpaceActiveArea", spawnSpaceActiveArea);
 	luaEngine->registerFunction("spawnBuilding", spawnBuilding);
 	luaEngine->registerFunction("spawnSecurityPatrol", spawnSecurityPatrol);
 	luaEngine->registerFunction("despawnSecurityPatrol", despawnSecurityPatrol);
@@ -620,8 +624,14 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->setGlobalInt("PROTOTYPECREATED", ObserverEventType::PROTOTYPECREATED);
 	luaEngine->setGlobalInt("SLICED", ObserverEventType::SLICED);
 	luaEngine->setGlobalInt("ABILITYUSED", ObserverEventType::ABILITYUSED);
+	luaEngine->setGlobalInt("COMBATCOMMANDENQUEUED", ObserverEventType::COMBATCOMMANDENQUEUED);
+	luaEngine->setGlobalInt("FACTIONCHAT", ObserverEventType::FACTIONCHAT);
+	luaEngine->setGlobalInt("NOPLAYERSINRANGE", ObserverEventType::NOPLAYERSINRANGE);
 	luaEngine->setGlobalInt("SPATIALCHAT", ObserverEventType::SPATIALCHAT);
 	luaEngine->setGlobalInt("SHIPAGENTDESPAWNED", ObserverEventType::SHIPAGENTDESPAWNED);
+	luaEngine->setGlobalInt("SQUADRON", ObserverEventType::SQUADRON);
+	luaEngine->setGlobalInt("ENTEREDPOBSHIP", ObserverEventType::ENTEREDPOBSHIP);
+	luaEngine->setGlobalInt("DESTROYEDSHIP", ObserverEventType::DESTROYEDSHIP);
 
 	luaEngine->setGlobalInt("UPRIGHT", CreaturePosture::UPRIGHT);
 	luaEngine->setGlobalInt("PRONE", CreaturePosture::PRONE);
@@ -654,12 +664,14 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->setGlobalLong("SHIP_GUNNER7_POB", PlayerArrangement::SHIP_GUNNER7_POB);
 
 	//Waypoint Colors
-	luaEngine->setGlobalInt("WAYPOINTBLUE", WaypointObject::COLOR_BLUE);
-	luaEngine->setGlobalInt("WAYPOINTGREEN", WaypointObject::COLOR_GREEN);
-	luaEngine->setGlobalInt("WAYPOINTYELLOW", WaypointObject::COLOR_YELLOW);
-	luaEngine->setGlobalInt("WAYPOINTPURPLE", WaypointObject::COLOR_PURPLE);
-	luaEngine->setGlobalInt("WAYPOINTWHITE", WaypointObject::COLOR_WHITE);
-	luaEngine->setGlobalInt("WAYPOINTORANGE", WaypointObject::COLOR_ORANGE);
+	luaEngine->setGlobalInt("WAYPOINT_WHITE", WaypointObject::COLOR_WHITE);
+	luaEngine->setGlobalInt("WAYPOINT_BLUE", WaypointObject::COLOR_BLUE);
+	luaEngine->setGlobalInt("WAYPOINT_GREEN", WaypointObject::COLOR_GREEN);
+	luaEngine->setGlobalInt("WAYPOINT_ORANGE", WaypointObject::COLOR_ORANGE);
+	luaEngine->setGlobalInt("WAYPOINT_YELLOW", WaypointObject::COLOR_YELLOW);
+	luaEngine->setGlobalInt("WAYPOINT_PURPLE", WaypointObject::COLOR_PURPLE);
+	luaEngine->setGlobalInt("WAYPOINT_WHITE2", WaypointObject::COLOR_WHITE2);
+	luaEngine->setGlobalInt("WAYPOINT_SPACE", WaypointObject::COLOR_SPACE);
 
 	//Waypoint Special Types
 	luaEngine->setGlobalInt("WAYPOINTTHEMEPARK", WaypointObject::SPECIALTYPE_THEMEPARK);
@@ -3543,6 +3555,80 @@ int DirectorManager::spawnActiveArea(lua_State* L) {
 	return 1;
 }
 
+int DirectorManager::spawnSpaceActiveArea(lua_State* L) {
+	int numberOfArguments = lua_gettop(L);
+
+	if (numberOfArguments != 6) {
+		String err = "incorrect number of arguments passed to DirectorManager::spawnSpaceActiveArea";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+
+		lua_pushnil(L);
+		return 1;
+	}
+
+	float radius = lua_tonumber(L, -1);
+	float y = lua_tonumber(L, -2);
+	float z = lua_tonumber(L, -3);
+	float x = lua_tonumber(L, -4);
+	String areaTemplateName = lua_tostring(L, -5);
+	String zoneName = lua_tostring(L, -6);
+
+	auto zoneServer = ServerCore::getZoneServer();
+
+	if (zoneServer == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	auto zone = zoneServer->getZone(zoneName);
+
+	if (zone == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	ManagedReference<SceneObject*> object = zoneServer->createObject(areaTemplateName.hashCode(), 0);
+
+	if (object == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	auto spaceArea = (object).castTo<SpaceActiveArea*>();
+	ManagedReference<SphereAreaShape*> sphereAreaShape = new SphereAreaShape();
+
+	if (spaceArea == nullptr || sphereAreaShape == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Locker locker(spaceArea);
+
+	spaceArea->setRadius(radius);
+	spaceArea->initializePosition(x, z, y);
+
+	// Lock the shape for mutation
+	Locker shapeLocker(sphereAreaShape, spaceArea);
+
+	sphereAreaShape->setAreaCenter(x, z, y);
+	sphereAreaShape->setRadius(radius);
+
+	spaceArea->setAreaShape(sphereAreaShape);
+
+	shapeLocker.release();
+
+	Locker zoneLocker(zone, spaceArea);
+
+	zone->transferObject(spaceArea, -1, true);
+
+	spaceArea->_setUpdated(true); //mark updated so the GC doesnt delete it while in LUA
+
+	lua_pushlightuserdata(L, spaceArea);
+
+	return 1;
+}
+
 int DirectorManager::createObserver(lua_State* L) {
 	int numberOfArguments = lua_gettop(L);
 	if (numberOfArguments != 4 && numberOfArguments != 5) {
@@ -3587,6 +3673,47 @@ int DirectorManager::createObserver(lua_State* L) {
 
 int DirectorManager::hasObserver(lua_State* L) {
 	int numberOfArguments = lua_gettop(L);
+
+	if (numberOfArguments != 4) {
+		String err = "incorrect number of arguments passed to DirectorManager::hasObserver";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+		return 0;
+	}
+
+	SceneObject* sceneObject = (SceneObject*) lua_touserdata(L, -1);
+	String key = lua_tostring(L, -2);
+	String play = lua_tostring(L, -3);
+	uint32 eventType = lua_tointeger(L, -4);
+
+	SortedVector<ManagedReference<Observer* > > observers = sceneObject->getObservers(eventType);
+	bool ret = false;
+
+	for (int i = 0; i < observers.size(); i++) {
+		Observer* observer = observers.get(i).get();
+
+		if (observer == nullptr || !observer->isObserverType(ObserverType::SCREENPLAY)) {
+			continue;
+		}
+
+		auto screenplayObserver = cast<ScreenPlayObserver*>(observer);
+
+		if (screenplayObserver == nullptr || !(screenplayObserver->getScreenPlay() == play && screenplayObserver->getScreenKey() == key)) {
+			continue;
+		}
+
+		ret = true;
+		break;
+	}
+
+	lua_pushboolean(L, ret);
+
+	return 1;
+}
+
+int DirectorManager::hasObserverType(lua_State* L) {
+	int numberOfArguments = lua_gettop(L);
+
 	if (numberOfArguments != 2) {
 		String err = "incorrect number of arguments passed to DirectorManager::hasObserver";
 		printTraceError(L, err);

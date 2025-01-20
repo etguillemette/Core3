@@ -26,9 +26,6 @@ class SpaceStationObject extends ShipAiAgent {
 	@read
 	public native abstract float getOutOfRangeDistance();
 
-	@read
-	public native int getReceiverFlags();
-
 	@dirty
 	public boolean isSpaceStation() {
 		return true;
