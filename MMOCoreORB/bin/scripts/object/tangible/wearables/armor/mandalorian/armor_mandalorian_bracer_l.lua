@@ -49,6 +49,8 @@ object_tangible_wearables_armor_mandalorian_armor_mandalorian_bracer_l = object_
 					"outdoors_squadleader_master",
 					"outdoors_ranger_master" },
 
+	objectMenuComponent = "ArmorObjectMenuComponent", -- Ethan edit 1-20-25 (ARMOR RECOLOR)					
+
 	playerRaces = { "object/creature/player/bothan_male.iff",
 				"object/creature/player/bothan_female.iff",
 				"object/creature/player/human_male.iff",

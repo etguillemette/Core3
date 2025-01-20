@@ -45,6 +45,8 @@ object_tangible_wearables_armor_ubese_armor_ubese_bandolier = object_tangible_we
 	templateType = ARMOROBJECT,
 	gameObjectType = 259,
 
+	objectMenuComponent = "ArmorObjectMenuComponent", -- Ethan edit 1-20-25 (ARMOR RECOLOR)
+
 	playerRaces = { "object/creature/player/bothan_male.iff",
 				"object/creature/player/bothan_female.iff",
 				"object/creature/player/human_male.iff",

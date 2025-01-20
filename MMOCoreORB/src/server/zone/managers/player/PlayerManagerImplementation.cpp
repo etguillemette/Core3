@@ -4031,7 +4031,7 @@ bool PlayerManagerImplementation::checkPlayerSpeedTest(CreatureObject* player, S
 			teleportPoint.setZ(zone->getHeight(teleportPoint.getX(), teleportPoint.getY()));
 		}
 
-		if (parsedSpeed > 40.f) {
+		if (parsedSpeed > 80.f) { //Ethan edit 1-20-25 (DEBUG) Changed this value from 40.f to 80.f. Keeps getting triggered by my characters when speederbiking
 			player->setRootedState(7 * 24 * 60 * 60);
 			player->setState(CreatureState::FROZEN, true);
 			player->setSpeedMultiplierBase(0.f, true);

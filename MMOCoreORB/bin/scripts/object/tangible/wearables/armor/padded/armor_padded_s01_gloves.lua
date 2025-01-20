@@ -44,6 +44,8 @@
 object_tangible_wearables_armor_padded_armor_padded_s01_gloves = object_tangible_wearables_armor_padded_shared_armor_padded_s01_gloves:new {
 	templateType = ARMOROBJECT,
 
+	objectMenuComponent = "ArmorObjectMenuComponent", -- Ethan edit 1-20-25 (ARMOR RECOLOR)
+
 	playerRaces = { "object/creature/player/bothan_male.iff",
 				"object/creature/player/bothan_female.iff",
 				"object/creature/player/human_male.iff",

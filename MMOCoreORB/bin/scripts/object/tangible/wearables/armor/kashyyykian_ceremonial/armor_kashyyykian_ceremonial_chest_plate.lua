@@ -44,6 +44,8 @@
 object_tangible_wearables_armor_kashyyykian_ceremonial_armor_kashyyykian_ceremonial_chest_plate = object_tangible_wearables_armor_kashyyykian_ceremonial_shared_armor_kashyyykian_ceremonial_chest_plate:new {
 	templateType = ARMOROBJECT,
 
+	objectMenuComponent = "ArmorObjectMenuComponent", -- Ethan edit 1-20-25 (ARMOR RECOLOR)
+
 	playerRaces = { "object/creature/player/wookiee_male.iff",
 				"object/creature/player/wookiee_female.iff",
 				"object/mobile/vendor/wookiee_female.iff",

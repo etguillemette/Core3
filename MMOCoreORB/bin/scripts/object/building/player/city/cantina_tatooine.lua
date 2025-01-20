@@ -55,7 +55,8 @@ object_building_player_city_cantina_tatooine = object_building_player_city_share
 		{"private_buff_mind", 100},
 		{"private_medical_rating", 100},
 		{"private_med_battle_fatigue", 5},
-		{"private_safe_logout", 1}
+		{"private_safe_logout", 1},
+		{"private_med_wound_mind", 20} --Ethan edit 1-18-25 (AUTO ENT)
 	},
 	groundZoneComponent = "StructureZoneComponent",
 	childObjects = {

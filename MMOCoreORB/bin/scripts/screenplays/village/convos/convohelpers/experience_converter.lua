@@ -38,6 +38,7 @@ ExperienceConverter = ScreenPlay:new {
 			{ "scout", 8 },
 			{ "slicing", 3 },
 			{ "trapping", 25 },
+			{ "underworld", 4 }, --Ethan edit 1-20-25 (SMUGGLER REVAMP)
 		},
 		reflex = {
 			{ "bountyhunter", 1 },

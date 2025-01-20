@@ -1,6 +1,6 @@
 fence = Creature:new {
 	objectName = "@mob/creature_names:smuggler",
-	planetMapCategory = "vendor_junk",
+	planetMapCategory = "junkshop",
 	socialGroup = "townsperson",
 	mobType = MOB_NPC,
 	faction = "townsperson",
