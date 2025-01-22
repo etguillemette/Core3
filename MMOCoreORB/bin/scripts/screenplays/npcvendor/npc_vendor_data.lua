@@ -1651,6 +1651,7 @@ genericWaresData = {
         { template = "object/tangible/slicing/slicing_weapon_upgrade_kit.iff", cost = 10200, displayName = "@item_n:weapon_upgrade_kit", serial = "pgradekit", quantity = 10},
         { template = "object/tangible/slicing/slicing_flow_analyzer.iff", cost = 26400, displayName = "@item_n:flow_analyzer", serial = "wanalyzer", quantity = 10},
         { template = "object/tangible/slicing/slicing_molecular_clamp.iff", cost = 28700, displayName = "@item_n:molecular_clamp", serial = "ularclamp", quantity = 10},
+        { template = "object/tangible/veteran_reward/antidecay.iff", cost = 100000, displayName = "@veteran_new:antidecay", serial = "antidecay", quantity = 1},
     },
 
     waresSpice = {

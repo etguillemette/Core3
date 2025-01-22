@@ -168,6 +168,8 @@ public:
 		if (vehicle->isVehicleObject()) {
 			newAccel += creature->getSkillMod("force_vehicle_speed");
 			newTurn += creature->getSkillMod("force_vehicle_control");
+			newAccel += creature->getSkillMod("mundane_vehicle_speed"); //Ethan edit 1-21-25 (SMUGGLER REVAMP)
+			newTurn += creature->getSkillMod("mundane_vehicle_control"); //Ethan edit 1-21-25 (SMUGGLER REVAMP)
 		}
 
 		creature->setRunSpeed(newSpeed);
