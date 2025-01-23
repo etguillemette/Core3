@@ -135,12 +135,14 @@ genericWaresData = {
         { template = "object/tangible/powerup/weapon/thrown_explosive.iff", cost = 5400, displayName = "@powerup_n:weapon_thrown_explosive", serial = "explosive", quantity = 1},
     },
 
+    
 ------------------------------------
 --ARMOR-----------------------------
     waresArmorPSG = {
-        { template = "object/tangible/component/armor/shield_generator_personal.iff", cost = 31200, displayName = "@craft_clothing_ingredients_n:shield_generator_personal", serial = "rpersonal", quantity = 1},
-        { template = "object/tangible/component/armor/shield_generator_personal_b.iff", cost = 31200, displayName = "@craft_clothing_ingredients_n:shield_generator_personal_b", serial = "personalb", quantity = 1},
-        { template = "object/tangible/component/armor/shield_generator_personal_c.iff", cost = 33100, displayName = "@craft_clothing_ingredients_n:shield_generator_personal_c", serial = "personalc", quantity = 1},
+        { template = "object/tangible/component/armor/shield_generator_personal.iff", cost = 31200, displayName = "@craft_clothing_ingredients_n:shield_generator_personal", serial = "rpersonal", quantity = 5},
+        { template = "object/tangible/component/armor/shield_generator_personal_b.iff", cost = 31200, displayName = "@craft_clothing_ingredients_n:shield_generator_personal_b", serial = "personalb", quantity = 5},
+        { template = "object/tangible/component/armor/shield_generator_personal_c.iff", cost = 33100, displayName = "@craft_clothing_ingredients_n:shield_generator_personal_c", serial = "personalc", quantity = 5},
+        { template = "object/tangible/component/armor/shield_generator_personal_imperial_test.iff", cost = 35100, displayName = "@craft_clothing_ingredients_n:shield_generator_vehicular", serial = "personald", quantity = 5},
     },
 
     waresArmorHelm = {

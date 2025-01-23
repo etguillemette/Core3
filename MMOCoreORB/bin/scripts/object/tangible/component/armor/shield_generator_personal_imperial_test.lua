@@ -116,6 +116,19 @@ object_tangible_component_armor_shield_generator_personal_imperial_test = object
 	acid = 0,
 	lightSaber = 10,
 
+	--Ethan edit 1-23-25
+	maxCondition = 3000,
+	kinetic = 0,
+	energy = 65,
+	electricity = 45,
+	stun = 45,
+	blast = 0,
+	heat = 45,
+	cold = 45,
+	acid = 0,
+	lightSaber = 45,
+	--End Ethan edit 1-23-25
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

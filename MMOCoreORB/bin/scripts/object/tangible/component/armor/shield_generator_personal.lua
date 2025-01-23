@@ -116,6 +116,19 @@ object_tangible_component_armor_shield_generator_personal = object_tangible_comp
 	acid = 0,
 	lightSaber = 40,
 
+	--Ethan edit 1-23-25
+	maxCondition = 2000,
+	kinetic = 0,
+	energy = 25,
+	electricity = 15,
+	stun = 15,
+	blast = 0,
+	heat = 15,
+	cold = 15,
+	acid = 0,
+	lightSaber = 15,
+	--End Ethan edit 1-23-25
+
 	numberExperimentalProperties = {1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "XX", "OQ", "SR", "OQ", "UT", "MA", "OQ", "MA", "OQ", "MA", "OQ", "XX", "XX", "OQ", "SR", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
