@@ -112,6 +112,8 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.waresArmorArm
 	elseif category == "wares_armoraccessory" then
 		return genericWaresData.waresArmorAccessory
+	elseif category == "wares_armorpsg" then
+		return genericWaresData.waresArmorPSG
 	elseif category == "wares_clothingapron" then
 		return genericWaresData.waresClothingApron
 	elseif category == "wares_clothingbackpack" then

@@ -137,6 +137,11 @@ genericWaresData = {
 
 ------------------------------------
 --ARMOR-----------------------------
+    waresArmorPSG = {
+        { template = "object/tangible/component/armor/shield_generator_personal.iff", cost = 31200, displayName = "@craft_clothing_ingredients_n:shield_generator_personal", serial = "rpersonal", quantity = 1},
+        { template = "object/tangible/component/armor/shield_generator_personal_b.iff", cost = 31200, displayName = "@craft_clothing_ingredients_n:shield_generator_personal_b", serial = "personalb", quantity = 1},
+        { template = "object/tangible/component/armor/shield_generator_personal_c.iff", cost = 33100, displayName = "@craft_clothing_ingredients_n:shield_generator_personal_c", serial = "personalc", quantity = 1},
+    },
 
     waresArmorHelm = {
         { template = "object/tangible/wearables/armor/bone/armor_bone_s01_helmet.iff", cost = 6300, displayName = "@wearables_name:armor_bone_s01_helmet", serial = "onehelmet", quantity = 1},
@@ -985,10 +990,6 @@ genericWaresData = {
         { template = "object/tangible/component/armor/armor_segment_kashyyykian_hunting_advanced.iff", cost = 10000, displayName = "@craft_clothing_ingredients_n:armor_segment_kashyyykian_hunting_advanced", serial = "gadvanced", quantity = 10},
         { template = "object/tangible/component/armor/armor_segment_padded.iff", cost = 10000, displayName = "@craft_clothing_ingredients_n:armor_segment_padded", serial = "entpadded", quantity = 10},
         { template = "object/tangible/component/armor/armor_segment_padded_advanced.iff", cost = 10000, displayName = "@craft_clothing_ingredients_n:armor_segment_padded_advanced", serial = "dadvanced", quantity = 10},
-        { template = "object/tangible/component/armor/shield_generator_personal.iff", cost = 312000, displayName = "@craft_clothing_ingredients_n:shield_generator_personal", serial = "rpersonal", quantity = 10},
-        { template = "object/tangible/component/armor/shield_generator_personal_b.iff", cost = 312000, displayName = "@craft_clothing_ingredients_n:shield_generator_personal_b", serial = "personalb", quantity = 10},
-        { template = "object/tangible/component/armor/shield_generator_personal_c.iff", cost = 331000, displayName = "@craft_clothing_ingredients_n:shield_generator_personal_c", serial = "personalc", quantity = 10},
-
         --{ template = "", cost = 600, displayName = "@craft_clothing_ingredients_n:armor_layer_acid", serial = "layeracid", quantity = 1},
         --{ template = "", cost = 600, displayName = "@craft_clothing_ingredients_n:armor_layer_blast", serial = "ayerblast", quantity = 1},
         --{ template = "", cost = 600, displayName = "@craft_clothing_ingredients_n:armor_layer_electrical", serial = "lectrical", quantity = 1},
@@ -1089,7 +1090,7 @@ genericWaresData = {
         { template = "object/tangible/crafting/station/structure_station.iff", cost = 16100, displayName = "@crafting:structure_station_name", serial = "restation", quantity = 1},
         { template = "object/tangible/crafting/station/weapon_station.iff", cost = 16100, displayName = "@crafting:weapon_station_name", serial = "onstation", quantity = 1},
         { template = "object/tangible/crafting/station/space_station.iff", cost = 16100, displayName = "@crafting:space_station_name", serial = "cestation", quantity = 1},
-        { template = "object/tangible/veteran_reward/antidecay.iff", cost = 1000000, displayName = "@veteran_new:antidecay", serial = "antidecay", quantity = 1},
+        { template = "object/tangible/veteran_reward/antidecay.iff", cost = 1000000, displayName = "@item_n:veteran_reward_antidecay", serial = "antidecay", quantity = 1},
     },
 
     waresCompArtisan = {
@@ -1651,7 +1652,6 @@ genericWaresData = {
         { template = "object/tangible/slicing/slicing_weapon_upgrade_kit.iff", cost = 10200, displayName = "@item_n:weapon_upgrade_kit", serial = "pgradekit", quantity = 10},
         { template = "object/tangible/slicing/slicing_flow_analyzer.iff", cost = 26400, displayName = "@item_n:flow_analyzer", serial = "wanalyzer", quantity = 10},
         { template = "object/tangible/slicing/slicing_molecular_clamp.iff", cost = 28700, displayName = "@item_n:molecular_clamp", serial = "ularclamp", quantity = 10},
-        { template = "object/tangible/veteran_reward/antidecay.iff", cost = 100000, displayName = "@veteran_new:antidecay", serial = "antidecay", quantity = 1},
     },
 
     waresSpice = {

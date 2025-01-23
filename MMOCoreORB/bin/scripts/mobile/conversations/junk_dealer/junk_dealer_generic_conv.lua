@@ -284,6 +284,7 @@ vendor_armor = ConvoScreen:new {
 	customDialogText = "What sort of armor were you looking for?",
 	stopConversation = "false",
 	options = {
+		{"I was looking for a personal shield generator.", "wares_armorpsg"},
 		{"I was looking for a helm.", "wares_armorhelm"},
 		{"I was looking for a chestpiece.", "wares_armorchest"},
 		{"I was looking for leg armor.", "wares_armorleg"},
@@ -293,6 +294,14 @@ vendor_armor = ConvoScreen:new {
 	}
 }
 junkDealerGenericConvoTemplate:addScreen(vendor_armor);
+
+wares_armorpsg = ConvoScreen:new {	
+	id = "wares_armorpsg",
+	customDialogText = "Here are the personal shield generators I have available.",
+	stopConversation = "true",
+	options = {}
+}
+junkDealerGenericConvoTemplate:addScreen(wares_armorpsg);
 
 wares_armorhelm = ConvoScreen:new {	
 	id = "wares_armorhelm",
