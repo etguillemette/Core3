@@ -39,6 +39,8 @@ function NPCVendor:sendSaleSui(pNpc, pPlayer, screenID)
 	--Filter inventory based on the planet the vendor is on, with certain higher level planets receiving more advanced inventory
 	local zoneName = CreatureObject(pPlayer):getZoneName()
 	local inventoryTable = genericWaresData.planetInventory[zoneName]
+	--local level = self.lootLevel
+	--local inventoryTable = genericWaresData.levelInventory[level]
 
 	local startIndex = math.floor(inventoryTable.inventoryStartIndex * #waresData)
 

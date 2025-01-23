@@ -336,3 +336,6 @@ includeFile("conversations/junk_dealer/junk_dealer_sneg_conv.lua")
 
 -- Ethan edit 1-15-25 (SMUGGLER REVAMP)
 includeFile("conversations/fence/fence_generic_conv.lua")
+
+-- Ethan edit 1-23-25 (NPC VENDOR)
+includeFile("conversations/npc_vendor/npc_vendor_generic_conv.lua")
