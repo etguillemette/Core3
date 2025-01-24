@@ -60,6 +60,8 @@ int CityManagerImplementation::decorationsPerRank = 10;
 int CityManagerImplementation::trainersPerRank = 3;
 int CityManagerImplementation::missionTerminalsPerRank = 3;
 float CityManagerImplementation::maintenanceDiscount = 1.0f;
+bool CityManagerImplementation::cityStructureEntropyEnabled = true; //Ethan edit 1-24-25 (HALT ENTROPY)
+float CityManagerImplementation::cityStructureLowestCondition = 0.0f; //Ethan edit 1-24-25 (HALT ENTROPY)
 
 void CityManagerImplementation::loadLuaConfig() {
 	info("Loading configuration file.", true);
@@ -123,6 +125,8 @@ void CityManagerImplementation::loadLuaConfig() {
 	trainersPerRank = lua->getGlobalInt("TrainersPerRank");
 	missionTerminalsPerRank = lua->getGlobalInt("MissionTerminalsPerRank");
 	maintenanceDiscount = lua->getGlobalFloat("maintenanceDiscount");
+	cityStructureEntropyEnabled = lua->getGlobalBoolean("haltEntropy");
+	cityStructureLowestCondition = lua->getGlobalFloat("cityStructureLowestCondition");
 
 	luaObject = lua->getGlobalObject("CitizensPerRank");
 
@@ -1018,12 +1022,19 @@ int CityManagerImplementation::collectCivicStructureMaintenance(StructureObject*
 		currentSurplus -= amountOutstanding;
 		currentDecay += newDecay;
 
+		//Ethan edit 1-24-25 (HALT ENTROPY)
+		if(cityStructureEntropyEnabled == false && currentDecay < (cityStructureLowestCondition * 100)){
+			currentSurplus = amountOutstanding;
+			currentDecay = cityStructureLowestCondition * 100;
+		}
+		//Ethan edit 1-24-25 (HALT ENTROPY)
+
 		structure->setSurplusMaintenance(currentSurplus);
 		structure->setConditionDamage(currentDecay);
 		city->subtractFromCityTreasury(fundsAvailable);
 		amountPaid += fundsAvailable;
 
-		if (structure->getConditionDamage() >= structure->getMaxCondition()) {
+		if (structure->getConditionDamage() >= structure->getMaxCondition() && cityStructureEntropyEnabled == true) { //Ethan edit 1-24-25 (HALT ENTROPY) Added the cityStructureEntropyEnabled bit
 				sendMaintenanceDestroyEmail(city, structure);
 				StructureManager::instance()->destroyStructure(structure);
 		} else {

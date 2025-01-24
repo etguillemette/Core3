@@ -85,8 +85,10 @@ TrainersPerRank = 3
 MissionTerminalsPerRank = 3
 
 -- Amount to discount city maintenance  float.  1 = 100%, .75 =75%, .5=50% etc
-maintenanceDiscount = 1.0
+maintenanceDiscount = 0.0 --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
 
+cityStructureEntropyEnabled = true --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
+cityStructureLowestCondition = 0.98 --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
 
 --[[
 	CITIES ALLOWED PER PLANET

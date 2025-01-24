@@ -53,6 +53,8 @@ class CityManager extends ManagedService implements Logger {
 	public transient static int trainersPerRank;
 	public transient static int missionTerminalsPerRank;
 	public transient static float maintenanceDiscount;
+	public transient static boolean cityStructureEntropyEnabled; //Ethan edit 1-24-25 (HALT ENTROPY)
+	public transient static float cityStructureLowestCondition; //Ethan edit 1-24-25 (HALT ENTROPY)
 
 
 	@dereferenced
