@@ -288,10 +288,11 @@ void ResourceSpawnImplementation::evaluatePurchaseListBox(SuiListBox* suil) {
 
 	int pricePerUnit = 1;
 
+	/* Ethan edit 1-24-25 ... I don't think this is necessary? I'm doubling up here for some reason...
 	for (int i = 0; i < spawnAttributes.size(); ++i) {
 		String attrib;
 		int value = getAttributeAndValue(attrib, i);
-		/*
+		
 		if(value > 900)
 		{
 			pricePerUnit+= 2;
@@ -300,19 +301,29 @@ void ResourceSpawnImplementation::evaluatePurchaseListBox(SuiListBox* suil) {
 		{
 			pricePerUnit+= 1;
 		}
-		*/
+		
 		String tempstat = "@obj_attr_n:" + attrib + " = " + value;
 		suil->addMenuItem(tempstat);
 	}
+	*/
 
 	pricePerUnit = this->evaluatePrice();
 
 	//Checks to see if it's currently in shift... If not, multiply the price by ten
+	//Ethan edit 1-24-25 (RESOURCE VENDOR) ... I really think this section isn't necesssary? I think this is blowing up the price of resources by evaluating the price twice...
+	
 	if(!this->inShift())
 	{
-		pricePerUnit *= 10;
-		suil->addMenuItem("Resouce no longer being produced - Scarcity pricing adjusted:");
+		if(this->recentShift(90)){
+			//pricePerUnit *= 3;
+			suil->addMenuItem("Resouce no longer being harvested - Scarcity pricing adjusted (x3):");
+		}
+		else{
+			//pricePerUnit *= 10;
+			suil->addMenuItem("Legacy resouce no longer being harvested - Scarcity pricing adjusted (x10):");
+		}	
 	}
+	
 	
 	String pricevalue = "Price = " + std::to_string(pricePerUnit) + " credits/unit";
 	suil->addMenuItem(pricevalue);
@@ -335,12 +346,17 @@ int ResourceSpawnImplementation::evaluatePrice(){
 		}
 	}
 
-	//Checks to see if it's currently in shift... If not, multiply the price by ten
+
+	//Checks to see if it's currently in shift... If it's recent, multiply price by 3. If it is an archival resource, multiply by 10.
 	if(!this->inShift())
 	{
-		pricePerUnit *= 10;
+		if(this->recentShift(90)){
+			pricePerUnit *= 3;
+		}
+		else{
+			pricePerUnit *= 10;
+		}
 	}
-
 	return pricePerUnit;
 }
 //End Ethan edit 5-31-24 (RESOURCE VENDOR)
