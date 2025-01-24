@@ -22,7 +22,7 @@ genericWaresData = {
         novice = { inventoryStartIndex = 0.0, inventoryEndIndex = 0.5},
         mid = {inventoryStartIndex = 0.25, inventoryEndIndex = 0.75},
         master = {inventoryStartIndex = 0.5, inventoryEndIndex = 1.0},
-    }
+    },
 
 
 --WEAPONS-------------------------

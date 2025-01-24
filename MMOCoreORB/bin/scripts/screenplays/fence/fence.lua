@@ -71,7 +71,7 @@ function Fence:getEligibleJunk(pPlayer, dealerType, skipItem)
 			--End Ethan edit 12-18-24 (MERCHANT BONUS)
 
 			if sceno:getObjectID() ~= skipItem then
-				if tano:getJunkDealerNeeded() & (dealerNum == 512 or tano:isSliced()) and not tano:isBroken() and not tano:isNoTrade() and sceno:getContainerObjectsSize() == 0 then
+				if (tano:getJunkDealerNeeded() & dealerNum == 512 or tano:isSliced()) and not tano:isBroken() and not tano:isNoTrade() and sceno:getContainerObjectsSize() == 0 then
 					local name = sceno:getDisplayedName()
 					local value = math.floor(tano:getJunkValue() * merchantBonus) --Ethan edit 12-18-24 (MERCHANT BONUS)
 					local textTable = {"[" .. value .. "] " .. name, sceno:getObjectID()}
