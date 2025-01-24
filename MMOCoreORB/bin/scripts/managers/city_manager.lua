@@ -88,7 +88,7 @@ MissionTerminalsPerRank = 3
 maintenanceDiscount = 0.0 --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
 
 cityStructureEntropyEnabled = true --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
-cityStructureLowestCondition = 0.98 --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
+cityStructureLowestCondition = 0.75 --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
 
 --[[
 	CITIES ALLOWED PER PLANET
