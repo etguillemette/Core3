@@ -87,8 +87,8 @@ MissionTerminalsPerRank = 3
 -- Amount to discount city maintenance  float.  1 = 100%, .75 =75%, .5=50% etc
 maintenanceDiscount = 0.0 --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
 
-cityStructureEntropyEnabled = true --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
-cityStructureLowestCondition = 0.75 --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
+cityStructureEntropyEnabled = false --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
+cityStructureLowestCondition = 0.95 --Ethan edit 1-24-25 (HALT ENTROPY) This can be turned on at a later date
 
 --[[
 	CITIES ALLOWED PER PLANET
