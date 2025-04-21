@@ -27,6 +27,9 @@ Luna<LuaShipObject>::RegType LuaShipObject::Register[] = {
 	{ "isUpperTurretFunctional", &LuaShipObject::isUpperTurretFunctional },
 	{ "isLowerTurretFunctional", &LuaShipObject::isLowerTurretFunctional },
 	{ "getShipName", &LuaShipObject::getShipName },
+	{ "setHyperspacing", &LuaShipObject::setHyperspacing },
+	{ "setShipFactionString", &LuaShipObject::setShipFactionString },
+
 	{ 0, 0}
 };
 
@@ -322,4 +325,43 @@ int LuaShipObject::getShipName(lua_State* L) {
 	lua_pushstring(L, shipName.toCharArray());
 
 	return 1;
+}
+
+int LuaShipObject::setHyperspacing(lua_State* L) {
+	int numberOfArguments = lua_gettop(L) - 1;
+
+	if (numberOfArguments != 1) {
+		realObject->error() << "Improper number of arguments in LuaShipObject::setHyperspacing.";
+		return 0;
+	}
+
+	bool val = lua_toboolean(L, -1);
+
+	Locker lock(realObject);
+
+	realObject->setHyperspacing(val);
+
+	return 0;
+}
+
+int LuaShipObject::setShipFactionString(lua_State* L) {
+	int numberOfArguments = lua_gettop(L) - 1;
+
+	if (numberOfArguments != 1) {
+		realObject->error() << "Improper number of arguments in LuaShipObject::setShipFactionString.";
+		return 0;
+	}
+
+	String factionString = lua_tostring(L, -1);
+
+	if (factionString.isEmpty()) {
+		return 0;
+	}
+
+	Locker lock(realObject);
+
+	realObject->setShipFactionString(factionString);
+	realObject->broadcastPvpStatusBitmask();
+
+	return 0;
 }

@@ -128,6 +128,7 @@ void ObjectManager::registerObjectTypes() {
 	objectFactory.registerObject<SurveyTool>(SceneObjectType::SURVEYTOOL);
 	objectFactory.registerObject<RecycleTool>(SceneObjectType::RECYCLETOOL);
 	objectFactory.registerObject<AntiDecayKit>(SceneObjectType::ANTIDECAYKIT);
+	objectFactory.registerObject<ComponentAnalysisTool>(SceneObjectType::COMPONENTANALYSISTOOL);
 	objectFactory.registerObject<CraftingStation>(SceneObjectType::CRAFTINGSTATION);
 	objectFactory.registerObject<SignObject>(SceneObjectType::SIGN);
 	objectFactory.registerObject<Instrument>(SceneObjectType::INSTRUMENT);
@@ -149,6 +150,7 @@ void ObjectManager::registerObjectTypes() {
 	objectFactory.registerObject<FurnitureObject>(SceneObjectType::FURNITURE);
 	objectFactory.registerObject<LightObject>(SceneObjectType::LIGHTOBJECT);
 	objectFactory.registerObject<ContractCrate>(SceneObjectType::CONTRACTCRATE);
+	objectFactory.registerObject<SchematicFragment>(SceneObjectType::SCHEMATICFRAGMENT);
 	objectFactory.registerObject<SlicingTool>(SceneObjectType::SLICINGTOOL);
 	objectFactory.registerObject<SlicingTool>(SceneObjectType::FLOWANALYZER);
 	objectFactory.registerObject<SlicingTool>(SceneObjectType::MOLECULARCLAMP);
@@ -237,6 +239,7 @@ void ObjectManager::registerObjectTypes() {
 	objectFactory.registerObject<ResourceDeed>(SceneObjectType::RESOURCEDEED);
 	objectFactory.registerObject<EventPerkDeed>(SceneObjectType::EVENTPERKDEED);
 	objectFactory.registerObject<VetHarvesterDeed>(SceneObjectType::VETHARVESTERDEED);
+	objectFactory.registerObject<NavicomputerDeed>(SceneObjectType::NAVICOMPUTERDEED);
 	objectFactory.registerObject<ShipDeed>(SceneObjectType::SHIPDEED);
 	objectFactory.registerObject<GroupObject>(SceneObjectType::GROUPOBJECT);
 	objectFactory.registerObject<GuildObject>(SceneObjectType::GUILDOBJECT);
@@ -267,7 +270,7 @@ void ObjectManager::registerObjectTypes() {
 	objectFactory.registerObject<ClothingObject>(SceneObjectType::ROBE);
 	objectFactory.registerObject<ClothingObject>(SceneObjectType::SHIRT);
 	objectFactory.registerObject<ClothingObject>(SceneObjectType::VEST);
-	objectFactory.registerObject<ClothingObject>(SceneObjectType::WOOKIEGARB);
+	objectFactory.registerObject<ClothingObject>(SceneObjectType::WOOKIEEGARB);
 	objectFactory.registerObject<ClothingObject>(SceneObjectType::MISCCLOTHING);
 	objectFactory.registerObject<ClothingObject>(SceneObjectType::SKIRT);
 	//objectFactory.registerObject<ClothingObject>(SceneObjectType::ITHOGARB);
@@ -338,13 +341,14 @@ void ObjectManager::registerObjectTypes() {
 	objectFactory.registerObject<ShipCapacitorComponent>(SceneObjectType::SHIPWEAPONCAPACITOR);
 	objectFactory.registerObject<ShipSubComponent>(SceneObjectType::SHIPCAPACITORSUBCOMPONENT);
 	objectFactory.registerObject<ShipBoosterComponent>(SceneObjectType::SHIPBOOSTER);
-	objectFactory.registerObject<ShipDroidInterfaceComponent>(SceneObjectType::SHIPDRIODINTERFACE);
+	objectFactory.registerObject<ShipDroidInterfaceComponent>(SceneObjectType::SHIPDROIDINTERFACE);
 	objectFactory.registerObject<ShipChassisComponent>(SceneObjectType::SHIPCHASSIS);
 	objectFactory.registerObject<ShipMissileComponent>(SceneObjectType::SHIPMISSILE);
 	objectFactory.registerObject<ShipCounterMeasureComponent>(SceneObjectType::SHIPCOUNTERMEASURE);
 	objectFactory.registerObject<ShipWeaponComponent>(SceneObjectType::SHIPWEAPONLAUNCHER);
 	objectFactory.registerObject<ShipWeaponComponent>(SceneObjectType::SHIPCOUNTERMEASURELAUNCHER);
-	objectFactory.registerObject<SpaceObject>(SceneObjectType::ASTEROID);
+	objectFactory.registerObject<DroidProgrammingChip>(SceneObjectType::DROIDPROGRAMMINGCHIP);
+	objectFactory.registerObject<AsteroidObject>(SceneObjectType::ASTEROID);
 	objectFactory.registerObject<TangibleObject>(SceneObjectType::PILOTCHAIR);
 	objectFactory.registerObject<TangibleObject>(SceneObjectType::OPERATIONSCHAIR);
 	objectFactory.registerObject<TangibleObject>(SceneObjectType::TURRETACCESSLADDER);

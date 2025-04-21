@@ -93,7 +93,6 @@
 #include "server/zone/objects/tangible/Instrument.h"
 #include "server/zone/managers/director/ScreenPlayObserver.h"
 #include "server/zone/objects/player/events/SpawnHelperDroidTask.h"
-#include "server/zone/packets/object/StartNpcConversation.h"
 
 #include "server/zone/managers/director/DirectorManager.h" //Ethan edit 5-6-24 (SINGLE PLAYER ENTERTAINER) (AUTO DOCTOR) (AUTO ENTERTAINER)
 #include "server/zone/managers/skill/Performance.h" //Ethan edit 5-6-24 (AUTO ENTERTAINER)
@@ -163,6 +162,9 @@ void CreatureObjectImplementation::initializeTransientMembers() {
 	setLoggingName("CreatureObject");
 
 	commandQueue = new CommandQueue(asCreatureObject());
+
+	spaceMissionObjects.setNullValue(0);
+	spaceMissionObjects.setAllowDuplicateInsert();
 }
 
 void CreatureObjectImplementation::initializeMembers() {
@@ -366,20 +368,20 @@ void CreatureObjectImplementation::sendToOwner(bool doClose) {
 	for (int i = 0; i < closeObjects.size(); ++i) {
 		SceneObject* obj = static_cast<SceneObject*> (closeObjects.get(i));
 
-		if (obj != asCreatureObject()) {
-			if (obj != rootParent) {
-				notifyInsert(obj);
-				//obj->sendTo(asCreatureObject(), true);
-			}
-
-			if (obj->isPlayerCreature()) { //we need to destroy object to reset movement counter on near clients
-				obj->notifyDissapear(asCreatureObject());
-			}
-
-			//obj->notifyInsert(asCreatureObject());
-			sendTo(obj, true, false);
+		if (obj == nullptr || obj == asCreatureObject()) {
+			continue;
 		}
 
+		if (obj != rootParent) {
+			notifyInsert(obj);
+		}
+
+		// we need to destroy object to reset movement counter on near clients
+		if (obj->isPlayerCreature()) {
+			obj->notifyDissapear(asCreatureObject());
+		}
+
+		sendTo(obj, true, false);
 	}
 
 	if (group != nullptr) {
@@ -392,11 +394,15 @@ void CreatureObjectImplementation::sendToOwner(bool doClose) {
 }
 
 void CreatureObjectImplementation::sendBaselinesTo(SceneObject* player) {
-	CreatureObject* thisPointer = asCreatureObject();
-	Zone* zone = getZoneUnsafe();
+	// info(true) << getDisplayedName() << " sendBaselinesTo -- Player: " << player->getDisplayedName();
 
-	if (zone == nullptr)
+	CreatureObject* thisPointer = asCreatureObject();
+
+	auto zone = getZoneUnsafe();
+
+	if (zone == nullptr) {
 		return;
+	}
 
 	if (player == thisPointer) {
 		debug() << "sending baselines to myself";
@@ -523,24 +529,35 @@ void CreatureObjectImplementation::clearQueueActions(bool combatOnly) {
 		commandQueue->clearQueueActions(combatOnly);
 }
 
-void CreatureObjectImplementation::setWeapon(WeaponObject* weao,
-		bool notifyClient) {
-	if (weao == nullptr)
-		weao = asCreatureObject()->getDefaultWeapon();
-
-	weapon = weao;
-
-	if (notifyClient) {
-		CreatureObjectDeltaMessage6* msg = new CreatureObjectDeltaMessage6(
-				asCreatureObject());
-		msg->updateWeapon();
-		msg->close();
-
-		broadcastMessage(msg, true);
-
-		WeaponRanges* ranges = new WeaponRanges(asCreatureObject(), getWeapon());
-		sendMessage(ranges);
+void CreatureObjectImplementation::setWeapon(WeaponObject* newWeapon, bool notifyClient) {
+	if (newWeapon == nullptr) {
+		newWeapon = getDefaultWeapon();
 	}
+
+	weapon = newWeapon;
+
+	if (!notifyClient) {
+		return;
+	}
+
+	CreatureObjectDeltaMessage6* delta6 = new CreatureObjectDeltaMessage6(asCreatureObject());
+
+	if (delta6 == nullptr) {
+		return;
+	}
+
+	delta6->updateWeapon();
+	delta6->close();
+
+	broadcastMessage(delta6, true);
+
+	WeaponRanges* ranges = new WeaponRanges(asCreatureObject(), weapon);
+
+	if (ranges == nullptr) {
+		return;
+	}
+
+	sendMessage(ranges);
 }
 
 void CreatureObjectImplementation::setLevel(int level, bool randomHam) {
@@ -909,64 +926,63 @@ bool CreatureObjectImplementation::setState(uint64 state, bool notifyClient) {
 			}
 
 			switch (state) {
-			case CreatureState::STUNNED:
-				playEffect("clienteffect/combat_special_defender_stun.cef");
-				sendSystemMessage("@cbt_spam:go_stunned_single");
-				sendStateCombatSpam("cbt_spam", "go_stunned", 0);
-				break;
-			case CreatureState::BLINDED:
-				playEffect("clienteffect/combat_special_defender_blind.cef");
-				sendSystemMessage("@cbt_spam:go_blind_single");
-				sendStateCombatSpam("cbt_spam", "go_blind", 0);
-				break;
-			case CreatureState::DIZZY: {
-				playEffect("clienteffect/combat_special_defender_dizzy.cef");
-				sendSystemMessage("@cbt_spam:go_dizzy_single");
-				sendStateCombatSpam("cbt_spam", "go_dizzy", 0);
-				break;
+				case CreatureState::STUNNED:
+					playEffect("clienteffect/combat_special_defender_stun.cef");
+					sendSystemMessage("@cbt_spam:go_stunned_single");
+					sendStateCombatSpam("cbt_spam", "go_stunned", 0);
+					break;
+				case CreatureState::BLINDED:
+					playEffect("clienteffect/combat_special_defender_blind.cef");
+					sendSystemMessage("@cbt_spam:go_blind_single");
+					sendStateCombatSpam("cbt_spam", "go_blind", 0);
+					break;
+				case CreatureState::DIZZY: {
+					playEffect("clienteffect/combat_special_defender_dizzy.cef");
+					sendSystemMessage("@cbt_spam:go_dizzy_single");
+					sendStateCombatSpam("cbt_spam", "go_dizzy", 0);
+					break;
+				}
+				case CreatureState::POISONED:
+					break;
+				case CreatureState::DISEASED:
+					break;
+				case CreatureState::ONFIRE:
+					break;
+				case CreatureState::BLEEDING:
+					break;
+				case CreatureState::INTIMIDATED:
+					playEffect("clienteffect/combat_special_defender_intimidate.cef");
+					break;
+				case CreatureState::IMMOBILIZED:
+					showFlyText("combat_effects", "go_snare", 0, 0xFF, 0);
+					break;
+				case CreatureState::FROZEN:
+					showFlyText("combat_effects", "go_rooted", 0, 0xFF, 0);
+					break;
+				case CreatureState::RALLIED:
+					showFlyText("combat_effects", "go_rally", 0, 0xFF, 0);
+					break;
+				case CreatureState::BERSERK:
+					playEffect("clienteffect/combat_special_attacker_berserk.cef");
+					break;
+				case CreatureState::AIMING:
+					playEffect("clienteffect/combat_special_attacker_aim.cef");
+					break;
+				case CreatureState::COVER:
+					playEffect("clienteffect/combat_special_attacker_cover.cef");
+					sendSystemMessage("@cbt_spam:cover_success_single");
+					sendStateCombatSpam("cbt_spam", "cover_success", 0);
+					break;
+				case CreatureState::PEACE:
+					sendSystemMessage("@cbt_spam:peace_single");
+					sendStateCombatSpam("cbt_spam", "peace", 0);
+					break;
+				case CreatureState::SWIMMING:
+					updateSpeedAndAccelerationMods();
+					break;
+				default:
+					break;
 			}
-			case CreatureState::POISONED:
-				break;
-			case CreatureState::DISEASED:
-				break;
-			case CreatureState::ONFIRE:
-				break;
-			case CreatureState::BLEEDING:
-				break;
-			case CreatureState::INTIMIDATED:
-				playEffect("clienteffect/combat_special_defender_intimidate.cef");
-				break;
-			case CreatureState::IMMOBILIZED:
-				showFlyText("combat_effects", "go_snare", 0, 0xFF, 0);
-				break;
-			case CreatureState::FROZEN:
-				showFlyText("combat_effects", "go_rooted", 0, 0xFF, 0);
-				break;
-			case CreatureState::RALLIED:
-				showFlyText("combat_effects", "go_rally", 0, 0xFF, 0);
-				break;
-			case CreatureState::BERSERK:
-				playEffect("clienteffect/combat_special_attacker_berserk.cef");
-				break;
-			case CreatureState::AIMING:
-				playEffect("clienteffect/combat_special_attacker_aim.cef");
-				break;
-			case CreatureState::COVER:
-				playEffect("clienteffect/combat_special_attacker_cover.cef");
-				sendSystemMessage("@cbt_spam:cover_success_single");
-				sendStateCombatSpam("cbt_spam", "cover_success", 0);
-				break;
-			case CreatureState::PEACE:
-				sendSystemMessage("@cbt_spam:peace_single");
-				sendStateCombatSpam("cbt_spam", "peace", 0);
-				break;
-			case CreatureState::SWIMMING:
-				updateSpeedAndAccelerationMods();
-				break;
-			default:
-				break;
-			}
-
 		}
 
 		return true;
@@ -986,18 +1002,21 @@ int CreatureObjectImplementation::getReceiverFlags() const {
 }
 
 bool CreatureObjectImplementation::clearState(uint64 state, bool notifyClient) {
-	if (stateBitmask & state) {
-		stateBitmask &= ~state;
+	if (!(stateBitmask & state)) {
+		return false;
+	}
 
-		if (notifyClient) {
-			CreatureObjectDeltaMessage3* dcreo3 = new CreatureObjectDeltaMessage3(asCreatureObject());
-			dcreo3->updateStatesBitmask();
-			dcreo3->close();
+	stateBitmask &= ~state;
 
-			broadcastMessage(dcreo3, true);
-		}
+	if (notifyClient) {
+		CreatureObjectDeltaMessage3* dcreo3 = new CreatureObjectDeltaMessage3(asCreatureObject());
+		dcreo3->updateStatesBitmask();
+		dcreo3->close();
 
-		switch (state) {
+		broadcastMessage(dcreo3, true);
+	}
+
+	switch (state) {
 		case CreatureState::STUNNED:
 			sendSystemMessage("@cbt_spam:no_stunned_single");
 			sendStateCombatSpam("cbt_spam", "no_stunned", 0);
@@ -1048,12 +1067,9 @@ bool CreatureObjectImplementation::clearState(uint64 state, bool notifyClient) {
 			break;
 		default:
 			break;
-		}
-
-		return true;
-	} else {
-		return false;
 	}
+
+	return true;
 }
 
 void CreatureObjectImplementation::clearSpaceStates() {
@@ -1650,8 +1666,9 @@ void CreatureObjectImplementation::updatePostures(bool immediate) {
 	//CreaturePosture::instance()->getTurnScale((uint8)newPosture);
 	//CreaturePosture::instance()->getCanSeeHeightMod((uint8)newPosture);
 
-	if (posture != CreaturePosture::SITTING && hasState(CreatureState::SITTINGONCHAIR))
+	if (posture != CreaturePosture::SITTING && hasState(CreatureState::SITTINGONCHAIR)) {
 		clearState(CreatureState::SITTINGONCHAIR);
+	}
 
 	Vector<BasePacket*> messages;
 
@@ -1685,7 +1702,7 @@ void CreatureObjectImplementation::updatePostures(bool immediate) {
 
 	broadcastMessages(&messages, true);
 
-	if(posture != CreaturePosture::UPRIGHT && posture != CreaturePosture::DRIVINGVEHICLE && posture != CreaturePosture::RIDINGCREATURE && posture != CreaturePosture::SKILLANIMATING) {
+	if (posture != CreaturePosture::UPRIGHT && posture != CreaturePosture::DRIVINGVEHICLE && posture != CreaturePosture::RIDINGCREATURE && posture != CreaturePosture::SKILLANIMATING) {
 		setCurrentSpeed(0);
 	}
 
@@ -1703,8 +1720,9 @@ void CreatureObjectImplementation::setPosture(int newPosture, bool immediate, bo
 
 	posture = newPosture;
 
-	if(!notifyClient)
+	if (!notifyClient) {
 		return;
+	}
 
 	updatePostures(immediate);
 }
@@ -1777,6 +1795,18 @@ void CreatureObjectImplementation::updateSpeedAndAccelerationMods() {
 	if (mScale != 0.f) {
 		mScale *= getSpeedModifier();
 	}
+
+	/*
+	if (isPlayerCreature()) {
+		auto msg = info(true);
+		msg << "CreatureObjectImplementation::updateSpeedAndAccelerationMods -- " << getDisplayedName() << endl;
+		msg << "Acceleration Old: " << accelerationMultiplierMod << " Acceleration New: " << aScale << endl;
+		msg << "Speed Mod Old: " << speedMultiplierMod << " Speed Mod New: " << mScale << endl;
+		msg << "Turnscale Old: " << turnScale << " Turnscale New: " << tScale << endl;
+		msg.flush();
+
+	}
+	*/
 
 	int updateSize = 0;
 
@@ -1983,6 +2013,9 @@ void CreatureObjectImplementation::setSpeedMultiplierMod(float newMultiplierMod,
 		newValue *= getSpeedModifier();
 	}
 
+	// if (isPlayerCreature())
+	//	info(true) << "setSpeedMultiplierMod -- newMultiplierMod: " << newValue << " Old speedMultiplierMod: " << speedMultiplierMod;
+
 	if (speedMultiplierMod != newValue) {
 		speedMultiplierMod = newValue;
 
@@ -2002,21 +2035,27 @@ void CreatureObjectImplementation::setSpeedMultiplierMod(float newMultiplierMod,
 	}
 }
 
-void CreatureObjectImplementation::setRunSpeed(float newSpeed,
-		bool notifyClient) {
-	if (runSpeed == newSpeed)
+void CreatureObjectImplementation::setRunSpeed(float newSpeed, bool notifyClient) {
+	if (runSpeed == newSpeed) {
 		return;
+	}
 
 	runSpeed = newSpeed;
 
-	if (notifyClient) {
-		CreatureObjectDeltaMessage4* dcreo4 = new CreatureObjectDeltaMessage4(
-				asCreatureObject());
-		dcreo4->updateRunSpeed();
-		dcreo4->close();
-
-		sendMessage(dcreo4);
+	if (!notifyClient) {
+		return;
 	}
+
+	CreatureObjectDeltaMessage4* dcreo4 = new CreatureObjectDeltaMessage4(asCreatureObject());
+
+	if (dcreo4 == nullptr) {
+		return;
+	}
+
+	dcreo4->updateRunSpeed();
+	dcreo4->close();
+
+	sendMessage(dcreo4);
 }
 
 void CreatureObjectImplementation::setMoodString(
@@ -2110,11 +2149,17 @@ void CreatureObjectImplementation::updateSlopeMods(bool notifyClient) {
 	}
 
 	if (notifyClient) {
-		CreatureObjectDeltaMessage4* codm4 = new CreatureObjectDeltaMessage4(asCreatureObject());
-		codm4->updateSlopeModAngle();
-		codm4->updateSlopeModPercent();
-		codm4->close();
-		sendMessage(codm4);
+		CreatureObjectDeltaMessage4* delta4 = new CreatureObjectDeltaMessage4(asCreatureObject());
+
+		if (delta4 == nullptr) {
+			return;
+		}
+
+		delta4->updateSlopeModAngle();
+		delta4->updateSlopeModPercent();
+		delta4->close();
+
+		sendMessage(delta4);
 	}
 }
 
@@ -2128,6 +2173,42 @@ float CreatureObjectImplementation::getSlopeModPercent() const {
 	float slopeMod = slopeMove / 50.0f;
 
 	return slopeMod;
+}
+
+float CreatureObjectImplementation::getRunSpeed() {
+	float allowedSpeed = runSpeed;
+
+	if (isRidingMount()) {
+		auto parent = getParent().get();
+
+		if (parent != nullptr && (parent->isMount() || parent->isVehicleObject())) {
+			auto vehicle = parent->asCreatureObject();
+
+			if (vehicle != nullptr) {
+				// Get the vehicles max speed
+				allowedSpeed = vehicle->getRunSpeed();
+
+				// Get the pet mounts run speed
+				if (vehicle->isMount()) {
+					auto zoneServer = getZoneServer();
+
+					if (zoneServer != nullptr) {
+						auto petManager = zoneServer->getPetManager();
+
+						if (petManager != nullptr) {
+							allowedSpeed = petManager->getMountedRunSpeed(vehicle);
+						}
+					}
+				}
+
+				if (vehicle->getSpeedMultiplierMod() != 0) {
+					allowedSpeed *= vehicle->getSpeedMultiplierMod();
+				}
+			}
+		}
+	}
+
+	return allowedSpeed;
 }
 
 void CreatureObjectImplementation::sendCommand(const String& action, const UnicodeString& args, uint64 targetID, int priority) {
@@ -3827,11 +3908,13 @@ bool CreatureObjectImplementation::isAttackableBy(CreatureObject* creature, bool
 
 	// info(true) << "CreatureObjectImplementation::isAttackableBy Creature Check -- " << getDisplayedName() << " ID: " << getObjectID() << " by attacking Creature: " << creature->getDisplayedName() << " ID: " << creature->getObjectID();
 
-	if (!bypassDeadCheck && isDead())
+	if (!bypassDeadCheck && isDead()) {
 		return false;
+	}
 
-	if (creature->getZoneUnsafe() != getZoneUnsafe())
+	if (creature->getZoneUnsafe() != getZoneUnsafe()) {
 		return false;
+	}
 
 	// Vehicle object, check against owner
 	if (isVehicleObject()) {
@@ -3843,8 +3926,9 @@ bool CreatureObjectImplementation::isAttackableBy(CreatureObject* creature, bool
 		return owner->isAttackableBy(creature);
 	}
 
-	if (isInNoCombatArea() || creature->isInNoCombatArea())
+	if (isInNoCombatArea() || creature->isInNoCombatArea()) {
 		return false;
+	}
 
 	// This CreO is a player
 	if (isPlayerCreature()) {
@@ -3925,7 +4009,7 @@ bool CreatureObjectImplementation::isAttackableBy(CreatureObject* creature, bool
 				return false;
 			}
 
-			// info(true) << creature->getDisplayedName() << " passed basic checks against " << getDisplayedName();
+			// info(true) << "Attacking Player: " << creature->getDisplayedName() << " passed basic checks against against: " << getDisplayedName();
 
 			if (hasPersonalEnemyFlag(creature) && creature->hasPersonalEnemyFlag(asCreatureObject())) {
 				return true;
@@ -3963,7 +4047,6 @@ bool CreatureObjectImplementation::isAttackableBy(CreatureObject* creature, bool
 
 			// PvP - Different Factions. Both must be overt status or we return false
 			if (thisFaction != creatureFaction) {
-
 				if (covertOvert) {
 					int thisFactionStatus = getFactionStatus();
 					int creatureFactionStatus = creature->getFactionStatus();
@@ -4114,6 +4197,116 @@ bool CreatureObjectImplementation::hasBountyMissionFor(CreatureObject* target) {
 	return mission->getTargetObjectId() == target->getObjectID();
 }
 
+void CreatureObjectImplementation::addSpaceMissionObject(uint64 missionOwnerID, uint64 missionObjectID, bool notifyClient, bool notifyGroup) {
+	if (missionObjectID <= 0) {
+		return;
+	}
+
+	// Add Mission object to DeltaSet
+	spaceMissionObjects.addWithKey(missionOwnerID, missionObjectID);
+
+	if (notifyClient) {
+		CreatureObjectDeltaMessage4* delta4 = new CreatureObjectDeltaMessage4(asCreatureObject());
+
+		if (delta4 != nullptr) {
+			delta4->startUpdate(0x0D);
+
+			spaceMissionObjects.insertKeyAndValuesToMessage(delta4);
+
+			delta4->close();
+
+			// info(true) << "addSpaceMissionObject - Delta4 Packet: " << delta4->toStringData();
+
+			sendMessage(delta4);
+		}
+	}
+
+	Locker locker(&missionRangeObjectsMutex);
+
+	missionRangeObjects.add(missionObjectID);
+
+	locker.release();
+
+	if (!isGrouped() || !notifyGroup) {
+		return;
+	}
+
+	auto group = getGroup();
+
+	if (group == nullptr) {
+		return;
+	}
+
+	Locker groupLock(group, asCreatureObject());
+
+	// Update Group Members
+	group->addSpaceMissionObject(missionOwnerID, missionObjectID, notifyClient);
+}
+
+void CreatureObjectImplementation::removeSpaceMissionObject(uint64 missionOwnerID, uint64 missionObjectID, bool notifyClient, bool notifyGroup) {
+	if (missionObjectID <= 0 || !spaceMissionObjects.containsValue(missionObjectID)) {
+		return;
+	}
+
+	// info(true) << "removeSpaceMissionObject - called missionOwnerID: " << missionOwnerID << " missionObjectID: " << missionObjectID;
+
+	// Remove Mission object from DeltaSet
+	spaceMissionObjects.dropByValue(missionOwnerID, missionObjectID);
+
+	if (notifyClient) {
+		CreatureObjectDeltaMessage4* delta4 = new CreatureObjectDeltaMessage4(asCreatureObject());
+
+		if (delta4 != nullptr) {
+			delta4->startUpdate(0x0D);
+
+			spaceMissionObjects.insertKeyAndValuesToMessage(delta4);
+
+			delta4->close();
+
+			// info(true) << "removeSpaceMissionObject - Vector Size: " << spaceMissionObjects.size() << " Delta4 Packet: " << delta4->toStringData();
+
+			sendMessage(delta4);
+		}
+	}
+
+	Locker locker(&missionRangeObjectsMutex);
+
+	missionRangeObjects.drop(missionObjectID);
+
+	locker.release();
+
+	if (!isGrouped() || !notifyGroup) {
+		return;
+	}
+
+	auto group = getGroup();
+
+	if (group == nullptr) {
+		return;
+	}
+
+	Locker groupLock(group, asCreatureObject());
+
+	// Update Group Members
+	group->removeSpaceMissionObject(getObjectID(), missionObjectID, notifyClient);
+}
+
+void CreatureObjectImplementation::removeAllSpaceMissionObjects(bool notifyClient) {
+	if (notifyClient) {
+		CreatureObjectDeltaMessage4* delta4 = new CreatureObjectDeltaMessage4(asCreatureObject());
+
+		if (delta4 != nullptr) {
+			delta4->startUpdate(0x0D);
+
+			spaceMissionObjects.removeAll(delta4);
+
+			delta4->close();
+		}
+	} else {
+		spaceMissionObjects.removeAll(nullptr);
+	}
+}
+
 int CreatureObjectImplementation::notifyObjectDestructionObservers(TangibleObject* attacker, int condition, bool isCombatAction) {
 	PlayerObject* ghost = getPlayerObject();
 
@@ -4174,8 +4367,7 @@ void CreatureObjectImplementation::addWearableObject(TangibleObject* object, boo
 		return;
 
 	if (notifyClient) {
-		CreatureObjectDeltaMessage6* msg = new CreatureObjectDeltaMessage6(
-				asCreatureObject());
+		CreatureObjectDeltaMessage6* msg = new CreatureObjectDeltaMessage6(asCreatureObject());
 		msg->startUpdate(0x0F);
 		wearablesVector.add(object, msg);
 		msg->close();
@@ -4193,8 +4385,7 @@ void CreatureObjectImplementation::removeWearableObject(TangibleObject* object, 
 		return;
 
 	if (notifyClient) {
-		CreatureObjectDeltaMessage6* msg = new CreatureObjectDeltaMessage6(
-				asCreatureObject());
+		CreatureObjectDeltaMessage6* msg = new CreatureObjectDeltaMessage6(asCreatureObject());
 		msg->startUpdate(0x0F);
 		wearablesVector.remove(index, msg);
 		msg->close();
@@ -4881,4 +5072,27 @@ uint64 CreatureObjectImplementation::getQueueCommandDeltaTime(const String& comm
 	}
 
 	return commandTime->miliDifference();
+}
+
+float CreatureObjectImplementation::getOutOfRangeDistance(uint64 specialRangeID) {
+	if (specialRangeID > 0) {
+		Locker locker(&missionRangeObjectsMutex);
+
+		if (missionRangeObjects.contains(specialRangeID)) {
+			return ZoneServer::SPACESTATIONRANGE;
+		}
+	}
+
+	return TangibleObjectImplementation::getOutOfRangeDistance(specialRangeID);
+}
+
+bool CreatureObjectImplementation::isMissionRangeObject(const uint64& objectID) {
+	if (objectID == 0) {
+		return false;
+	}
+
+	Locker locker(&missionRangeObjectsMutex);
+	int index = missionRangeObjects.find(objectID);
+
+	return index != -1;
 }

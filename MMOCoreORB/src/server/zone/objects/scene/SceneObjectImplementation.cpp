@@ -101,6 +101,19 @@ void SceneObjectImplementation::initializeTransientMembers() {
 	}
 
 	updateWorldPosition(true);
+
+	boundingRadius = Math::max(radius, 0.f);
+
+	auto volume = getBoundingVolume();
+
+	if (volume != nullptr) {
+		const auto& sphere = volume->getBoundingSphere();
+		float sphereRadius = sphere.getCenter().length() + sphere.getRadius();
+
+		if (getBoundingRadius() <= sphereRadius) {
+			setBoundingRadius(sphereRadius);
+		}
+	}
 }
 
 void SceneObjectImplementation::initializePrivateData() {
@@ -348,7 +361,6 @@ void SceneObjectImplementation::sendWithoutParentTo(SceneObject* player) {
 void SceneObjectImplementation::sendTo(SceneObject* player, bool doClose, bool forceLoadContainer) {
 	if ((isClientObject() && !forceSend) || !sendToClient || player == nullptr || player->getClient() == nullptr)
 		return;
-
 
 	/*
 	if (isVehicleObject() || isPlayerCreature()) {
@@ -992,8 +1004,9 @@ void SceneObjectImplementation::notifyInsertToZone(Zone* newZone) {
 void SceneObjectImplementation::teleport(float newPositionX, float newPositionZ, float newPositionY, uint64 parentID) {
 	auto zone = getZone();
 
-	if (zone == nullptr)
+	if (zone == nullptr) {
 		return;
+	}
 
 	if (zone->isSpaceZone()) {
 		spaceZoneComponent->teleport(asSceneObject(), newPositionX, newPositionZ, newPositionY, parentID);
@@ -1003,10 +1016,11 @@ void SceneObjectImplementation::teleport(float newPositionX, float newPositionZ,
 }
 
 void SceneObjectImplementation::switchZone(const String& newTerrainName, float newPostionX, float newPositionZ, float newPositionY, uint64 parentID, bool toggleInvisibility, int playerArrangement) {
-	if (newTerrainName.contains("space"))
+	if (newTerrainName.contains("space")) {
 		spaceZoneComponent->switchZone(asSceneObject(), newTerrainName, newPostionX, newPositionZ, newPositionY, parentID, toggleInvisibility, playerArrangement);
-	else
+	} else {
 		groundZoneComponent->switchZone(asSceneObject(), newTerrainName, newPostionX, newPositionZ, newPositionY, parentID, toggleInvisibility, playerArrangement);
+	}
 }
 
 void SceneObjectImplementation::updateDirection(float fw, float fx, float fy, float fz) {
@@ -2229,14 +2243,24 @@ Vector<Reference<MeshData*>> SceneObjectImplementation::getTransformedMeshData(c
 	return data;
 }
 
-const BaseBoundingVolume* SceneObjectImplementation::getBoundingVolume() {
-	if (templateObject != nullptr) {
-		AppearanceTemplate *appr = templateObject->getAppearanceTemplate();
-		if (appr != nullptr) {
-			return appr->getBoundingVolume();
-		}
+const BaseBoundingVolume* SceneObjectImplementation::getBoundingVolume() const {
+	auto appearance = getAppearanceTemplate();
+
+	if (appearance == nullptr) {
+		return nullptr;
 	}
-	return nullptr;
+
+	return appearance->getBoundingVolume();
+}
+
+const BaseBoundingVolume* SceneObjectImplementation::getCollisionVolume() const {
+	auto appearance = getAppearanceTemplate();
+
+	if (appearance == nullptr) {
+		return nullptr;
+	}
+
+	return appearance->getCollisionVolume();
 }
 
 void SceneObjectImplementation::executeOrderedTask(const StdFunction& function, const String& name) {
@@ -2470,7 +2494,6 @@ String SceneObjectImplementation::getGameObjectTypeStringID() {
 }
 
 bool SceneObjectImplementation::isNearBank() {
-
 	SortedVector<ManagedReference<TreeEntry*> > closeObjects;
 	CloseObjectsVector* closeObjectsVector = (CloseObjectsVector*) getCloseObjects();
 
@@ -2546,4 +2569,12 @@ const AppearanceTemplate* SceneObjectImplementation::getAppearanceTemplate() con
 	}
 
 	return shot->getAppearanceTemplate();
+}
+
+void SceneObjectImplementation::setBoundingRadius(float value) {
+	boundingRadius = value;
+}
+
+float SceneObjectImplementation::getBoundingRadius() {
+	return Math::max(boundingRadius, radius);
 }

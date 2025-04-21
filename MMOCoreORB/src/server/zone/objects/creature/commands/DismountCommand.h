@@ -9,6 +9,7 @@
 #include "server/zone/objects/intangible/ControlDevice.h"
 #include "templates/creature/SharedCreatureObjectTemplate.h"
 #include "server/zone/packets/object/DataTransform.h"
+#include "server/zone/packets/creature/CreatureObjectDeltaMessage3.h"
 
 class DismountCommand : public QueueCommand {
 	Vector<uint32> restrictedBuffCRCs;
@@ -27,14 +28,17 @@ public:
 	}
 
 	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
-		if (!checkStateMask(creature))
+		if (!checkStateMask(creature)) {
 			return INVALIDSTATE;
+		}
 
-		if (!checkInvalidLocomotions(creature))
+		if (!checkInvalidLocomotions(creature)) {
 			return INVALIDLOCOMOTION;
+		}
 
-		if (!creature->hasState(CreatureState::RIDINGMOUNT))
+		if (!creature->hasState(CreatureState::RIDINGMOUNT)) {
 			return INVALIDSTATE;
+		}
 
 		if (!creature->checkCooldownRecovery("mount_dismount")) {
 			return GENERALERROR;
@@ -52,7 +56,10 @@ public:
 			return GENERALERROR;
 		}
 
-		creature->clearState(CreatureState::RIDINGMOUNT);
+		float mountedSpeed = creature->getRunSpeed();
+
+		// Remove Mounted combat slow from player
+		creature->removeMountedCombatSlow(false);
 
 		ManagedReference<SceneObject*> mount = creature->getParent().get();
 
@@ -60,6 +67,8 @@ public:
 		if (mount != nullptr && mount->isCreatureObject()) {
 			handleMount(creature, mount);
 		}
+
+		creature->clearState(CreatureState::RIDINGMOUNT);
 
 		// reapply speed buffs if they exist
 		for (int i = 0; i < restrictedBuffCRCs.size(); i++) {
@@ -70,6 +79,7 @@ public:
 
 				if (buff != nullptr) {
 					Locker lock(buff, creature);
+
 					buff->applyAllModifiers();
 				}
 			}
@@ -78,16 +88,12 @@ public:
 		SpeedMultiplierModChanges* changeBuffer = creature->getSpeedMultiplierModChanges();
 		int bufferSize = changeBuffer->size();
 
-		if (bufferSize > 5) {
+		while (changeBuffer->size() > 4) {
 			changeBuffer->remove(0);
 		}
 
-		changeBuffer->add(SpeedModChange(creature->getSpeedMultiplierMod()));
-
-		Vector<FloatParam> speedTempl = playerTemplate->getSpeed();
-
-		// Reset Run Speed from template
-		creature->setRunSpeed(speedTempl.get(0));
+		changeBuffer->add(SpeedModChange(mountedSpeed));
+		changeBuffer->add(SpeedModChange(creature->getRunSpeed()));
 
  		// Reset Force Sensitive control mods to default.
 		creature->updateSpeedAndAccelerationMods();
@@ -95,11 +101,24 @@ public:
 		// Update players stats in the database
 		creature->updateToDatabase();
 
+		// Update dismount timer
 		creature->updateCooldownTimer("mount_dismount", 2000);
 		creature->setNextAllowedMoveTime(500);
 
-		// these are already removed off the player - Just remove it off the mount
-		creature->removeMountedCombatSlow(false);
+		// Client manipulates player height when dismounting, reset the player height sent to the client
+		auto height = creature->getHeight();
+
+		if (height != 1.f) {
+			CreatureObjectDeltaMessage3* delta3 = new CreatureObjectDeltaMessage3(creature);
+
+			if (delta3 != nullptr) {
+				delta3->addFloatUpdate(0x0E, 1.f);
+				delta3->addFloatUpdate(0x0E, height);
+				delta3->close();
+
+				creature->sendMessage(delta3);
+			}
+		}
 
 		return SUCCESS;
 	}
@@ -121,14 +140,24 @@ public:
 			return;
 		}
 
-		Locker clocker(vehicle, creature);
+		auto ghost = creature->getPlayerObject();
 
-		vehicle->clearState(CreatureState::MOUNTEDCREATURE);
+		if (ghost == nullptr) {
+			return;
+		}
+
+		auto playerValidated = ghost->getLastValidatedPosition();
+
+		if (playerValidated == nullptr) {
+			return;
+		}
+
+		Locker clocker(vehicle, creature);
 
 		// Handle dismounting player
 		if (vehicle == creature->getParent().get()) {
 			// Player will be sent to the vehicles position in the world
-			Vector3 vehiclePosition = vehicle->getWorldPosition();
+			Vector3 validatedPosition = playerValidated->getPosition();
 
 			float vehicleSpeed = vehicle->getCurrentSpeed();
 
@@ -143,8 +172,8 @@ public:
 					angle = M_PI + a;
 				}
 
-				vehiclePosition.setX(vehiclePosition.getX() + (Math::cos(angle) * -1.f));
-				vehiclePosition.setY(vehiclePosition.getY() + (Math::sin(angle) * -1.f));
+				validatedPosition.setX(validatedPosition.getX() + (Math::cos(angle) * -1.f));
+				validatedPosition.setY(validatedPosition.getY() + (Math::sin(angle) * -1.f));
 			}
 
 			auto planetManager = zone->getPlanetManager();
@@ -154,32 +183,34 @@ public:
 
 				if (terrainManager != nullptr) {
 					IntersectionResults intersections;
-					CollisionManager::getWorldFloorCollisions(vehiclePosition.getX(), vehiclePosition.getY(), zone, &intersections, (CloseObjectsVector*)creature->getCloseObjects());
-					vehiclePosition.setZ(planetManager->findClosestWorldFloor(vehiclePosition.getX(), vehiclePosition.getY(), vehiclePosition.getZ(), creature->getSwimHeight(), &intersections, (CloseObjectsVector*)creature->getCloseObjects()));
+					CollisionManager::getWorldFloorCollisions(validatedPosition.getX(), validatedPosition.getY(), zone, &intersections, (CloseObjectsVector*)creature->getCloseObjects());
+					validatedPosition.setZ(planetManager->findClosestWorldFloor(validatedPosition.getX(), validatedPosition.getY(), validatedPosition.getZ(), creature->getSwimHeight(), &intersections, (CloseObjectsVector*)creature->getCloseObjects()));
 				}
 			}
 
 			// Transfer them into the zone
-			zone->transferObject(creature, -1, false);
+			zone->transferObject(creature, -1, false, false, false);
 
-			creature->teleport(vehiclePosition.getX(), vehiclePosition.getZ(), vehiclePosition.getY(), 0);
+			vehicle->clearState(CreatureState::MOUNTEDCREATURE);
 
-			// debug markers
+			// Update the players position
+			creature->teleport(validatedPosition.getX(), validatedPosition.getZ(), validatedPosition.getY(), 0);
+
 			/*
+			// debug markers
 			Reference<SceneObject*> movementMarker = creature->getZoneServer()->createObject(STRING_HASHCODE("object/path_waypoint/path_waypoint.iff"), 0);
 
 			Locker moveLock(movementMarker, creature);
-			movementMarker->initializePosition(vehiclePosition.getX(), vehiclePosition.getZ(), vehiclePosition.getY());
+			movementMarker->initializePosition(validatedPosition.getX(), validatedPosition.getZ(), validatedPosition.getY());
 			zone->transferObject(movementMarker, -1, true);
 			moveLock.release();
-
-			// END debug markers\
+			// END debug markers
 			*/
 
 			ManagedReference<PlayerManager*> playerManager = server->getPlayerManager();
 
 			if (playerManager != nullptr) {
-				playerManager->updateSwimmingState(creature, vehiclePosition.getZ());
+				playerManager->updateSwimmingState(creature, validatedPosition.getZ());
 			}
 		}
 
@@ -201,7 +232,10 @@ public:
 			vehicle->incrementMovementCounter();
 
 			auto data = new DataTransform(vehicle);
-			vehicle->broadcastMessage(data, false);
+
+			if (data != nullptr) {
+				vehicle->broadcastMessage(data, false);
+			}
 		}
 	}
 

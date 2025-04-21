@@ -13,6 +13,7 @@
 #include "server/zone/objects/tangible/components/droid/DroidCraftingModuleDataComponent.h"
 #include "server/zone/objects/tangible/components/droid/DroidPersonalityModuleDataComponent.h"
 #include "server/zone/objects/tangible/components/droid/DroidMaintenanceModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidDataStorageModuleDataComponent.h"
 #include "server/zone/objects/structure/StructureObject.h"
 #include "server/zone/objects/creature/conversation/ConversationObserver.h"
 #include "server/zone/objects/tangible/weapon/WeaponObject.h"
@@ -42,7 +43,7 @@ void DroidObjectImplementation::fillAttributeList(AttributeListMessage* msg, Cre
 				continue;
 			}
 
-			module->fillAttributeList(msg, object);
+			module->fillAttributeList(msg, _this.getReferenceUnsafeStaticCast());
 		}
 	}
 }
@@ -375,6 +376,18 @@ bool DroidObjectImplementation::isCombatDroid() {
 	// inante comabt ability, regardless of module installed
 	if (getSpecies() == PROBOT || getSpecies() == DZ70)
 		return true;
+
+	return false;
+}
+
+bool DroidObjectImplementation::isBombDroid() {
+	for (int i = 0; i < modules.size(); i++) {
+		auto& module = modules.get(i);
+
+		if (module->isDetonationModule()) {
+			return true;
+		}
+	}
 
 	return false;
 }

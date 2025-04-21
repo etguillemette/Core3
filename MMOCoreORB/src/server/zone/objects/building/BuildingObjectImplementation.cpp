@@ -2008,11 +2008,11 @@ bool BuildingObjectImplementation::isBuildingObject() {
 	return true;
 }
 
-float BuildingObjectImplementation::getOutOfRangeDistance() const {
+float BuildingObjectImplementation::getOutOfRangeDistance(uint64 specialRangeID) {
 #ifdef COV_BUILDING_QUAD_RANGE
 	return ZoneServer::CLOSEOBJECTRANGE * 4;
 #else // COV_BUILDING_QUAD_RANGE
-	return ZoneServer::CLOSEOBJECTRANGE;
+	return ZoneServer::CLOSEOBJECTRANGE + getBoundingRadius();
 #endif // COV_BUILDING_QUAD_RANGE
 }
 

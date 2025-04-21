@@ -37,6 +37,7 @@ namespace scene {
 		int getPositionZ(lua_State* L);
 		int getPositionY(lua_State* L);
 		int getDirectionAngle(lua_State* L);
+		int getDirection(lua_State* L);
 		int getWorldPositionX(lua_State* L);
 		int getWorldPositionZ(lua_State* L);
 		int getWorldPositionY(lua_State* L);
@@ -75,6 +76,7 @@ namespace scene {
 		int isPlayerCreature(lua_State* L);
 		int isCreature(lua_State* L);
 		int isBuildingObject(lua_State* L);
+		int isCellObject(lua_State* L);
 		int isActiveArea(lua_State* L);
 		int isMissionObject(lua_State* L);
 		int getZoneName(lua_State* L);
