@@ -34,7 +34,7 @@ npc_vendor = Creature:new {
 			"object/mobile/junk_nado.iff",
 			"object/mobile/junk_reggi.iff",
 			"object/mobile/junk_sheani.iff",
-			"object/mobile/junk_sneg.iff"
+			"object/mobile/junk_sneg.iff",
 			"object/mobile/dressed_merchant_trainer_01.iff",
 			"object/mobile/dressed_merchant_trainer_02.iff",
 			"object/mobile/dressed_merchant_trainer_03.iff"},
