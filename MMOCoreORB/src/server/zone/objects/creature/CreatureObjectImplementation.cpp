@@ -1662,10 +1662,6 @@ void CreatureObjectImplementation::addSkill(const String& skill,
 void CreatureObjectImplementation::updatePostures(bool immediate) {
 	updateSpeedAndAccelerationMods();
 
-	// TODO: these two seem to be as of yet unused (maybe only necessary in client)
-	//CreaturePosture::instance()->getTurnScale((uint8)newPosture);
-	//CreaturePosture::instance()->getCanSeeHeightMod((uint8)newPosture);
-
 	if (posture != CreaturePosture::SITTING && hasState(CreatureState::SITTINGONCHAIR)) {
 		clearState(CreatureState::SITTINGONCHAIR);
 	}
@@ -1757,6 +1753,16 @@ float CreatureObjectImplementation::getAccelerationModifier() const {
 	}
 
 	return modifier;
+}
+
+float CreatureObjectImplementation::getHeight(bool postureMod) const {
+	float retHeight = height;
+
+	if (postureMod) {
+		retHeight *= CreaturePosture::instance()->getCanSeeHeightMod(posture);
+	}
+
+	return retHeight;
 }
 
 void CreatureObjectImplementation::sendSpeedAndAccelerationMods(SceneObject* player) {
@@ -2046,6 +2052,19 @@ void CreatureObjectImplementation::setRunSpeed(float newSpeed, bool notifyClient
 		return;
 	}
 
+	CreatureObjectDeltaMessage4* dcreo4 = new CreatureObjectDeltaMessage4(asCreatureObject());
+
+	if (dcreo4 == nullptr) {
+		return;
+	}
+
+	dcreo4->updateRunSpeed();
+	dcreo4->close();
+
+	sendMessage(dcreo4);
+}
+
+void CreatureObjectImplementation::updateRunSpeed() {
 	CreatureObjectDeltaMessage4* dcreo4 = new CreatureObjectDeltaMessage4(asCreatureObject());
 
 	if (dcreo4 == nullptr) {
@@ -4608,22 +4627,22 @@ float CreatureObjectImplementation::getTemplateRadius() {
 
 bool CreatureObjectImplementation::hasEffectImmunity(uint8 effectType) const {
 	switch (effectType) {
-	case CommandEffect::BLIND:
-	case CommandEffect::DIZZY:
-	case CommandEffect::INTIMIDATE:
-	case CommandEffect::STUN:
-	case CommandEffect::NEXTATTACKDELAY:
-		if (isDroidSpecies() || const_cast<CreatureObjectImplementation*>(this)->isVehicleObject() || isWalkerSpecies())
-			return true;
-		break;
-	case CommandEffect::KNOCKDOWN:
-	case CommandEffect::POSTUREUP:
-	case CommandEffect::POSTUREDOWN:
-		if (const_cast<CreatureObjectImplementation*>(this)->isVehicleObject() || isWalkerSpecies())
-			return true;
-		break;
-	default:
-		return false;
+		case CommandEffect::BLIND:
+		case CommandEffect::DIZZY:
+		case CommandEffect::INTIMIDATE:
+		case CommandEffect::STUN:
+		case CommandEffect::NEXTATTACKDELAY:
+			if (const_cast<CreatureObjectImplementation*>(this)->isVehicleObject())
+				return true;
+			break;
+		case CommandEffect::KNOCKDOWN:
+		case CommandEffect::POSTUREUP:
+		case CommandEffect::POSTUREDOWN:
+			if (const_cast<CreatureObjectImplementation*>(this)->isVehicleObject())
+				return true;
+			break;
+		default:
+			return false;
 	}
 
 	return false;
