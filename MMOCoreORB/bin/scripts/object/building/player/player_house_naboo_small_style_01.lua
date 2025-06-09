@@ -44,7 +44,7 @@
 object_building_player_player_house_naboo_small_style_01 = object_building_player_shared_player_house_naboo_small_style_01:new {
 	lotSize = 1,
 	baseMaintenanceRate = 16,
-	allowedZones = {"dantooine", "naboo", "rori"},
+	allowedZones = {"corellia", "dantooine", "lok", "naboo", "rori", "talus", "tatooine"}, --Ethan edit 6-9-25 (PLAYER CITIES) I likes the Naboo houses. Nuf said
 	publicStructure = 0,
 	skillMods = {
 		{"private_medical_rating", 100},

@@ -44,7 +44,7 @@
 object_building_player_player_house_generic_small_style_01_floorplan_02 = object_building_player_shared_player_house_generic_small_style_01_floorplan_02:new {
 	lotSize = 2,
 	baseMaintenanceRate = 16,
-	allowedZones = {"corellia", "dantooine", "lok", "naboo", "rori", "talus", "tatooine"},
+	allowedZones = {"corellia", "dantooine", "lok", "naboo", "rori", "talus", "tatooine"}, --Ethan edit 6-9-25 (PLAYER CITIES) I likes the Naboo houses. Nuf said
 	publicStructure = 0,
 	skillMods = {
 		{"private_medical_rating", 100},

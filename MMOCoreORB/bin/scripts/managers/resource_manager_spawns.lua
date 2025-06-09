@@ -73785,6 +73785,31 @@ resources = {
 	},
 
 	{
+		name = "Daikohi",
+		type = "armophous_bospridium",
+		classes = {
+			{"Inorganic", "inorganic"},
+			{"Mineral", "mineral"},
+			{"Gemstone", "gemstone"},
+			{"Amorphous Gemstone", "gemstone_armophous"},
+			{"Bospridium Amorphous Gemstone", "armophous_bospridium"},
+		},
+		attributes = {
+			{"entangle_resistance", 80},
+			{"res_cold_resist", 59},
+			{"res_decay_resist", 26},
+			{"res_heat_resist", 602},
+			{"res_malleability", 73},
+			{"res_quality", 951},
+			{"res_shock_resistance", 68},
+			{"res_toughness", 55},
+		},
+		zoneRestriction = "",
+		surveyToolType = 6,
+		containerCRC = 3684838486,
+	},
+
+	{
 		name = "Daimilee",
 		type = "meat_wild_corellia",
 		classes = {
@@ -176612,6 +176637,28 @@ resources = {
 	},
 
 	{
+		name = "Heko",
+		type = "meat_domesticated_yavin4",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Food", "creature_food"},
+			{"Meat", "meat"},
+			{"Domesticated Meat", "meat_domesticated"},
+			{"Yavinian Domesticated Meat", "meat_domesticated_yavin4"},
+		},
+		attributes = {
+			{"res_decay_resist", 171},
+			{"res_flavor", 762},
+			{"res_potential_energy", 173},
+			{"res_quality", 755},
+		},
+		zoneRestriction = "yavin4",
+		surveyToolType = -1,
+		containerCRC = 1349101341,
+	},
+
+	{
 		name = "Hekoda",
 		type = "meat_egg_corellia",
 		classes = {
@@ -190470,6 +190517,28 @@ resources = {
 		zoneRestriction = "dantooine",
 		surveyToolType = 3,
 		containerCRC = 2868134971,
+	},
+
+	{
+		name = "Hyislaisri",
+		type = "meat_insect_rori",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Food", "creature_food"},
+			{"Meat", "meat"},
+			{"Insect Meat", "meat_insect"},
+			{"Rori Insect Meat", "meat_insect_rori"},
+		},
+		attributes = {
+			{"res_decay_resist", 421},
+			{"res_flavor", 568},
+			{"res_potential_energy", 848},
+			{"res_quality", 507},
+		},
+		zoneRestriction = "rori",
+		surveyToolType = -1,
+		containerCRC = 1349101341,
 	},
 
 	{
@@ -336920,6 +336989,29 @@ resources = {
 	},
 
 	{
+		name = "Osri",
+		type = "fruit_fruits_talus",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Seeds", "seeds"},
+			{"Fruit", "fruit"},
+			{"Fruits", "fruit_fruits"},
+			{"Talusian Fruit", "fruit_fruits_talus"},
+		},
+		attributes = {
+			{"res_decay_resist", 267},
+			{"res_flavor", 832},
+			{"res_potential_energy", 251},
+			{"res_quality", 644},
+		},
+		zoneRestriction = "talus",
+		surveyToolType = 3,
+		containerCRC = 1808675396,
+	},
+
+	{
 		name = "Osroda",
 		type = "meat_wild_yavin4",
 		classes = {
@@ -389277,6 +389369,28 @@ resources = {
 			{"res_quality", 248},
 		},
 		zoneRestriction = "tatooine",
+		surveyToolType = -1,
+		containerCRC = 1349101341,
+	},
+
+	{
+		name = "Reupalle",
+		type = "meat_domesticated_corellia",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Food", "creature_food"},
+			{"Meat", "meat"},
+			{"Domesticated Meat", "meat_domesticated"},
+			{"Corellian Domesticated Meat", "meat_domesticated_corellia"},
+		},
+		attributes = {
+			{"res_decay_resist", 401},
+			{"res_flavor", 575},
+			{"res_potential_energy", 66},
+			{"res_quality", 542},
+		},
+		zoneRestriction = "corellia",
 		surveyToolType = -1,
 		containerCRC = 1349101341,
 	},
@@ -523676,6 +523790,29 @@ resources = {
 		zoneRestriction = "rori",
 		surveyToolType = -1,
 		containerCRC = 2928137621,
+	},
+
+	{
+		name = "Woasca",
+		type = "softwood_conifer_naboo",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Structural", "flora_structural"},
+			{"Wood", "wood"},
+			{"Soft Wood", "softwood"},
+			{"Nabooian Conifer Wood", "softwood_conifer_naboo"},
+		},
+		attributes = {
+			{"res_decay_resist", 317},
+			{"res_malleability", 809},
+			{"res_quality", 341},
+			{"res_shock_resistance", 362},
+			{"res_toughness", 233},
+		},
+		zoneRestriction = "naboo",
+		surveyToolType = 3,
+		containerCRC = 1001781097,
 	},
 
 	{
