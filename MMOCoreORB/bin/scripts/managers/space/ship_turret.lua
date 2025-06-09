@@ -1,8 +1,8 @@
 -- {shipChassisName, weaponIndex, minYaw, maxYaw, minPitch, maxPitch},
 
 turretData = {
-	--{"yt1300", 0, -180, 180, -90, 5},
-	--{"yt1300", 1, -180, 180, -90, 5},
+	{"yt1300", 0, -180, 180, -90, 5}, --TESTING Ethan edit 6-9-25 (POB TURRETS) Will this make it so that turrets auto-fire? Let's find out!
+	{"yt1300", 1, -180, 180, -90, 5}, --TESTING Ethan edit 6-9-25 (POB TURRETS) Will this make it so that turrets auto-fire? Let's find out!
 	--{"yt1300_tier1", 0, -180, 180, -90, 5},
 	--{"yt1300_tier1", 1, -180, 180, -90, 5},
 	--{"yt1300_tier2", 0, -180, 180, -90, 5},

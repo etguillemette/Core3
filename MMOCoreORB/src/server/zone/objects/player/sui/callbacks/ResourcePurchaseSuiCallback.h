@@ -183,8 +183,8 @@ public:
 				//Ethan edit 5-29-25 (RESOURCE VENDOR) Trying to fix this so that the stats appear again. Jumping back in here, god help me...
 
 
-				//spawn = resourceManager->getResourceSpawn(nodeName);
-				//int price = spawn->evaluatePrice();
+				spawn = resourceManager->getResourceSpawn(nodeName);
+				int price = spawn->evaluatePrice();
 
 				//if (spawn != nullptr) {
 				//	spawn->addStatsToDeedListBox(listBox);
