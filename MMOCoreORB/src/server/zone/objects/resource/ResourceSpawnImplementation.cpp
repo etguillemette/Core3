@@ -288,11 +288,12 @@ void ResourceSpawnImplementation::evaluatePurchaseListBox(SuiListBox* suil) {
 
 	int pricePerUnit = 1;
 
-	/* Ethan edit 1-24-25 ... I don't think this is necessary? I'm doubling up here for some reason...
+	//Ethan edit 1-24-25 ... I don't think this is necessary? I'm doubling up here for some reason... 
+	//Ethan edit 5-29-25 FUCK. I think this is what listed the stats in the first place!!!
 	for (int i = 0; i < spawnAttributes.size(); ++i) {
 		String attrib;
 		int value = getAttributeAndValue(attrib, i);
-		
+		/*
 		if(value > 900)
 		{
 			pricePerUnit+= 2;
@@ -301,11 +302,11 @@ void ResourceSpawnImplementation::evaluatePurchaseListBox(SuiListBox* suil) {
 		{
 			pricePerUnit+= 1;
 		}
-		
+		*/
 		String tempstat = "@obj_attr_n:" + attrib + " = " + value;
 		suil->addMenuItem(tempstat);
 	}
-	*/
+	//*/
 
 	pricePerUnit = this->evaluatePrice();
 

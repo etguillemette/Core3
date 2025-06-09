@@ -180,8 +180,16 @@ public:
 					return;
 				}
 
-				spawn = resourceManager->getResourceSpawn(nodeName);
-				int price = spawn->evaluatePrice();
+				//Ethan edit 5-29-25 (RESOURCE VENDOR) Trying to fix this so that the stats appear again. Jumping back in here, god help me...
+
+
+				//spawn = resourceManager->getResourceSpawn(nodeName);
+				//int price = spawn->evaluatePrice();
+
+				//if (spawn != nullptr) {
+				//	spawn->addStatsToDeedListBox(listBox);
+				//}
+				//End Ethan edit 5-29-25 (RESOURCE VENDOR) Trying to fix this so that the stats appear again. Jumping back in here, god help me...
 
 				//Ethan edit 6-4-24 (RESOURCE VENDOR) ... I think below is where I would fold everything into another menu, this one for choosing crate size
 				listBox->removeAllMenuItems();
