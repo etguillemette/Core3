@@ -54,6 +54,18 @@ void ImageDesignSessionImplementation::startImageDesign(CreatureObject* designer
 	uint64 designerTentID = 0; // Equals False, that controls if you can stat migrate or not (only in a Salon).
 	uint64 targetTentID = 0;
 
+	//Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+			Lua* lua = new Lua();
+			lua->init();
+
+			lua->runFile("scripts/managers/player_manager.lua");
+			int soloImageDesignExp = lua->getGlobalBoolean("imageDesignFullExp"); //Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+
+			delete lua;
+			lua = nullptr;
+	//End Ethan edit 12-18-24 (IMAGE DESIGN FULL EXP)
+
+	
 	ManagedReference<SceneObject*> obj = designer->getParentRecursively(SceneObjectType::SALONBUILDING);
 
 	if (obj != nullptr) // If they are in a salon, enable the tickmark for stat migration.
@@ -70,7 +82,7 @@ void ImageDesignSessionImplementation::startImageDesign(CreatureObject* designer
 
 			designer->registerObserver(ObserverEventType::POSITIONCHANGED, positionObserver);
 
-			if (targetPlayer != designer)
+			if (targetPlayer != designer || soloImageDesignExp == true) //Ethan edit 6-17-25 (IMAGE DESIGNER) Added option for IDs to ID themselves
 				targetPlayer->registerObserver(ObserverEventType::POSITIONCHANGED, positionObserver);
 		}
 	}
