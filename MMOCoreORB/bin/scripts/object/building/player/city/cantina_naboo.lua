@@ -48,6 +48,7 @@ object_building_player_city_cantina_naboo = object_building_player_city_shared_c
 	length = 7,
 	width = 7,
 	planetMapCategory = "cantina",
+	gameObjectType = 530, --Ethan edit (IMAGE DESIGNER) Trying to make it so you can do image designer stuff here, like a salon
 	cityRankRequired = 2,
 	limitToOnePerCity = 0,
 	abilityRequired = "place_cantina",
