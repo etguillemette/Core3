@@ -1,8 +1,8 @@
 -- {shipChassisName, weaponIndex, minYaw, maxYaw, minPitch, maxPitch},
 
 turretData = {
-	{"yt1300", 0, -180, 180, -90, 5}, --TESTING Ethan edit 6-9-25 (POB TURRETS) Will this make it so that turrets auto-fire? Let's find out!
-	{"yt1300", 1, -180, 180, -90, 5}, --TESTING Ethan edit 6-9-25 (POB TURRETS) Will this make it so that turrets auto-fire? Let's find out!
+	--{"yt1300", 0, -180, 180, -90, 5}, 
+	--{"yt1300", 1, -180, 180, -90, 5}, 
 	--{"yt1300_tier1", 0, -180, 180, -90, 5},
 	--{"yt1300_tier1", 1, -180, 180, -90, 5},
 	--{"yt1300_tier2", 0, -180, 180, -90, 5},
@@ -13,8 +13,8 @@ turretData = {
 	--{"yt1300_tier4", 1, -180, 180, -90, 5},
 	--{"yt1300_tier5", 0, -180, 180, -90, 6},
 	--{"yt1300_tier5", 1, -180, 180, -90, 6},
-	--{"player_yt1300", 0, -180, 180, -90, 7},
-	--{"player_yt1300", 1, -180, 180, -90, 7},
+	{"player_yt1300", 0, -180, 180, -90, 7}, --TESTING Ethan edit 6-9-25 (POB TURRETS) Will this make it so that turrets auto-fire? Let's find out!
+	{"player_yt1300", 1, -180, 180, -90, 7}, --TESTING Ethan edit 6-9-25 (POB TURRETS) Will this make it so that turrets auto-fire? Let's find out!
 	--{"player_ywing", 1, -180, 180, -30, 10},
 	--{"player_hutt_turret_ship", 1, -180, 180, -90, 7},
 	--{"nebulon", 0, -90, 90, -25, 5},
