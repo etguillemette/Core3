@@ -87,8 +87,8 @@ bool LootManagerImplementation::loadConfigData() {
 	diseaseDotChance = lua->getGlobalFloat("diseaseDotChance");
 	poisonDotChance = lua->getGlobalFloat("poisonDotChance");
 
-	lootBoost = lua->getGlobalBoolean("lootBoost"); //Ethan edit 1-14-25 (LOOT BOOST) Gives out more loot
-	lootIncrease = lua->getGlobalInt("lootIncrease"); //Ethan edit 1-14-25 (LOOT BOOST) Gives out more loot
+	//lootBoost = lua->getGlobalBoolean("lootBoost"); //Ethan edit 1-14-25 (LOOT BOOST) Gives out more loot
+	//lootIncrease = lua->getGlobalInt("lootIncrease"); //Ethan edit 1-14-25 (LOOT BOOST) Gives out more loot
 
 	if (fabs((fireDotChance + diseaseDotChance + poisonDotChance) - 1.f) > 0.01f) {
 		error() << "Weapon DOT Type chance is not properly distributed. Chances need to equate to 1 - Current Value: " << (fireDotChance + diseaseDotChance + poisonDotChance);

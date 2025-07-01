@@ -698,6 +698,7 @@ int CreatureManagerImplementation::notifyDestruction(TangibleObject* destructor,
 			creatureInventory->setContainerOwnerID(ownerID);
 
 			//Ethan edit 1-14-25 (LOOT BOOST) If enabled, adds extra loot chances
+			/*
 			Lua* lua = new Lua();
 			lua->init();
 
@@ -711,6 +712,7 @@ int CreatureManagerImplementation::notifyDestruction(TangibleObject* destructor,
 			if(lootBoost == true){
 				for(int i = 0; i < lootIncrease; i++)
 				{	
+			*/
 			//End Ethan edit 1-14-25 (LOOT BOOST) If enabled, adds extra loot chances
 
 					if (lootManager->createLoot(trx, creatureInventory, destructedObject)) {
@@ -720,8 +722,10 @@ int CreatureManagerImplementation::notifyDestruction(TangibleObject* destructor,
 					}
 
 			//Ethan edit 1-14-25 (LOOT BOOST) If enabled, adds extra loot chances
+			/*
 				}
 			}
+			*/
 			//End Ethan edit 1-14-25 (LOOT BOOST) If enabled, adds extra loot chances
 		}
 

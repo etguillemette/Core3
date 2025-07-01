@@ -44,16 +44,16 @@
 levelChance = 100
 
 --Chance dividend for attribute bonus modifiers
-baseChance = 1 --Ethan edit 1-14-24 (LOOT BOOST) Changed from 100
-yellowChance = 10 --Ethan edit 1-14-24 (LOOT BOOST) Changed from 1000
-exceptionalChance = 100 --Ethan edit 1-14-24 (LOOT BOOST) Changed from 10000
-legendaryChance = 1000 --Ethan edit 1-14-24 (LOOT BOOST) Changed from 100000
+baseChance = 100 --Ethan edit 1-14-25 (LOOT BOOST) Changed from 100
+yellowChance = 1000 --Ethan edit 1-14-25 (LOOT BOOST) Changed from 1000
+exceptionalChance = 10000 --Ethan edit 1-14-25 (LOOT BOOST) Changed from 10000
+legendaryChance = 100000 --Ethan edit 1-14-25 (LOOT BOOST) Changed from 100000
 
 --Multiplier values for bonus modifiers
-baseModifier = 1
-yellowModifier = 2
-exceptionalModifier = 8
-legendaryModifier = 9
+baseModifier = 2 --Ethan edit 7-1-25 (LOOT BOOST) Changed from 1 
+yellowModifier = 8 --Ethan edit 7-1-25 (LOOT BOOST) Changed from 2
+exceptionalModifier = 9 --Ethan edit 7-1-25 (LOOT BOOST) Changed from 8
+legendaryModifier = 9 --Ethan edit 7-1-25 (LOOT BOOST) Changed from 9
 
 --The chance for random skill mods to be on looted weapons/wearables
 skillModChance = 1000 -- 1 in 1000
@@ -81,8 +81,8 @@ junkValueModifier = 5;
 -----------------------------------
 --SINGLE PLAYER CONFIG
 -----------------------------------
-lootBoost = false --Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
-lootIncrease = 1 --Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
+--lootBoost = false --Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
+--lootIncrease = 1 --Ethan edit 1-13-25 (LOOT BOOST) Gives out more loot
 -----------------------------------
 --END SINGLE PLAYER CONFIG
 -----------------------------------
