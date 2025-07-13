@@ -84,6 +84,14 @@ CorelliaCoronetScreenPlay = CityScreenPlay:new {
 		{"corsec_master_sergeant", "corsec_master_sergeant", -172.8,28,-4167.1,0,0, "", ""},
 		--{"corsec_trooper", "corsec_trooper", -662.805,9.26289,-4182.05,196.426,0, "", ""},
 		--{"corsec_detective", "corsec_detective", -672.123,5.60327,-4164.83,340.354,0, "", ""},
+		--Ethan Edit 7-10-25 (LOOT)
+		--{"meatlump_clod", "meatlump_clod", 131,28,-4619,94,0, "", ""},
+		--{"meatlump_buffoon", "meatlump_buffoon", 134,28,-4628,70,0, "", ""},
+		--{"meatlump_cretin", "meatlump_cretin", 140,28,-4637,60,0, "", ""},
+		--{"meatlump_fool", "meatlump_fool", 151,28,-4630,40,0, "", ""},
+		--{"meatlump_oaf", "meatlump_oaf", 149,28,-4622,20,0, "", ""},
+		--{"meatlump_stooge", "meatlump_stooge", 144,28,-4612,10,0, "", ""},
+		--End Ethan Edit 7-10-25 (LOOT)
 		{"corsec_agent", "corsec_agent", -240.2,28,-4450.9,94,0, "", ""},
 		{"corsec_cadet", "corsec_cadet", -172.8,28.0929,-4165.5,179,0, "", ""},
 		{"corsec_captain", "corsec_captain", -528.144,28,-4699.89,132.784,0, "", ""},
