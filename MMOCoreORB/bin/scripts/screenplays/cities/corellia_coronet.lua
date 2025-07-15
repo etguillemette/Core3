@@ -84,14 +84,6 @@ CorelliaCoronetScreenPlay = CityScreenPlay:new {
 		{"corsec_master_sergeant", "corsec_master_sergeant", -172.8,28,-4167.1,0,0, "", ""},
 		--{"corsec_trooper", "corsec_trooper", -662.805,9.26289,-4182.05,196.426,0, "", ""},
 		--{"corsec_detective", "corsec_detective", -672.123,5.60327,-4164.83,340.354,0, "", ""},
-		--Ethan Edit 7-10-25 (LOOT)
-		--{"meatlump_clod", "meatlump_clod", 131,28,-4619,94,0, "", ""},
-		--{"meatlump_buffoon", "meatlump_buffoon", 134,28,-4628,70,0, "", ""},
-		--{"meatlump_cretin", "meatlump_cretin", 140,28,-4637,60,0, "", ""},
-		--{"meatlump_fool", "meatlump_fool", 151,28,-4630,40,0, "", ""},
-		--{"meatlump_oaf", "meatlump_oaf", 149,28,-4622,20,0, "", ""},
-		--{"meatlump_stooge", "meatlump_stooge", 144,28,-4612,10,0, "", ""},
-		--End Ethan Edit 7-10-25 (LOOT)
 		{"corsec_agent", "corsec_agent", -240.2,28,-4450.9,94,0, "", ""},
 		{"corsec_cadet", "corsec_cadet", -172.8,28.0929,-4165.5,179,0, "", ""},
 		{"corsec_captain", "corsec_captain", -528.144,28,-4699.89,132.784,0, "", ""},
@@ -103,6 +95,10 @@ CorelliaCoronetScreenPlay = CityScreenPlay:new {
 	},
 
 	patrolNpcs = {"businessman_patrol", "commoner_fat_patrol", "commoner_old_patrol", "commoner_patrol", "explorer_patrol", "miner_patrol", "noble_patrol", "scientist_patrol"},
+	--Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+	combatPatrol = {"meatlump_clod", "meatlump_buffoon", "meatlump_cretin", "meatlump_fool", "meatlump_oaf", "meatlump_stooge"},
+	--daggersNpcs = {"hidden_daggers_lieutenant", "hidden_daggers_dissident", "hidden_daggers_extremist", "hidden_daggers_activist", "hidden_dagers_leader"},
+	--End Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
 
 	patrolMobiles = {
 		--{patrolPoints, template, x, z, y, direction, cell, mood, combatPatrol},
@@ -124,6 +120,20 @@ CorelliaCoronetScreenPlay = CityScreenPlay:new {
 		{"npc_8", "patrolNpc", -350, 28, -4287, 88, 0, "", false},
 		{"npc_9", "patrolNpc", -357, 28, -4267, 39, 0, "", false},
 		{"npc_10", "patrolNpc", 69, 28, -4568, 100, 0, "conversation", false},
+
+		--Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+		--Meatlumps
+		{"thug_1", "combatPatrol",  131, 28, -4619, 10, 0, "", true},
+		{"thug_2", "combatPatrol",  134, 28, -4628, 20, 0, "", true},
+		{"thug_3", "combatPatrol",  140, 28, -4637, 30, 0, "", true},
+		{"thug_4", "combatPatrol",  151, 28, -4630, 40, 0, "", true},
+
+		--Hidden Daggers
+		{"thug_5", "combatPatrol", -433, 29, -4271, 10, 0, "", true},
+		{"thug_6", "combatPatrol", -412, 29, -4294, 20, 0, "", true},
+		{"thug_7", "combatPatrol", -453, 29, -4293, 20, 0, "", true},
+		{"thug_8", "combatPatrol", -470, 29, -4264, 20, 0, "", true},
+		--End Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
 	},
 
 	patrolPoints = {
@@ -146,6 +156,14 @@ CorelliaCoronetScreenPlay = CityScreenPlay:new {
 		npc_8 = {{-350, 28, -4287, 0, false}, {-343, 28, -4302, 0, false}, {-328, 28, -4322, 0, true}, {-426, 28, -4423, 0, false}, {-328, 28, -4322, 0, true}},
 		npc_9 = {{-357, 28, -4267, 0, true}, {-410, 28, -4238, 0, true}, {-396, 28, -4209, 0, true}},
 		npc_10 = {{69, 28, -4568, 0, false}, {43, 28, -4551, 0, true}, {0, 28, -4518, 0, false}, {43, 28, -4551, 0, true}},
+
+
+		--Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+		thug_1 = {{131, 28, -4619, 0, true}, {132, 28, -4620, 0, true}},
+		thug_2 = {{134, 28, -4628, 0, true}, {135, 28, -4632, 0, true}},
+		thug_3 = {{140, 28, -4637, 0, true}, {142, 28, -4639, 0, true}},
+		thug_4 = {{151, 28, -4630, 0, true}, {153, 28, -4634, 0, true}},
+		--End Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
 	},
 
 	stationaryCommoners = {"commoner", "commoner_fat", "commoner_old"},
@@ -393,5 +411,28 @@ function CorelliaCoronetScreenPlay:spawnMobiles()
 		self:setMoodString(pNpc, "calm")
 		self:setCustomName(pNpc, "Hunter Javeezo")
 		CreatureObject(pNpc):clearOptionBit(AIENABLED)
+
+		createObserver(CREATUREDESPAWNED, self.screenplayName, "onDespawn", pNpc)
+
 	end
+
+	--Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+	--Ethan Edit 7-10-25 (LOOT)
+	--{"hidden_daggers_activist", "hidden_daggers_activist", 3384,324,5333,20,0, "", ""},
+	--{"hidden_daggers_dissident", "hidden_daggers_dissident", 3384,325,5322,25,0, "", ""},
+	--{"hidden_daggers_extremist", "hidden_daggers_extremist", 3344,316,5330,30,0, "", ""},
+	--{"hidden_daggers_leader", "hidden_daggers_leader", 3317,308,5329,40,0, "", ""},
+	--{"hidden_daggers_lieutenant", "hidden_daggers_lieutenant", 3315,302,5321,50,0, "", ""},
+	--Ethan Edit 7-10-25 (LOOT)
+
+	--{"meatlump_clod", "meatlump_clod", 131,28,-4619,94,0, "", true},
+	--{"meatlump_buffoon", "meatlump_buffoon", 134,28,-4628,70,0, "", true},
+	--{"meatlump_cretin", "meatlump_cretin", 140,28,-4637,60,0, "", true},
+	--{"meatlump_fool", "meatlump_fool", 151,28,-4630,40,0, "", true},
+	--{"meatlump_oaf", "meatlump_oaf", 149,28,-4622,20,0, "", true},
+	--{"meatlump_stooge", "meatlump_stooge", 144,28,-4612,10,0, "", true},
+
+	--End Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+
+
 end

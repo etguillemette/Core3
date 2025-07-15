@@ -22,13 +22,6 @@ CorelliaDoabaGuerfelScreenPlay = CityScreenPlay:new {
 		{"corsec_inspector_sergeant", "corsec_inspector_sergeant", 3121,285,5006.4,-161,0, "", ""},
 		{"corsec_master_sergeant", "corsec_master_sergeant", 3300.28,308,5496.49,180.005,0, "npc_imperial", "conversation"},
 		{"corsec_sergeant", "corsec_sergeant", 3154.04,300,5172.07,0,0, "npc_imperial", "conversation"},
-		--Ethan Edit 7-10-25 (LOOT)
-		--{"hidden_daggers_activist", "hidden_daggers_activist", 3384,324,5333,20,0, "", ""},
-		--{"hidden_daggers_dissident", "hidden_daggers_dissident", 3384,325,5322,25,0, "", ""},
-		--{"hidden_daggers_extremist", "hidden_daggers_extremist", 3344,316,5330,30,0, "", ""},
-		--{"hidden_daggers_leader", "hidden_daggers_leader", 3317,308,5329,40,0, "", ""},
-		--{"hidden_daggers_lieutenant", "hidden_daggers_lieutenant", 3315,302,5321,50,0, "", ""},
-		--Ethan Edit 7-10-25 (LOOT)
 		{"corsec_trooper", "corsec_trooper", 3119.2,285,5002.2,20,0, "", ""},
 	},
 

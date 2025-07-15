@@ -93,6 +93,10 @@ CorelliaTyrenaScreenPlay = CityScreenPlay:new {
 
 	patrolNpcs = {"businessman_patrol", "commoner_fat_patrol", "commoner_old_patrol", "commoner_patrol", "noble_patrol", "scientist_patrol"},
 
+	--Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+	combatPatrol = {"hidden_daggers_lieutenant", "hidden_daggers_dissident", "hidden_daggers_extremist", "hidden_daggers_activist", "hidden_daggers_leader"},
+	--End Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+
 	patrolMobiles = {
 		--{patrolPoints, template, x, z, y, direction, cell, mood, combatPatrol},
 
@@ -112,6 +116,14 @@ CorelliaTyrenaScreenPlay = CityScreenPlay:new {
 		{"npc_8", "patrolNpc", -5156, 21, -2376, 186, 0, "", false},
 		{"npc_9", "patrolNpc", -5411, 21, -2655, 7, 0, "", false},
 		{"npc_10", "patrolNpc", -5583, 21, -2764, 215, 0, "", false},
+
+		--Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+		--Hidden Daggers
+		{"thug_1", "combatPatrol", -5232, 21, -2396, 10, 0, "", true},
+		{"thug_2", "combatPatrol", -5226, 21, -2377, 20, 0, "", true},
+		{"thug_3", "combatPatrol", -5202, 21, -2359, 30, 0, "", true},
+		{"thug_4", "combatPatrol", -5229, 21, -2423, 40, 0, "", true},
+		--End Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
 	},
 
 	patrolPoints = {
@@ -131,6 +143,13 @@ CorelliaTyrenaScreenPlay = CityScreenPlay:new {
 		npc_8 = {{-5156, 21, -2376, 0, true}, {-5137, 21, -2345, 0, true}, {-5125, 21, -2353, 0, true}, {-5159, 21, -2389, 0, true}, {-5145, 21, -2403, 0, true}},
 		npc_9 = {{-5411, 21, -2655, 0, true}, {-5409, 21, -2696, 0, true}, {-5402, 21, -2680, 0, true}, {-5418, 21, -2649, 0, true}},
 		npc_10 = {{-5583, 21, -2764, 0, true}, {-5573, 21, -2785, 0, true}, {-5594, 21, -2790, 0, true}, {-5575, 21, -2801, 0, true}},
+
+		--Ethan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
+		thug_1 = {{-5232, 21, -2396, 0, true}, {-5236, 21, -2436, 0, true}},
+		thug_2 = {{-5226, 21, -2377, 0, true}, {-5258, 21, -2404, 0, true}},
+		thug_3 = {{-5202, 21, -2359, 0, true}, {-5264, 21, -2420, 0, true}},
+		thug_4 = {{-5202, 21, -2359, 0, true}, {-5222, 21, -2402, 0, true}},
+		--EndEthan edit 7-14-25 (LOOT BOOST) Adding reliable spawns of various thugs
 	},
 
 	stationaryCommoners = {"commoner", "commoner_fat", "commoner_old"},
