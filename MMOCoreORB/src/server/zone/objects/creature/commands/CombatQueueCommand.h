@@ -178,8 +178,8 @@ public:
 				if (ghost->isOnLoadScreen())
 					ghost->setOnLoadScreen(false);
 
-				if (ghost->isAFK())
-					return GENERALERROR;
+				//if (ghost->isAFK()) Ethan edit 7-15-25 (AFK MACROS) Making it possible to AFK combat
+					//return GENERALERROR; Ethan edit 7-15-25 (AFK MACROS) Making it possible to AFK combat
 
 				bool covertOvert = ConfigManager::instance()->useCovertOvertSystem();
 

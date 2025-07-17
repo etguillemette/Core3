@@ -78,7 +78,7 @@ bool CombatManager::startCombat(CreatureObject* attacker, TangibleObject* defend
 	}
 
 	if (attacker->isPlayerCreature() && attacker->getPlayerObject()->isAFK()) {
-		return false;
+		//return false; Ethan edit 7-15-25 (AFK MACROS) Making it possible to AFK combat
 	}
 
 	CreatureObject* creo = defender->asCreatureObject();
