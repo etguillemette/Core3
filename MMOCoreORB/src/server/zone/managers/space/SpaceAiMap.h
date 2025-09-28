@@ -136,6 +136,7 @@ public:
 		lua->setGlobalInt("FIXED_PATROL",		ShipFlag::FIXED_PATROL);
 		lua->setGlobalInt("SQUADRON_PATROL",	ShipFlag::SQUADRON_PATROL);
 		lua->setGlobalInt("SQUADRON_FOLLOW",	ShipFlag::SQUADRON_FOLLOW);
+		lua->setGlobalInt("WAVE_ATTACK",		ShipFlag::WAVE_ATTACK);
 		lua->setGlobalInt("TEST",				ShipFlag::TEST);
 
 		lua->setGlobalInt("OBLIVIOUS",			ShipAiAgent::OBLIVIOUS);
@@ -305,6 +306,7 @@ private:
 		_REGISTERSPACELEAF(SetDisabledEngineSpeed);
 		_REGISTERSPACELEAF(Leash);
 		_REGISTERSPACELEAF(GetProspectFromDefenders);
+		_REGISTERSPACELEAF(UpdateHomePosition);
 	}
 
 	void putBitmask(Lua* lua, String key) {

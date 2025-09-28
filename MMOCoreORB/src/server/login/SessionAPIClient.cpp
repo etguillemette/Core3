@@ -10,7 +10,7 @@
 
 #ifdef WITH_SESSION_API
 
-#define SESSION_API_CLIENT_VERSION 1002
+#define SESSION_API_CLIENT_VERSION 1003
 
 #include "SessionAPIClient.h"
 
@@ -66,9 +66,6 @@ SessionAPIClient::SessionAPIClient() {
 	failOpen = config->getBool("Core3.Login.API.FailOpen", false);
 
 	info(true) << "Starting " << toString();
-
-	// TODO: Make this a config option?
-	// crossplat::threadpool::initialize_with_threads(8);
 }
 
 SessionAPIClient::~SessionAPIClient() {
@@ -96,7 +93,7 @@ String SessionAPIClient::toString() const {
 	return buf.toString();
 }
 
-void SessionAPIClient::apiCall(const String& src, const String& basePath, const SessionAPICallback& resultCallback) {
+void SessionAPIClient::apiCall(const String& src, const String& basePath, const SessionAPICallback& resultCallback, const String& method, const String& body) {
 	// If not enabled just return ALLOW all the time
 	if (!apiEnabled) {
 		SessionApprovalResult result;
@@ -135,13 +132,17 @@ void SessionAPIClient::apiCall(const String& src, const String& basePath, const 
 
 	http_client client(baseURL.toCharArray(), client_config);
 
-	http_request req(methods::GET);
+	http_request req(method == "POST" ? methods::POST : methods::GET);
 
 	String authHeader = "Bearer " + apiToken;
 
 	req.headers().add(U("Authorization"), authHeader.toCharArray());
 
 	req.set_request_uri(path.toCharArray());
+
+	if (!body.isEmpty()) {
+		req.set_body(body.toCharArray(), "application/json");
+	}
 
 	client.request(req)
 		.then([this, src, path](pplx::task<http_response> task) {
@@ -180,7 +181,7 @@ void SessionAPIClient::apiCall(const String& src, const String& basePath, const 
 			}
 
 			return resp.extract_json();
-		}).then([this, src, path, resultCallback, startTime](pplx::task<json::value> task) {
+		}).then([this, src, method, path, resultCallback, startTime](pplx::task<json::value> task) {
 			SessionApprovalResult result;
 			auto logPrefix = result.getClientTrxId() + " " + src + ": ";
 			auto result_json = json::value();
@@ -227,6 +228,30 @@ void SessionAPIClient::apiCall(const String& src, const String& basePath, const 
 					result.setDetails(String(result_json[U("details")].as_string().c_str()));
 				}
 
+				if (result_json.has_field("eip")) {
+					result.setEncryptedIP(String(result_json[U("eip")].as_string().c_str()));
+				}
+
+				if (result_json.has_field("session_id")) {
+					result.setSessionID(String(result_json[U("session_id")].as_string().c_str()));
+				}
+
+				if (result_json.has_field("account_id")) {
+					auto field = result_json[U("account_id")];
+
+					if (field.is_number()) {
+						result.setAccountID((uint32)field.as_number().to_uint32());
+					}
+				}
+
+				if (result_json.has_field("station_id")) {
+					auto field = result_json[U("station_id")];
+
+					if (field.is_number()) {
+						result.setStationID((uint32)field.as_number().to_uint32());
+					}
+				}
+
 				if (result_json.has_field("debug")) {
 					auto debug = result_json[U("debug")];
 
@@ -251,7 +276,7 @@ void SessionAPIClient::apiCall(const String& src, const String& basePath, const 
 				result.setDebugValue("trx_id", "dry-run-trx-id");
 			}
 
-			debug() << logPrefix << "END apiCall [path=" << path << "] result = " << result;
+			debug() << logPrefix << "END apiCall " << method << " [path=" << path << "] result = " << result;
 
 			Core::getTaskManager()->executeTask([resultCallback, result] {
 				resultCallback(result);
@@ -286,10 +311,49 @@ void SessionAPIClient::notifyGalaxyShutdown() {
 	apiNotify(__FUNCTION__, path.toString());
 }
 
+void SessionAPIClient::createSession(const String& username, const String& password, const String& clientVersion, const String& clientEndpoint, const SessionAPICallback& resultCallback) {
+	if (!apiEnabled) {
+		SessionApprovalResult result;
+		result.setAction(SessionApprovalResult::ApprovalAction::REJECT);
+		result.setTitle("Temporary Server Error");
+		result.setMessage("If the error continues please contact support and mention error code = S");
+		result.setDetails("SessionAPI required for authentication but not configured");
+		result.setDebugValue("trx_id", "api-disabled-auth");
+
+		Core::getTaskManager()->executeTask([resultCallback, result] {
+			resultCallback(result);
+		}, "SessionAPIClientResult-nop-createSession", "slowQueue");
+
+		return;
+	}
+
+	auto requestBody = json::value::object();
+	requestBody[U("username")] = json::value::string(U(username.toCharArray()));
+	requestBody[U("password")] = json::value::string(U(password.toCharArray()));
+	requestBody[U("client_version")] = json::value::string(U(clientVersion.toCharArray()));
+	requestBody[U("client_ip")] = json::value::string(U(clientEndpoint.toCharArray()));
+	requestBody[U("galaxy_id")] = json::value::number(galaxyID);
+
+	apiCall(__FUNCTION__, "/v1/core3/account/login", resultCallback, "POST", String(requestBody.serialize().c_str()));
+}
+
 void SessionAPIClient::approveNewSession(const String& ip, uint32 accountID, const SessionAPICallback& resultCallback) {
 	StringBuffer path;
 
 	path << "/v1/core3/account/" << accountID << "/galaxy/" << galaxyID << "/session/ip/" << ip << "/approval";
+
+	apiCall(__FUNCTION__, path.toString(), resultCallback);
+}
+
+void SessionAPIClient::validateSession(const String& sessionID, uint32 accountID, const String& ip, const SessionAPICallback& resultCallback) {
+	StringBuffer path;
+
+	path << "/v1/core3/account/" << accountID
+		<< "/galaxy/" << galaxyID
+		<< "/session/ip/" << ip
+		<< "/sessionHash/" << sessionID
+		<< "/isvalidsession"
+		;
 
 	apiCall(__FUNCTION__, path.toString(), resultCallback);
 }
@@ -328,12 +392,17 @@ void SessionAPIClient::approvePlayerConnect(const String& ip, uint32 accountID, 
 	apiCall(__FUNCTION__, path.toString(), resultCallback);
 }
 
-void SessionAPIClient::notifyPlayerOnline(const String& ip, uint32 accountID, uint64_t characterID) {
+void SessionAPIClient::notifyPlayerOnline(const String& ip, uint32 accountID, uint64_t characterID,
+		const SessionAPICallback& resultCallback) {
 	StringBuffer path;
 
 	path << "/v1/core3/account/" << accountID << "/galaxy/" << galaxyID << "/session/ip/" << ip << "/player/" << characterID << "/online";
 
-	apiNotify(__FUNCTION__, path.toString());
+	if (resultCallback != nullptr) {
+		apiCall(__FUNCTION__, path.toString(), resultCallback);
+	} else {
+		apiNotify(__FUNCTION__, path.toString());
+	}
 }
 
 void SessionAPIClient::notifyPlayerOffline(const String& ip, uint32 accountID, uint64_t characterID) {

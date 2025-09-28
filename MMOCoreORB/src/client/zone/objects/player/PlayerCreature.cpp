@@ -47,8 +47,8 @@ void PlayerCreature::insertToZone(SpaceZone* zone) {
 }
 
 void PlayerCreature::activatePositionUpdate() {
-	/*System::out << hex << "moving PlayerCreature [" << objectID << "] to (" << dec << getPositionX() << ", "
-		 << getPositionZ() << ", " << getPositionY() << ")\n";*/
+	/*info(true) << hex << "moving PlayerCreature [" << objectID << "] to (" << dec << getPositionX() << ", "
+		 << getPositionZ() << ", " << getPositionY() << ")";*/
 
 	/*ZoneClient * client = zone->getZoneClient ( );
 	if  ( client != nullptr ) {

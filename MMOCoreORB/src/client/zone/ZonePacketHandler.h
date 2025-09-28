@@ -9,7 +9,7 @@
 
 class Zone;
 
-class ZonePacketHandler : public Logger {
+class ZonePacketHandler : public Mutex, public Logger {
 	Zone* zone;
 
 public:
@@ -31,7 +31,7 @@ public:
 	void handleUpdateContainmentMessage(Message* pack);
 	void handleSceneObejctDestroyMessage(Message* pack);
 	void handleClientPermissionsMessage(Message* pack);
-
+	void handleCmdSceneReady(Message* pack);
 };
 
 #endif /* ZONEPACKETHANDLER_H_ */

@@ -371,6 +371,9 @@ function SpaceEscortScreenplay:spawnEscortShip(pPlayer)
 	-- Set the agent as a mission object
 	CreatureObject(pPlayer):addSpaceMissionObject(agentID, true)
 
+	-- Set as a mission-specific ship locked to the mission holder
+	ShipAiAgent(pShipAgent):setMissionOwner(pPlayer)
+
 	-- Set Fixed Patrol and escort flags
 	ShipAiAgent(pShipAgent):setFixedPatrol()
 	ShipAiAgent(pShipAgent):setEscort()
@@ -382,7 +385,8 @@ function SpaceEscortScreenplay:spawnEscortShip(pPlayer)
 	end
 
 	-- Set as same space faction
-	ShipObject(pShipAgent):setShipFactionString(SpaceHelpers:getPlayerSpaceFactionString(pPlayer))
+	ShipObject(pShipAgent):setShipFactionString(SpaceHelpers:getPlayerShipFactionString(pPlayer))
+	ShipAiAgent(pShipAgent):addSpaceFactionAlly(SpaceHelpers:getPlayerShipFactionHash(pPlayer))
 
 	-- Add kill observer
 	createObserver(OBJECTDESTRUCTION, self.className, "notifyEscortShipDestroyed", pShipAgent)
@@ -613,6 +617,12 @@ function SpaceEscortScreenplay:spawnAttackWave(pEscortAgent)
 			goto continue
 		end
 
+		-- Set as a mission-specific ship locked to the mission holder
+		ShipAiAgent(pShipAgent):setMissionOwner(pPlayer)
+
+		-- Set as a wave attack ship
+		ShipAiAgent(pShipAgent):setWaveAttack()
+
 		-- Ship attacking the escort ship should be hyperspaced out and destroyed, just in case make sure they are cleaned up
 		ShipAiAgent(pShipAgent):setDespawnOnNoPlayerInRange(true)
 
@@ -634,8 +644,7 @@ function SpaceEscortScreenplay:spawnAttackWave(pEscortAgent)
 		writeData(agentID .. ":" .. self.className .. ":escorterID:", playerID)
 
 		-- Add aggo and set the escort ship as ShipAgents Defender
-		ShipAiAgent(pShipAgent):addAggro(pEscortAgent, 1)
-		ShipAiAgent(pShipAgent):setDefender(pEscortAgent)
+		ShipAiAgent(pShipAgent):engageShipTarget(pEscortAgent)
 
 		::continue::
 	end
@@ -771,6 +780,15 @@ function SpaceEscortScreenplay:notifyEnteredQuestArea(pActiveArea, pShip)
 
 		local playerID = SceneObject(pPilot):getObjectID()
 		local playerLocation = readData(playerID .. ":" .. self.className .. ":location:")
+
+		-- Check if player is at the correct starting waypoint
+		local assignedStart = readData(playerID .. self.className .. ":startPoint:")
+		local activeAreaID = SceneObject(pActiveArea):getObjectID()
+		local areaEscortNumber = readData(activeAreaID .. ":" .. self.className)
+
+		if (areaEscortNumber ~= assignedStart) then
+			return 0
+		end
 
 		-- Check to see if player needs to be updated
 		if (playerLocation > 1) then
