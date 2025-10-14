@@ -251,8 +251,11 @@ BaseMessage* ClientCore::buildCreateCharacterPacket() {
 void ClientCore::logoutCharacter() {
 	if (zone == nullptr || !zone->isStarted())
 		return;
-	//info(true) << __FUNCTION__ << "(" << index << ")";
+
+	info(true) << __FUNCTION__ << "(" << index << ")";
+
 	zone->disconnect();
+
 	delete zone;
 }
 
