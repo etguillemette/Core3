@@ -9,9 +9,9 @@
 #include "AccountManager.h"
 #include "server/login/LoginClient.h"
 #include "server/login/LoginServer.h"
-#ifdef WITH_SESSION_API
-#include "server/login/SessionAPIClient.h"
-#endif // WITH_SESSION_API
+#ifdef WITH_SWGREALMS_API
+#include "server/login/SWGRealmsAPI.h"
+#endif // WITH_SWGREALMS_API
 #include "server/login/packets/AccountVersionMessage.h"
 #include "server/login/packets/EnumerateCharacterId.h"
 #include "server/login/packets/LoginClientToken.h"
@@ -54,7 +54,7 @@ void AccountManager::loginAccount(LoginClient* client, Message* packet) {
 	String username, password, version;
 	AccountVersionMessage::parse(packet, username, password, version);
 
-#ifndef WITH_SESSION_API
+#ifndef WITH_SWGREALMS_API
 	Database::escapeString(username);
 	Database::escapeString(password);
 
@@ -68,7 +68,7 @@ void AccountManager::loginAccount(LoginClient* client, Message* packet) {
 	if (account == nullptr)
 		return;
 
-#else // WITH_SESSION_API
+#else // WITH_SWGREALMS_API
 	StringBuffer clientEndpoint;
 
 	auto session = client->getSession();
@@ -80,7 +80,7 @@ void AccountManager::loginAccount(LoginClient* client, Message* packet) {
 
 	clientEndpoint << address.getIPAddress() << ":" << address.getPort();
 
-	SessionAPIClient::instance()->createSession(username, password, version, clientEndpoint.toString(),
+	SWGRealmsAPI::instance()->createSession(username, password, version, clientEndpoint.toString(),
 			[this, username, loginClient = Reference<LoginClient*>(client)](const SessionApprovalResult& result) {
 
 		if (result.isActionTemporaryFailure()) {
@@ -111,6 +111,7 @@ void AccountManager::loginAccount(LoginClient* client, Message* packet) {
 			loginClient->sendErrorMessage("Login Error", "Failed to find your account, please contact support.");
 
 			error() << "getAccount(" << result.getAccountID() << ") failed in createSession for user [" << username << "]: " << result.getLogMessage();
+			return;
 		}
 
 		Locker locker(loginAccount);
@@ -127,7 +128,7 @@ void AccountManager::loginAccount(LoginClient* client, Message* packet) {
 };
 
 void AccountManager::loginApprovedAccount(LoginClient* client, ManagedReference<Account*> account) {
-#endif // WITH_SESSION_API
+#endif // WITH_SWGREALMS_API
 	String sessionID = account->getSessionId();
 
 	if (sessionID.isEmpty()) {
@@ -146,24 +147,24 @@ void AccountManager::loginApprovedAccount(LoginClient* client, ManagedReference<
 
 	String ip = client->getSession()->getAddress().getIPAddress();
 
-#ifdef WITH_SESSION_API
-	SessionAPIClient::instance()->notifySessionStart(ip, accountID);
-#endif // WITH_SESSION_API
+#ifdef WITH_SWGREALMS_API
+	SWGRealmsAPI::instance()->notifySessionStart(ip, accountID);
+#endif // WITH_SWGREALMS_API
 
-#ifndef WITH_SESSION_API
+#ifndef WITH_SWGREALMS_API
 	String sessionDuration = ConfigManager::instance()->getString("Core3.Login.SessionDuration", "00:15");
 	StringBuffer sessionQuery;
 	sessionQuery << "REPLACE INTO sessions (account_id, session_id, ip, expires) VALUES (";
 	sessionQuery << accountID << ", '" << sessionID << "', '" << ip << "' , ADDTIME(NOW(), '" << sessionDuration << "'));";
-#endif // !WITH_SESSION_API
+#endif // !WITH_SWGREALMS_API
 
 	StringBuffer logQuery;
 	logQuery << "INSERT INTO account_log (account_id, ip_address, timestamp) VALUES (" << accountID << ", '" << ip << "', NOW());";
 
 	try {
-#ifndef WITH_SESSION_API
+#ifndef WITH_SWGREALMS_API
 		ServerDatabase::instance()->executeStatement(sessionQuery);
-#endif // !WITH_SESSION_API
+#endif // !WITH_SWGREALMS_API
 		ServerDatabase::instance()->executeStatement(logQuery);
 	} catch (const DatabaseException& e) {
 		client->error() << e.getMessage();
@@ -176,7 +177,7 @@ void AccountManager::loginApprovedAccount(LoginClient* client, ManagedReference<
 	client->sendMessage(eci);
 }
 
-#ifndef WITH_SESSION_API
+#ifndef WITH_SWGREALMS_API
 Reference<Account*> AccountManager::validateAccountCredentials(LoginClient* client, const String& username, const String& password) {
 	if (client == nullptr) {
 		return nullptr;
@@ -259,7 +260,7 @@ Reference<Account*> AccountManager::validateAccountCredentials(LoginClient* clie
 
 	return loginFinalize(client, account) == true ? account : nullptr;
 }
-#endif // !WITH_SESSION_API
+#endif // !WITH_SWGREALMS_API
 
 bool AccountManager::loginFinalize(LoginClient* client, ManagedReference<Account*> account) {
 	if (client == nullptr || account == nullptr) {
@@ -319,7 +320,7 @@ bool AccountManager::loginFinalize(LoginClient* client, ManagedReference<Account
 	return true;
 }
 
-#ifndef WITH_SESSION_API
+#ifndef WITH_SWGREALMS_API
 void AccountManager::updateHash(const String& username, const String& password) {
 	String salt = Crypto::randomSalt();
 	String hash = Crypto::SHA256Hash(dbSecret + password + salt);
@@ -358,7 +359,7 @@ Reference<Account*> AccountManager::createAccount(const String& username, const 
 
 	return getAccount(accountID, passwordStored, true);
 }
-#endif // !WITH_SESSION_API
+#endif // !WITH_SWGREALMS_API
 
 Reference<Account*> AccountManager::getAccount(uint32 accountID, bool forceSqlUpdate) {
 	static Logger logger("AccountManager");
@@ -382,9 +383,32 @@ Reference<Account*> AccountManager::getAccount(uint32 accountID, bool forceSqlUp
 
 			return nullptr;
 		}
-	} else if (!forceSqlUpdate && accObj->isSqlLoaded()) {
+	} else if (!forceSqlUpdate && accObj->isSqlLoaded() && !accObj->isAccountDataStale()) {
 		return accObj;
 	}
+
+#ifdef WITH_SWGREALMS_API
+	// Try to get account data from API
+	String errorMessage;
+	auto swgRealmsAPI = SWGRealmsAPI::instance();
+
+	if (swgRealmsAPI != nullptr && swgRealmsAPI->getAccountDataBlocking(accountID, accObj, errorMessage)) {
+		Locker locker(accObj);
+		accObj->updateFromDatabase();
+
+		return accObj;
+	}
+
+	// API failed - check failOpen setting
+	if (swgRealmsAPI != nullptr && !swgRealmsAPI->getFailOpen()) {
+		// Fail closed - do not fall back to MySQL
+		logger.error() << "SWGRealms API getAccountDataBlocking failed for accountID " << accountID << ": " << errorMessage << " (fail-closed, NOT falling back to MySQL)";
+		return nullptr;
+	}
+
+	// Fail open enabled - log error and fall back to direct SQL
+	logger.error() << "SWGRealms API getAccountDataBlocking failed for accountID " << accountID << ": " << errorMessage << " (fail-open, falling back to MySQL)";
+#endif // WITH_SWGREALMS_API
 
 	StringBuffer query;
 	query << "SELECT a.active, a.username, a.password, a.salt, a.account_id, a.station_id, UNIX_TIMESTAMP(a.created), a.admin_level, '' AS session_id FROM accounts a WHERE a.account_id = '" << accountID << "' LIMIT 1;";
@@ -399,6 +423,10 @@ Reference<Account*> AccountManager::getAccount(uint32 accountID, bool forceSqlUp
 		accObj->setSalt(result->getString(3));
 		accObj->setAccountID(accountID);
 		accObj->setStationID(result->getUnsignedInt(5));
+
+		Time ttl;
+		ttl.addMiliTime(3600 * 1000);
+		accObj->setAccountDataValidUntil(ttl);
 
 		if (!ConfigManager::instance()->getBool("Core3.AccountManager.CreatedDateFirstConnect", false)) {
 			accObj->setTimeCreated(result->getUnsignedInt(6));
@@ -419,6 +447,7 @@ Reference<Account*> AccountManager::getAccount(uint32 accountID, bool forceSqlUp
 	return nullptr;
 }
 
+#ifndef WITH_SWGREALMS_API
 Reference<Account*> AccountManager::getAccount(uint32 accountID, String& passwordStored, bool forceSqlUpdate) {
 	StringBuffer query;
 	query << "SELECT a.active, a.username, a.password, a.salt, a.account_id, a.station_id, UNIX_TIMESTAMP(a.created), a.admin_level, '' AS session_id FROM accounts a WHERE a.account_id = '" << accountID << "' LIMIT 1;";
@@ -484,6 +513,10 @@ Reference<Account*> AccountManager::getAccount(String query, String& passwordSto
 
 		account->setSessionId(result->getString(8));
 
+		Time ttl;
+		ttl.addMiliTime(3600 * 1000);
+		account->setAccountDataValidUntil(ttl);
+
 		account->updateFromDatabase();
 
 		return account;
@@ -504,7 +537,32 @@ Reference<Account*> AccountManager::getAccount(const String& accountName, bool f
 
 	return getAccount(query.toString(), temp, forceSqlUpdate);
 }
+#else // WITH_SWGREALMS_API
+Reference<Account*> AccountManager::getAccount(const String& accountName, bool forceSqlUpdate) {
+	static Logger logger("AccountManager");
 
+	String errorMessage;
+	auto swgRealmsAPI = SWGRealmsAPI::instance();
+
+	if (swgRealmsAPI == nullptr) {
+		logger.error() << "SWGRealms API instance is null";
+		return nullptr;
+	}
+
+	// Get account_id from username via API
+	uint32 accountID = swgRealmsAPI->getAccountID(accountName, errorMessage);
+
+	if (accountID == 0) {
+		logger.error() << "Failed to get account_id for username " << accountName << ": " << errorMessage;
+		return nullptr;
+	}
+
+	// Use account_id to get full account (may use cache, avoiding second API call)
+	return getAccount(accountID, forceSqlUpdate);
+}
+#endif // WITH_SWGREALMS_API
+
+#ifndef WITH_SWGREALMS_API
 void AccountManager::expireSession(Reference<Account*> account, const String& sessionID) {
 	if (account == nullptr || sessionID.isEmpty()) {
 		return;
@@ -526,3 +584,4 @@ void AccountManager::expireSession(Reference<Account*> account, const String& se
 		logger.error() << e.getMessage();
 	}
 }
+#endif // !WITH_SWGREALMS_API

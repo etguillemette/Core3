@@ -103,15 +103,17 @@ private:
 
 	float applyChassisDamage(ShipObject* target, const SpaceCollisionResult& result, float damage, ShipDeltaVector* deltaVector, Vector<BasePacket*>& messages) const;
 
-	float applyComponentDamage(ShipObject* target, const SpaceCollisionResult& result, float damage, int slot, ShipDeltaVector* deltaVector, Vector<BasePacket*>& messages) const;
+	float applyComponentDamage(ShipObject* attackerShip, ShipObject* defenderShip, const SpaceCollisionResult& result, float damage, int slot, ShipDeltaVector* deltaVector, Vector<BasePacket*>& messages) const;
 
-	float applyActiveComponentDamage(ShipObject* target, const SpaceCollisionResult& result, float damage, int slot, ShipDeltaVector* deltaVector, Vector<BasePacket*>& messages) const;
+	float applyActiveComponentDamage(ShipObject* attackerShip, ShipObject* defenderShip, const SpaceCollisionResult& result, float damage, int slot, ShipDeltaVector* deltaVector, Vector<BasePacket*>& messages) const;
 
 	int getActiveComponentToDamage(ShipObject* target) const;
 
 	int updateProjectile(ShipObject* Ship, ShipProjectile* projectile, SpaceCollisionResult& result, Vector<ManagedReference<SceneObject*>>& targetVectorCopy, const uint64& miliTime);
 
 	int updateMissile(ShipObject* Ship, ShipProjectile* projectile, SpaceCollisionResult& result, Vector<ManagedReference<SceneObject*>>& targetVectorCopy, const uint64& miliTime);
+
+	void triggerDisabledObserver(ShipObject* attackerShip, ShipObject* defenderShip, bool setInvulnerable) const;
 
 public:
 	int updateProjectiles();
