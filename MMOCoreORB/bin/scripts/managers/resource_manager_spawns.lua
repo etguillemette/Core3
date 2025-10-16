@@ -18239,8 +18239,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Asri",
 		type = "oats_domesticated_lok",
 		classes = {
@@ -18287,7 +18285,29 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
+		name = "Asriti",
+		type = "vegetable_beans_lok",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Seeds", "seeds"},
+			{"Vegetables", "vegetable"},
+			{"Beans", "vegetable_beans"},
+			{"Lokian Vegetable Beans", "vegetable_beans_lok"},
+		},
+		attributes = {
+			{"res_decay_resist", 335},
+			{"res_flavor", 133},
+			{"res_potential_energy", 877},
+			{"res_quality", 507},
+		},
+		zoneRestriction = "lok",
+		surveyToolType = 3,
+		containerCRC = 2281434762,
+	},
+
+	{
 		name = "Asro",
 		type = "vegetable_tubers_yavin4",
 		classes = {
@@ -29724,8 +29744,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Beida",
 		type = "bone_mammal_dathomir",
 		classes = {
@@ -29748,7 +29766,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Beikro",
 		type = "crystalline_kerol_firegem",
 		classes = {
@@ -58929,8 +58946,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Cechau",
 		type = "hide_wooly_lok",
 		classes = {
@@ -58954,7 +58969,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Cechooda",
 		type = "milk_domesticated_dathomir",
 		classes = {
@@ -79658,8 +79672,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Criwo",
 		type = "meat_avian_lok",
 		classes = {
@@ -79682,7 +79694,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Croanoo",
 		type = "bone_horn_endor",
 		classes = {
@@ -145551,8 +145562,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Favoine",
 		type = "crystalline_sormahil_firegem",
 		classes = {
@@ -145578,7 +145587,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Favyequi",
 		type = "wood_deciduous_talus",
 		classes = {
@@ -176201,8 +176209,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Gerau",
 		type = "ore_intrusive_berubium",
 		classes = {
@@ -176228,7 +176234,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Gerbinia",
 		type = "oats_wild_talus",
 		classes = {
@@ -207845,8 +207850,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Heuse",
 		type = "rice_domesticated_dantooine",
 		classes = {
@@ -207870,7 +207873,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Heuzyu",
 		type = "milk_domesticated_dantooine",
 		classes = {
@@ -237010,8 +237012,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Iovo",
 		type = "vegetable_greens_yavin4",
 		classes = {
@@ -237035,7 +237035,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Iovyok",
 		type = "gas_inert_bilal",
 		classes = {
@@ -336383,8 +336382,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Mopipo",
 		type = "ore_intrusive_ionite",
 		classes = {
@@ -336410,7 +336407,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Mople",
 		type = "fiberplast_yavin4",
 		classes = {
@@ -358873,8 +358869,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Nogloda",
 		type = "seafood_crustacean_talus",
 		classes = {
@@ -358898,7 +358892,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Nogoo",
 		type = "hide_wooly_talus",
 		classes = {
@@ -454129,8 +454122,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Riweali",
 		type = "vegetable_beans_dantooine",
 		classes = {
@@ -454173,7 +454164,25 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
+		name = "Riweic",
+		type = "energy_renewable_unlimited_solar_talus",
+		classes = {
+			{"Energy", "energy"},
+			{"Renewable energy", "energy_renewable"},
+			{"Non Site-Restricted Renewable Energy", "energy_renewable_unlimited"},
+			{"Solar Energy", "energy_renewable_unlimited_solar"},
+			{"Talusian Solar Renewable Energy", "energy_renewable_unlimited_solar_talus"},
+		},
+		attributes = {
+			{"res_potential_energy", 267},
+			{"res_quality", 500},
+		},
+		zoneRestriction = "talus",
+		surveyToolType = 1,
+		containerCRC = 10768890,
+	},
+
+	{
 		name = "Riwewa",
 		type = "seafood_crustacean_corellia",
 		classes = {
@@ -461178,8 +461187,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Rousijji",
 		type = "meat_domesticated_talus",
 		classes = {
@@ -461202,7 +461209,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Routsyab",
 		type = "rice_domesticated_naboo",
 		classes = {
@@ -475413,8 +475419,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Senauhasis",
 		type = "petrochem_inert_lubricating_oil",
 		classes = {
@@ -475433,7 +475437,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Seni",
 		type = "fruit_flowers_dathomir",
 		classes = {
@@ -477906,8 +477909,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Shegoko",
 		type = "energy_renewable_unlimited_solar_dantooine",
 		classes = {
@@ -477927,7 +477928,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Sheha",
 		type = "seafood_crustacean_naboo",
 		classes = {
@@ -486770,8 +486770,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Sloipo",
 		type = "milk_wild_naboo",
 		classes = {
@@ -486794,7 +486792,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Sloka",
 		type = "rice_domesticated_tatooine",
 		classes = {
@@ -508713,8 +508710,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Stocea",
 		type = "rice_wild_tatooine",
 		classes = {
@@ -508738,7 +508733,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Stochou",
 		type = "meat_avian_dantooine",
 		classes = {
@@ -509539,8 +509533,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Storo",
 		type = "fruit_berries_naboo",
 		classes = {
@@ -509564,7 +509556,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Stosa",
 		type = "fiberplast_dathomir",
 		classes = {
@@ -524343,8 +524334,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Theuroe",
 		type = "seafood_crustacean_yavin4",
 		classes = {
@@ -524368,7 +524357,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Theuvo",
 		type = "meat_reptilian_yavin4",
 		classes = {
@@ -560623,8 +560611,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Vabaium",
 		type = "petrochem_fuel_solid_type1",
 		classes = {
@@ -560645,7 +560631,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Vabaw",
 		type = "water_vapor_dathomir",
 		classes = {
@@ -580235,8 +580220,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Vosewao",
 		type = "meat_egg_talus",
 		classes = {
@@ -580259,7 +580242,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Voshu",
 		type = "seafood_crustacean_talus",
 		classes = {
@@ -591308,8 +591290,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Wealka",
 		type = "meat_insect_dathomir",
 		classes = {
@@ -591332,7 +591312,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Weaponaine",
 		type = "copper_borocarbitic",
 		classes = {
@@ -597858,8 +597837,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Whoakea",
 		type = "wheat_wild_dathomir",
 		classes = {
@@ -597883,7 +597860,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Whoconi",
 		type = "wheat_wild_rori",
 		classes = {
@@ -614781,8 +614757,6 @@ resources = {
 	},
 
 	{
-<<<<<<< HEAD
-=======
 		name = "Xafa",
 		type = "seafood_crustacean_dathomir",
 		classes = {
@@ -614806,7 +614780,6 @@ resources = {
 	},
 
 	{
->>>>>>> parent of a073906be3 ([pre update])
 		name = "Xafev",
 		type = "aluminum_perovskitic",
 		classes = {
