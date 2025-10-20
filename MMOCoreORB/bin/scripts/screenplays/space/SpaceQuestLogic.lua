@@ -1,5 +1,4 @@
 require("screenplays.screenplay")
-local ObjectManager = require("managers.object.object_manager")
 
 SpaceQuestLogic = ScreenPlay:new {
 	className = "SpaceQuestLogic",
@@ -14,15 +13,34 @@ SpaceQuestLogic = ScreenPlay:new {
 		--{species = {}, item = ""},
 	},
 
+	-- Duty Mission Bool
 	dutyMission = false,
 
-	sideQuest = false,
-	sideQuestType = "",
-	sideQuestStart = 0, -- Patrol Point Number
-	sideQuestDelay = 0, -- Time in seconds to wait to trigger side quest
+	-- Side Quest Split Flag
+	SIDE_QUEST_SPLIT_TYPES = {
+		COMPLETION = 1,
+		PATROL_POINT = 2,
+	},
 
+	-- Side Quest Bool
+	sideQuest = false,
+	-- Side Quest Type String
+	sideQuestType = "",
+	-- Side Quest Name String
+	sideQuestName = "",
+	-- Side Quest Split Type
+	sideQuestSplitType = 0,
+
+	-- Patrol point to start side quest for PATROL_POINT split type
+	sideQuestPatrolStart = 0,
+
+	-- Delay in seconds to trigger side quest when triggered
+	sideQuestDelay = 2, -- Time in seconds to wait to trigger side quest
+
+	-- Flags used to tie side quest to parent quest
 	parentQuest = "",
-	parentQuestType = "", -- Quest type of parent quest, used for completing tasks
+	parentQuestType = "",
+	parentQuestName = "",
 }
 
 registerScreenPlay("SpaceQuestLogic", false)
@@ -32,7 +50,7 @@ end
 
 function SpaceQuestLogic:rewardPlayer(pPlayer)
 	if (pPlayer == nil) then
-		Logger:log("Quest: " .. self.questName .. " Type: " .. self.QuestType .. " -- Failed to completeQuest due to pPlayer being nil.", LT_ERROR)
+		Logger:log("Quest: " .. self.questName .. " Type: " .. self.questType .. " -- Failed to completeQuest due to pPlayer being nil.", LT_ERROR)
 		return
 	end
 

@@ -10,7 +10,10 @@ SpacePatrolScreenplay = SpaceQuestLogic:new {
 
 	sideQuest = false,
 	sideQuestType = "",
-	sideQuestStart = 0, -- Patrol Point Number
+	sideQuestName = "",
+	sideQuestSplitType = 0,
+
+	sideQuestPatrolStart = 0, -- Patrol Point Number
 	sideQuestDelay = 0, -- Time in seconds to wait to trigger side quest
 
 	patrolPoints = {},
@@ -39,8 +42,12 @@ function SpacePatrolScreenplay:startQuest(pPlayer, pNpc)
 		print(self.className .. ":startQuest called -- QuestType: " .. self.questType .. " Quest Name: " .. self.questName)
 	end
 
+	if (pNpc == "") then
+		pNpc = nil
+	end
+
 	-- Activate the Journal Quest
-	SpaceHelpers:activateSpaceQuest(pPlayer, pNpc, self.questType, self.questName, 1)
+	SpaceHelpers:activateSpaceQuest(pPlayer, pNpc, self.questType, self.questName, true)
 
 	-- Create inital observer for player entering Corellia Space
 	if (not hasObserver(ZONESWITCHED, self.className, "enteredZone", pPlayer)) then
@@ -53,7 +60,7 @@ end
 
 function SpacePatrolScreenplay:completeQuest(pPlayer, notifyClient)
 	if (pPlayer == nil) then
-		Logger:log("Quest: " .. self.questName .. " Type: " .. self.QuestType .. " -- Failed to completeQuest due to pPlayer being nil.", LT_ERROR)
+		Logger:log("Quest: " .. self.questName .. " Type: " .. self.questType .. " -- Failed to completeQuest due to pPlayer being nil.", LT_ERROR)
 		return
 	end
 
@@ -76,7 +83,7 @@ end
 
 function SpacePatrolScreenplay:failQuest(pPlayer, notifyClient)
 	if (pPlayer == nil) then
-		Logger:log("Quest: " .. self.questName .. " Type: " .. self.QuestType .. " -- Failed to failQuest due to pPlayer being nil.", LT_ERROR)
+		Logger:log("Quest: " .. self.questName .. " Type: " .. self.questType .. " -- Failed to failQuest due to pPlayer being nil.", LT_ERROR)
 		return
 	end
 
@@ -104,12 +111,12 @@ function SpacePatrolScreenplay:failQuest(pPlayer, notifyClient)
 
 	-- Fail the parent quest
 	if (self.parentQuestType ~= "") then
-		createEvent(200, self.parentQuestType .. "_" .. self.questName, "failQuest", pPlayer, "false")
+		createEvent(200, self.parentQuestType .. "_" .. self.parentQuestName, "failQuest", pPlayer, "false")
 	end
 
 	-- Fail the side quest
-	if (self.sideQuest and SpaceHelpers:isSpaceQuestActive(pPlayer, self.sideQuestType, self.questName)) then
-		createEvent(200, self.sideQuestType .. "_" .. self.questName, "failQuest", pPlayer, "false")
+	if (self.sideQuest and SpaceHelpers:isSpaceQuestActive(pPlayer, self.sideQuestType, self.sideQuestName)) then
+		createEvent(200, self.sideQuestType .. "_" .. self.sideQuestName, "failQuest", pPlayer, "false")
 	end
 end
 
@@ -307,17 +314,17 @@ function SpacePatrolScreenplay:notifyEnteredQuestArea(pActiveArea, pShip)
 	setQuestStatus(playerID .. ":" .. self.className .. ":waypointID", waypointID)
 
 	-- Check for side quest
-	if (self.sideQuest and (self.sideQuestStart == pointNumber)) then
+	if (self.sideQuest and (self.sideQuestSplitType == self.SIDE_QUEST_SPLIT_TYPES.PATROL_POINT) and (self.sideQuestPatrolStart == pointNumber)) then
 		local alertMessage = "@spacequest/" .. self.questType .. "/" .. self.questName .. ":split_quest_alert"
 
 		-- Trigger Completion of this quest
-		createEvent((self.sideQuestDelay * 1000) - 500, self.className, "completeQuest", pPilot, "false")
+		createEvent(self.sideQuestDelay * 1000, self.className, "completeQuest", pPilot, "false")
 
 		-- Split Quest Alert
-		createEvent((self.sideQuestDelay * 1000) - 500, "SpaceHelpers", "sendQuestAlert", pPilot, alertMessage)
+		createEvent(self.sideQuestDelay * 1000, "SpaceHelpers", "sendQuestAlert", pPilot, alertMessage)
 
 		-- Trigger Sidequest
-		createEvent(self.sideQuestDelay * 1000, self.sideQuestType .. "_" .. self.questName, "startQuest", pPilot, "")
+		createEvent(self.sideQuestDelay * 1050, self.sideQuestType .. "_" .. self.sideQuestName, "startQuest", pPilot, "")
 
 		-- Trigger Removal of patrol Point
 		createEvent(self.sideQuestDelay * 1000, "SpaceHelpers", "clearQuestWaypoint", pPilot, self.className)

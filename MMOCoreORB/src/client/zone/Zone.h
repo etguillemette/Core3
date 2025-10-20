@@ -6,12 +6,12 @@
 #define ZONE_H_
 
 #include "ZoneClient.h"
-#include "client/zone/objects/player/PlayerCreature.h"
 #include "client/zone/ZoneClientThread.h"
 #include "engine/util/JSONSerializationType.h"
 
 class ObjectController;
 class ObjectManager;
+class SceneObject;
 
 class Zone : public Thread, public Mutex, public Logger {
 	uint64 characterID;
@@ -23,8 +23,6 @@ class Zone : public Thread, public Mutex, public Logger {
 	Reference<ZoneClient*> client;
 	ZoneClientThread* clientThread;
 
-	Reference<PlayerCreature*> player;
-
 	ObjectController* objectController;
 
 	Condition characterCreatedCondition;
@@ -35,6 +33,11 @@ class Zone : public Thread, public Mutex, public Logger {
 	Time startTime;
 	bool started;
 	bool sceneReady;
+
+	// Character creation state
+	bool characterCreated;
+	bool characterCreationFailed;
+	uint64 createdCharacterOID;
 
 public:
 	Zone(uint64 characterObjectID, uint32 account, const String& sessionID, const String& galaxyAddress, uint32 galaxyPort);
@@ -74,15 +77,6 @@ public:
 		bool success = !sceneReadyCondition.timedWait(this, &timeout);
 
 		return success && sceneReady;
-	}
-
-	PlayerCreature* getSelfPlayer();
-
-	bool isSelfPlayer(SceneObject* pl) {
-		if (characterID == 0)
-			return false;
-
-		return pl->getObjectID() == characterID;
 	}
 
 	bool hasSelfPlayer() {
@@ -134,6 +128,27 @@ public:
 
 	bool isSceneReady() {
 		return sceneReady;
+	}
+
+	void setCharacterCreated(uint64 oid) {
+		characterCreated = true;
+		createdCharacterOID = oid;
+	}
+
+	void setCharacterCreationFailed() {
+		characterCreationFailed = true;
+	}
+
+	bool isCharacterCreated() const {
+		return characterCreated;
+	}
+
+	bool hasCharacterCreationFailed() const {
+		return characterCreationFailed;
+	}
+
+	uint64 getCreatedCharacterOID() const {
+		return createdCharacterOID;
 	}
 
 	JSONSerializationType collectStats();

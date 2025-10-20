@@ -33,8 +33,9 @@ template<> bool CheckProspectInRange::check(ShipAiAgent* agent) const {
 
 	float aggroMod = 0.5f;
 
-	if (agent->peekBlackboard("aggroMod"))
+	if (agent->peekBlackboard("aggroMod")) {
 		aggroMod = agent->readBlackboard("aggroMod").get<float>();
+	}
 
 	float radiusMin = agent->getMaxDistance();
 	float radiusMax = ShipAiAgent::DEFAULTAGGRORADIUS + radiusMin;
@@ -63,7 +64,7 @@ template<> bool CheckRetreat::check(ShipAiAgent* agent) const {
 
 	uint32 shipBitmask = agent->getShipBitmask();
 
-	if ((shipBitmask & ShipFlag::FIXED_PATROL) || (shipBitmask & ShipFlag::ESCORT)) {
+	if ((shipBitmask & ShipFlag::FIXED_PATROL) || (shipBitmask & ShipFlag::ESCORT) || (agent->getMissionOwnerID() > 0)) {
 		return false;
 	}
 
@@ -153,9 +154,10 @@ template<> bool CheckEnginesDisabled::check(ShipAiAgent* agent) const {
 	if (componentOptMap == nullptr)
 		return false;
 
-	uint32 flags = componentOptMap->get(Components::ENGINE);
+	uint32 engineFlags = componentOptMap->get(Components::ENGINE);
+	uint32 reactorFlags = componentOptMap->get(Components::REACTOR);
 
-	return (flags & ShipComponentFlag::DISABLED) || (flags & ShipComponentFlag::DEMOLISHED);
+	return (engineFlags & ShipComponentFlag::DISABLED) || (engineFlags & ShipComponentFlag::DEMOLISHED) || (reactorFlags & ShipComponentFlag::DISABLED) || (reactorFlags & ShipComponentFlag::DEMOLISHED);
 }
 
 template<> bool CheckEvadeChance::check(ShipAiAgent* agent) const {
