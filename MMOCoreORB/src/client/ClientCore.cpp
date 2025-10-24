@@ -461,22 +461,10 @@ void ClientCore::run() {
 		loginSession->cleanup();
 	}
 
-<<<<<<< HEAD
-	return true;
-}
-
-void ClientCore::logoutCharacter() {
-	if (zone == nullptr || !zone->isStarted())
-		return;
-	//info(true) << __FUNCTION__ << "(" << index << ")";
-	zone->disconnect();
-	delete zone;
-=======
 	// Cleanup actions
 	for (int i = 0; i < options.actions.size(); i++) {
 		delete options.actions.get(i);
 	}
->>>>>>> 9b294f1dcaba702174023ec6ffdec30544c0c2e6
 }
 
 void ClientCore::saveStateToFile(const String& filename, LoginSession* loginSession) {
