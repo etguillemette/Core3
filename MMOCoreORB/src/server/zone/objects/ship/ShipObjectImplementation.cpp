@@ -640,9 +640,6 @@ void ShipObjectImplementation::notifyDissapear(TreeEntry* object) {
 	}
 }
 
-void ShipObjectImplementation::notifyDespawn(Zone* zone) {
-}
-
 void ShipObjectImplementation::sendDestroyTo(SceneObject* player) {
 	SceneObjectImplementation::sendDestroyTo(player);
 }
@@ -990,39 +987,6 @@ float ShipObjectImplementation::getTotalShipDamage() {
 		float currentHitpoints = getCurrentHitpointsMap()->get(slot);
 
 		damage += maxHitpoints - currentHitpoints;
-
-		switch (slot) {
-			case Components::SHIELD0:
-			case Components::SHIELD1: {
-				float maxShieldFront = getMaxFrontShield();
-				float currentShieldFront = getFrontShield();
-
-				damage += maxShieldFront - currentShieldFront;
-
-				float maxShieldRear = getMaxRearShield();
-				float currentShieldRear = getRearShield();
-
-				damage += maxShieldRear - currentShieldRear;
-
-				break;
-			}
-			case Components::CAPACITOR: {
-				float maxCapacitor = getCapacitorMaxEnergy();
-				float currentCapacitor = getCapacitorEnergy();
-
-				damage += maxCapacitor - currentCapacitor;
-
-				break;
-			}
-			case Components::BOOSTER: {
-				float maxBoost = getBoosterMaxEnergy();
-				float currentBoost = getBoosterEnergy();
-
-				damage += maxBoost - currentBoost;
-
-				break;
-			}
-		}
 	}
 
 	return damage;
@@ -2685,4 +2649,12 @@ SpaceTransform ShipObjectImplementation::getCurrentTransform() {
 
 SpaceTransform ShipObjectImplementation::getNextTransform() {
 	return shipTransform.getNextTransform();
+}
+
+float ShipObjectImplementation::getNextDistance() {
+	return shipTransform.getNextDistance();
+}
+
+float ShipObjectImplementation::getNextRotation() {
+	return shipTransform.getNextRotation();
 }

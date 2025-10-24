@@ -56,7 +56,7 @@ end
 
 function SpaceEscortScreenplay:startQuest(pPlayer, pNpc)
 	if (pPlayer == nil) then
-		Logger:log("Quest: " .. self.questName .. " Type: " .. self.QuestType .. " -- Failed to startQuest due to pPlayer being nil.", LT_ERROR)
+		Logger:log("Quest: " .. self.questName .. " Type: " .. self.questType .. " -- Failed to startQuest due to pPlayer being nil.", LT_ERROR)
 		return
 	end
 
@@ -77,7 +77,7 @@ function SpaceEscortScreenplay:startQuest(pPlayer, pNpc)
 	local pRootParent = SceneObject(pPlayer):getRootParent()
 
 	-- Check if the player is in the proper zone already
-	if (playerZoneHash == spaceQuestHash and pRootParent ~= nil and SceneObject(pRootParent):getObjectName() ~= "player_sorosuub_space_yacht") then
+	if (playerZoneHash == spaceQuestHash and not SpaceHelpers:isInYacht(pPlayer)) then
 		-- Complete the quest task 0
 		SpaceHelpers:completeSpaceQuestTask(pPlayer, self.questType, self.questName, 0, false)
 
@@ -116,6 +116,16 @@ function SpaceEscortScreenplay:completeQuest(pPlayer, notifyClient)
 	dropObserver(ZONESWITCHED, self.className, "enteredZone", pPlayer)
 
 	self:cleanUpQuestData(SceneObject(pPlayer):getObjectID())
+
+	if (self.sideQuest and (self.sideQuestSplitType == self.SIDE_QUEST_SPLIT_TYPES.COMPLETION)) then
+		local alertMessage = "@spacequest/" .. self.questType .. "/" .. self.questName .. ":split_quest_alert"
+
+		-- Split Quest Alert
+		createEvent(self.sideQuestDelay * 1000, "SpaceHelpers", "sendQuestAlert", pPlayer, alertMessage)
+
+		-- Trigger Sidequest
+		createEvent(self.sideQuestDelay * 1050, self.sideQuestType .. "_" .. self.sideQuestName, "startQuest", pPlayer, "")
+	end
 end
 
 function SpaceEscortScreenplay:failQuest(pPlayer, notifyClient)
@@ -143,16 +153,17 @@ function SpaceEscortScreenplay:failQuest(pPlayer, notifyClient)
 	-- Remove the zone entry observer
 	dropObserver(ZONESWITCHED, self.className, "enteredZone", pPlayer)
 
+	self:despawnShips(pPlayer)
 	self:cleanUpQuestData(SceneObject(pPlayer):getObjectID())
 
 	-- Fail the parent quest
 	if (self.parentQuestType ~= "") then
-		createEvent(200, self.parentQuestType .. "_" .. self.questName, "failQuest", pPlayer, "false")
+		createEvent(200, self.parentQuestType .. "_" .. self.parentQuestName, "failQuest", pPlayer, "false")
 	end
 
 	-- Fail the side quest
-	if (self.sideQuest and SpaceHelpers:isSpaceQuestActive(pPlayer, self.sideQuestType, self.questName)) then
-		createEvent(200, self.sideQuestType .. "_" .. self.questName, "failQuest", pPlayer, "false")
+	if (self.sideQuest and SpaceHelpers:isSpaceQuestActive(pPlayer, self.sideQuestType, self.sideQuestName)) then
+		createEvent(200, self.sideQuestType .. "_" .. self.sideQuestName, "failQuest", pPlayer, "false")
 	end
 end
 
@@ -241,7 +252,7 @@ end
 
 function SpaceEscortScreenplay:setupEscort(pPlayer)
 	if (pPlayer == nil) then
-		Logger:log("Quest: " .. self.questName .. " Type: " .. self.QuestType .. " -- Failed to setupEscort due to pPlayer being nil.", LT_ERROR)
+		Logger:log("Quest: " .. self.questName .. " Type: " .. self.questType .. " -- Failed to setupEscort due to pPlayer being nil.", LT_ERROR)
 		return
 	end
 
@@ -328,7 +339,14 @@ end
 
 function SpaceEscortScreenplay:spawnEscortShip(pPlayer)
 	if (pPlayer == nil) then
-		Logger:log(self.className .. " -- Quest: " .. self.questName .. " Type: " .. self.QuestType .. " -- Failed to spawnEscortShip due to pPlayer being nil.", LT_ERROR)
+		Logger:log(self.className .. " -- Quest: " .. self.questName .. " Type: " .. self.questType .. " -- Failed to spawnEscortShip due to pPlayer being nil.", LT_ERROR)
+		return
+	end
+
+	local pPlayerShip = SceneObject(pPlayer):getRootParent()
+
+	if (pPlayerShip == nil or not SceneObject(pPlayerShip):isShipObject()) then
+		Logger:log(self.className .. ":spawnEscortShip - pPlayerShip is nil.", LT_ERROR)
 		return
 	end
 
@@ -340,9 +358,7 @@ function SpaceEscortScreenplay:spawnEscortShip(pPlayer)
 	local randomStart = readData(playerID .. self.className .. ":startPoint:")
 	deleteData(playerID .. self.className .. ":startPoint:")
 
-	local x = self.escortPoints[randomStart].x
-	local z = self.escortPoints[randomStart].z
-	local y = self.escortPoints[randomStart].y
+	local spawnLocation = ShipObject(pPlayerShip):getSpawnPointInFrontOfShip(50, 150)
 
 	local escortShip = ""
 
@@ -353,11 +369,11 @@ function SpaceEscortScreenplay:spawnEscortShip(pPlayer)
 	end
 
 	if (self.DEBUG_SPACE_ESCORT) then
-		print(self.className .. ":spawnEscortShip called -- Escort Ship: " .. escortShip .. " Space Zone: " .. self.questZone .. " X: " .. x .. " Z: " .. z .. " Y: " .. y)
+		print(self.className .. ":spawnEscortShip called -- Escort Ship: " .. escortShip .. " Space Zone: " .. self.questZone .. " X: " .. spawnLocation[1] .. " Z: " .. spawnLocation[2] .. " Y: " .. spawnLocation[3])
 	end
 
 	-- Spawn the ship to be escorted
-	local pShipAgent = spawnShipAgent(escortShip, self.questZone, x, z + 40, y)
+	local pShipAgent = spawnShipAgent(escortShip, self.questZone, spawnLocation[1], spawnLocation[2], spawnLocation[3], pPlayerShip)
 
 	if (pShipAgent == nil) then
 		self:failQuest(pPlayer, "true")
@@ -386,10 +402,14 @@ function SpaceEscortScreenplay:spawnEscortShip(pPlayer)
 
 	-- Set as same space faction
 	ShipObject(pShipAgent):setShipFactionString(SpaceHelpers:getPlayerShipFactionString(pPlayer))
-	ShipAiAgent(pShipAgent):addSpaceFactionAlly(SpaceHelpers:getPlayerShipFactionHash(pPlayer))
+
+	local playerFactionHash = SpaceHelpers:getPlayerShipFactionHash(pPlayer)
+
+	ShipAiAgent(pShipAgent):addSpaceFactionAlly(playerFactionHash)
+	ShipAiAgent(pShipAgent):removeSpaceFactionEnemy(playerFactionHash)
 
 	-- Add kill observer
-	createObserver(OBJECTDESTRUCTION, self.className, "notifyEscortShipDestroyed", pShipAgent)
+	createObserver(SHIPDESTROYED, self.className, "notifyEscortShipDestroyed", pShipAgent)
 
 	-- Assign the escort points
 	createEvent(5 * 1000, self.className, "assignEscortPoints", pShipAgent, "")
@@ -442,8 +462,14 @@ function SpaceEscortScreenplay:assignEscortPoints(pShipAgent)
 	-- Add escort points randomly
 	local totalPoints = 0
 	local escortWaypoints = {}
+	local randomPoints = {}
+
 	for i = 1, #self.escortPoints do
 		table.insert(escortWaypoints, self.escortPoints[i])
+	end
+
+	if (self.DEBUG_SPACE_ESCORT) then
+		print(self.className .. ":assignEscortPoints -- Total Available escort Points: " .. #escortWaypoints)
 	end
 
 	while (#escortWaypoints > 0) do
@@ -451,14 +477,24 @@ function SpaceEscortScreenplay:assignEscortPoints(pShipAgent)
 		local pointName = escortWaypoints[randomPoint].name
 
 		if (pointName ~= startingPointName) then
-			-- Add the name escort points to the agent
-			ShipAiAgent(pShipAgent):addFixedPatrolPoint(pointName)
+			table.insert(randomPoints, pointName)
 
 			totalPoints = totalPoints + 1
+
+			if (self.DEBUG_SPACE_ESCORT) then
+				print(self.className .. ":assignEscortPoints -- Assining Point: " .. pointName)
+			end
 		end
 
 		-- Drop the point from the table
 		table.remove(escortWaypoints, randomPoint)
+	end
+
+	-- Add the named escort points to the agent
+	ShipAiAgent(pShipAgent):assignFixedPatrolPointsTable(randomPoints)
+
+	if (self.DEBUG_SPACE_ESCORT) then
+		print(self.className .. ":assignEscortPoints -- Total Points Assigned: " .. totalPoints)
 	end
 
 	writeData(agentID .. ":" .. self.className .. ":escortShipProgress:", totalPoints)
@@ -466,7 +502,7 @@ end
 
 function SpaceEscortScreenplay:checkEscort(pShipAgent)
 	if (pShipAgent == nil) then
-		Logger:log("Quest: " .. self.questName .. " Type: " .. self.QuestType .. " -- Failed escort check due to null escort Ship.", LT_ERROR)
+		Logger:log("Quest: " .. self.questName .. " Type: " .. self.questType .. " -- Failed escort check due to null escort Ship.", LT_ERROR)
 		return
 	end
 
@@ -553,15 +589,17 @@ function SpaceEscortScreenplay:removeEscortShip(pShipAgent)
 	end
 
 	-- Remove the kill observer
-	dropObserver(OBJECTDESTRUCTION, self.className, "notifyEscortShipDestroyed", pShipAgent)
+	dropObserver(SHIPDESTROYED, self.className, "notifyEscortShipDestroyed", pShipAgent)
 
 	-- Make ship fly away first
 	ShipObject(pShipAgent):setHyperspacing(true);
 
-	SceneObject(pShipAgent):setPosition(8000, 8000, 8000)
+	local hyperspaceLocation = ShipObject(pShipAgent):getSpawnPointInFrontOfShip(2500, 8000)
+
+	SceneObject(pShipAgent):setPosition(hyperspaceLocation[1], hyperspaceLocation[2], hyperspaceLocation[3])
 
 	-- Remove the escort ship
-	createEvent(4000, "SpaceHelpers", "delayedDestroyShipAgent", pShipAgent, "")
+	createEvent(2000, "SpaceHelpers", "delayedDestroyShipAgent", pShipAgent, "")
 end
 
 function SpaceEscortScreenplay:spawnAttackWave(pEscortAgent)
@@ -574,6 +612,13 @@ function SpaceEscortScreenplay:spawnAttackWave(pEscortAgent)
 
 	-- This will fail to spawn the scheduled wave if the escort is over
 	if (pPlayer == nil or not SpaceHelpers:isSpaceQuestActive(pPlayer, self.questType, self.questName)) then
+		return
+	end
+
+	local pPlayerShip = SceneObject(pPlayer):getRootParent()
+
+	if (pPlayerShip == nil or not SceneObject(pPlayerShip):isShipObject()) then
+		Logger:log(self.className .. ":spawnAttackWave - pPlayerShip is nil.", LT_ERROR)
 		return
 	end
 
@@ -590,13 +635,7 @@ function SpaceEscortScreenplay:spawnAttackWave(pEscortAgent)
 
 	local spawnLocation = ShipObject(pEscortAgent):getSpawnPointInFrontOfShip(600, 1200)
 
-	local spawnTable = {}
-
-	if (self.dutyMission) then
-		spawnTable = self.attackGroups[getRandomNumber(1, #self.attackGroups)]
-	else
-		spawnTable = self.attackShips
-	end
+	local spawnTable = self.attackShips[getRandomNumber(1, #self.attackShips)]
 
 	local shipIDs = readStringVectorSharedMemory(playerID .. self.className .. ":attackShips:")
 	deleteStringVectorSharedMemory(playerID .. self.className .. ":attackShips:")
@@ -610,8 +649,10 @@ function SpaceEscortScreenplay:spawnAttackWave(pEscortAgent)
 		drawClientPath(pEscortAgent, x, z, y, spawnLocation[1], spawnLocation[2], spawnLocation[3])
 	end
 
+	local pSquadronLeader = nil
+
 	for i = 1, #spawnTable, 1 do
-		local pShipAgent = spawnShipAgent(spawnTable[i], spawnZone, spawnLocation[1] + getRandomNumber(50, 150), spawnLocation[2] + getRandomNumber(50, 150), spawnLocation[3] + getRandomNumber(50, 150))
+		local pShipAgent = spawnShipAgent(spawnTable[i], spawnZone, spawnLocation[1], spawnLocation[2], spawnLocation[3], pEscortAgent)
 
 		if (pShipAgent == nil) then
 			goto continue
@@ -628,14 +669,22 @@ function SpaceEscortScreenplay:spawnAttackWave(pEscortAgent)
 
 		-- Add players faction as enemy
 		ShipAiAgent(pShipAgent):addSpaceFactionEnemy(playerFactionHash)
+		ShipAiAgent(pShipAgent):removeSpaceFactionAlly(playerFactionHash)
 
 		-- Add kill observer
-		createObserver(OBJECTDESTRUCTION, self.className, "notifyAttackShipDestroyed", pShipAgent)
+		createObserver(SHIPDESTROYED, self.className, "notifyAttackShipDestroyed", pShipAgent)
 
 		local agentID = SceneObject(pShipAgent):getObjectID()
 
 		-- Set as space mission object
 		CreatureObject(pPlayer):addSpaceMissionObject(agentID, (i == #spawnTable))
+
+		if (i == 1) then
+			pSquadronLeader = pShipAgent
+			ShipAiAgent(pShipAgent):createSquadron()
+		elseif (pSquadronLeader ~= nil) then
+			ShipAiAgent(pShipAgent):assignToSquadron(pSquadronLeader)
+		end
 
 		-- Add to the list of shipIDs
 		shipIDs[#shipIDs + 1] = agentID
@@ -655,7 +704,6 @@ function SpaceEscortScreenplay:spawnAttackWave(pEscortAgent)
 	-- Schedule next attack wave
 	createEvent(self.attackDelay * 1000, self.className, "spawnAttackWave", pEscortAgent, "")
 end
-
 
 function SpaceEscortScreenplay:removeAttackShips(pShipAgent)
 	if (pShipAgent == nil) then
@@ -692,18 +740,41 @@ function SpaceEscortScreenplay:removeAttackShips(pShipAgent)
 		end
 
 		-- Remove the kill observer
-		dropObserver(OBJECTDESTRUCTION, self.className, "notifyAttackShipDestroyed", pAttackShip)
+		dropObserver(SHIPDESTROYED, self.className, "notifyAttackShipDestroyed", pAttackShip)
 
 		-- Make ship fly away first
 		ShipObject(pAttackShip):setHyperspacing(true);
 
-		SceneObject(pAttackShip):setPosition(8000, 8000, 8000)
+		local hyperspaceLocation = ShipObject(pAttackShip):getSpawnPointInFrontOfShip(2500, 8000)
+
+		SceneObject(pAttackShip):setPosition(hyperspaceLocation[1], hyperspaceLocation[2], hyperspaceLocation[3])
 
 		-- Remove the attack ship
 		createEvent(2000, "SpaceHelpers", "delayedDestroyShipAgent", pAttackShip, "")
 
 		::continue::
 	end
+end
+
+function SpaceEscortScreenplay:despawnShips(pPlayer)
+	if (pPlayer == nil) then
+		return 0
+	end
+
+	local playerID = SceneObject(pPlayer):getObjectID()
+	local escortShipID = readData(playerID .. ":" .. self.className .. ":escortID:")
+	deleteData(playerID .. ":" .. self.className .. ":escortID:")
+
+	local pEscortAgent = getSceneObject(escortShipID)
+
+	if (pEscortAgent == nil) then
+		Logger:log(self.className .. ":despawnShips - Escort ship is nil.", LT_ERROR)
+		return
+	end
+
+	self:removeAttackShips(pEscortAgent)
+
+	createEvent(2000, "SpaceHelpers", "delayedDestroyShipAgent", pEscortAgent, "")
 end
 
 --[[
@@ -752,7 +823,7 @@ function SpaceEscortScreenplay:enteredZone(pPlayer, nill, zoneNameHash)
 		createEvent(4000, self.className, "setupEscort", pPlayer, "")
 
 		return 0
-	elseif (zoneNameHash ~= spaceQuestHash and SpaceHelpers:isSpaceQuestTaskComplete(pPlayer, self.questType, self.questName, 1)) then
+	elseif (zoneNameHash ~= spaceQuestHash and SpaceHelpers:isSpaceQuestTaskComplete(pPlayer, self.questType, self.questName, 0)) then
 		createEvent(2000, self.className, "failQuest", pPlayer, "true")
 
 		return 1
@@ -829,6 +900,10 @@ function SpaceEscortScreenplay:notifyEnteredQuestArea(pActiveArea, pShip)
 
 		-- The escort ship will be inside one of the active areas before it can be assigned the data to track its escorting player
 		if (playerID == 0) then
+			if (self.DEBUG_SPACE_ESCORT) then
+				print(self.className .. ":notifyEnteredQuestArea - Escort Ship: " .. SceneObject(pShip):getDisplayedName() .. " owning playerID is 0.")
+			end
+
 			return 0
 		end
 
@@ -836,6 +911,10 @@ function SpaceEscortScreenplay:notifyEnteredQuestArea(pActiveArea, pShip)
 
 		-- Prevent attacking ships triggering escort progress
 		if (escortID ~= shipAgentID) then
+			if (self.DEBUG_SPACE_ESCORT) then
+				print(self.className .. ":notifyEnteredQuestArea - Escort ship does not match the entering shipAgent.")
+			end
+
 			return 0
 		end
 
@@ -918,19 +997,18 @@ function SpaceEscortScreenplay:notifyEscortShipDestroyed(pShipAgent, pKillerShip
 		return 1
 	end
 
-	local agentID = SceneObject(pShipAgent):getObjectID()
-	local playerID = readData(agentID .. ":" .. self.className .. ":escorterID:")
+	local missionOwnerID = ShipAiAgent(pShipAgent):getMissionOwnerID()
+	local pPlayer = getSceneObject(missionOwnerID)
 
-	local pPlayer = getSceneObject(playerID)
-
-	if (pPlayer == nil) then
-		Logger:log(self.className .. ":notifyEscortShipDestroyed - Quest Owner is nil.", LT_ERROR)
+	if (pPlayer == nil or not SceneObject(pPlayer):isPlayerCreature()) then
 		return 1
 	end
 
 	if (self.DEBUG_SPACE_ESCORT) then
 		print(self.className .. ":notifyEscortShipDestroyed - Ship Destoyed: " .. SceneObject(pShipAgent):getDisplayedName() .. " Quest Owner Name: " .. SceneObject(pPlayer):getDisplayedName())
 	end
+
+	local agentID = SceneObject(pShipAgent):getObjectID()
 
 	-- Hyperspace out any remaining attack waves
 	createEvent(200, self.className, "removeAttackShips", pShipAgent, "")
@@ -951,13 +1029,10 @@ function SpaceEscortScreenplay:notifyAttackShipDestroyed(pShipAgent, pKillerShip
 		return 1
 	end
 
-	local agentID = SceneObject(pShipAgent):getObjectID()
-	local playerID = readData(agentID .. ":" .. self.className .. ":escorterID:")
+	local missionOwnerID = ShipAiAgent(pShipAgent):getMissionOwnerID()
+	local pPlayer = getSceneObject(missionOwnerID)
 
-	local pPlayer = getSceneObject(playerID)
-
-	if (pPlayer == nil) then
-		Logger:log(self.className .. ":notifyAttackShipDestroyed - Quest Owner is nil.", LT_ERROR)
+	if (pPlayer == nil or not SceneObject(pPlayer):isPlayerCreature()) then
 		return 1
 	end
 
@@ -965,14 +1040,16 @@ function SpaceEscortScreenplay:notifyAttackShipDestroyed(pShipAgent, pKillerShip
 		print(self.className .. ":notifyAttackShipDestroyed - Ship Destoyed: " .. SceneObject(pShipAgent):getDisplayedName() .. " Quest Owner Name: " .. SceneObject(pPlayer):getDisplayedName())
 	end
 
+	local agentID = SceneObject(pShipAgent):getObjectID()
+
 	-- Remove as Mission Objects
 	CreatureObject(pPlayer):removeSpaceMissionObject(agentID, true)
 
 	-- Remove from Attack Ships Vector
-	local shipIDs = readStringVectorSharedMemory(playerID .. self.className .. ":attackShips:")
+	local shipIDs = readStringVectorSharedMemory(missionOwnerID .. self.className .. ":attackShips:")
 	local newIDs = {}
 
-	deleteStringVectorSharedMemory(playerID .. self.className .. ":attackShips:")
+	deleteStringVectorSharedMemory(missionOwnerID .. self.className .. ":attackShips:")
 
 	local index = 0
 
@@ -986,7 +1063,7 @@ function SpaceEscortScreenplay:notifyAttackShipDestroyed(pShipAgent, pKillerShip
 
 	if (#newIDs > 0) then
 		-- Store the Spawned Attack Ships
-		writeStringVectorSharedMemory(playerID .. self.className .. ":attackShips:", newIDs)
+		writeStringVectorSharedMemory(missionOwnerID .. self.className .. ":attackShips:", newIDs)
 
 		local messageString = LuaStringIdChatParameter("@space/quest:destroy_duty_targets_remaining")
 		messageString:setDI(#newIDs)
@@ -998,7 +1075,7 @@ function SpaceEscortScreenplay:notifyAttackShipDestroyed(pShipAgent, pKillerShip
 
 		CreatureObject(pPlayer):playEffect("clienteffect/ui_quest_destroyed_wave.cef", "")
 
-		local escortID = readData(playerID .. ":" .. self.className .. ":escortID:")
+		local escortID = readData(missionOwnerID .. ":" .. self.className .. ":escortID:")
 		local pEscort = getSceneObject(escortID)
 
 		if (pEscort ~= nil and SceneObject(pEscort):isShipAiAgent()) then
@@ -1008,12 +1085,12 @@ function SpaceEscortScreenplay:notifyAttackShipDestroyed(pShipAgent, pKillerShip
 	end
 
 	-- Increase kill count
-	local totalKills = readData(playerID .. ":" .. self.className .. ":" .. ":EscortKillCount:")
-	deleteData(playerID .. ":" .. self.className .. ":" .. ":EscortKillCount:")
+	local totalKills = readData(missionOwnerID .. ":" .. self.className .. ":" .. ":EscortKillCount:")
+	deleteData(missionOwnerID .. ":" .. self.className .. ":" .. ":EscortKillCount:")
 
 	totalKills = totalKills + 1
 
-	writeData(playerID .. ":" .. self.className .. ":" .. ":EscortKillCount:", totalKills)
+	writeData(missionOwnerID .. ":" .. self.className .. ":" .. ":EscortKillCount:", totalKills)
 
 	return 1
 end

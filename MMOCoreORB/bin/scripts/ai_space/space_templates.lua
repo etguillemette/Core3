@@ -1,5 +1,6 @@
 includeFile("default.lua")
 includeFile("escort.lua")
+includeFile("attackableSpaceStation.lua")
 includeFile("spaceStations.lua")
 includeFile("turretship.lua")
 includeFile("waveAttack.lua")
@@ -7,6 +8,11 @@ includeFile("waveAttack.lua")
 customMap = {
 	{ "spaceStations", {
 		{NONESPACE, "rootSpacestations"}
+	}},
+
+	{ "attackableSpaceStations", {
+		{NONESPACE, "rootAttackablespacestation"},
+		{IDLESPACE, "idleAttackablespacestation"},
 	}},
 }
 
@@ -25,8 +31,9 @@ bitmaskLookup = {
 
 	{ESCORT, {
 		{NONESPACE, "rootEscort"},
-		{MOVESPACE, "moveEscort"},
 		{IDLESPACE, "idleEscort"},
+		{MOVESPACE, "moveEscort"},
+		{TARGETSPACE, "targetEscort"},
 	}},
 
 	{TURRETSHIP, {
