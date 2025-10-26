@@ -34,10 +34,9 @@ Luna<LuaShipAiAgent>::RegType LuaShipAiAgent::Register[] = {
 	{ "setGuardPatrol", &LuaShipAiAgent::setGuardPatrol },
 	{ "setRandomPatrol", &LuaShipAiAgent::setRandomPatrol },
 	{ "setFixedPatrol", &LuaShipAiAgent::setFixedPatrol },
-	{ "setSquadronPatrol", &LuaShipAiAgent::setSquadronPatrol },
-	{ "setSquadronFollow", &LuaShipAiAgent::setSquadronFollow },
 	{ "setEscort", &LuaShipAiAgent::setEscort },
 	{ "setWaveAttack", &LuaShipAiAgent::setWaveAttack },
+	{ "setSinglePatrolRotation", &LuaShipAiAgent::setSinglePatrolRotation },
 	{ "setDespawnOnNoPlayerInRange", &LuaShipAiAgent::setDespawnOnNoPlayerInRange },
 	{ "setMinimumGuardPatrol", &LuaShipAiAgent::setMinimumGuardPatrol },
 	{ "setMaximumGuardPatrol", &LuaShipAiAgent::setMaximumGuardPatrol },
@@ -134,24 +133,6 @@ int LuaShipAiAgent::setFixedPatrol(lua_State* L) {
 	return 0;
 }
 
-int LuaShipAiAgent::setSquadronPatrol(lua_State* L) {
-	Locker locker(realObject);
-
-	realObject->addShipFlag(ShipFlag::SQUADRON_PATROL);
-	realObject->setShipAiTemplate();
-
-	return 0;
-}
-
-int LuaShipAiAgent::setSquadronFollow(lua_State* L) {
-	Locker locker(realObject);
-
-	realObject->addShipFlag(ShipFlag::SQUADRON_FOLLOW);
-	realObject->setShipAiTemplate();
-
-	return 0;
-}
-
 int LuaShipAiAgent::setEscort(lua_State* L) {
 	Locker locker(realObject);
 
@@ -165,6 +146,15 @@ int LuaShipAiAgent::setWaveAttack(lua_State* L) {
 	Locker locker(realObject);
 
 	realObject->addShipFlag(ShipFlag::WAVE_ATTACK);
+	realObject->setShipAiTemplate();
+
+	return 0;
+}
+
+int LuaShipAiAgent::setSinglePatrolRotation(lua_State* L) {
+	Locker locker(realObject);
+
+	realObject->addShipFlag(ShipFlag::SINGLE_PATROL_ROTATION);
 	realObject->setShipAiTemplate();
 
 	return 0;
@@ -611,10 +601,16 @@ int LuaShipAiAgent::clearPatrolPoints(lua_State* L) {
 }
 
 int LuaShipAiAgent::createSquadron(lua_State* L) {
+	int formationType = -1;
+
+	if ((lua_gettop(L) - 1) >= 1) {
+		formationType = lua_tointeger(L, -1);
+	}
+
 	// Lock the ship agent
 	Locker lock(realObject);
 
-	realObject->createSquadron();
+	realObject->createSquadron(formationType);
 
 	return 0;
 }

@@ -34,10 +34,9 @@ public:
 	int setGuardPatrol(lua_State* L);
 	int setRandomPatrol(lua_State* L);
 	int setFixedPatrol(lua_State* L);
-	int setSquadronPatrol(lua_State* L);
-	int setSquadronFollow(lua_State* L);
 	int setEscort(lua_State* L);
 	int setWaveAttack(lua_State* L);
+	int setSinglePatrolRotation(lua_State* L);
 	int setDespawnOnNoPlayerInRange(lua_State* L);
 	int setMinimumGuardPatrol(lua_State* L);
 	int setMaximumGuardPatrol(lua_State* L);

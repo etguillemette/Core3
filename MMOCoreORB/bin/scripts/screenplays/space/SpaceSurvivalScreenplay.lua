@@ -24,7 +24,7 @@ registerScreenPlay("SpaceSurvivalScreenplay", false)
 
 --[[
 
-		Space Inspect Quest Functions
+		Space Survival Quest Functions
 
 --]]
 
@@ -61,7 +61,6 @@ function SpaceSurvivalScreenplay:startQuest(pPlayer, pNpc)
 		-- Activate quest task 1
 		SpaceHelpers:activateSpaceQuestTask(pPlayer, self.questType, self.questName, 1, true)
 
-		--createEvent(2000, self.className, "setupEscort", pPlayer, "")
 	end
 
 	-- Create inital observer for player entering Zone and to handle failing quest
@@ -134,18 +133,43 @@ function SpaceSurvivalScreenplay:failQuest(pPlayer, notifyClient)
 end
 
 function SpaceSurvivalScreenplay:cleanUpQuestData(playerID)
-	-- Delete the stored escorted ship ID
-	deleteData(playerID .. ":" .. self.className .. ":escortID:")
 
-	-- Delete player location data
-	deleteData(playerID .. ":" .. self.className .. ":location:")
 
-	-- Delete Start point
-	deleteData(playerID .. self.className .. ":startPoint:")
 
-	-- Delete the distance warnings
-	deleteData(playerID .. ":" .. self.className .. ":distanceWarnings:")
+end
 
-	-- Kill Count Tracking
-	deleteData(playerID .. ":" .. self.className .. ":" .. ":EscortKillCount:")
+--[[
+
+		Space Survival Observers
+
+--]]
+
+function SpaceSurvivalScreenplay:enteredZone(pPlayer, nill, zoneNameHash)
+	if (pPlayer == nil) then
+		return 0
+	end
+
+	if (not SpaceHelpers:isSpaceQuestActive(pPlayer, self.questType, self.questName)) then
+		return 1
+	end
+
+	local pGhost = CreatureObject(pPlayer):getPlayerObject()
+
+	if (pGhost == nullptr) then
+		return 0
+	end
+
+	local pRootParent = SceneObject(pPlayer):getRootParent()
+
+	if (pRootParent ~= nil and SceneObject(pRootParent):getObjectName() == "player_sorosuub_space_yacht") then
+		return 0
+	end
+
+	local playerID = SceneObject(pPlayer):getObjectID()
+	local spaceQuestHash = getHashCode(self.questZone)
+
+
+
+
+	return 1
 end
