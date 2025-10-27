@@ -499,7 +499,7 @@ void ShipAiAgentImplementation::notifyDissapear(TreeEntry* entry) {
 	}
 }
 
-void ShipAiAgentImplementation::notifyDespawn(Zone* zone) {
+void ShipAiAgentImplementation::notifyDespawn() {
 #ifdef DEBUG_SHIP_DESPAWN
 	info(true) << "notifyDespawn called for - " << getDisplayedName() << " ID: " << getObjectID();
 #endif // DEBUG_SHIP_DESPAWN
