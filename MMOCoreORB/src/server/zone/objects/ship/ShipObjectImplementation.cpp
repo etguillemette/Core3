@@ -777,7 +777,6 @@ void ShipObjectImplementation::doRecovery(int mselapsed) {
 
 	float deltaTime = Math::clamp(0.1f, mselapsed * 0.001f, 10.f);
 
-	auto pilot = getPilot();
 	auto deltaVector = getDeltaVector();
 	auto componentMap = getShipComponentMap();
 
@@ -910,6 +909,8 @@ void ShipObjectImplementation::doRecovery(int mselapsed) {
 						removeComponentFlag(Components::BOOSTER, ShipComponentFlag::ACTIVE, false);
 						restartBooster();
 
+						auto pilot = getPilot();
+
 						if (pilot != nullptr) {
 							pilot->sendSystemMessage("@space/space_interaction:booster_energy_depleted");
 						}
@@ -956,7 +957,7 @@ void ShipObjectImplementation::doRecovery(int mselapsed) {
 	auto targetVector = getTargetVector();
 
 	if (targetVector != nullptr) {
-		targetVector->update();
+		targetVector->update(asShipObject());
 	}
 }
 
@@ -2238,6 +2239,14 @@ float ShipObjectImplementation::getOutOfRangeDistance(uint64 specialRangeID) {
 		if (pilot != nullptr && pilot->isMissionRangeObject(specialRangeID)) {
 			return ZoneServer::SPACESTATIONRANGE;
 		}
+	}
+
+	return ZoneServer::SPACECLOSEOBJECTRANGE;
+}
+
+float ShipObjectImplementation::getInRangeDistance(bool lightUpdate) {
+	if (!lightUpdate && !isShipAiAgent()) {
+		return ZoneServer::SPACESTATIONRANGE;
 	}
 
 	return ZoneServer::SPACECLOSEOBJECTRANGE;
