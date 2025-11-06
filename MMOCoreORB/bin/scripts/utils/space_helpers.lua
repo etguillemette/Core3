@@ -145,6 +145,15 @@ function SpaceHelpers:setSquadronType(pPlayer, squadron)
 	PlayerObject(pGhost):setSquadronType(squadron)
 end
 
+-- @param pPlayer pointer checks if the player has any type of pilot skills
+function SpaceHelpers:isPilot(pPlayer)
+	if (pPlayer == nil) then
+		return false
+	end
+
+	return (CreatureObject(pPlayer):isNeutralPilot() or CreatureObject(pPlayer):isRebelPilot() or CreatureObject(pPlayer):isImperialPilot())
+end
+
 -- @param pPlayer pointer checked if neutral pilot
 function SpaceHelpers:isNeutralPilot(pPlayer)
 	if (pPlayer == nil) then
@@ -396,15 +405,6 @@ function SpaceHelpers:getPlayerSpaceFactionHash(pPlayer)
 	end
 
 	return factionHash
-end
-
--- @param pPlayer pointer checks if the player has any type of pilot skills
-function SpaceHelpers:isPilot(pPlayer)
-	if (pPlayer == nil) then
-		return false
-	end
-
-	return (CreatureObject(pPlayer):isNeutralPilot() or CreatureObject(pPlayer):isRebelPilot() or CreatureObject(pPlayer):isImperialPilot())
 end
 
 -- @param pPlayer pointer checks if the player has space experience
@@ -929,13 +929,14 @@ function SpaceHelpers:failSpaceQuest(pPlayer, questType, questName, notifyClient
 			SpaceHelpers:sendQuestUpdate(pPlayer, "@space/quest:patrol_abandoned") -- "You abandoned your patrol!"
 		elseif (questType == "destroy_surpriseattack") then
 			SpaceHelpers:sendQuestUpdate(pPlayer, "@space/quest:destroy_surprise_abandoned") -- "You ran away from the attack and abandoned your duty!"
-		elseif (questType == "escort_duty" or questType == "destroy_duty") then
-			SpaceHelpers:sendDutyUpdate(pPlayer, "@space/quest:mission_abandoned") -- "You abandoned your mission!"
+		elseif (questType == "escort_duty" or questType == "destroy_duty" or questType == "recovery_duty") then
+			SpaceHelpers:sendQuestUpdate(pPlayer, "@space/quest:destroy_abandoned") -- "You have ended your duty mission."
 		elseif (questType == "inspect") then
 			SpaceHelpers:sendQuestUpdate(pPlayer, "@space/quest:inspect_abandoned") -- "You abandoned your inspection mission!"
 		else
 			-- Failed Message
-			SpaceHelpers:sendQuestUpdate(pPlayer, "@quest/quests:task_failure")
+			--SpaceHelpers:sendQuestUpdate(pPlayer, "@quest/quests:task_failure")
+			SpaceHelpers:sendDutyUpdate(pPlayer, "@space/quest:mission_abandoned") -- "You abandoned your mission!"
 		end
 	end
 

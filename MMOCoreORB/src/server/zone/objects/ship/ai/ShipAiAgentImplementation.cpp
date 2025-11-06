@@ -387,6 +387,7 @@ void ShipAiAgentImplementation::initializeTransientMembers() {
 	nextBehaviorInterval = BEHAVIORINTERVALMIN;
 
 	updateZoneTime = 0;
+	serverSyncCount = 0;
 
 	movementState = OBLIVIOUS;
 	movementCount = 0;
@@ -614,19 +615,21 @@ void ShipAiAgentImplementation::activateAiBehavior(bool reschedule) {
 		}
 	}
 
-	int iterate = behaviorIntervalIterator.get() % 1000;
-	int timeLast = behaviorIntervalSchedule.get();
-	int timeNow = System::getMiliTime() % 1000;
+	uint64 miliTime = System::getMiliTime();
+	uint64 nextInterval = getNextBehaviorInterval();
+	uint64 deltaTime = miliTime - updateZoneTime;
 
-	if (timeNow <= timeLast) {
-		iterate += 1;
-	} else {
-		iterate = 0;
+	if (deltaTime >= UPDATEZONEINTERVAL) {
+		bool lightUpdate = serverSyncCount != 0;
+		serverSyncCount = (serverSyncCount + 1) % SERVERSYNCCOUNTMAX;
+		updateZoneTime = miliTime;
+
+		updateZone(lightUpdate, false);
+		removeOutOfRangeObjects();
+		doRecovery(deltaTime);
 	}
 
-	nextBehaviorInterval = getNextBehaviorInterval() + iterate;
-	behaviorIntervalIterator.set(iterate);
-	behaviorIntervalSchedule.set(timeNow);
+	nextBehaviorInterval = nextInterval;
 }
 
 void ShipAiAgentImplementation::cancelBehaviorEvent() {
@@ -1127,16 +1130,6 @@ bool ShipAiAgentImplementation::setDisabledEngineSpeed() {
 }
 
 bool ShipAiAgentImplementation::findNextPosition(int maxDistance) {
-	int64 timeNow = System::getMiliTime();
-	int64 deltaTime = timeNow - updateZoneTime;
-
-	if (deltaTime >= UPDATEZONEINTERVAL) {
-		updateZoneTime = timeNow;
-
-		updateZone(true, false);
-		removeOutOfRangeObjects();
-	}
-
 	if (getPatrolPointSize() <= 0) {
 		return false;
 	}
@@ -1164,17 +1157,23 @@ void ShipAiAgentImplementation::updateTransform(bool lightUpdate) {
 }
 
 int ShipAiAgentImplementation::getNextBehaviorInterval() {
+	bool notifyClient = numberOfPlayersInRange >= 1;
+
+	if (!notifyClient) {
+		return BEHAVIORINTERVALMAX;
+	}
+
 	switch (movementState) {
+		case ShipAiAgent::ATTACKING:
+		case ShipAiAgent::EVADING: {
+			return BEHAVIORINTERVALMIN;
+		}
 		case ShipAiAgent::OBLIVIOUS:
 		case ShipAiAgent::WATCHING:
 		case ShipAiAgent::FOLLOWING:
-		case ShipAiAgent::PATROLLING: {
-			return BEHAVIORINTERVALMAX;
-		}
-		case ShipAiAgent::ATTACKING:
+		case ShipAiAgent::PATROLLING:
 		case ShipAiAgent::FLEEING:
 		case ShipAiAgent::LEASHING:
-		case ShipAiAgent::EVADING:
 		case ShipAiAgent::PATHING_HOME:
 		case ShipAiAgent::FOLLOW_FORMATION:
 		default: {
@@ -2070,6 +2069,29 @@ float ShipAiAgentImplementation::getOutOfRangeDistance(uint64 specialRangeID) {
 	return ZoneServer::SPACECLOSEOBJECTRANGE;
 }
 
+float ShipAiAgentImplementation::getInRangeDistance(bool lightUpdate) {
+	if (!lightUpdate) {
+		return getOutOfRangeDistance();
+	}
+
+	return ZoneServer::SPACECLOSEOBJECTRANGE;
+}
+
+void ShipAiAgentImplementation::updateZone(bool lightUpdate, bool sendPackets) {
+	SceneObjectImplementation::updateZone(lightUpdate, sendPackets);
+}
+
+void ShipAiAgentImplementation::doRecovery(int mselapsed) {
+	bool lightUpdate = serverSyncCount != 0;
+	bool notifyClient = numberOfPlayersInRange >= 1;
+
+	if (lightUpdate && !notifyClient) {
+		return;
+	}
+
+	ShipObjectImplementation::doRecovery(mselapsed);
+}
+
 String ShipAiAgentImplementation::getLootTable() {
 	return lootTable;
 }
@@ -2258,11 +2280,23 @@ void ShipAiAgentImplementation::dropFromSquadron() {
 }
 
 bool ShipAiAgentImplementation::isSquadronLeader() {
-	return squadron != nullptr ? squadron->isSquadronLeader(asShipAiAgent()) : false;
+	if (squadron == nullptr) {
+		return false;
+	}
+
+	Locker squadronLock(squadron, asShipAiAgent());
+
+	return squadron->isSquadronLeader(asShipAiAgent());
 }
 
 bool ShipAiAgentImplementation::isSquadronMember() {
-	return squadron != nullptr ? squadron->isSquadronMember(asShipAiAgent()) : false;
+	if (squadron == nullptr) {
+		return false;
+	}
+
+	Locker squadronLock(squadron, asShipAiAgent());
+
+	return squadron->isSquadronMember(asShipAiAgent());
 }
 
 bool ShipAiAgentImplementation::isSquadronTransform() {
