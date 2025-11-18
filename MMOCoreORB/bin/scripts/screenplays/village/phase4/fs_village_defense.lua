@@ -60,7 +60,8 @@ function FsVillageDefense:checkHealerList(healerList)
 	for i = 1, #healerList, 1 do
 		local pPlayer = healerList[i]
 
-		if (pPlayer ~= nil and SceneObject(pPlayer):isPlayerCreature() and (QuestManager.hasActiveQuest(pPlayer, QuestManager.quests.FS_COMBAT_HEALING_1) or QuestManager.hasActiveQuest(pPlayer, QuestManager.quests.FS_COMBAT_HEALING_2))) then
+		--if (pPlayer ~= nil and SceneObject(pPlayer):isPlayerCreature() and (QuestManager.hasActiveQuest(pPlayer, QuestManager.quests.FS_COMBAT_HEALING_1) or QuestManager.hasActiveQuest(pPlayer, QuestManager.quests.FS_COMBAT_HEALING_2))) then --Ethan Edit 11-13-25 (SOLO VILLAGE)
+		if (pPlayer ~= nil) then
 			local healReq
 			local pQuest
 
