@@ -985,7 +985,7 @@ class PlayerObject extends IntangibleObject {
 	/**
 	 * Unloads all the spawned objects from the datapad control devices
 	 */
-	public native void unloadSpawnedChildren(boolean petsOnly = false);
+	public native void unloadSpawnedChildren(boolean skipShips = false);
 
 	public void addToConsentList(final string name) {
 		consentList.put(name);
@@ -1080,12 +1080,10 @@ class PlayerObject extends IntangibleObject {
 		return savedTerrainName;
 	}
 
+	public native void setSavedTerrainName(final string name);
+
 	public void setSavedParentID(unsigned long id) {
 		savedParentID = id;
-	}
-
-	public void setSavedTerrainName(final string name) {
-		savedTerrainName = name;
 	}
 
 	public void setBirthDate(int date) {

@@ -2012,7 +2012,7 @@ float BuildingObjectImplementation::getOutOfRangeDistance(uint64 specialRangeID)
 #ifdef COV_BUILDING_QUAD_RANGE
 	return ZoneServer::CLOSEOBJECTRANGE * 4;
 #else // COV_BUILDING_QUAD_RANGE
-	return ZoneServer::CLOSEOBJECTRANGE + getBoundingRadius();
+	return ZoneServer::CLOSEOBJECTRANGE;
 #endif // COV_BUILDING_QUAD_RANGE
 }
 

@@ -33,6 +33,7 @@ AccountManager::AccountManager(LoginServer* loginserv) : Logger("AccountManager"
 	setLogging(false);
 	setGlobalLogging(false);
 
+#ifndef WITH_SWGREALMS_API
 	if (ServerCore::truncateDatabases()) {
 		try {
 			String query = "TRUNCATE TABLE characters";
@@ -44,6 +45,7 @@ AccountManager::AccountManager(LoginServer* loginserv) : Logger("AccountManager"
 			error(e.getMessage());
 		}
 	}
+#endif // !WITH_SWGREALMS_API
 }
 
 AccountManager::~AccountManager() {
@@ -98,7 +100,10 @@ void AccountManager::loginAccount(LoginClient* client, Message* packet) {
 		auto sessionId = result.getSessionID();
 
 		if (sessionId.isEmpty()) {
-			loginClient->sendErrorMessage("Login Error", "Your session key was invalid, exit the client and try logging in again, if this continues contact support.");
+			StringBuffer errorMsg;
+			errorMsg << "Your session key was invalid, exit the client and try logging in again, if this continues contact support.\n\ntrx_id: " << result.getTrxId();
+
+			loginClient->sendErrorMessage("Login Error", errorMsg.toString());
 
 			error() << "missing sessionId in createSession for user [" << username << "]: " << result.getLogMessage();
 
@@ -164,8 +169,8 @@ void AccountManager::loginApprovedAccount(LoginClient* client, ManagedReference<
 	try {
 #ifndef WITH_SWGREALMS_API
 		ServerDatabase::instance()->executeStatement(sessionQuery);
-#endif // !WITH_SWGREALMS_API
 		ServerDatabase::instance()->executeStatement(logQuery);
+#endif // !WITH_SWGREALMS_API
 	} catch (const DatabaseException& e) {
 		client->error() << e.getMessage();
 	}

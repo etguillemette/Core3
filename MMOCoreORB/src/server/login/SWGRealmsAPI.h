@@ -16,12 +16,17 @@
 #include "engine/engine.h"
 #include "system/thread/atomic/AtomicInteger.h"
 #include "server/login/objects/Galaxy.h"
+#include "engine/db/berkeley/BerkeleyDatabase.h"
+#include "engine/db/berkeley/Environment.h"
 
 #define _TURN_OFF_PLATFORM_STRING
 #include <cpprest/json.h>
+#include <cpprest/ws_client.h>
 
 // Forward declarations
 class GalaxyBanEntry;
+class CharacterListEntry;
+class CharacterNameMap;
 
 namespace web {
 	namespace http {
@@ -328,6 +333,74 @@ namespace server {
 		class AccountResult;
 		class SimpleResult;
 
+		/**
+		 * WebSocket streaming client with BerkeleyDB WAL for durability.
+		 *
+		 * Wire Protocol:
+		 *   Send: channel\tkey\tpayload\n
+		 *   ACK:  {"channel":"...","key":"...","status":"ok"|"error"}
+		 */
+		class SWGRealmsStreamer : public Logger, public Object {
+		private:
+			web::websockets::client::websocket_callback_client* wsClient;
+			bool connected;
+			String wsURL;
+			String apiToken;
+			int galaxyID;
+			bool enabled;
+
+			ThreadLocal<engine::db::berkeley::BerkeleyDatabase*> walDatabase;
+			engine::db::berkeley::Environment* walEnvironment;
+			String walDbPath;
+			String walEnvPath;
+
+			Mutex syncMutex;
+			Mutex reconnectMutex;
+
+			AtomicInteger walPendingCount;
+			AtomicInteger publishedCount;
+			AtomicInteger ackedCount;
+			AtomicInteger errorCount;
+			AtomicInteger inFlightCount;
+
+			int reconnectDelay;
+			bool reconnectScheduled;
+
+			static constexpr uint64 MAX_WAL_SIZE = 100 * 1024 * 1024;
+			static constexpr uint64 GC_AFTER_HOURS = 48;
+
+		public:
+			SWGRealmsStreamer(const String& baseURL, const String& token, int galaxy, int debugLevel);
+			~SWGRealmsStreamer();
+
+			void publish(const String& channel, const String& key, const String& payloadJson);
+			void garbageCollect();
+			JSONSerializationType getStatsAsJSON() const;
+			String toString() const;
+
+			inline bool isConnected() const { return connected; }
+			inline int getPendingCount() const { return walPendingCount.get(); }
+
+		private:
+			engine::db::berkeley::BerkeleyDatabase* getWALHandle();
+			void appendToWAL(const String& channel, const String& key, const String& payloadJson);
+			void removeFromWAL(const String& channel, const String& key);
+			Vector<Pair<String, String>> getAllPendingFromWAL();
+			uint64 parseTimestampFromKey(const String& key);
+
+			void connectWebSocket();
+			void disconnectWebSocket();
+			void sendMessage(const String& channel, const String& key, const String& payloadJson);
+			void replayWAL();
+			void scheduleReconnect();
+
+			void onOpen();
+			void onClose(web::websockets::client::websocket_close_status status,
+			            const utility::string_t& reason, const std::error_code& ec);
+			void onFail(const std::exception& e);
+			void onMessage(const web::websockets::client::websocket_incoming_message& msg);
+		};
+
 		class SWGRealmsAPI : public Logger, public Singleton<SWGRealmsAPI>, public Object {
 		protected:
 			AtomicInteger trxCount = 0;
@@ -344,10 +417,16 @@ namespace server {
 			// Persistent HTTP client for connection reuse (thread-safe)
 			web::http::client::http_client* httpClient = nullptr;
 
+			// WebSocket streaming client (owned, nullable if disabled)
+			SWGRealmsStreamer* streamer = nullptr;
+
 			// Blocking call statistics
 			AtomicInteger outstandingBlockingCalls = 0;
 			AtomicInteger peakConcurrentCalls = 0;
 			AtomicInteger totalBlockingCalls = 0;
+
+			// Queue depth tracking
+			AtomicInteger peakQueueDepth = 0;
 
 			// Latency histogram (milliseconds)
 			AtomicInteger latency_0_10ms = 0;
@@ -402,6 +481,8 @@ namespace server {
 			bool parseAccountFromJSON(const String& jsonStr, Reference<account::Account*> account, String& errorMessage);
 			bool parseAccountBanStatusFromJSON(const String& jsonStr, Reference<account::Account*> account, String& errorMessage);
 			bool parseGalaxyBansFromJSON(const String& jsonStr, VectorMap<uint32, Reference<GalaxyBanEntry*>>& galaxyBans, String& errorMessage);
+			bool parseCharacterBansFromJSON(const String& jsonStr, VectorMap<String, Reference<CharacterListEntry*>>& characterBans, String& errorMessage);
+			bool parseCharacterListFromJSON(const String& jsonStr, Vector<CharacterListEntry>& characters, String& errorMessage);
 			bool parseGalaxyListFromJSON(const String& jsonStr, Vector<Galaxy>& galaxies, String& errorMessage);
 			Optional<Galaxy> parseGalaxyFromJSON(const String& jsonStr);
 
@@ -427,6 +508,36 @@ namespace server {
 			                           const String& reason, String& errorMessage);
 			bool unbanFromGalaxyBlocking(uint32 accountID, uint32 galaxyID, const String& reason, String& errorMessage);
 
+			// Character Ban Operations
+			bool getCharacterBansBlocking(uint32 accountID, VectorMap<String, Reference<CharacterListEntry*>>& characterBans,
+			                              String& errorMessage);
+			bool banCharacterBlocking(uint32 accountID, uint32 galaxyID, const String& name, uint32 issuerID,
+			                          uint64 expiresTimestamp, const String& reason, String& errorMessage);
+			bool unbanCharacterBlocking(uint32 accountID, uint32 galaxyID, const String& name, const String& reason,
+			                            String& errorMessage);
+
+			// Character Operations
+			bool createCharacterBlocking(uint64 characterOID, uint32 accountID, uint32 galaxyID,
+			                             const String& firstname, const String& surname,
+			                             uint32 race, uint32 gender, const String& templatePath,
+			                             const String& reservationID, String& errorMessage);
+			bool getCharacterListBlocking(uint32 accountID, Vector<CharacterListEntry>& characters, String& errorMessage);
+			JSONSerializationType getCharacterBlocking(uint64 characterOID, uint32 galaxyID, String& errorMessage);
+			bool loadCharacterNamesBlocking(uint32 galaxyID, CharacterNameMap& nameMap, String& errorMessage);
+			bool reserveCharacterNameBlocking(uint32 galaxyID, const String& firstname, const String& surname,
+			                                  String& reservationID, String& errorMessage);
+			bool beginCharactersCommitBlocking(uint32 galaxyID, String& errorMessage);
+			bool commitCharactersBlocking(uint32 galaxyID, String& errorMessage);
+			bool updateCharacterFirstNameBlocking(uint64 characterOID, uint32 galaxyID,
+			                                      const String& firstname, String& errorMessage);
+			bool updateCharacterSurNameBlocking(uint64 characterOID, uint32 galaxyID,
+			                                    const String& surname, String& errorMessage);
+			bool deleteCharacterBlocking(uint64 characterOID, uint32 accountID, uint32 galaxyID, String& errorMessage);
+			bool rollbackCharactersBlocking(uint32 galaxyID, String& errorMessage);
+			bool beginPurgeBatchBlocking(uint32 galaxyID, uint32 limit, Vector<uint64>& characterOIDs,
+			                             String& batchID, String& errorMessage);
+			bool commitPurgeBatchBlocking(uint32 galaxyID, const String& batchID, String& errorMessage);
+
 			// Galaxy Metadata Operations
 			Vector<Galaxy> getAuthorizedGalaxies(uint32 accountID);
 			Optional<Galaxy> getGalaxyEntry(uint32 galaxyID);
@@ -448,6 +559,17 @@ namespace server {
 			void notifyPlayerOnline(const String& ip, uint32 accountID, uint64_t characterID,
 					const SessionAPICallback& resultCallback = nullptr);
 			void notifyPlayerOffline(const String& ip, uint32 accountID, uint64_t characterID);
+
+			// Streaming API proxy methods
+			void publish(const String& channel, const String& key, const String& payloadJson);
+			void publishTrxLog(const String& trxId, const String& payloadJson);
+			bool isStreamConnected() const;
+			int getStreamPendingCount() const;
+
+			// Task queues
+			static const TaskQueue* getCustomQueue();        // 4 threads for API callbacks
+			static const TaskQueue* getCustomMetricsQueue(); // 1 thread for metrics (BDB handle optimization)
+			void scheduleMetricsPublish();
 		};
 	}
 }

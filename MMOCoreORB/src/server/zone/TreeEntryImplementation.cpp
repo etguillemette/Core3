@@ -8,8 +8,10 @@ Distribution of this file for usage outside of Core3 is prohibited.
 #include "server/zone/TreeNode.h"
 #include "server/zone/objects/scene/SceneObject.h"
 #include "server/zone/objects/tangible/TangibleObject.h"
+#include "server/zone/objects/ship/ShipObject.h"
 
 //#define DEBUG_TREE_ENTRY
+// #define DEBUG_WORLD_POSITION
 
 TreeEntryImplementation::TreeEntryImplementation(TreeNode* n) {
 	node = n;
@@ -420,62 +422,24 @@ void TreeEntryImplementation::setPosition(const Vector3& value) {
 }
 
 void TreeEntryImplementation::setPosition(float x, float z, float y) {
+	/*
+	auto sceneO = static_cast<SceneObject*>(_this.getReferenceUnsafeStaticCast());
+
+	if (sceneO->isPlayerCreature()) {
+		Logger::console.info(true) << "TreeEntryImplementation::setPosition -- " << sceneO->getDisplayedName() << " X: " << x << " Z: " << z << " Y: " << y;
+	}
+	*/
+
 	coordinates.setPosition(x, z, y);
 	updateWorldPosition(false);
 }
 
 void TreeEntryImplementation::updateWorldPosition(bool initialize) {
-#ifdef DEBUG_WORLD_POSITION
-	auto sceneO = static_cast<SceneObject*>(_this.getReferenceUnsafeStaticCast());
-#endif // DEBUG_WORLD_POSITION
-
-	auto root = static_cast<SceneObject*>(getRootParentUnsafe());
-
 	Vector3 worldPosition = getPosition();
 
-	if (root != nullptr) {
-		if (root->isBuildingObject() || root->isPobShip()) {
-			float rootRad = -root->getDirection()->getRadians();
-			float rootCos = cos(rootRad);
-			float rootSin = sin(rootRad);
-
-			float localX = getPositionX();
-			float localY = getPositionY();
-			float localZ = getPositionZ();
-
-			float rotatedX = (localX * rootCos) - (localY * rootSin);
-			float rotatedY = (localX * rootSin) + (localY * rootCos);
-
-			float worldX = root->getPositionX() + rotatedX;
-			float worldY = root->getPositionY() + rotatedY;
-			float worldZ = root->getPositionZ() + localZ;
-
-#ifdef DEBUG_WORLD_POSITION
-			if (sceneO != nullptr && sceneO->isPlayerCreature())
-				Logger::console.info(true) << sceneO->getDisplayedName() << " -- Coordinates are using root parent to calculate";
-#endif // DEBUG_WORLD_POSITION
-
-			worldPosition = Vector3(worldX, worldY, worldZ);
-		} else {
-			worldPosition = root->getPosition();
-		}
-	}
-
 	if (initialize) {
-#ifdef DEBUG_WORLD_POSITION
-		if (sceneO != nullptr && sceneO->isPlayerCreature()) {
-			Logger::console.info(true) << sceneO->getDisplayedName() << " -- INITIALIZING - World Coordinates to " << worldPosition.toString();
-		}
-#endif // DEBUG_WORLD_POSITION
-
 		worldCoordinates.initializePosition(worldPosition.getX(), worldPosition.getZ(), worldPosition.getY());
 	} else {
-#ifdef DEBUG_WORLD_POSITION
-		if (sceneO != nullptr && sceneO->isPlayerCreature()) {
-			Logger::console.info(true) << sceneO->getDisplayedName() << " -- UPDATING - World Coordinates to " << worldPosition.toString();
-		}
-#endif // DEBUG_WORLD_POSITION
-
 		worldCoordinates.setPosition(worldPosition.getX(), worldPosition.getZ(), worldPosition.getY());
 	}
 }

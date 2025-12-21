@@ -27,7 +27,11 @@
 #include "server/zone/packets/chat/ChatSystemMessage.h"
 #include "server/zone/objects/ship/ShipComponentFlag.h"
 
+// #define DEBUG_WORLD_POSITION
+
 void PobShipObjectImplementation::notifyLoadFromDatabase() {
+	// info(true) << "PobShipObjectImplementation::notifyLoadFromDatabase() called -- Ship: " << getDisplayedName();
+
 	CreatureObject* owner = getOwner().get();
 
 	if (owner != nullptr && shipPermissionList.getOwner() != owner->getObjectID()) {
@@ -259,7 +263,14 @@ void PobShipObjectImplementation::createChildObjects() {
 }
 
 void PobShipObjectImplementation::destroyObjectFromDatabase(bool destroyContainedObjects) {
-	auto thisPob = asPobShip();
+	// Make sure no players remain in any of the ships slots
+	removeAllPlayersFromShip();
+
+	ShipObjectImplementation::destroyObjectFromDatabase(destroyContainedObjects);
+}
+
+void PobShipObjectImplementation::removeAllPlayersFromShip() {
+	// info(true) << getDisplayedName() << " -- PobShipObjectImplementation::removeAllPlayersFromShip()";
 
 	auto launchZone = getSpaceLaunchZone();
 	auto launchLoc = getSpaceLaunchLocation();
@@ -272,64 +283,139 @@ void PobShipObjectImplementation::destroyObjectFromDatabase(bool destroyContaine
 
 	// info(true) << "Launch Zone: " << launchZone << " Location: " << launchLoc.toString();
 
+	auto thisPob = asPobShip();
+
+	// Attempt to remove all players with the playersOnBoardList
+	auto zoneServer = getZoneServer();
+
+	if (zoneServer != nullptr) {
+		Locker lock(&playersOnBoardMutex);
+
+		for (int i = playersOnBoard.size() - 1; i >= 0 ; --i) {
+			auto shipMemberID = playersOnBoard.get(i);
+			auto shipMember = cast<CreatureObject*>(zoneServer->getObject(shipMemberID).get());
+
+			if (shipMember == nullptr) {
+				continue;
+			}
+
+			Locker clock(shipMember, thisPob);
+
+			// Remove droid commands from the player object
+			auto ghost = shipMember->getPlayerObject();
+
+			if (ghost != nullptr) {
+				ghost->removeDroidCommands();
+			}
+
+			// Clear the Players Space States
+			shipMember->clearSpaceStates();
+
+			// Clear the Players Space Mission Objects
+			shipMember->removeAllSpaceMissionObjects(false);
+
+			// info(true) << "Removing ShipMember: " << shipMember->getDisplayedName();
+
+			shipMember->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
+		}
+
+		playersOnBoard.removeAll();
+	}
+
 	// Handle Pilot
 	auto pilot = getPilot();
 
 	if (pilot != nullptr) {
-		auto pilotChair = getPilotChair().get();
-
 		Locker pClock(pilot, thisPob);
 
-		pilot->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
+		// Remove droid commands from the player object
+		auto ghost = pilot->getPlayerObject();
 
-		if (pilotChair != nullptr && pilotChair->hasObjectInContainer(pilot->getObjectID())) {
-			pilotChair->removeObject(pilot, nullptr, false);
+		if (ghost != nullptr) {
+			ghost->removeDroidCommands();
 		}
+
+		// Clear the Players Space States
+		pilot->clearSpaceStates();
+
+		// Clear the Players Space Mission Objects
+		pilot->removeAllSpaceMissionObjects(false);
+
+		// info(true) << "Removing POB Pilot: " << pilot->getDisplayedName();
+
+		pilot->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
 	}
 
 	// Handle Operator
 	auto shipOperator = getShipOperator();
 
 	if (shipOperator != nullptr) {
-		auto operationsChair = getOperationsChair().get();
+		Locker opClock(shipOperator, thisPob);
 
-		Locker pClock(shipOperator, thisPob);
+		// Remove droid commands from the player object
+		auto ghost = shipOperator->getPlayerObject();
+
+		if (ghost != nullptr) {
+			ghost->removeDroidCommands();
+		}
+
+		// Clear the Players Space States
+		shipOperator->clearSpaceStates();
+
+		// Clear the Players Space Mission Objects
+		shipOperator->removeAllSpaceMissionObjects(false);
+
+		// info(true) << "Removing POB Operator: " << shipOperator->getDisplayedName();
 
 		shipOperator->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
-
-		if (operationsChair != nullptr && operationsChair->hasObjectInContainer(shipOperator->getObjectID())) {
-			operationsChair->removeObject(shipOperator, nullptr, false);
-		}
 	}
 
 	// Handle Turret Top
 	auto playerTurretTop = getTurretOperatorTop();
 
 	if (playerTurretTop != nullptr) {
-		auto turretLadder = getTurretLadder().get();
+		Locker tClock(playerTurretTop, thisPob);
 
-		Locker pClock(playerTurretTop, thisPob);
+		// Remove droid commands from the player object
+		auto ghost = playerTurretTop->getPlayerObject();
+
+		if (ghost != nullptr) {
+			ghost->removeDroidCommands();
+		}
+
+		// Clear the Players Space States
+		playerTurretTop->clearSpaceStates();
+
+		// Clear the Players Space Mission Objects
+		playerTurretTop->removeAllSpaceMissionObjects(false);
+
+		// info(true) << "Removing POB Turret Top: " << playerTurretTop->getDisplayedName();
 
 		playerTurretTop->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
-
-		if (turretLadder != nullptr && turretLadder->hasObjectInContainer(playerTurretTop->getObjectID())) {
-			turretLadder->removeObject(playerTurretTop, nullptr, false);
-		}
 	}
 
 	// Handle Turret Bottom
 	auto playerTurretBottom = getTurretOperatorBottom();
 
 	if (playerTurretBottom != nullptr) {
-		auto turretLadder = getTurretLadder().get();
+		Locker tClock(playerTurretBottom, thisPob);
 
-		Locker pClock(playerTurretBottom, thisPob);
+		// Remove droid commands from the player object
+		auto ghost = playerTurretBottom->getPlayerObject();
+
+		if (ghost != nullptr) {
+			ghost->removeDroidCommands();
+		}
+
+		// Clear the Players Space States
+		playerTurretBottom->clearSpaceStates();
+
+		// Clear the Players Space Mission Objects
+		playerTurretBottom->removeAllSpaceMissionObjects(false);
+
+		// info(true) << "Removing POB Turret Bottom: " << playerTurretBottom->getDisplayedName();
 
 		playerTurretBottom->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
-
-		if (turretLadder != nullptr && turretLadder->hasObjectInContainer(playerTurretBottom->getObjectID())) {
-			turretLadder->removeObject(playerTurretBottom, nullptr, false);
-		}
 	}
 
 	// Check cells for players
@@ -351,17 +437,32 @@ void PobShipObjectImplementation::destroyObjectFromDatabase(bool destroyContaine
 				continue;
 			}
 
-			Locker clock(child, thisPob);
+			auto playerChild = child->asCreatureObject();
 
-			child->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
-
-			if (cell->hasObjectInContainer(child->getObjectID())) {
-				cell->removeObject(child, nullptr, false);
+			if (playerChild == nullptr) {
+				continue;
 			}
+
+			Locker clock(playerChild, thisPob);
+
+			// Remove droid commands from the player object
+			auto ghost = playerChild->getPlayerObject();
+
+			if (ghost != nullptr) {
+				ghost->removeDroidCommands();
+			}
+
+			// Clear the Players Space States
+			playerChild->clearSpaceStates();
+
+			// Clear the Players Space Mission Objects
+			playerChild->removeAllSpaceMissionObjects(false);
+
+			// info(true) << "Removing player in POB Ship Cell: " << playerChild->getDisplayedName();
+
+			playerChild->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
 		}
 	}
-
-	ShipObjectImplementation::destroyObjectFromDatabase(destroyContainedObjects);
 }
 
 void PobShipObjectImplementation::notifyInsert(TreeEntry* object) {
@@ -370,6 +471,8 @@ void PobShipObjectImplementation::notifyInsert(TreeEntry* object) {
 
 void PobShipObjectImplementation::notifyInsertToZone(Zone* zone) {
 	Locker locker(zone);
+
+	// info(true) << getDisplayedName() << " PobShipObjectImplementation::notifyInsertToZone";
 
 	for (int i = 0; i < cells.size(); ++i) {
 		auto& cell = cells.get(i);
@@ -472,7 +575,19 @@ int PobShipObjectImplementation::notifyObjectInsertedToChild(SceneObject* object
 
 		if (objectIsPlayer) {
 			// Add player to the onboard list
-			addPlayerOnBoard(object->asCreatureObject());
+			Reference<PobShipObject*> pobRef = asPobShip();
+			Reference<CreatureObject*> playerRef = object->asCreatureObject();
+
+			Core::getTaskManager()->executeTask([pobRef, playerRef]() {
+				if (pobRef == nullptr || playerRef == nullptr) {
+					return;
+				}
+
+				Locker lock(pobRef);
+				Locker clock(playerRef, pobRef);
+
+				pobRef->addPlayerOnBoard(playerRef);
+			}, "PobAddPlayerOnBoard");
 		}
 	} catch (Exception& e) {
 		error(e.getMessage());
@@ -559,12 +674,6 @@ void PobShipObjectImplementation::updateZone(bool lightUpdate, bool sendPackets)
 	ShipObjectImplementation::updateZone(lightUpdate, sendPackets);
 }
 
-void PobShipObjectImplementation::updatePlayersInShip(bool lightUpdate, bool sendPackets) {
-	//info(true) << "PobShipObjectImplementation::updatePlayersInShip - " << getDisplayedName();
-
-	ShipObjectImplementation::updatePlayersInShip(lightUpdate, sendPackets);
-}
-
 void PobShipObjectImplementation::sendTo(SceneObject* sceneO, bool doClose, bool forceLoadContainer) {
 	if (sceneO == nullptr) {
 		return;
@@ -628,24 +737,37 @@ void PobShipObjectImplementation::sendContainerObjectsTo(SceneObject* sceneO, bo
 
 	auto playerId = player->getObjectID();
 	bool isLaunched = isShipLaunched();
+	bool pobIsRoot = sceneO->getRootParent() == asPobShip();
 
 	for (int i = 0; i < cells.size(); ++i) {
 		auto& cell = cells.get(i);
 
+		// info(true) << "PobShipObject -- Sending Cell #" << i << " to Player: " << sceneO->getDisplayedName();
+
 		cell->sendTo(player, true);
 		cell->sendPermissionsTo(player, true);
 
-		// Do not send the contents of the ships cells to the player unless it is launched
-		if (!isLaunched) {
+		// Do not send the contents of the ships cells to the player unless they are inside the ship
+		if (!isLaunched || !pobIsRoot) {
 			continue;
 		}
 
 		for (int j = 0; j < cell->getContainerObjectsSize(); ++j) {
 			auto object = cell->getContainerObject(j);
 
-			if (object == nullptr || object->getObjectID() == playerId) {
+			if (object == nullptr) {
 				continue;
 			}
+
+			uint64 objectID = object->getObjectID();
+
+			if (objectID == playerId || objectID == player->getParentID()) {
+				// info(true) << "PobShipObject -- Sending Cell #" << i << " SKIPPING item #" << j << " Object: " << object->getDisplayedName();
+
+				continue;
+			}
+
+			// info(true) << "PobShipObject -- Sending Cell #" << i << " sending item #" << j << " Object: " << object->getDisplayedName() << " to Player: " <<  sceneO->getDisplayedName();
 
 			object->sendTo(player, true);
 		}
@@ -969,6 +1091,8 @@ void PobShipObjectImplementation::doInteriorEffect(Zone* zone, CellObject* cell,
 
 	// info(true) << "doInteriorEffect -- Random Cell: " << randomCell << " Count: " << count << " Chance: " << chance << " Conduit Chance: " << conduitChance;
 
+	Locker lock(&playersOnBoardMutex);
+
 	for (int i = 0; i < count; i++) {
 		int effectsRoll = System::random(100);
 
@@ -1099,6 +1223,8 @@ bool PobShipObjectImplementation::triggerCellDamageOverTime() {
 
 	auto thisPob = asPobShip();
 	bool returnHasDots = false;
+
+	Locker lock(&playersOnBoardMutex);
 
 	for (int i = 0; i < cells.size(); ++i) {
 		auto& cell = cells.get(i);
@@ -1478,4 +1604,32 @@ Vector3 PobShipObjectImplementation::getLaunchPointInCell(const String& cellName
 	Vector3 location(locations.get(random));
 
 	return location;
+}
+
+Vector3 PobShipObjectImplementation::getObjectLocationInShip(SceneObject* object, const Vector3& objectPosition) {
+	// Start by setting the final interior position as the objects passed from TreeEntry
+	Vector3 finalPosition(objectPosition.getX(), objectPosition.getY(), objectPosition.getZ());
+
+	if (object != nullptr) {
+		auto parent = object->getParent().get();
+
+		// Parent is not a cell, so we use the parent
+		if (parent != nullptr && !parent->isCellObject()) {
+			finalPosition = parent->getPosition();
+#ifndef DEBUG_WORLD_POSITION
+		}
+	}
+#else // DEBUG_WORLD_POSITION
+			if (isPlayerCreature()) {
+				info(true) << getDisplayedName() << " -- POB Ship using parent coordinates to calculate object position: " << finalPosition.toString();
+			}
+		} else {
+			if (isPlayerCreature()) {
+				info(true) << getDisplayedName() << " -- POB Ship using object coordinates to calculate object position: " << finalPosition.toString();
+			}
+		}
+	}
+#endif // DEBUG_WORLD_POSITION
+
+	return SpaceMath::getGlobalVector(finalPosition, conjugateMatrix) + getWorldPosition();
 }

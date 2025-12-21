@@ -14,6 +14,7 @@ import engine.service.proto.BaseMessage;
 import server.zone.objects.ship.ai.ShipAiAgent;
 import system.util.SortedVector;
 import system.lang.String;
+import system.thread.Mutex;
 
 include server.zone.TreeEntry;
 include server.zone.objects.scene.SceneObject;
@@ -134,6 +135,8 @@ class ShipObject extends TangibleObject {
 	protected unsigned int shipFaction;
 
 	protected transient boolean droidFeedback;
+
+	protected transient unsigned int timerTaskCrc;
 
 	// DeltaAutoVariable template <class K, class V, int BaselineName, uint8 DeltaType, int DeltaIndex>
 
@@ -428,6 +431,9 @@ class ShipObject extends TangibleObject {
 	protected DeltaAutoMap componentCRCs;
 
 	@dereferenced
+	protected transient Mutex playersOnBoardMutex;
+
+	@dereferenced
 	protected Vector<unsigned long> playersOnBoard;
 
 	protected string certificationRequired;
@@ -469,6 +475,8 @@ class ShipObject extends TangibleObject {
 		certificationRequired = "";
 		cargoString = "";
 	}
+
+	public native void finalize();
 
 	public native void notifyLoadFromDatabase();
 
@@ -515,11 +523,13 @@ class ShipObject extends TangibleObject {
 	@local
 	public native void notifyInsertToZone(Zone zone);
 
-	public native void notifyRemoveFromZone();
+	public native abstract void notifyRemoveFromZone();
 
 	@local
 	public native abstract void updateZone(boolean lightUpdate, boolean sendPackets = true);
 
+	@local
+	@preLocked
 	public abstract native void updatePlayersInShip(boolean lightUpdate, boolean sendPackets = true);
 
 	@dirty
@@ -1691,7 +1701,12 @@ class ShipObject extends TangibleObject {
 	@preLocked
 	public abstract native void destroyObjectFromDatabase(boolean destroyContainedObjects = false);
 
+	@preLocked
+	public abstract native void removeAllPlayersFromShip();
+
 	public native CreatureObject getPilot();
+
+	public native CreatureObject getShipGunner();
 
 	public native CreatureObject getShipOperator();
 
@@ -1777,6 +1792,8 @@ class ShipObject extends TangibleObject {
 
 	public native boolean isShipDestroyed();
 
+	public native boolean isShipDocking();
+
 	public native boolean isComponentInstalled(unsigned int slot);
 
 	public native boolean isComponentFunctional(unsigned int slot);
@@ -1823,7 +1840,11 @@ class ShipObject extends TangibleObject {
 
 	public native void resetEfficiency();
 
+	@local
 	public native void initializeUniqueID(boolean notifyClient = true);
+
+	@local
+	public native void dropUniqueID(boolean notifyClient = true);
 
 	public native boolean canBePilotedBy(CreatureObject player);
 
@@ -1907,4 +1928,13 @@ class ShipObject extends TangibleObject {
 
 	@local
 	public native float getNextRotation();
+
+	@local
+	@dereferenced
+	public abstract native Vector3 getObjectLocationInShip(SceneObject object, @dereferenced final Vector3 objectPosition);
+
+	@local
+	public native unsigned int getTimerTaskCrc() {
+		return timerTaskCrc;
+	}
 }

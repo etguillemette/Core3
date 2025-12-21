@@ -1556,8 +1556,9 @@ void TangibleObjectImplementation::sendTo(SceneObject* player, bool doClose, boo
 }
 
 void TangibleObjectImplementation::notifyInsert(TreeEntry* object) {
-	if (object == nullptr)
+	if (object == nullptr) {
 		return;
+	}
 
 	SceneObjectImplementation::notifyInsert(object);
 
@@ -1567,23 +1568,11 @@ void TangibleObjectImplementation::notifyInsert(TreeEntry* object) {
 
 	auto sceneO = static_cast<SceneObject*>(object);
 
-	if (sceneO == nullptr || !sceneO->isPlayerCreature()) {
+	if (sceneO == nullptr || !sceneO->isPlayerCreature() || getObjectID() == sceneO->getParentID() || hasObjectInSlottedContainer(sceneO)) {
 		return;
 	}
 
 	sendTo(sceneO, true, false);
-}
-
-Vector3 TangibleObjectImplementation::getWorldPosition() {
-	auto root = getRootParent();
-
-	if (root != nullptr && root->isPobShip()) {
-		updateWorldPosition(false);
-	}
-
-	auto currentWorld = worldCoordinates.getPosition();
-
-	return currentWorld;
 }
 
 bool TangibleObjectImplementation::isCityStreetLamp() const {

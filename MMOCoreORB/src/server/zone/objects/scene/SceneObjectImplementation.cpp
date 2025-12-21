@@ -53,6 +53,8 @@
 #include <sys/stat.h>
 #include <iomanip>
 
+// #define DEBUG_WORLD_POSITION
+
 void SceneObjectImplementation::initializeTransientMembers() {
 	ManagedObjectImplementation::initializeTransientMembers();
 
@@ -295,7 +297,7 @@ BaseMessage* SceneObjectImplementation::link(uint64 objectID, uint32 containment
 void SceneObjectImplementation::destroyObjectFromDatabase(bool destroyContainedObjects) {
 	debug() << "deleting from database";
 
-	fatal(!isPlayerCreature()) << "attempting to delete a player creature from database";
+	fatal(!isPlayerCreature()) << "attempting to delete a player creature from database -- " << getDisplayedName() << " ID: " << getObjectID();
 
 	containerObjects.cancelUnloadTask();
 
@@ -415,10 +417,38 @@ void SceneObjectImplementation::notifyLoadFromDatabase() {
 			if (obj->getParent() != asSceneObject()) {
 				obj->setParent(asSceneObject(), false);
 
-				if (obj->isPlayerCreature())
+				// Changing the containment type of players on their load will fail to remove them from the proper slot, thus making them stuck in the parent. This is wrong.
+				/*
+				if (obj->isPlayerCreature()) {
 					obj->setContainmentType(5);
-				else
+				} else {
 					obj->setContainmentType(4);
+				}
+				*/
+
+				if (!obj->isPlayerCreature()) {
+					obj->setContainmentType(4);
+				} else {
+					auto slotKey = slottedObjects.elementAt(i).getKey();
+
+					if (isVehicleObject()) {
+						obj->setContainmentType(PlayerArrangement::RIDER);
+					} else if (isPilotChair()) {
+						obj->setContainmentType(PlayerArrangement::SHIP_PILOT_POB);
+					} else if (isOperationsChair()) {
+						obj->setContainmentType(PlayerArrangement::SHIP_OPERATIONS_POB);
+					} else if (isShipTurret() && slotKey == "ship_gunner0_pob") {
+						obj->setContainmentType(PlayerArrangement::SHIP_GUNNER0_POB);
+					} else if (isShipTurret() && slotKey == "ship_gunner1_pob") {
+						obj->setContainmentType(PlayerArrangement::SHIP_GUNNER1_POB);
+					} else if (isCellObject()) {
+						obj->setContainmentType(-1);
+					} else if (isMultiPassengerShip() && slotKey == "ship_gunner1") {
+						obj->setContainmentType(PlayerArrangement::SHIP_GUNNER1);
+					} else {
+						obj->setContainmentType(PlayerArrangement::SHIP_PILOT); // 5
+					}
+				}
 			}
 		}
 
@@ -433,7 +463,8 @@ void SceneObjectImplementation::notifyLoadFromDatabase() {
 
 	}
 
-	if (zone != nullptr) {
+	// Players are sent into the zone or parent when they connect
+	if (zone != nullptr && !isPlayerCreature()) {
 		class InsertZoneTask : public Task {
 			Reference<SceneObject*> obj;
 			Zone* zone;
@@ -1021,6 +1052,98 @@ void SceneObjectImplementation::switchZone(const String& newTerrainName, float n
 	} else {
 		groundZoneComponent->switchZone(asSceneObject(), newTerrainName, newPostionX, newPositionZ, newPositionY, parentID, toggleInvisibility, playerArrangement);
 	}
+}
+
+void SceneObjectImplementation::updateWorldPosition(bool initialize) {
+	Vector3 worldPosition = getPosition();
+
+	auto root = getRootParent();
+
+	if (root != nullptr) {
+		if (root->isBuildingObject()) {
+			float rootRad = -root->getDirection()->getRadians();
+			float rootCos = cos(rootRad);
+			float rootSin = sin(rootRad);
+
+			float localX = getPositionX();
+			float localY = getPositionY();
+			float localZ = getPositionZ();
+
+			float rotatedX = (localX * rootCos) - (localY * rootSin);
+			float rotatedY = (localX * rootSin) + (localY * rootCos);
+
+			float worldX = root->getPositionX() + rotatedX;
+			float worldY = root->getPositionY() + rotatedY;
+			float worldZ = root->getPositionZ() + localZ;
+
+#ifdef DEBUG_WORLD_POSITION
+			if (isPlayerCreature()) {
+				info(true) << getDisplayedName() << " -- Coordinates are using root Building to determine world position";
+			}
+#endif // DEBUG_WORLD_POSITION
+
+			worldPosition = Vector3(worldX, worldY, worldZ);
+		} else if (root->isShipObject()) {
+			auto ship = root->asShipObject();
+
+			if (ship != nullptr) {
+				worldPosition = ship->getObjectLocationInShip(asSceneObject(), worldPosition);
+
+#ifdef DEBUG_WORLD_POSITION
+				if (isPlayerCreature()) {
+					info(true) << getDisplayedName() << " -- Coordinates are using root Ship to determine world position";
+				}
+#endif // DEBUG_WORLD_POSITION
+			} else {
+				worldPosition = root->getPosition();
+			}
+		} else {
+			worldPosition = root->getPosition();
+		}
+	}
+
+	if (initialize) {
+#ifdef DEBUG_WORLD_POSITION
+		if (isPlayerCreature() || isPlayerShip()) {
+			info(true) << getDisplayedName() << " -- INITIALIZING - World Coordinates to " << worldPosition.toString();
+		}
+#endif // DEBUG_WORLD_POSITION
+
+		// Initializing world coordinate position
+		worldCoordinates.initializePosition(worldPosition.getX(), worldPosition.getZ(), worldPosition.getY());
+	} else {
+#ifdef DEBUG_WORLD_POSITION
+		if (isPlayerCreature() || isPlayerShip()) {
+			info(true) << getDisplayedName() << " -- UPDATING - World Coordinates to " << worldPosition.toString();
+		}
+#endif // DEBUG_WORLD_POSITION
+
+		// Updating world coordinate postion
+		worldCoordinates.setPosition(worldPosition.getX(), worldPosition.getZ(), worldPosition.getY());
+	}
+}
+
+Vector3 SceneObjectImplementation::getWorldPosition() {
+	// Object is on the tree, use the position.
+	if (getParent() == nullptr) {
+		return getPosition();
+	}
+
+	auto root = getRootParent();
+
+	if (root != nullptr && (root->isBuildingObject() || root->isShipObject())) {
+		updateWorldPosition(false);
+	}
+
+	auto currentWorld = worldCoordinates.getPosition();
+
+#ifdef DEBUG_WORLD_POSITION
+	if (isPlayerCreature() || isPlayerShip()) {
+		info(true) << getDisplayedName() << " -- getWorldPosition - returning World Coordinates: " << currentWorld.toString();
+	}
+#endif // DEBUG_WORLD_POSITION
+
+	return currentWorld;
 }
 
 void SceneObjectImplementation::updateDirection(float fw, float fx, float fy, float fz) {

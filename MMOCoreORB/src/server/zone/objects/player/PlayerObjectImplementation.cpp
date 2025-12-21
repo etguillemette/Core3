@@ -37,6 +37,7 @@
 #include "server/zone/packets/zone/CmdSceneReady.h"
 #include "server/zone/objects/waypoint/WaypointObject.h"
 #include "server/zone/objects/creature/CreatureObject.h"
+#include "server/zone/objects/transaction/TransactionLog.h"
 #include "server/chat/StringIdChatParameter.h"
 #include "server/zone/objects/area/ActiveArea.h"
 #include "server/zone/objects/player/events/PlayerDisconnectEvent.h"
@@ -251,39 +252,51 @@ void PlayerObjectImplementation::notifyLoadFromDatabase() {
 	clientLastMovementStamp = 0;
 }
 
-void PlayerObjectImplementation::unloadSpawnedChildren(bool petsOnly) {
+void PlayerObjectImplementation::unloadSpawnedChildren(bool skipShips) {
 	ManagedReference<CreatureObject*> player = dynamic_cast<CreatureObject*>(parent.get().get());
 
-	if (player == nullptr)
+	if (player == nullptr) {
 		return;
+	}
 
 	ManagedReference<SceneObject*> datapad = player->getSlottedObject("datapad");
 
-	if (datapad == nullptr)
+	if (datapad == nullptr) {
 		return;
+	}
+
+	// info(true) << player->getDisplayedName() << " calling -- PlayerObjectImplementation::unloadSpawnedChildren() -- Contained Objects Size: " << datapad->getContainerObjectsSize();
 
 	Vector<ManagedReference<ControlDevice*> > devicesToStore;
 
 	for (int i = 0; i < datapad->getContainerObjectsSize(); ++i) {
 		ManagedReference<SceneObject*> object = datapad->getContainerObject(i);
 
-		if (object == nullptr || !object->isControlDevice())
+		if (object == nullptr || !object->isControlDevice()) {
 			continue;
+		}
 
 		ControlDevice* device = cast<ControlDevice*>(object.get());
 
-		if (device == nullptr)
+		if (device == nullptr) {
 			continue;
+		}
 
-		// Do not force store ships when player is not in the space zone
-		if (device->isShipControlDevice()) {
-			if (petsOnly)
+		bool isShipDevice = device->isShipControlDevice();
+
+		// Check for storing only pets
+		if (skipShips && isShipDevice) {
+			continue;
+		}
+
+		// Do not force store ships when it is not in the space zone
+		if (isShipDevice) {
+			auto ship = device->getControlledObject();
+
+			// Ship has already been removed from the space zone
+			if (ship == nullptr || ship->getLocalZone() == nullptr) {
 				continue;
-
-			auto zone = player->getZone();
-
-			if (zone != nullptr && !zone->isSpaceZone())
-				continue;
+			}
 		}
 
 		devicesToStore.add(device);
@@ -291,8 +304,9 @@ void PlayerObjectImplementation::unloadSpawnedChildren(bool petsOnly) {
 
 	StoreSpawnedChildrenTask* task = new StoreSpawnedChildrenTask(player, std::move(devicesToStore));
 
-	if (task != nullptr)
+	if (task != nullptr) {
 		task->execute();
+	}
 }
 
 void PlayerObjectImplementation::setLastLogoutWorldPosition() {
@@ -309,19 +323,38 @@ Vector3 PlayerObjectImplementation::getLastLogoutWorldPosition() const {
 }
 
 void PlayerObjectImplementation::unload() {
-	debug("unloading player");
-
 	ManagedReference<CreatureObject*> creature = dynamic_cast<CreatureObject*>(parent.get().get());
 
-	MissionManager* missionManager = creature->getZoneServer()->getMissionManager();
-	missionManager->deactivateMissions(creature);
+	if (creature == nullptr) {
+		error() << "PlayerCreature parent was null during PlayerObjectImplementation::unload. -- PlayerObjectID: " << getObjectID();
+		return;
+	}
 
+	auto zoneServer = creature->getZoneServer();
+
+	if (zoneServer == nullptr) {
+		return;
+	}
+
+	debug() << creature->getDisplayedName() << " calling -- PlayerObjectImplementation::unload()";
+	// info(true) << creature->getDisplayedName() << " calling -- PlayerObjectImplementation::unload()";
+
+	// Deactivate the players mission
+	auto missionManager = zoneServer->getMissionManager();
+
+	if (missionManager != nullptr) {
+		missionManager->deactivateMissions(creature);
+	}
+
+	// Check to see if creature is riding a mount, though they should no longer be due to unloadSpawnedChildren, this should only appy now to players in multipassenger vehicles
 	if (creature->isRidingMount()) {
 		creature->executeObjectControllerAction(STRING_HASHCODE("dismount"));
 	}
 
+	// Try to store any spawned pets, ships or vehicles
 	unloadSpawnedChildren();
 
+	// Remove player from active areas
 	SortedVector<ManagedReference<ActiveArea*>>* activeAreas = creature->getActiveAreas();
 
 	if (activeAreas != nullptr) {
@@ -335,7 +368,6 @@ void PlayerObjectImplementation::unload() {
 		}
 
 		if (creature->isInNoCombatArea()) {
-			Locker lock(creature);
 			creature->setInNoCombatArea(false);
 		}
 	}
@@ -346,17 +378,21 @@ void PlayerObjectImplementation::unload() {
 	}
 
 	ManagedReference<SceneObject*> creoParent = creature->getParent().get();
+	auto zone = creature->getZone();
 
-	Zone* zone = creature->getZone();
-
+	// Store players saved parent and location
 	if (zone != nullptr) {
 		String zoneName = zone->getZoneName();
 
-		// Player is in space and being unloaded
+		// Player is in a ship in space, send them back to their launch location
 		if (zone->isSpaceZone()) {
 			zoneName = launchPoint.getGoundZoneName();
-
 			Vector3 launchLoc = launchPoint.getLocation();
+
+			if (zoneName.isEmpty()) {
+				zoneName = "corellia";
+				launchLoc.set(-66, 28, -4711);
+			}
 
 			creature->setPosition(launchLoc.getX(), launchLoc.getZ(), launchLoc.getY());
 			creature->incrementMovementCounter();
@@ -373,22 +409,27 @@ void PlayerObjectImplementation::unload() {
 		}
 
 		// Set the saved zone
-		savedTerrainName = zoneName;
+		setSavedTerrainName(zoneName);
 
 		// Remove player from world
 		creature->destroyObjectFromWorld(true);
 	}
 
+	// Clear combat
 	creature->clearCombatState(true);
 
+	// Clear Special Appearance
 	creature->setAlternateAppearance("", false);
 
+	// Stop dancing or playing music
 	creature->stopEntertaining();
 
+	// Cancel active trade session
 	ManagedReference<TradeSession*> tradeContainer = creature->getActiveSession(SessionFacadeType::TRADE).castTo<TradeSession*>();
 
-	if (tradeContainer != nullptr)
+	if (tradeContainer != nullptr) {
 		creature->dropActiveSession(SessionFacadeType::TRADE);
+	}
 
 	//Remove player from Chat Manager and all rooms.
 	ManagedReference<ChatManager*> chatManager = getZoneServer()->getChatManager();
@@ -398,8 +439,10 @@ void PlayerObjectImplementation::unload() {
 
 		for (int i = 0; i < chatRooms.size(); i++) {
 			ManagedReference<ChatRoom*> room = chatManager->getChatRoom(chatRooms.get(i));
+
 			if (room != nullptr) {
 				Locker clocker(room, creature);
+
 				room->removePlayer(creature, true);
 			}
 		}
@@ -409,8 +452,9 @@ void PlayerObjectImplementation::unload() {
 
 	GroupObject* group = creature->getGroup();
 
-	if (group != nullptr)
+	if (group != nullptr) {
 		GroupManager::instance()->leaveGroup(group, creature);
+	}
 
 	/*StringBuffer msg;
 	msg << "remaining play ref count: " << asPlayerObject()->getReferenceCount();
@@ -1325,6 +1369,15 @@ void PlayerObjectImplementation::doDigest(int fillingReduction) {
 	}
 }
 
+void PlayerObjectImplementation::setSavedTerrainName(const String& zoneName) {
+	if (zoneName.isEmpty()) {
+		error() << "PlayerObject attempting to set empty terrain name -- ID: " << getObjectID();
+		return;
+	}
+
+	savedTerrainName = zoneName;
+}
+
 Vector<ManagedReference<DraftSchematic* > > PlayerObjectImplementation::filterSchematicList(
 		CreatureObject* player, Vector<uint32>* enabledTabs, int complexityLevel) {
 
@@ -1952,7 +2005,8 @@ void PlayerObjectImplementation::logSessionStats(bool isSessionEnd) {
 		ipAccountCount = loggedInAccounts.size();
 	}
 
-	// Need the session_stats table to log to database
+	// Log session statistics
+#ifndef WITH_SWGREALMS_API
 	if (ServerCore::getSchemaVersion() >= 1003) {
 		StringBuffer query;
 
@@ -2003,6 +2057,28 @@ void PlayerObjectImplementation::logSessionStats(bool isSessionEnd) {
 
 		info(logMsg.toString(), true);
 	}
+#else // WITH_SWGREALMS_API
+
+	// API mode: Use TransactionLog with SESSIONSTATS code
+	if (parent != nullptr) {
+		CreatureObject* creature = parent->asCreatureObject();
+
+		if (creature != nullptr) {
+			TransactionLog trx(TrxCode::SESSIONSTATS, creature);
+
+			trx.addState("uptime", (int)(uptime / 1000.0f));
+			trx.addState("dstSessionEnd", isSessionEnd);
+			trx.addState("dstDeltaSeconds", (int)(sessionStatsMiliSecs / 1000.0f));
+			trx.addState("dstDeltaCredits", creditsDelta);
+			trx.addState("dstDeltaSkillPoints", skillPointDelta);
+			trx.addState("dstActivityXP", sessionStatsActivityXP);
+			trx.addState("dstCurrentCredits", currentCredits);
+			trx.addState("dstIPAccountCount", ipAccountCount);
+
+			trx.commit();
+		}
+	}
+#endif // WITH_SWGREALMS_API
 
 	resetSessionStats(false);
 }
@@ -2471,7 +2547,9 @@ void PlayerObjectImplementation::setLinkDead(bool isSafeLogout) {
 
 	logoutTimeStamp.updateToCurrentTime();
 
-	if(!isSafeLogout) {
+	// info(true) << creature->getDisplayedName() << " -- PlayerObjectImplementation::setLinkDead";
+
+	if (!isSafeLogout) {
 		info("went link dead");
 		logoutTimeStamp.addMiliTime(ConfigManager::instance()->getInt("Core3.PlayerObject.LinkDeadDelay", 3 * 60) * 1000); // 3 minutes if unsafe
 	}

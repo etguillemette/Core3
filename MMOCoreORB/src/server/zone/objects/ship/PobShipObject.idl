@@ -109,8 +109,6 @@ class PobShipObject extends ShipObject {
 	@dirty
 	public native abstract void onEnter(CreatureObject player);
 
-	public native void updatePlayersInShip(boolean lightUpdate, boolean sendPackets = true);
-
 	@local
 	public native void updateZone(boolean lightUpdate, boolean sendPackets = true);
 
@@ -285,4 +283,11 @@ class PobShipObject extends ShipObject {
 	public native void removeDamagedInteriorComponent(unsigned long interiorComponentID);
 
 	public native boolean hasActivePlasmaLeaks();
+
+	@preLocked
+	public native void removeAllPlayersFromShip();
+
+	@local
+	@dereferenced
+	public abstract native Vector3 getObjectLocationInShip(SceneObject object, @dereferenced final Vector3 objectPosition);
 }

@@ -9,12 +9,18 @@
  */
 
 #include "TransactionLog.h"
+
+#ifdef WITH_SWGREALMS_API
+#include "server/login/SWGRealmsAPI.h"
+#endif
+
 #include "server/ServerCore.h"
 #include "server/zone/Zone.h"
 #include "server/zone/ZoneServer.h"
 #include "engine/engine.h"
 #include "system/thread/atomic/AtomicBoolean.h"
 #include "system/thread/atomic/AtomicInteger.h"
+#include "server/zone/ZoneClientSession.h"
 #include "server/zone/objects/player/PlayerObject.h"
 #include "server/zone/objects/scene/SceneObject.h"
 #include "server/zone/objects/structure/StructureObject.h"
@@ -347,9 +353,36 @@ void TransactionLog::addContextFromLua(lua_State* L) {
 	});
 }
 
-const String TransactionLog::getNewTrxID() {
+const String TransactionLog::getNewTrxID(uint8 source) {
+	// Crockford Base32 alphabet (lowercase) - excludes i, l, o, u to avoid ambiguity
+	static const char* crockford32 = "0123456789abcdefghjkmnpqrstvwxyz";
+
 	static AtomicInteger incr;
-	return String::hexvalueOf((uint64)((System::getMikroTime() << 8)) | (incr.increment() & 0xFF));
+
+	// Cache galaxy ID on first call - it never changes at runtime
+	static uint16 galaxyId = [] {
+		auto server = ServerCore::getZoneServer();
+		return server ? (server->getGalaxyID() & 0x3FF) : 0;
+	}();
+
+	// Pack: [ms:42][counter:10][source:2][galaxy:10] = 64 bits
+	// - 42-bit ms timestamp: ~139 years from epoch
+	// - 10-bit counter: 1024 IDs per millisecond per source
+	// - 2-bit source: 0=TransactionLog, 1=SWGRealmsAPI, 2=ig-88a, 3=reserved
+	// - 10-bit galaxy: up to 1024 galaxies
+	// Sorts lexicographically by time, then counter, then source, then galaxy
+	uint64 ms = System::getMiliTime() & 0x3FFFFFFFFFFULL;
+	uint64 id = (ms << 22) | ((incr.increment() & 0x3FF) << 12) | ((source & 0x3) << 10) | galaxyId;
+
+	// Encode as 13-char lowercase Crockford Base32
+	char buf[14];
+	buf[13] = '\0';
+	for (int i = 12; i >= 0; --i) {
+		buf[i] = crockford32[id % 32];
+		id /= 32;
+	}
+
+	return String(buf);
 }
 
 void TransactionLog::catchAndLog(const char* functioName, Function<void()> function) {
@@ -444,6 +477,15 @@ void TransactionLog::initializeCommonSceneObject(const String& key, SceneObject*
 
 	mTransaction[key] = obj->getObjectID();
 
+	// Add galaxyId for ANY object with a zone (not just players)
+	auto zone = obj->getZone();
+	if (zone != nullptr) {
+		auto zoneServer = zone->getZoneServer();
+		if (zoneServer != nullptr) {
+			mTransaction[key + "GalaxyId"] = zoneServer->getGalaxyID();
+		}
+	}
+
 	auto creo = obj->asCreatureObject();
 
 	if (creo == nullptr) {
@@ -459,6 +501,20 @@ void TransactionLog::initializeCommonSceneObject(const String& key, SceneObject*
 
 	if (player != nullptr) {
 		mTransaction[key + "AccountId"] = player->getAccountID();
+
+		String networkIP = "0.0.0.0";
+		uint16 networkPort = 0;
+
+		auto client = creo->getClient();
+
+		if (client != nullptr) {
+			// Use client methods which return EIP-aware IP (after API sets it)
+			networkIP = client->getIPAddress();
+			networkPort = client->getPort();
+		}
+
+		mState[key + "NetworkIP"] = networkIP;
+		mState[key + "NetworkPort"] = networkPort;
 
 		mState[key + "PlayedSeconds"] = (int)(player->getPlayedMiliSecs() / 1000);
 		mState[key + "SessionSeconds"] = (int)(player->getSessionMiliSecs() / 1000);
@@ -793,7 +849,19 @@ void TransactionLog::writeLog() {
 		mState["verbose"] = true;
 	}
 
-	trxLog.info() << composeLogEntry();
+	// Compose log entry (used for both file and streaming)
+	String logEntry = composeLogEntry();
+
+	// Write to local file (always)
+	trxLog.info() << logEntry;
+
+#ifdef WITH_SWGREALMS_API
+	// Stream to SWGRealms (if enabled)
+	auto api = SWGRealmsAPI::instance();
+	if (api != nullptr) {
+		api->publishTrxLog(getTrxID(), logEntry);
+	}
+#endif // WITH_SWGREALMS_API
 }
 
 SceneObject* TransactionLog::getTrxParticipant(SceneObject* obj, SceneObject* defaultValue) {
@@ -945,6 +1013,7 @@ const String TransactionLog::trxCodeToString(TrxCode code) {
 	case TrxCode::PLAYERLOGGINGOUT:         return "playerloggingout";          // Player Logging Out
 	case TrxCode::PLAYERDIED:               return "playerdied";                // Player Died
 	case TrxCode::RECYCLED:                 return "recycled";                  // Recycled Items
+	case TrxCode::SESSIONSTATS:             return "sessionstats";              // Session Statistics
 	case TrxCode::SERVERDESTROYOBJECT:      return "serverdestroyobject";       // /serverDestroyObject command
 	case TrxCode::SHIPDEEDPURCHASE:         return "shipdeedpurchase";          // Purchase of a ship deed from chassis dealer
 	case TrxCode::SHIPREDEED:               return "shipredeed";                // ReDeeding a ship from datapad

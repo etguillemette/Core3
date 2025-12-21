@@ -248,10 +248,6 @@ void ShipAiAgentImplementation::loadTemplateData(ShipAgentTemplate* agentTemp) {
 
 	setPvpStatusBitmask(templatePvpStatusBitmask, false);
 
-	if (getPvpStatusBitmask() == 0) {
-		closeobjects = nullptr;
-	}
-
 	// Handles special flags for differnt AI Template bitmasks (ESCORT, FOLLOW etc)
 	shipBitmask = agentTemplate->getShipBitmask();
 
@@ -424,7 +420,19 @@ void ShipAiAgentImplementation::notifyInsertToZone(Zone* zone) {
 		agentRef->activateAiBehavior();
 	}, "activateShipAiLambda", randomTime);
 
+	if (getUniqueID() == 0) {
+		initializeUniqueID(true);
+	}
+
 	ShipObjectImplementation::notifyInsertToZone(zone);
+}
+
+void ShipAiAgentImplementation::notifyRemoveFromZone() {
+	if (getUniqueID() != 0) {
+		dropUniqueID(false);
+	}
+
+	ShipObjectImplementation::notifyRemoveFromZone();
 }
 
 void ShipAiAgentImplementation::notifyInsert(TreeEntry* entry) {
