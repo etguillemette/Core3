@@ -1647,8 +1647,18 @@ genericWaresData = {
         { template = "object/tangible/firework/firework_s18.iff", cost = 5400, displayName = "@firework_n:firework_s18", serial = "keighteen", quantity = 1},
     },
 
-    waresMisc = {
-
+    waresFS = {
+        { template = "object/tangible/loot/quest/wind_crystal.iff", cost = 10000, displayName = "@item_n:wind_crystal", serial = "windcryst", quantity = 10},
+        { template = "object/tangible/loot/quest/ardanium_ii.iff", cost = 10000, displayName = "@item_n:ardanium_ii", serial = "ardaniuma", quantity = 10},
+        { template = "object/tangible/loot/quest/endrine.iff", cost = 10000, displayName = "@item_n:endrine", serial = "endrinesi", quantity = 10},
+        { template = "object/tangible/loot/quest/ostrine.iff", cost = 10000, displayName = "@item_n:ostrine", serial = "ostrinewr", quantity = 10},
+        { template = "object/tangible/loot/quest/rudic.iff", cost = 10000, displayName = "@item_n:rudic", serial = "rudicsiqr", quantity = 10},
+        { template = "object/tangible/loot/collectible/collectible_parts/fs_tracking_device_case_01.iff", cost = 100000, displayName = "@collectible_loot_items_n:fs_tracking_device_case_01", serial = "trackcaso", quantity = 1},
+        { template = "object/tangible/loot/collectible/collectible_parts/fs_tracking_device_case_02.iff", cost = 100000, displayName = "@collectible_loot_items_n:fs_tracking_device_case_02", serial = "trackcast", quantity = 1},
+        { template = "object/tangible/loot/collectible/collectible_parts/fs_tracking_device_case_03.iff", cost = 100000, displayName = "@collectible_loot_items_n:fs_tracking_device_case_03", serial = "trackcash", quantity = 1},
+        { template = "object/tangible/loot/collectible/collectible_parts/fs_tracking_device_assembly_bracket_01.iff", cost = 100000, displayName = "@collectible_loot_items_n:fs_tracking_device_assembly_bracket_01", serial = "trackasso", quantity = 1},
+        { template = "object/tangible/loot/collectible/collectible_parts/fs_tracking_device_assembly_bracket_02.iff", cost = 100000, displayName = "@collectible_loot_items_n:fs_tracking_device_assembly_bracket_02", serial = "trackasst", quantity = 1},
+        { template = "object/tangible/loot/collectible/collectible_parts/fs_tracking_device_assembly_bracket_03.iff", cost = 100000, displayName = "@collectible_loot_items_n:fs_tracking_device_assembly_bracket_03", serial = "trackassh", quantity = 1},
     },
 
 ------------------------------------

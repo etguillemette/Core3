@@ -985,7 +985,7 @@ vendor_misc = ConvoScreen:new {
 	stopConversation = "false",
 	options = {
 		{"I was looking for some fireworks.", "wares_fireworks"},
-		{"I was looking for some generic items", "wares_misc"},
+		--{"Do you have anything related to... The Jedi?", "wares_fs"},
 		{"Actually, I don't need anything right now.","no_loot"},
 	}
 }
@@ -999,13 +999,13 @@ wares_fireworks = ConvoScreen:new {
 }
 junkDealerGenericConvoTemplate:addScreen(wares_fireworks);
 
-wares_misc = ConvoScreen:new {
-	id = "wares_misc",
-	customDialogText = "Here are the generic items I have available.",
+wares_fs = ConvoScreen:new {
+	id = "wares_fs",
+	customDialogText = "I've heard of this village. I may have a few things that could assist you.",
 	stopConversation = "true",
 	options = {}
 }
-junkDealerGenericConvoTemplate:addScreen(wares_misc);
+junkDealerGenericConvoTemplate:addScreen(wares_fs);
 
 --SMUGGLER-----------------------------------
 ---------------------------------------------

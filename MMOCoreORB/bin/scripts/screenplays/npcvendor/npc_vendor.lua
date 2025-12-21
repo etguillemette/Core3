@@ -234,8 +234,8 @@ function NPCVendor:getWaresTable(category)
 		return genericWaresData.waresDroidAssc
 	elseif category == "wares_fireworks" then
 		return genericWaresData.waresFireworks
-	elseif category == "wares_misc" then
-		return genericWaresData.waresMisc
+	elseif category == "wares_fs" then
+		return genericWaresData.waresFS
 	elseif category == "wares_slicing" then
 		return genericWaresData.waresSlicing
 	elseif category == "wares_spice" then
@@ -464,6 +464,19 @@ function NPCVendor:getSmugglerBonus(pPlayer)
 end
 --End Ethan edit 12-18-24 (SMUGGLER BONUS)
 
+--Ethan edit 12-1-25 (SOLO VILLAGE)
+function NPCVendor:getFSVillageStatus(pPlayer)
+
+	local villageStatus = false
+
+	if CreatureObject(pPlayer):hasSkill("force_sensitive") then
+		villageStatus = true
+	end
+
+	return villageStatus
+end
+
+--End Ethan edit 12-1-25 (SOLO VILLAGE)
 
 --HIRELINGS-------------------------------------------------
 ------------------------------------------------------------

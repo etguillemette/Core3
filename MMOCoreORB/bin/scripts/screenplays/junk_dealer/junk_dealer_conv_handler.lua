@@ -43,6 +43,12 @@ function JunkDealerConvoHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, 
 		end
 		--End Ethan edit 1-15-25 (SMUGGLER REVAMP) (FACTION BROKER)
 
+		--Ethan edit 12-1-25 (SOLO VILLAGE)
+		if CreatureObject(pPlayer):hasSkill("force_sensitive_enhanced_reflexes_novice") or CreatureObject(pPlayer):hasSkill("force_sensitive_crafting_mastery_novice") or CreatureObject(pPlayer):hasSkill("force_sensitive_combat_prowess_novice") or CreatureObject(pPlayer):hasSkill("force_sensitive_heightened_senses_novice") or CreatureObject(pPlayer):hasSkill("force_sensitive")  then
+			clonedScreen:addOption("I'm looking for resources to help the village of Aurillia.","wares_fs")
+		end
+		--End Ethan edit 12-1-25 (SOLO VILLAGE)
+
 		local junkList = JunkDealer:getEligibleJunk(pPlayer, self.junkType)
 
 		if #junkList > 0 then
