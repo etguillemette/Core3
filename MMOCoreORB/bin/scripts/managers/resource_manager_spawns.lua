@@ -75519,6 +75519,30 @@ resources = {
 	},
 
 	{
+		name = "Cipefo",
+		type = "softwood_evergreen_lok",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Structural", "flora_structural"},
+			{"Wood", "wood"},
+			{"Soft Wood", "softwood"},
+			{"Evergreen Soft Wood", "softwood_evergreen"},
+			{"Lokian Evergreen Wood", "softwood_evergreen_lok"},
+		},
+		attributes = {
+			{"res_decay_resist", 18},
+			{"res_malleability", 817},
+			{"res_quality", 345},
+			{"res_shock_resistance", 347},
+			{"res_toughness", 191},
+		},
+		zoneRestriction = "lok",
+		surveyToolType = 3,
+		containerCRC = 1001781097,
+	},
+
+	{
 		name = "Cipeyo",
 		type = "rice_domesticated_talus",
 		classes = {
@@ -450110,6 +450134,29 @@ resources = {
 	},
 
 	{
+		name = "Plise",
+		type = "fruit_flowers_tatooine",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Seeds", "seeds"},
+			{"Fruit", "fruit"},
+			{"Flowers", "fruit_flowers"},
+			{"Tatooinian Flower Fruit", "fruit_flowers_tatooine"},
+		},
+		attributes = {
+			{"res_decay_resist", 673},
+			{"res_flavor", 840},
+			{"res_potential_energy", 46},
+			{"res_quality", 755},
+		},
+		zoneRestriction = "tatooine",
+		surveyToolType = 3,
+		containerCRC = 1349101341,
+	},
+
+	{
 		name = "Pliwequi",
 		type = "meat_domesticated_naboo",
 		classes = {
@@ -452363,6 +452410,29 @@ resources = {
 		zoneRestriction = "rori",
 		surveyToolType = 1,
 		containerCRC = 10768890,
+	},
+
+	{
+		name = "Poefera",
+		type = "hide_leathery_talus",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Structural", "creature_structural"},
+			{"Hide", "hide"},
+			{"Leathery Hide", "hide_leathery"},
+			{"Talusian Leathery Hide", "hide_leathery_talus"},
+		},
+		attributes = {
+			{"res_decay_resist", 697},
+			{"res_malleability", 793},
+			{"res_quality", 38},
+			{"res_shock_resistance", 128},
+			{"res_toughness", 789},
+		},
+		zoneRestriction = "talus",
+		surveyToolType = -1,
+		containerCRC = 2158940026,
 	},
 
 	{
@@ -490812,6 +490882,29 @@ resources = {
 		zoneRestriction = "rori",
 		surveyToolType = -1,
 		containerCRC = 210849868,
+	},
+
+	{
+		name = "Ridro",
+		type = "oats_domesticated_endor",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Cereal", "cereal"},
+			{"Oats", "oats"},
+			{"Domesticated Oats", "oats_domesticated"},
+			{"Endorian Domesticated Oats", "oats_domesticated_endor"},
+		},
+		attributes = {
+			{"res_decay_resist", 689},
+			{"res_flavor", 126},
+			{"res_potential_energy", 479},
+			{"res_quality", 127},
+		},
+		zoneRestriction = "endor",
+		surveyToolType = 3,
+		containerCRC = 822551481,
 	},
 
 	{
@@ -579622,6 +579715,29 @@ resources = {
 	},
 
 	{
+		name = "Tika",
+		type = "wheat_domesticated_dantooine",
+		classes = {
+			{"Organic", "organic"},
+			{"Flora Resources", "flora_resources"},
+			{"Flora Food", "flora_food"},
+			{"Cereal", "cereal"},
+			{"Wheat", "wheat"},
+			{"Domesticated Wheat", "wheat_domesticated"},
+			{"Dantooine Domesticated Wheat", "wheat_domesticated_dantooine"},
+		},
+		attributes = {
+			{"res_decay_resist", 527},
+			{"res_flavor", 537},
+			{"res_potential_energy", 666},
+			{"res_quality", 142},
+		},
+		zoneRestriction = "dantooine",
+		surveyToolType = 3,
+		containerCRC = 1890507922,
+	},
+
+	{
 		name = "Tikaate",
 		type = "iron_kammris",
 		classes = {
@@ -655578,6 +655694,29 @@ resources = {
 		zoneRestriction = "tatooine",
 		surveyToolType = -1,
 		containerCRC = 1349101341,
+	},
+
+	{
+		name = "Wiafai",
+		type = "hide_scaley_corellia",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Structural", "creature_structural"},
+			{"Hide", "hide"},
+			{"Scaley Hide", "hide_scaley"},
+			{"Corellian Scaley Hide", "hide_scaley_corellia"},
+		},
+		attributes = {
+			{"res_decay_resist", 379},
+			{"res_malleability", 833},
+			{"res_quality", 556},
+			{"res_shock_resistance", 849},
+			{"res_toughness", 522},
+		},
+		zoneRestriction = "corellia",
+		surveyToolType = -1,
+		containerCRC = 210849868,
 	},
 
 	{
