@@ -3125,14 +3125,22 @@ void CreatureObjectImplementation::activateHAMRegeneration(int latency) {
 	if (isIncapacitated() || isDead())
 		return;
 
-	if (!isPlayerCreature() && isInCombat())
+	//Ethan edit 12-22-25 (SOLO ENTERTAINER - HIRELINGS) - Seeing if I can make hirelings able to heal in a cantina
+	//if (!isPlayerCreature() && isInCombat())
+		//return;
+
+	if((!isPlayerCreature() && !isPet()))
 		return;
+	
+	if(isInCombat())
+		return;
+	//End Ethan edit 12-22-25 (SOLO ENTERTAINER - HIRELINGS) - Seeing if I can make hirelings able to heal in a cantina
 
 	float modifier = (float)latency/1000.f;
 
-	if (isKneeling())
+	if (isKneeling() || isPet())
 		modifier *= 1.25f;
-	else if (isSitting())
+	else if (isSitting() || isPet())
 		modifier *= 1.75f;
 
 	// this formula gives the amount of regen per second

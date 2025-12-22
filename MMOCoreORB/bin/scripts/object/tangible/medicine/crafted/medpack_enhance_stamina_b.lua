@@ -46,7 +46,7 @@ object_tangible_medicine_crafted_medpack_enhance_stamina_b = object_tangible_med
 	templateType = ENHANCEPACK,
 	useCount = 10,
 	medicineUse = 5,
-	effectiveness = 100,
+	effectiveness = 200,
 	duration = 1800,
 	attribute = 5,
 
