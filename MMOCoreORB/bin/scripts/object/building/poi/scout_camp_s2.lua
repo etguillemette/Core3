@@ -54,8 +54,15 @@ object_building_poi_scout_camp_s2 = object_building_poi_shared_scout_camp_s2:new
 		{"private_med_wound_health", 40},
 		{"private_med_wound_action", 40},
 		{"private_aggro_mod", 20},
-		{"private_buff_mind", 100}
+		{"private_buff_mind", 100},
+
+		{"private_med_wound_mind", 20}, --Ethan edit 12-27-25 (SOLO ENT) was 0
+		{"private_med_battle_fatigue", 5}, --Ethan edit 12-27-25 (SOLO ENT) was 0
 	},
+
+	healthWoundRegenRate = 80, --Ethan edit 12-27-25 (SOLO ENT) was 0
+	actionWoundRegenRate = 80, --Ethan edit 12-27-25 (SOLO ENT) was 0
+	mindWoundRegenRate = 80, --Ethan edit 12-27-25 (SOLO ENT) was 0
 
 	aggroMod = 20,
 	duration = 3600,

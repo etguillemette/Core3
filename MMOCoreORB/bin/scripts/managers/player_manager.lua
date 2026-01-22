@@ -92,8 +92,8 @@ soloMedicExp = true --Ethan edit 6-14-24 (SOLO MEDIC) Enables exp for healing on
 autoDoctor = true --Ethan edit 6-7-24 (AUTO DOCTOR) Enables automatic healing/buffs in a hospital
 hospitalMedBuffDuration = 5400 --Ethan edit 6-7-24 (AUTO DOCTOR) Duration in seconds for automatic hospital buffs
 hospitalMedBuffTickStrength = 50 --Ethan edit 6-14-24 (AUTO DOCTOR) Buff bonus with each "tick" of an automatic hospital buff
-hospitalMedBuffPoolStrength = 2000 --Ethan edit 6-7-24 (AUTO DOCTOR) Max HAM (Health/Action) modifier for automatic hospital buffs
-hospitalMedBuffAttrStrength = 1500 --Ethan edit 6-7-24 (AUTO DOCTOR) Max attribute (Constitution, Strength, Quickness, Stamina) modifier for automatic hospital buffs
+hospitalMedBuffPoolStrength = 1200 --Ethan edit 6-7-24 (AUTO DOCTOR) Max HAM (Health/Action) modifier for automatic hospital buffs
+hospitalMedBuffAttrStrength = 1200 --Ethan edit 6-7-24 (AUTO DOCTOR) Max attribute (Constitution, Strength, Quickness, Stamina) modifier for automatic hospital buffs
 
 soloEntertainerExp = true --Ethan edit 5-25-24 (ENTERTAINER SELF EXP) Enables entertainer healing xp gain without having to heal another player
 autoEntertainer = true --Ethan edit 6-7-24 (AUTO ENTERTAINER) Enables automatic healing and buffs in a cantina

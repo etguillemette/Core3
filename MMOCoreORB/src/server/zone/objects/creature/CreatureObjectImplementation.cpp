@@ -3129,8 +3129,8 @@ void CreatureObjectImplementation::activateHAMRegeneration(int latency) {
 	//if (!isPlayerCreature() && isInCombat())
 		//return;
 
-	if((!isPlayerCreature() && !isPet()))
-		return;
+	//if((!isPlayerCreature() && !isPet()))
+	//	return;
 	
 	if(isInCombat())
 		return;
@@ -3163,6 +3163,20 @@ void CreatureObjectImplementation::activateHAMRegeneration(int latency) {
 	healDamage(asCreatureObject(), CreatureAttribute::HEALTH, healthTick, true, false);
 	healDamage(asCreatureObject(), CreatureAttribute::ACTION, actionTick, true, false);
 	healDamage(asCreatureObject(), CreatureAttribute::MIND, mindTick, true, false);
+
+	//Ethan edit 12-27-25 (AUTO DOC)
+	if(isPet()){
+		healWound(asCreatureObject(), CreatureAttribute::HEALTH, 20, true, false);  
+		healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 20, true, false); 
+		healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 20, true, false);
+		healWound(asCreatureObject(), CreatureAttribute::ACTION, 20, true, false);
+		healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 20, true, false);
+		healWound(asCreatureObject(), CreatureAttribute::STAMINA, 20, true, false);
+		healWound(asCreatureObject(), CreatureAttribute::MIND, 20, true, false);  
+		healWound(asCreatureObject(), CreatureAttribute::FOCUS, 20, true, false); 
+		healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 20, true, false); 
+	}
+	//End Ethan edit 12-27-25 (AUTO DOC)
 
 	activatePassiveWoundRegeneration();
 }
@@ -3232,6 +3246,13 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 	/// Health wound regen
 	int healthRegen = getSkillMod("private_med_wound_health");
+
+	//Ethan edit 12-27-25 (AUTO DOC)
+	if(isPet()){
+		healthRegen = 100;
+	}
+	//End Ethan edit 12-27-25 (AUTO DOC)
+
 	int medicalBuffChargeTotal = 0;
 	int medicalWoundChargeTotal = 0;
 
