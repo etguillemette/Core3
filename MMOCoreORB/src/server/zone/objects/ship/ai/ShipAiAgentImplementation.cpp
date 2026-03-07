@@ -37,6 +37,7 @@
 #include "server/zone/objects/ship/ai/events/ShipAiBehaviorEvent.h"
 #include "server/zone/objects/ship/ai/events/DespawnAiShipOnNoPlayersInRange.h"
 #include "server/zone/objects/ship/ai/events/DespawnShipAgentTask.h"
+#include "server/zone/objects/ship/ai/events/DestroyDisabledShipTask.h"
 #include "templates/params/ship/ShipFlag.h"
 #include "templates/params/creature/ObjectFlag.h"
 #include "server/zone/objects/ship/ai/events/RotationLookupTable.h"
@@ -987,6 +988,10 @@ int ShipAiAgentImplementation::getTransformType() {
 		case ShipAiAgent::OBLIVIOUS:
 		case ShipAiAgent::WATCHING:
 		case ShipAiAgent::PATROLLING: {
+			if (shipBitmask & ShipFlag::ESCORT) {
+				return SpaceTransformType::FAST;
+			}
+
 			return SpaceTransformType::SLOW;
 		}
 		case ShipAiAgent::ATTACKING:
@@ -1121,10 +1126,39 @@ float ShipAiAgentImplementation::getNextSpeed() {
 	float speed = getActualMaxSpeed();
 
 	if (escortSpeed > 0.f) {
-		speed = Math::min(escortSpeed, speed);
+		speed = getEscortSpeed();
 	}
 
 	return speed;
+}
+
+float ShipAiAgentImplementation::calculateActualMaxSpeed() {
+	float engineSpeed = 0.f;
+
+	if (isComponentInstalled(Components::ENGINE)) {
+		engineSpeed = getEngineMaxSpeed() * calculateActualComponentEfficiency(Components::ENGINE);
+	}
+
+	float boosterSpeed = 0.f;
+
+	if (isComponentInstalled(Components::BOOSTER) && isBoosterActive()) {
+		boosterSpeed = getBoosterMaxSpeed() * calculateActualComponentEfficiency(Components::BOOSTER);
+	}
+
+	float chassisSpeed = getChassisSpeed();
+	float wingsOpenSpeed = getWingsOpenSpeed();
+
+	if (hasShipWings() && (getOptionsBitmask() & OptionBitmask::WINGS_OPEN) && wingsOpenSpeed > 0.f) {
+		auto chassisData = ShipManager::instance()->getChassisData(chassisDataName);
+
+		if (chassisData != nullptr) {
+			chassisSpeed *= wingsOpenSpeed;
+		}
+	}
+
+	engineSpeed = Math::max(engineSpeed, getEscortSpeed());
+
+	return Math::clamp(0.f, ((engineSpeed + boosterSpeed) * chassisSpeed), 512.f);
 }
 
 bool ShipAiAgentImplementation::setDisabledEngineSpeed() {
@@ -1132,7 +1166,11 @@ bool ShipAiAgentImplementation::setDisabledEngineSpeed() {
 		shipTransform.setNextTransform(getPosition(), 0.f);
 	}
 
+	shipTransform.freezeRotation();
 	clearPatrolPoints();
+
+	// info(true) << "setDisabledEngineSpeed -- scheduling destroy disabled for: " << getDisplayedName();
+	scheduleDestroyDisabled();
 
 	return true;
 }
@@ -1713,8 +1751,23 @@ void ShipAiAgentImplementation::removeSpaceFactionEnemy(uint32 factionHash) {
 void ShipAiAgentImplementation::swapSpaceFactionAssociations() {
 	auto tempAllies = alliedFactions;
 
-	alliedFactions = enemyFactions;
-	enemyFactions = tempAllies;
+	alliedFactions.removeAll();
+
+	for (int i = enemyFactions.size() - 1; i >= 0 ; --i) {
+		alliedFactions.add(enemyFactions.get(i));
+
+		// info(true) << "Adding new allied faction: " << enemyFactions.get(i) << " alliedFactions Size: " << alliedFactions.size();
+
+		enemyFactions.removeElementAt(i);
+	}
+
+	for (int i = tempAllies.size() - 1; i >= 0 ; --i) {
+		enemyFactions.add(tempAllies.get(i));
+
+		// info(true) << "Adding new enemy faction: " << tempAllies.get(i) << " enemyFactions Size: " << enemyFactions.size();
+
+		enemyFactions.removeElementAt(i);
+	}
 }
 
 bool ShipAiAgentImplementation::isAggressiveTo(TangibleObject* target) {
@@ -1812,16 +1865,13 @@ bool ShipAiAgentImplementation::isAttackableBy(TangibleObject* attackerTano) {
 			return false;
 		}
 
-		bool isGroupedWith = false;
+		// If attacker is not the mission owner, check if attacker is grouped with the mission owner.
+		if (attackerOwner != missionOwner) {
+			auto group = missionOwner->getGroup();
 
-		ManagedReference<GroupObject*> group = missionOwner->getGroup();
-
-		if (group != nullptr && group->hasMember(attackerOwner)) {
-			isGroupedWith = true;
-		}
-
-		if (attackerOwner != missionOwner && !isGroupedWith) {
-			return false;
+			if (group == nullptr || !group->hasMember(attackerOwner)) {
+				return false;
+			}
 		}
 	}
 
@@ -1970,6 +2020,24 @@ void ShipAiAgentImplementation::scheduleDespawn(int timeToDespawn, bool force) {
 
 		addPendingTask("despawn", despawn, timeToDespawn * 1000);
 	}
+}
+
+void ShipAiAgentImplementation::scheduleDestroyDisabled() {
+	Reference<DestroyDisabledShipTask*> destroyTask = getPendingTask("destroy_disabled").castTo<DestroyDisabledShipTask*>();
+
+	if (destroyTask != nullptr) {
+		return;
+	}
+
+	destroyTask = new DestroyDisabledShipTask(asShipAiAgent());
+
+	if (destroyTask == nullptr) {
+		error() << "ShipAiAgent failed to create a destroy disabled task." << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ": " << *_this.getReferenceUnsafeStaticCast();
+		return;
+	}
+
+	// info(true) << "scheduleDestroyDisabled -- task scheduled (300s) for: " << getDisplayedName();
+	addPendingTask("destroy_disabled", destroyTask, 300000);
 }
 
 void ShipAiAgentImplementation::setWait(int wait) {

@@ -6,6 +6,7 @@
 #include "server/zone/objects/creature/ai/AiAgent.h"
 #include "server/zone/managers/gcw/GCWManager.h"
 #include "server/zone/managers/reaction/ReactionManager.h"
+#include "server/zone/managers/creature/observers/CreatureHerdObserver.h"
 
 namespace server {
 namespace zone {
@@ -372,53 +373,57 @@ public:
 
 class Wait : public Behavior {
 public:
-	Wait(const String& className, const uint32 id, const LuaObject& args) : Behavior(className, id, args), duration(-1) {
+	Wait(const String& className, const uint32 id, const LuaObject& args) : Behavior(className, id, args), durationMin(-1), durationMax(-1) {
 		parseArgs(args);
 	}
 
-	Wait(const Wait& a) : Behavior(a), duration(a.duration) {
+	Wait(const Wait& a) : Behavior(a), durationMin(a.durationMin), durationMax(a.durationMax) {
 	}
 
 	Wait& operator=(const Wait& a) {
 		if (this == &a)
 			return *this;
+
 		Behavior::operator=(a);
-		duration = a.duration;
+
+		durationMin = a.durationMin;
+		durationMax = a.durationMax;
+
 		return *this;
 	}
 
 	void parseArgs(const LuaObject& args) {
-		duration = (int)(getArg<float>()(args, "duration") * 1000);
+		durationMin = (int)(getArg<float>()(args, "durationMin") * 1000);
+		durationMax = (int)(getArg<float>()(args, "durationMax") * 1000);
 	}
 
 	Behavior::Status execute(AiAgent* agent, unsigned int startIdx = 0) const {
 		// we don't need to check a value. Just checking to see if this value
 		// exists on the blackboard is fine since it can never be false
-		if (agent->peekBlackboard("isWaiting")) {
-			if (agent->isWaiting() || duration < 0) { // < 0 means indefinite wait
-				return RUNNING;
-			} else {
-				agent->eraseBlackboard("isWaiting");
-
-				return SUCCESS;
-			}
+		if (agent->isWaiting() || durationMin < 0) { // < 0 means indefinite wait
+			return RUNNING;
 		}
 
-		agent->setWait((uint64) abs(duration));
+		uint64 totalWait = System::random(abs(durationMax - durationMin)) + durationMin;
+
+		// agent->info(true) << "setting wait: " << totalWait << " Num of players in range: " << agent->getNumberOfPlayersInRange();
+
+		agent->setWait(totalWait);
 		agent->writeBlackboard("isWaiting", true);
 
-		return RUNNING;
+		return SUCCESS;
 	}
 
 	String print() const {
 		StringBuffer msg;
-		msg << className << "-" << duration;
+		msg << className << "- durationMin: " << durationMin << " durationMax: " << durationMax;
 
 		return msg.toString();
 	}
 
 private:
-	int duration;
+	int durationMin;
+	int durationMax;
 };
 
 class SetAlert : public Behavior {
@@ -996,6 +1001,88 @@ public:
 		agent->setMovementState(AiAgent::PATROLLING);
 
 		return SUCCESS;
+	}
+
+	String print() const {
+		StringBuffer msg;
+		msg << className;
+
+		return msg.toString();
+	}
+};
+
+class RestHerd : public Behavior {
+public:
+	RestHerd(const String& className, const uint32 id, const LuaObject& args) : Behavior(className, id, args) {
+	}
+
+	RestHerd(const RestHerd& a) : Behavior(a) {
+	}
+
+	RestHerd& operator=(const RestHerd& a) {
+		if (this == &a)
+			return *this;
+		Behavior::operator=(a);
+		return *this;
+	}
+
+	Behavior::Status execute(AiAgent* agent, unsigned int startIdx = 0) const {
+		if (agent == nullptr)
+			return FAILURE;
+
+		ManagedReference<CreatureHerdObserver*> herdObserver = agent->getHerdObserver();
+
+		if (herdObserver == nullptr)
+			return FAILURE;
+
+		// Set rest delay on the leader (calling agent)
+		Time* restDelay = agent->getRestDelay();
+
+		if (restDelay == nullptr)
+			return FAILURE;
+
+		// Wait 5 minutes until we check if we should rest again
+		int delay = 300 * 1000;
+
+		restDelay->updateToCurrentTime();
+		restDelay->addMiliTime(delay);
+
+		return herdObserver->restHerd() ? SUCCESS : FAILURE;
+	}
+
+	String print() const {
+		StringBuffer msg;
+		msg << className;
+
+		return msg.toString();
+	}
+};
+
+class StopHerdRest : public Behavior {
+public:
+	StopHerdRest(const String& className, const uint32 id, const LuaObject& args) : Behavior(className, id, args) {
+	}
+
+	StopHerdRest(const StopHerdRest& a) : Behavior(a) {
+	}
+
+	StopHerdRest& operator=(const StopHerdRest& a) {
+		if (this == &a)
+			return *this;
+		Behavior::operator=(a);
+		return *this;
+	}
+
+	Behavior::Status execute(AiAgent* agent, unsigned int startIdx = 0) const {
+		if (agent == nullptr)
+			return FAILURE;
+
+		ManagedReference<CreatureHerdObserver*> herdObserver = agent->getHerdObserver();
+
+		if (herdObserver == nullptr)
+			return FAILURE;
+
+		return herdObserver->stopHerdRest() ? SUCCESS : FAILURE;
 	}
 
 	String print() const {

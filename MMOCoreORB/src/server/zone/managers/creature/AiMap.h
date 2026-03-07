@@ -435,6 +435,7 @@ private:
 		_REGISTERLEAF(CheckHealChance);
 		_REGISTERLEAF(CheckIsStalker);
 		_REGISTERLEAF(CheckIsBaby);
+		_REGISTERLEAF(CheckArrivedAtPatrol);
 		_REGISTERLEAF(CheckFlee);
 		_REGISTERLEAF(CheckOwnerInRange);
 		_REGISTERLEAF(CheckTargetInOwnerRange);
@@ -457,6 +458,10 @@ private:
 		_REGISTERLEAF(CheckHasRangedWeapon);
 		_REGISTERLEAF(CheckHasMeleeWeapon);
 		_REGISTERLEAF(CheckIsSwimming);
+		_REGISTERLEAF(CheckIsHerdLeader);
+		_REGISTERLEAF(CheckFollowIsHerdLeader);
+		_REGISTERLEAF(CheckIsWaiting);
+		_REGISTERLEAF(CheckHasHerdObserver);
 		// action behaviors
 		_REGISTERLEAF(Dummy);
 		_REGISTERLEAF(GeneratePatrol);
@@ -489,6 +494,7 @@ private:
 		_REGISTERLEAF(PetReturn);
 		_REGISTERLEAF(ContrabandScan);
 		_REGISTERLEAF(FollowSquadLeader);
+		_REGISTERLEAF(FollowHerd);
 		_REGISTERLEAF(GetHealTarget);
 		_REGISTERLEAF(HealTarget);
 		_REGISTERLEAF(RestorePetPatrols);
@@ -497,6 +503,8 @@ private:
 		_REGISTERLEAF(DroidHarvest);
 		_REGISTERLEAF(Rest);
 		_REGISTERLEAF(StopResting);
+		_REGISTERLEAF(RestHerd);
+		_REGISTERLEAF(StopHerdRest);
 	}
 
 	void putBitmask(Lua* lua, String key) {

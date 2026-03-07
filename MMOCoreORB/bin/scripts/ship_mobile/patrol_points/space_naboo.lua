@@ -996,6 +996,47 @@ space_naboo = SpacePatrolPointTable:new {
 	{patrolPointName = "commerce_route_1_02", x = 371, z = 1057, y = -1805},
 	{patrolPointName = "commerce_route_1_03", x = 785, z = 1161, y = -2395},
 	{patrolPointName = "commerce_route_1_04", x = 987, z = 1211, y = -2681},
+	-- RSF Tier 3 Mission 2: Escort Cadamo Sun (decoy freighter)
+	{patrolPointName = "naboo_privateer_tier3_escort_1", x = 2799, z = -362, y = -19},
+	{patrolPointName = "naboo_privateer_tier3_escort_2", x = 3281, z = 295, y = -818},
+	{patrolPointName = "naboo_privateer_tier3_escort_3", x = 3775, z = 743, y = -925},
+	{patrolPointName = "naboo_privateer_tier3_escort_4", x = 3895, z = 1220, y = -1913},
+	-- RSF Tier 3 Mission 1d: Assassinate (side quest from Dantooine)
+	{patrolPointName = "naboo_privateer_tier3_assassinate_1", x = 3500, z = -3000, y = -2000},
+	{patrolPointName = "naboo_privateer_tier3_assassinate_2", x = 4000, z = -2500, y = -1500},
+	-- RSF Tier 3 Mission 4a: Assassinate Beldini
+	{patrolPointName = "naboo_privateer_tier3_beldini_1", x = -2673, z = -2332, y = -502},
+	{patrolPointName = "naboo_privateer_tier3_beldini_2", x = -4323, z = -3711, y = -844},
+	{patrolPointName = "naboo_privateer_tier3_beldini_3", x = -5818, z = -4961, y = -1155},
+	{patrolPointName = "naboo_privateer_tier3_beldini_4", x = -7473, z = -6718, y = -1559},
+	-- RSF Tier 1 Mission 3: Escort Freighter
+	{patrolPointName = "privateer_escort_1", x = 3200, z = -400, y = 2600},
+	{patrolPointName = "privateer_escort_2", x = 2800, z = -450, y = 3200},
+	{patrolPointName = "privateer_escort_3", x = 2400, z = -400, y = 4000},
+	{patrolPointName = "privateer_escort_4", x = 2000, z = -350, y = 4800},
+	-- RSF Tier 2 Mission 1: Escort
+	{patrolPointName = "rsf_tier2_escort_1", x = 3500, z = 500, y = -2000},
+	{patrolPointName = "rsf_tier2_escort_2", x = 4200, z = 300, y = -500},
+	{patrolPointName = "rsf_tier2_escort_3", x = 5000, z = 100, y = 1000},
+	{patrolPointName = "rsf_tier2_escort_4", x = 5500, z = -200, y = 2500},
+	-- RSF Tier 2 Mission 2: Assassinate
+	{patrolPointName = "rsf_tier2_assassinate_1", x = 1500, z = 600, y = -1500},
+	{patrolPointName = "rsf_tier2_assassinate_2", x = 2000, z = 400, y = -2000},
+	-- RSF Tier 1 Duty: Patrol
+	{patrolPointName = "rsf_duty_patrol_1", x = 752, z = 659, y = -2444},
+	{patrolPointName = "rsf_duty_patrol_2", x = 2031, z = 887, y = -1759},
+	{patrolPointName = "rsf_duty_patrol_3", x = 2466, z = 854, y = -505},
+	-- RSF Tier 2 Duty: Patrol
+	{patrolPointName = "rsf_duty_patrol_4", x = 3500, z = 400, y = -1000},
+	{patrolPointName = "rsf_duty_patrol_5", x = 4000, z = 200, y = 500},
+	{patrolPointName = "rsf_duty_patrol_6", x = 4500, z = -100, y = 2000},
+	-- RSF Tier 2 Duty: Escort
+	{patrolPointName = "rsf_tier2_duty_escort_1", x = 1000, z = 500, y = -3000},
+	{patrolPointName = "rsf_tier2_duty_escort_2", x = 2500, z = 300, y = -1500},
+	{patrolPointName = "rsf_tier2_duty_escort_3", x = 4000, z = 100, y = 500},
+	-- RSF Tier 2: Recovery
+	{patrolPointName = "rsf_recovery_1", x = 2000, z = 300, y = -2500},
+	{patrolPointName = "rsf_recovery_2", x = 3000, z = 500, y = -1500},
 }
 
 SpacePatrolPoints:addSpacePatrolPoints(space_naboo, "space_naboo")
