@@ -3165,18 +3165,20 @@ void CreatureObjectImplementation::activateHAMRegeneration(int latency) {
 	healDamage(asCreatureObject(), CreatureAttribute::MIND, mindTick, true, false);
 
 	//Ethan edit 12-27-25 (AUTO DOC)
+	/*
 	if(isPet()){
-		healWound(asCreatureObject(), CreatureAttribute::HEALTH, 20, true, false);  
-		healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 20, true, false); 
-		healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 20, true, false);
-		healWound(asCreatureObject(), CreatureAttribute::ACTION, 20, true, false);
-		healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 20, true, false);
-		healWound(asCreatureObject(), CreatureAttribute::STAMINA, 20, true, false);
-		healWound(asCreatureObject(), CreatureAttribute::MIND, 20, true, false);  
-		healWound(asCreatureObject(), CreatureAttribute::FOCUS, 20, true, false); 
-		healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 20, true, false); 
+		healWound(asCreatureObject(), CreatureAttribute::HEALTH, 20, false, false);  
+		healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 20, false, false); 
+		healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 20, false, false);
+		healWound(asCreatureObject(), CreatureAttribute::ACTION, 20, false, false);
+		healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 20, false, false);
+		healWound(asCreatureObject(), CreatureAttribute::STAMINA, 20, false, false);
+		healWound(asCreatureObject(), CreatureAttribute::MIND, 20, false, false);  
+		healWound(asCreatureObject(), CreatureAttribute::FOCUS, 20, false, false); 
+		healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 20, false, false); 
 	}
 	//End Ethan edit 12-27-25 (AUTO DOC)
+	*/
 
 	activatePassiveWoundRegeneration();
 }
@@ -3268,9 +3270,9 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 			//Pet wound healing
 			if(isPet()){
-				healWound(asCreatureObject(), CreatureAttribute::HEALTH, 10, true, false);  
-				healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 10, true, false); 
-				healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 10, true, false); 
+				healWound(asCreatureObject(), CreatureAttribute::HEALTH, 50, false, false);  
+				healWound(asCreatureObject(), CreatureAttribute::STRENGTH, 50, false, false); 
+				healWound(asCreatureObject(), CreatureAttribute::CONSTITUTION, 50, false, false); 
 			}
 			//Pet wound healing
 			
@@ -3349,6 +3351,12 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 	/// Action wound regen
 	int actionRegen = getSkillMod("private_med_wound_action");
 
+	//Ethan edit 12-27-25 (AUTO DOC)
+	if(isPet()){
+		actionRegen = 100;
+	}
+	//End Ethan edit 12-27-25 (AUTO DOC)
+
 	if(actionRegen > 0) {
 		actionWoundHeal += (int)(actionRegen * 0.2);
 		if(actionWoundHeal >= 100) {
@@ -3361,9 +3369,9 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 			//Pet wound healing
 			if(isPet()){
-				healWound(asCreatureObject(), CreatureAttribute::ACTION, 10, true, false);  
-				healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 10, true, false); 
-				healWound(asCreatureObject(), CreatureAttribute::STAMINA, 10, true, false); 
+				healWound(asCreatureObject(), CreatureAttribute::ACTION, 50, false, false);  
+				healWound(asCreatureObject(), CreatureAttribute::QUICKNESS, 50, false, false); 
+				healWound(asCreatureObject(), CreatureAttribute::STAMINA, 50, false, false); 
 			}
 			//Pet wound healing
 
@@ -3462,6 +3470,12 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 	/// Mind wound regen
 	int mindRegen = getSkillMod("private_med_wound_mind");
+
+	//Ethan edit 12-27-25 (AUTO DOC)
+	if(isPet()){
+		mindRegen = 100;
+	}
+	//End Ethan edit 12-27-25 (AUTO DOC)
 	
 	if(mindRegen > 0) {
 		mindWoundHeal += (int)(mindRegen * 0.2);
@@ -3475,9 +3489,10 @@ void CreatureObjectImplementation::activatePassiveWoundRegeneration() {
 
 			//Pet wound healing
 			if(isPet()){
-				healWound(asCreatureObject(), CreatureAttribute::MIND, 10, true, false);  
-				healWound(asCreatureObject(), CreatureAttribute::FOCUS, 10, true, false); 
-				healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 10, true, false); 
+				healWound(asCreatureObject(), CreatureAttribute::MIND, 50, false, false);  
+				healWound(asCreatureObject(), CreatureAttribute::FOCUS, 50, false, false); 
+				healWound(asCreatureObject(), CreatureAttribute::WILLPOWER, 50, false, false);
+				addShockWounds(-(healBonus + 1), false, false);
 			}
 			//Pet wound healing
 

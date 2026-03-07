@@ -105,7 +105,7 @@ Core3 = {
 	"talus",
 	"tatooine",
 	"tutorial",
-	"yavin4"
+	"yavin4",
 	-------- TEST ZONES -------
 	--"09",
 	--"10",
@@ -120,7 +120,7 @@ Core3 = {
 	--"rivertest",
 	--"runtimerules",
 	--"simple",
-	--"taanab",
+	"taanab",
 	--"test_wearables",
 	--"umbra",
 	--"watertabletest",

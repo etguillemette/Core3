@@ -45,6 +45,8 @@ object_tangible_scout_camokit_camokit_endor = object_tangible_scout_camokit_shar
 
 	templateType = CAMOKIT,
 
+	useCount = 5, --Ethan Edit
+
 	effectiveZone = "endor",
 
 	numberExperimentalProperties = {1, 1, 1, 1},

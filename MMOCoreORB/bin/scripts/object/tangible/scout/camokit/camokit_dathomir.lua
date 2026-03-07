@@ -45,6 +45,8 @@ object_tangible_scout_camokit_camokit_dathomir = object_tangible_scout_camokit_s
 
 	templateType = CAMOKIT,
 
+	useCount = 5, --Ethan Edit
+
 	effectiveZone = "dathomir",
 
 	numberExperimentalProperties = {1, 1, 1, 1},

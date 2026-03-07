@@ -55,6 +55,7 @@ int PlantObjectImplementation::handleObjectMenuSelect(CreatureObject* player, by
 			nutrientLevel = 0;
 
 		player->sendSystemMessage("@plant_grow:remove_nutrients");
+		//player->sendSystemMessage(std::to_string(idealNutrientLevel)); //Ethan edit TESTING
 	} else if (selectedID == 73) { // Remove Water
 		waterLevel -= 5;
 
@@ -62,6 +63,7 @@ int PlantObjectImplementation::handleObjectMenuSelect(CreatureObject* player, by
 			waterLevel = 0;
 
 		player->sendSystemMessage("@plant_grow:remove_water");
+		//player->sendSystemMessage(std::to_string(idealWaterLevel)); //Ethan edit TESTING
 	} else if (selectedID == 74) { // Pick Fruit
 		if (fruitCount < 1)
 			return 0;

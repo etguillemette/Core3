@@ -45,6 +45,8 @@ object_tangible_scout_camokit_camokit_rori = object_tangible_scout_camokit_share
 
 	templateType = CAMOKIT,
 
+	useCount = 5, --Ethan Edit
+
 	effectiveZone = "rori",
 
 	numberExperimentalProperties = {1, 1, 1, 1},

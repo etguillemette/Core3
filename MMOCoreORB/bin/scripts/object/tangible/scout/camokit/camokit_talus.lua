@@ -45,6 +45,8 @@ object_tangible_scout_camokit_camokit_talus = object_tangible_scout_camokit_shar
 
 	templateType = CAMOKIT,
 
+	useCount = 5, --Ethan Edit
+
 	effectiveZone = "talus",
 
 	numberExperimentalProperties = {1, 1, 1, 1},

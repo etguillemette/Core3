@@ -45,9 +45,9 @@ object_tangible_medicine_crafted_medpack_enhance_constitution_d = object_tangibl
 	gameObjectType = 8238,
 	templateType = ENHANCEPACK,
 	useCount = 21,
-	medicineUse = 30,
-	effectiveness = 600,
-	duration = 1800,
+	medicineUse = 90, --Ethan edit. Was 25 for some fucking reason?
+	effectiveness = 650, --Ethan edit. Boosted from 600
+	duration = 8000, --Ethan edit. Was 1800
 	attribute = 2,
 
 	numberExperimentalProperties = {1, 1, 2, 2, 2, 2, 1},

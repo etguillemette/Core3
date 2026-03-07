@@ -45,6 +45,8 @@ object_tangible_scout_camokit_camokit_naboo = object_tangible_scout_camokit_shar
 
 	templateType = CAMOKIT,
 
+	useCount = 5, --Ethan Edit
+
 	effectiveZone = "naboo",
 
 	numberExperimentalProperties = {1, 1, 1, 1},

@@ -45,10 +45,10 @@ object_tangible_medicine_crafted_medpack_enhance_poison_c = object_tangible_medi
 	gameObjectType = 8238,
 	templateType = ENHANCEPACK,
 	useCount = 15,
-	medicineUse = 100,
-	effectiveness = 200,
+	medicineUse = 90, --Ethan edit. Was 100 for some fucking reason?
+	effectiveness = 650, --Ethan edit. Boosted from 600
 	absorption = 10,
-	duration = 1800,
+	duration = 8000, --Ethan edit. Was 1800
 	attribute = 9,
 
 	numberExperimentalProperties = {1, 1, 2, 2, 2, 2, 2, 1},

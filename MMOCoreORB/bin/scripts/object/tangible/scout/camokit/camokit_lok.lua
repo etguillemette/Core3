@@ -45,6 +45,8 @@ object_tangible_scout_camokit_camokit_lok = object_tangible_scout_camokit_shared
 
 	templateType = CAMOKIT,
 
+	useCount = 5, --Ethan Edit
+
 	effectiveZone = "lok",
 
 	numberExperimentalProperties = {1, 1, 1, 1},

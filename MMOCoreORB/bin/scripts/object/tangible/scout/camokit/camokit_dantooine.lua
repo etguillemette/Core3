@@ -45,6 +45,8 @@ object_tangible_scout_camokit_camokit_dantooine = object_tangible_scout_camokit_
 
 	templateType = CAMOKIT,
 
+	useCount = 5, --Ethan Edit
+
 	effectiveZone = "dantooine",
 
 	numberExperimentalProperties = {1, 1, 1, 1},
